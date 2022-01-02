@@ -10,3 +10,9 @@
 [submodule "vendor/olm"]
 	path = vendor/olm
 	url = https://gitlab.matrix.org/matrix-org/olm.git
+[submodule "vendor/lmdb"]
+	path = vendor/lmdb
+	url = https://github.com/ramajd/lmdb.git
+[submodule "vendor/lmdbxx"]
+	path = vendor/lmdbxx
+	url = https://github.com/hoytech/lmdbxx.git
