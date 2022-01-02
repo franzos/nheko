@@ -7,3 +7,6 @@
 [submodule "vendor/json"]
 	path = vendor/json
 	url = https://github.com/nlohmann/json.git
+[submodule "vendor/olm"]
+	path = vendor/olm
+	url = https://gitlab.matrix.org/matrix-org/olm.git
