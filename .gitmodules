@@ -4,3 +4,6 @@
 [submodule "vendor/coeurl"]
 	path = vendor/coeurl
 	url = https://nheko.im/nheko-reborn/coeurl.git
+[submodule "vendor/json"]
+	path = vendor/json
+	url = https://github.com/nlohmann/json.git
