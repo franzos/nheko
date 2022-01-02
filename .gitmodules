@@ -1,3 +1,6 @@
 [submodule "vendor/spdlog"]
 	path = vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "vendor/coeurl"]
+	path = vendor/coeurl
+	url = https://nheko.im/nheko-reborn/coeurl.git
