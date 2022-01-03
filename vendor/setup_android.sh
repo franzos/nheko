@@ -219,6 +219,37 @@ function BUILD_LMDB {
     cp "${SCRIPT_DIR}/lmdbxx/lmdb++.h" "${DIST_DIR}/${target}/include/"
 }
 
+function BUILD_MTXCLIENT {
+    target="$1"
+    export OPENSSL_ROOT_DIR="${DIST_DIR}/${target}"
+    export PKG_CONFIG_PATH="${DIST_DIR}/${target}/lib/pkgconfig"
+
+    PRINT_INFO $OPENSSL_ROOT_DIR
+    PRINT_INFO $PKG_CONFIG_PATH
+    BUILD_LIBRARY "mtxclient" $target \
+                  "-DBUILD_LIB_TESTS=OFF" \
+                  "-DBUILD_LIB_EXAMPLES=OFF" \
+                  "-DOlm_DIR=${DIST_DIR}/${target}/lib/cmake/Olm" \
+                  "-Dnlohmann_json_DIR=${DIST_DIR}/${target}/lib/cmake/nlohmann_json" \
+                  "-Dspdlog_DIR=${DIST_DIR}/${target}/lib/cmake/spdlog" \
+                  "-DCMAKE_PREFIX_PATH=${DIST_DIR}/${target}/lib/pkgconfig" \
+                  "-DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}" \
+                  "-DOPENSSL_INCLUDE_DIR=${OPENSSL_ROOT_DIR}/include" \
+                  "-DOPENSSL_LIBRARIES=${OPENSSL_ROOT_DIR}/lib" \
+                  "-DOPENSSL_CRYPTO_LIBRARY=${OPENSSL_ROOT_DIR}/lib/libcrypto.so" \
+                  "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/lib/libssl.so" \
+                  "-DBUILD_SHARED_LIBS=ON"
+}
+
+function BUILD_ALL {
+    BUILD_SPDLOG $1
+    BUILD_COEURL $1
+    BUILD_JSON $1
+    BUILD_OLM $1
+    BUILD_LMDB $1
+    BUILD_MTXCLIENT $1
+}
+
 ###############################################################################
 # Main
 ###############################################################################
