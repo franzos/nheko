@@ -159,6 +159,42 @@ function BUILD_CURL {
     cd "$STARTUP_DIR"
 }
 
+function BUILD_LIBEVENT {
+    libname="libevent"
+    version="2.1.12-stable"
+    # version_underlined=$(echo $version | sed s/[.]/_/g)
+    target="$1"
+    PRINT_INFO "======= Build: [$libname] for [$target] ======================="
+
+    libpath="$BUILD_DIR/$libname"
+    zip_name="$libname-$version.tar.gz"
+    zip_path="$libpath/$zip_name"
+    download_url="https://github.com/libevent/libevent/releases/download/release-$version/$zip_name"
+
+    MKPATH $libpath
+    [ ! -f $zip_path ] && wget -O "$zip_path" $download_url || PRINT_INFO "use cached archive: $zip_path"
+
+    target_dir="$libpath/$libname-$version"
+    [ -d "$target_dir" ] && rm -rf "$target_dir"
+    tar xf "$zip_path" --directory "$libpath"
+    
+    PREPARE_AUTOMAKE_ENVIRONMENT $target
+    [ $? -ne 0 ] && PRINT_ERROR_EXIT "Failed to prepare build environment."
+    
+    export PKG_CONFIG_PATH="$DIST_DIR/$target/lib/pkgconfig"
+    cd $target_dir
+    ./configure --host=$TARGET_HOST \
+            --target=$TARGET_HOST \
+            --prefix="$DIST_DIR/$target" \
+            --with-pic \
+            --disable-samples
+
+    make -j$CORES
+    make install
+    make clean
+    cd "$STARTUP_DIR"
+}
+
 ###############################################################################
 # Main
 ###############################################################################
