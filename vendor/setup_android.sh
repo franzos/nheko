@@ -123,6 +123,42 @@ function BUILD_OPENSSL {
     cd "$STARTUP_DIR"
 }
 
+function BUILD_CURL {
+    libname="curl"
+    version="7.80.0"
+    version_underlined=$(echo $version | sed s/[.]/_/g)
+    target="$1"
+    PRINT_INFO "======= Build: [$libname] for [$target] ======================="
+
+    download_url="https://github.com/curl/curl/releases/download/curl-$version_underlined/curl-$version.tar.gz"
+    libpath="$BUILD_DIR/$libname"
+    zip_name="$libname-$version.tar.gz"
+    zip_path="$libpath/$zip_name"
+
+    MKPATH $libpath
+    [ ! -f $zip_path ] && wget -O "$zip_path" $download_url || PRINT_INFO "use cached archive: $zip_path"
+
+    target_dir="$libpath/$libname-$version"
+    [ -d "$target_dir" ] && rm -rf "$target_dir"
+    tar xf "$zip_path" --directory "$libpath"
+    
+    PREPARE_AUTOMAKE_ENVIRONMENT $target
+    [ $? -ne 0 ] && PRINT_ERROR_EXIT "Failed to prepare build environment."
+
+    SSL_DIR="$DIST_DIR/$target/"
+    
+    cd $target_dir
+    ./configure --host=$TARGET_HOST \
+            --target=$TARGET_HOST \
+            --prefix="$DIST_DIR/$target" \
+            --with-openssl=$SSL_DIR \
+            --with-pic
+    make -j$CORES
+    make install
+    make clean
+    cd "$STARTUP_DIR"
+}
+
 ###############################################################################
 # Main
 ###############################################################################
