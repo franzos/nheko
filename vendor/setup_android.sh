@@ -85,6 +85,44 @@ function BUILD_SPDLOG {
         '-DSPDLOG_BUILD_TESTS=OFF'
 }
 
+function BUILD_OPENSSL {
+    libname='openssl'
+    version="1.1.1l"
+    target="$1"
+    PRINT_INFO "======= Build: [$libname] for [$target] ======================="
+    
+    libpath="${BUILD_DIR}/${libname}"
+    MKPATH $libpath
+
+    download_url='https://openssl.org/source'
+    lib_version_name="$libname-$version"
+    zip_name="$lib_version_name.tar.gz"
+    zip_path="$libpath/$zip_name"
+    sig_name="$zip_name.sha256"
+    sig_path="$libpath/$sig_name"
+
+    [ ! -f "$sig_path" ] && wget -O "$sig_path" "$download_url/$sig_name" 
+    [ ! -f "$zip_path" ] && wget -O "$zip_path" "$download_url/$zip_name" || PRINT_INFO "use cached archive: $zip_path"
+    VERIFY_CHECKSUM $zip_path $sig_path
+    [ $? -ne 0 ] && PRINT_ERROR_EXIT "archive signature mismatched. remove old files to download again"
+
+    target_dir="$libpath/$lib_version_name"
+    [ -d "$target_dir" ] && rm -rf "$target_dir"
+    tar xf $zip_path --directory "$libpath"
+
+    PREPARE_AUTOMAKE_ENVIRONMENT $target
+    [ $? -ne 0 ] && PRINT_ERROR_EXIT "Failed to prepare build environment."
+
+    cd $target_dir
+    ./Configure $OS_COMPILER shared \
+        -D__ANDROID_API__=$MIN_SDK_VERSION \
+        --prefix="$DIST_DIR/$target"
+    make -j$CORES
+    make install_sw
+    make clean
+    cd "$STARTUP_DIR"
+}
+
 ###############################################################################
 # Main
 ###############################################################################
