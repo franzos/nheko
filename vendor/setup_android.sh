@@ -42,6 +42,38 @@ function BUILD_LIBRARY {
     cmake --install $libpath --config Release
 }
 
+function PREPARE_AUTOMAKE_ENVIRONMENT {
+    # # Only choose one of these, depending on your device...
+    # export TARGET=aarch64-linux-android
+    # export TARGET=armv7a-linux-androideabi
+    # export TARGET=i686-linux-android
+    # export TARGET=x86_64-linux-android
+    if [ "$1" = "armeabi-v7a" ]; then
+        export TARGET_HOST="armv7a-linux-androideabi"
+        export OS_COMPILER='android-arm'
+    elif [ "$1" = "arm64-v8a" ]; then
+        export TARGET_HOST="aarch64-linux-android"
+        export OS_COMPILER='android-arm64'
+    else
+        PRINT_ERROR "unsupported target: $1"
+        return 1
+    fi
+
+    export ANDROID_NDK_HOME=$ANDROID_NDK
+    export TOOLCHAIN="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64"
+    export PATH=$TOOLCHAIN/bin:$PATH
+    
+    export ANDROID_ARCH=$1
+    export AR=$TOOLCHAIN/bin/llvm-ar
+    export CC=$TOOLCHAIN/bin/$TARGET_HOST$MIN_SDK_VERSION-clang
+    export AS=$CC
+    export CXX=$TOOLCHAIN/bin/$TARGET_HOST$MIN_SDK_VERSION-clang++
+    export LD=$TOOLCHAIN/bin/ld
+    export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
+    export STRIP=$TOOLCHAIN/bin/llvm-strip
+    return 0
+}
+
 ###############################################################################
 # Library specific functions
 ###############################################################################
