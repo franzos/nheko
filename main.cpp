@@ -11,7 +11,7 @@ int main (int argc, char* argv[])
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication q_app (argc, argv);
     qDebug() << QQuickStyle::availableStyles();
-    QQuickStyle::setStyle("Imagine");
+    // QQuickStyle::setStyle("Imagine");
     const QUrl url(QStringLiteral("qrc:///qmls/main.qml"));
 
     QQmlApplicationEngine engine;
