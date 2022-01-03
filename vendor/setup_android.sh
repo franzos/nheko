@@ -43,6 +43,17 @@ function BUILD_LIBRARY {
 }
 
 ###############################################################################
+# Library specific functions
+###############################################################################
+function BUILD_SPDLOG {
+    target="$1"
+    BUILD_LIBRARY 'spdlog' $target \
+        '-DSPDLOG_BUILD_SHARED=ON' \
+        '-DSPDLOG_BUILD_EXAMPLE=OFF' \
+        '-DSPDLOG_BUILD_TESTS=OFF'
+}
+
+###############################################################################
 # Main
 ###############################################################################
 unset TARGET
