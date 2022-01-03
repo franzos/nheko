@@ -208,6 +208,11 @@ function BUILD_JSON {
     BUILD_LIBRARY "json" "$target" "-DJSON_BuildTests=OFF"
 }
 
+function BUILD_OLM {
+    target="$1"
+    BUILD_LIBRARY "olm" "$target"
+}
+
 ###############################################################################
 # Main
 ###############################################################################
