@@ -195,6 +195,14 @@ function BUILD_LIBEVENT {
     cd "$STARTUP_DIR"
 }
 
+function BUILD_COEURL {
+    target="$1"
+    export PKG_CONFIG_PATH="${DIST_DIR}/lib/pkgconfig"
+    BUILD_LIBRARY "coeurl" $target \
+        -Dspdlog_DIR="${DIST_DIR}/${target}/lib/cmake/spdlog" \
+        -DBUILD_SHARED_LIBS=ON
+}
+
 ###############################################################################
 # Main
 ###############################################################################
