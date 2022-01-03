@@ -203,6 +203,11 @@ function BUILD_COEURL {
         -DBUILD_SHARED_LIBS=ON
 }
 
+function BUILD_JSON {
+    target="$1"
+    BUILD_LIBRARY "json" "$target" "-DJSON_BuildTests=OFF"
+}
+
 ###############################################################################
 # Main
 ###############################################################################
