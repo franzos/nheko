@@ -213,6 +213,12 @@ function BUILD_OLM {
     BUILD_LIBRARY "olm" "$target"
 }
 
+function BUILD_LMDB {
+    target="$1"
+    BUILD_LIBRARY lmdb $target
+    cp "${SCRIPT_DIR}/lmdbxx/lmdb++.h" "${DIST_DIR}/${target}/include/"
+}
+
 ###############################################################################
 # Main
 ###############################################################################
