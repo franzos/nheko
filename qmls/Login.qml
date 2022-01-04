@@ -15,7 +15,7 @@ Page {
     ColumnLayout{
         id: inputLayout
         anchors.centerIn: parent
-       width: parent.width
+        width: parent.width
         TextField {
             id: userIdText
             Layout.leftMargin: 50
@@ -34,9 +34,22 @@ Page {
         }
 
         Button {
+            id: loginButton
             text: "Login"
             Layout.alignment: Qt.AlignHCenter
-            onClicked: Client.loginWithPassword("MATRIX_TEST_APP",userIdText.text, passwordText.text, "https://matrix.pantherx.org")
+            onClicked: {
+                loginButton.enabled= false;
+                Client.loginWithPassword(String("matrix_client_application"),
+                                         String("@" + userIdText.text + ":pantherx.org"),
+                                         String(passwordText.text),
+                                         String("https://matrix.pantherx.org"))
+            }
+        }
+    }
+    Connections {
+        target: Client
+        function onLoginErrorOccurred(msg) {
+            loginButton.enabled= true
         }
     }
 }

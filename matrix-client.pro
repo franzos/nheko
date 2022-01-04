@@ -27,3 +27,5 @@ LIBS += -L/home/panther/.guix-profile/lib/ -lmatrix-client-library
 
 INCLUDEPATH += $$PWD/''
 DEPENDPATH += $$PWD/''
+
+#unix:!macx: LIBS += -lssl

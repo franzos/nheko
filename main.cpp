@@ -13,7 +13,7 @@ int main (int argc, char* argv[])
     qDebug() << QQuickStyle::availableStyles();
     // QQuickStyle::setStyle("Imagine");
     const QUrl url(QStringLiteral("qrc:///qmls/main.qml"));
-
+    Client::instance()->enableLogger(true, true);
     QQmlApplicationEngine engine;
     qmlRegisterSingletonType<Client>("Client", 1, 0, "Client", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return Client::instance();

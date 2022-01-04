@@ -27,12 +27,10 @@ ApplicationWindow {
         anchors.centerIn: parent
     }
 
-
-
-////    RoomList {
-////        id: roomList
-////        visible: false
-////    }
+    RoomList {
+        id: roomList
+        visible: false
+    }
 
     Login {
         id: loginPage
@@ -41,14 +39,17 @@ ApplicationWindow {
 
     Connections {
         target: Client
+
         function onDropToLogin(msg) {
-            console.log("***",msg)
             stack.replace(loginIndicator,loginPage)
         }
 
         function onLoginOk(user) {
-            console.log("LOGIN DONE")
-            stack.replace(loginPage, roomList)
+            Client.start()
+        }
+
+        function onInitiateFinished(){
+            stack.replace(loginIndicator, roomList)
         }
     }
 
