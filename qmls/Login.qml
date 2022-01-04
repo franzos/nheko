@@ -26,6 +26,7 @@ Page {
 
         TextField {
             id: passwordText
+            echoMode: TextInput.Password
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
@@ -35,7 +36,7 @@ Page {
         Button {
             text: "Login"
             Layout.alignment: Qt.AlignHCenter
-            onClicked: Client.loginWithPassword(String("MATRIX_TEST_APP"),userIdText.text, passwordText.text, "https://matrix.pantherx.org")
+            onClicked: Client.loginWithPassword("MATRIX_TEST_APP",userIdText.text, passwordText.text, "https://matrix.pantherx.org")
         }
     }
 }
