@@ -61,6 +61,59 @@ function BUILD_OPENSSL {
     cd $STARTUP_DIR
 }
 
+function BUILD_CURL {
+    libname="curl"
+    version="7.80.0"
+    version_underlined=$(echo $version | sed s/[.]/_/g)
+
+    echo ""
+    PRINT_INFO "======= Build: [$libname] for [iOS] ======================="
+
+    download_url="https://github.com/curl/curl/releases/download/curl-$version_underlined/curl-$version.tar.gz"
+    libpath="$BUILD_DIR/$libname"
+    zip_name="$libname-$version.tar.gz"
+    zip_path="$libpath/$zip_name"
+
+    MKPATH $libpath
+    [ ! -f $zip_path ] && wget -O "$zip_path" $download_url || PRINT_INFO "use cached archive: $zip_path"
+
+    target_dir="$libpath/$libname-$version"
+    [ -d "$target_dir" ] && rm -rf "$target_dir"
+    tar xf "$zip_path" --directory "$libpath"
+
+    cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE="${SCRIPT_DIR}/ios.toolchain.cmake" -DPLATFORM=OS64COMBINED \
+        -DCMAKE_INSTALL_PREFIX=${DIST_DIR} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -S"${target_dir}" -B"${libpath}" \
+        -DCMAKE_USE_OPENSSL=OFF   \
+        -DBUILD_SHARED_LIBS=OFF   \
+        -DBUILD_CURL_EXE=OFF      \
+        -DBUILD_TESTING=FALSE     \
+        -DHAVE_LIBIDN2=FALSE      \
+        -DCURL_CA_PATH=none       \
+        -DCURL_DISABLE_FTP=ON     \
+        -DCURL_DISABLE_LDAP=ON    \
+        -DCURL_DISABLE_LDAPS=ON   \
+        -DCURL_DISABLE_TELNET=ON  \
+        -DCURL_DISABLE_DICT=ON    \
+        -DCURL_DISABLE_FILE=ON    \
+        -DCURL_DISABLE_TFTP=ON    \
+        -DCURL_DISABLE_RTSP=ON    \
+        -DCURL_DISABLE_POP3=ON    \
+        -DCURL_DISABLE_IMAP=ON    \
+        -DCURL_DISABLE_SMTP=ON    \
+        -DCURL_DISABLE_GOPHER=ON  \
+        -DUSE_MANUAL=OFF
+
+    cmake --buil  d $libpath --config Release
+    cmake --install $libpath --config Release
+}
+
+function BUILD_ALL {
+    BUILD_SPDLOG
+    BUILD_CURL
+}
+
 ###############################################################################
 # Main
 ###############################################################################
