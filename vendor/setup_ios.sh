@@ -41,6 +41,26 @@ function BUILD_SPDLOG {
         "-DSPDLOG_BUILD_EXAMPLE=OFF"
 }
 
+function BUILD_OPENSSL {
+    echo ""
+    PRINT_INFO "======= Build: [OpenSSL] for [iOS] ======================="
+    libpath="${BUILD_DIR}/openssl-xcframeworks"
+    [ -d $libpath ] && rm -rf "$libpath"
+    git clone https://github.com/adib/openssl-xcframeworks.git $libpath  --depth=1
+    
+    cd $libpath
+    ./build-openssl.sh --version=1.1.1l --targets='ios-sim-cross-x86_64 ios64-cross'
+
+    cp lib/libssl-iPhone.a "${DIST_DIR}/lib/libssl.a"
+    cp lib/libcrypto-iPhone.a "${DIST_DIR}/lib/libcrypto.a"
+    cp -R include/openssl "${DIST_DIR}/include/"
+
+    lipo -info "${DIST_DIR}/lib/libssl.a"
+    lipo -info "${DIST_DIR}/lib/libcrypto.a"
+    
+    cd $STARTUP_DIR
+}
+
 ###############################################################################
 # Main
 ###############################################################################
