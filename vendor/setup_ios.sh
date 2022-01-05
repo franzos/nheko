@@ -115,9 +115,46 @@ function BUILD_CURL {
     cmake --install $libpath --config Release
 }
 
+function BUILD_LIBEVENT {
+    libname="libevent"
+    version="2.1.12-stable"
+    echo ""
+    PRINT_INFO "======= Build: [$libname] for [iOS] ======================="
+
+    libpath="$BUILD_DIR/$libname"
+    zip_name="$libname-$version.tar.gz"
+    zip_path="$libpath/$zip_name"
+    download_url="https://github.com/libevent/libevent/releases/download/release-$version/$zip_name"
+
+    MKPATH $libpath
+    [ ! -f $zip_path ] && wget -O "$zip_path" $download_url || PRINT_INFO "use cached archive: $zip_path"
+
+    target_dir="$libpath/$libname-$version"
+    [ -d "$target_dir" ] && rm -rf "$target_dir"
+    tar xf "$zip_path" --directory "$libpath"
+
+    export OPENSSL_ROOT_DIR="${DIST_DIR}"
+    cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE="${SCRIPT_DIR}/ios.toolchain.cmake" -DPLATFORM=OS64COMBINED \
+        -DCMAKE_INSTALL_PREFIX=${DIST_DIR} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -S"${target_dir}" -B"${libpath}" \
+        -DEVENT__LIBRARY_TYPE=STATIC \
+        -DEVENT__DISABLE_MBEDTLS=ON \
+        -DEVENT__DISABLE_BENCHMARK=ON \
+        -DEVENT__DISABLE_TESTS=ON \
+        -DCMAKE_SHARED_LINKER_FLAGS="-L${DIST_DIR}/lib" \
+        -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES="${DIST_DIR}/include" \
+        -DEVENT__DISABLE_SAMPLES=ON
+
+    cmake --build $libpath --config Release
+    cmake --install $libpath --config Release
+}
+
+
 function BUILD_ALL {
     BUILD_SPDLOG
     BUILD_CURL
+    BUILD_LIBEVENT
 }
 
 ###############################################################################
