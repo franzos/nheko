@@ -154,12 +154,17 @@ function BUILD_COEURL {
     BUILD_LIBRARY "coeurl"
 }
 
+function BUILD_JSON {
+    BUILD_LIBRARY "json" "-DJSON_BuildTests=OFF"
+}
+
 
 function BUILD_ALL {
     BUILD_SPDLOG
     BUILD_CURL
     BUILD_LIBEVENT
     BUILD_COEURL
+    BUILD_JSON
 }
 
 ###############################################################################
