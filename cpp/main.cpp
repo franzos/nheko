@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-   spdlog::debug("application started");
+   spdlog::info("info log from spdlog");
 
 #ifdef __ANDROID__
     std::string tag = "android-logs";
