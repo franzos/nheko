@@ -169,6 +169,15 @@ function BUILD_LMDB {
     cp "${SCRIPT_DIR}/lmdbxx/lmdb++.h" "${DIST_DIR}/${target}/include/"
 }
 
+function BUILD_MTXCLIENT {
+    export OPENSSL_ROOT_DIR="${DIST_DIR}"
+    BUILD_LIBRARY "mtxclient" \
+                  "-DDEPLOYMENT_TARGET=13.0" \
+                  "-Dcoeurl_DIR=${DIST_DIR}" \
+                  "-DBUILD_LIB_TESTS=OFF" \
+                  "-DBUILD_LIB_EXAMPLES=OFF" \
+                  "-DBUILD_SHARED_LIBS=OFF"
+}
 
 function BUILD_ALL {
     BUILD_SPDLOG
@@ -178,6 +187,7 @@ function BUILD_ALL {
     BUILD_JSON
     BUILD_OLM
     BUILD_LMDB
+    BUILD_MTXCLIENT
 }
 
 ###############################################################################
