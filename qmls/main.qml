@@ -1,4 +1,3 @@
-import QtQml.Models 2.2
 import QtQuick 2.9
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
@@ -7,8 +6,8 @@ import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.15
 //import QtQuick.Controls.Material 2.12
-import Client 1.0
 
+import MatrixClient 1.0
 ApplicationWindow {
     title: qsTr("Matrix Client")
     width: 400
@@ -16,6 +15,7 @@ ApplicationWindow {
     visible: true
 //    Material.theme: Material.Light
 //    Material.accent: Material.Purple
+
     StackView {
         id: stack
         anchors.fill: parent
@@ -38,14 +38,14 @@ ApplicationWindow {
     }
 
     Connections {
-        target: Client
+        target: MatrixClient
 
         function onDropToLogin(msg) {
             stack.replace(loginIndicator,loginPage)
         }
 
         function onLoginOk(user) {
-            Client.start()
+            MatrixClient.start()
         }
 
         function onInitiateFinished(){
@@ -55,7 +55,7 @@ ApplicationWindow {
 
     Component.onCompleted: {
         stack.push(loginIndicator)
-        Client.start()
+        MatrixClient.start()
     }
 }
 
