@@ -44,16 +44,22 @@ function BUILD_SPDLOG {
 function BUILD_OPENSSL {
     echo ""
     PRINT_INFO "======= Build: [OpenSSL] for [iOS] ======================="
-    libpath="${BUILD_DIR}/openssl-xcframeworks"
+    libpath="${BUILD_DIR}/openssl-apple"
     [ -d $libpath ] && rm -rf "$libpath"
-    git clone https://github.com/adib/openssl-xcframeworks.git $libpath  --depth=1
+    git clone https://github.com/passepartoutvpn/openssl-apple.git $libpath --depth=1
     
     cd $libpath
-    ./build-openssl.sh --version=1.1.1l --targets='ios-sim-cross-x86_64 ios64-cross'
+    ./build-libssl.sh --cleanup --version=1.1.1l --targets='ios-sim-cross-x86_64 ios64-cross-arm64'
 
-    cp lib/libssl-iPhone.a "${DIST_DIR}/lib/libssl.a"
-    cp lib/libcrypto-iPhone.a "${DIST_DIR}/lib/libcrypto.a"
-    cp -R include/openssl "${DIST_DIR}/include/"
+    iospath="${libpath}/bin/iPhoneOS15.2-arm64.sdk/lib"
+    simpath="${libpath}/bin/iPhoneSimulator15.2-x86_64.sdk/lib"
+    hdrpath="${libpath}/bin/iPhoneSimulator15.2-x86_64.sdk/include"
+
+    MKPATH "${DIST_DIR}/lib"
+    MKPATH "${DIST_DIR}/include"
+    lipo -create "$simpath/libssl.a" "$iospath/libssl.a" -output "${DIST_DIR}/lib/libssl.a"
+    lipo -create "$simpath/libcrypto.a" "$iospath/libcrypto.a" -output "${DIST_DIR}/lib/libcrypto.a"
+    cp -R "$hdrpath/openssl" "${DIST_DIR}/include/"
 
     lipo -info "${DIST_DIR}/lib/libssl.a"
     lipo -info "${DIST_DIR}/lib/libcrypto.a"
