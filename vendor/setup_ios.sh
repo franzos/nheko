@@ -158,6 +158,12 @@ function BUILD_JSON {
     BUILD_LIBRARY "json" "-DJSON_BuildTests=OFF"
 }
 
+function BUILD_OLM {
+    BUILD_LIBRARY "olm" \
+        "-DOLM_TESTS=OFF" \
+        "-DBUILD_SHARED_LIBS=NO"
+}
+
 
 function BUILD_ALL {
     BUILD_SPDLOG
@@ -165,6 +171,7 @@ function BUILD_ALL {
     BUILD_LIBEVENT
     BUILD_COEURL
     BUILD_JSON
+    BUILD_OLM
 }
 
 ###############################################################################
