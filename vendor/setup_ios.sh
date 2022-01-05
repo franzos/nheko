@@ -150,11 +150,16 @@ function BUILD_LIBEVENT {
     cmake --install $libpath --config Release
 }
 
+function BUILD_COEURL {
+    BUILD_LIBRARY "coeurl"
+}
+
 
 function BUILD_ALL {
     BUILD_SPDLOG
     BUILD_CURL
     BUILD_LIBEVENT
+    BUILD_COEURL
 }
 
 ###############################################################################
