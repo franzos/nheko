@@ -164,6 +164,11 @@ function BUILD_OLM {
         "-DBUILD_SHARED_LIBS=NO"
 }
 
+function BUILD_LMDB {
+    BUILD_LIBRARY "lmdb"
+    cp "${SCRIPT_DIR}/lmdbxx/lmdb++.h" "${DIST_DIR}/${target}/include/"
+}
+
 
 function BUILD_ALL {
     BUILD_SPDLOG
@@ -172,6 +177,7 @@ function BUILD_ALL {
     BUILD_COEURL
     BUILD_JSON
     BUILD_OLM
+    BUILD_LMDB
 }
 
 ###############################################################################
