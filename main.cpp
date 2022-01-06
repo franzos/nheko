@@ -7,6 +7,8 @@
 #include <QObject>
 
 #include "RoomListModel.h"
+#include "RoomListItem.h"
+
 RoomListModel *roomListModel;
 Client *client;
 
@@ -23,14 +25,14 @@ int main (int argc, char* argv[]) {
 
     auto roomUpdateHandler = [&](const mtx::responses::Sync &sync){
         auto rooms = sync.rooms;
-        QVector<RoomListItem> roomList;
+        QList<RoomListItem> roomList;
         for(auto const &r: rooms.join){
             auto roomInfo = client->roomInfo(QString::fromStdString(r.first));
             RoomListItem room(  QString::fromStdString(r.first),
                                 roomInfo.name,
                                 roomInfo.avatar_url,
                                 false);
-            roomList.push_back(room);
+            roomList << room;
         }
 
         for(auto const &r: rooms.invite){
@@ -38,7 +40,7 @@ int main (int argc, char* argv[]) {
                                 QString::fromStdString(r.second.name()),
                                 QString::fromStdString(r.second.avatar()),
                                 true);
-            roomList.push_back(room);
+            roomList << room;
         }
         roomListModel->add(roomList);
         
@@ -53,13 +55,13 @@ int main (int argc, char* argv[]) {
     QObject::connect(client, &Client::initiateFinished,[&](){
         auto joinedRooms = client->joinedRoomList();
         auto inviteRooms = client->inviteRoomList();
-        QVector<RoomListItem> roomList;
+        QList<RoomListItem> roomList;
         for(auto const &r: joinedRooms.toStdMap()){
             RoomListItem room(  r.first,
                                 r.second.name,
                                 r.second.avatar_url,
                                 false);
-            roomList.push_back(room);
+            roomList << room;
         }
 
         for(auto const &r: inviteRooms.toStdMap()){
@@ -67,7 +69,7 @@ int main (int argc, char* argv[]) {
                                 r.second.name,
                                 r.second.avatar_url,
                                 true);
-            roomList.push_back(room);
+            roomList << room;
         }
         roomListModel->add(roomList);
     });

@@ -6,7 +6,7 @@ CONFIG+=qml_debug
 CONFIG+=declarative_debug
 
 SOURCES += \
-    RoomItem.cpp \
+    RoomListItem.cpp \
     RoomListModel.cpp \
     main.cpp 
 
@@ -24,7 +24,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    RoomItem.h  \
+    RoomListItem.h  \
     RoomListModel.h
 
 LIBS += -L/home/panther/.guix-profile/lib/ -lmatrix-client-library
