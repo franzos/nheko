@@ -28,8 +28,10 @@ HEADERS += \
     RoomListModel.h
 
 LIBS += -L/home/panther/.guix-profile/lib/ -lmatrix-client-library
+LIBS += -lmatrix_client
 
 INCLUDEPATH += $$PWD/''
 DEPENDPATH += $$PWD/''
 
 #unix:!macx: LIBS += -lssl
+
