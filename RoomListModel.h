@@ -35,7 +35,8 @@ protected:
     QHash<int, QByteArray> roleNames() const;
 
 public slots:
-    void add(QList<RoomListItem> &item);
+    void add(RoomListItem &item);
+    void add(QList<RoomListItem> &items);
     void remove(const QStringList &ids);
 
 signals:
@@ -43,6 +44,7 @@ signals:
 
 private:
     QList<RoomListItem> _roomListItems;
+    QStringList _roomIds;
 };
 
 

@@ -46,23 +46,19 @@ bool RoomListModel::setData(const QModelIndex &index,
                               const QVariant &value, int role)
 {
     RoomListItem room = _roomListItems[index.row()];
-
     if(role == idRole){
         room.setId(value.toString());
         emit dataChanged(index, index);
         return true;
-    }
-    else if(role == nameRole){
+    } else if(role == nameRole){
         room.setName(value.toString());
         emit dataChanged(index, index);
         return true;
-    }
-    else if(role == avatarRole){
+    } else if(role == avatarRole){
         room.setAvatar(value.toString());
         emit dataChanged(index, index);
         return true;
-    }
-    else if(role == inviteRole){
+    } else if(role == inviteRole){
         room.setInvite(value.toBool());
         emit dataChanged(index, index);
         return true;
@@ -90,22 +86,33 @@ int RoomListModel::roomidToIndex(const QString &roomid){
 bool RoomListModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
     beginRemoveRows(QModelIndex(), position, position+rows-1);
-
     for (int row = 0; row < rows; ++row) {
         _roomListItems.removeAt(position);
+        _roomIds.removeAt(position);
     }
-
     endRemoveRows();
     return true;
 }
 
+void RoomListModel::add(RoomListItem &item){
+    if(_roomIds.contains(item.id()) && !item.invite() &&
+      _roomListItems.at(roomidToIndex(item.id())).invite()){
+        // TODO edit data and emit
+        remove({item.id()});
+        add({item});
+    } else if(!_roomIds.contains(item.id())){
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        _roomListItems << item;
+        _roomIds << item.id();
+        endInsertRows();
+        qDebug() << "Added to RoomList: " << item.toString();
+    }
+}
+
 void RoomListModel::add(QList<RoomListItem> &rooms){
     if(rooms.size()){
-        beginInsertRows(QModelIndex(), rowCount(), rowCount() + rooms.size() - 1);
-        _roomListItems << rooms;
-        endInsertRows();
         for(auto &r: rooms){
-            qDebug() << "Added to RoomList: " << r.toString();
+            add(r);
         }
     }
 }
