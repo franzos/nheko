@@ -57,5 +57,9 @@ ApplicationWindow {
         stack.push(loginIndicator)
         MatrixClient.start()
     }
+
+    onClosing: {
+        MatrixClient.stop()
+    }
 }
 
