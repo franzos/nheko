@@ -1,0 +1,21 @@
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "vendor/coeurl"]
+	path = vendor/coeurl
+	url = https://nheko.im/nheko-reborn/coeurl.git
+[submodule "vendor/json"]
+	path = vendor/json
+	url = https://github.com/nlohmann/json.git
+[submodule "vendor/olm"]
+	path = vendor/olm
+	url = https://gitlab.matrix.org/matrix-org/olm.git
+[submodule "vendor/lmdb"]
+	path = vendor/lmdb
+	url = https://github.com/ramajd/lmdb.git
+[submodule "vendor/lmdbxx"]
+	path = vendor/lmdbxx
+	url = https://github.com/hoytech/lmdbxx.git
+[submodule "vendor/mtxclient"]
+	path = vendor/mtxclient
+	url = https://github.com/Nheko-Reborn/mtxclient.git

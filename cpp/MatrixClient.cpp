@@ -1,33 +1,19 @@
-#include <QGuiApplication>
-#include <QQuickView>
-#include <QtQml>
+#include "MatrixClient.h"
+#include <QCoreApplication>
 #include <QQuickStyle>
-#include <matrix-client-library/Client.h>
-#include <QString>
-#include <QObject>
 
-#include "RoomListModel.h"
-#include "RoomListItem.h"
+MatrixClient::MatrixClient(const QUrl &url, QObject *parent): 
+    QObject(parent),
+    _mainUrl(url),
+    _roomListModel(new RoomListModel({})),
+    _client(Client::instance()){
 
-RoomListModel *roomListModel;
-Client *client;
-
-int main (int argc, char* argv[]) {
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication q_app (argc, argv);
-    qDebug() << QQuickStyle::availableStyles();
-    // QQuickStyle::setStyle("Imagine");
-
-    roomListModel = new RoomListModel({});
-    client = Client::instance();
-    const QUrl url(QStringLiteral("qrc:///qmls/main.qml"));
-    client->enableLogger(true, true);
-
+    _client->enableLogger(true, true);
     auto roomUpdateHandler = [&](const mtx::responses::Sync &sync){
         auto rooms = sync.rooms;
         QList<RoomListItem> roomList;
         for(auto const &r: rooms.join){
-            auto roomInfo = client->roomInfo(QString::fromStdString(r.first));
+            auto roomInfo = _client->roomInfo(QString::fromStdString(r.first));
             RoomListItem room(  QString::fromStdString(r.first),
                                 roomInfo.name,
                                 roomInfo.avatar_url,
@@ -42,19 +28,19 @@ int main (int argc, char* argv[]) {
                                 true);
             roomList << room;
         }
-        roomListModel->add(roomList);
+        _roomListModel->add(roomList);
         
         QStringList leaveRooms;
         for(auto const &r: rooms.leave){
             leaveRooms << QString::fromStdString(r.first);
         }
-        roomListModel->remove(leaveRooms);
+        _roomListModel->remove(leaveRooms);
     };
-    QObject::connect(client, &Client::initialSync,roomUpdateHandler);
-    QObject::connect(client, &Client::newUpdated,roomUpdateHandler);
-    QObject::connect(client, &Client::initiateFinished,[&](){
-        auto joinedRooms = client->joinedRoomList();
-        auto inviteRooms = client->inviteRoomList();
+    QObject::connect(_client, &Client::initialSync,roomUpdateHandler);
+    QObject::connect(_client, &Client::newUpdated,roomUpdateHandler);
+    QObject::connect(_client, &Client::initiateFinished,[&](){
+        auto joinedRooms = _client->joinedRoomList();
+        auto inviteRooms = _client->inviteRoomList();
         QList<RoomListItem> roomList;
         for(auto const &r: joinedRooms.toStdMap()){
             RoomListItem room(  r.first,
@@ -71,15 +57,22 @@ int main (int argc, char* argv[]) {
                                 true);
             roomList << room;
         }
-        roomListModel->add(roomList);
+        _roomListModel->add(roomList);
     });
 
-    QQmlApplicationEngine engine;
-    qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", client);
-    qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return roomListModel;
+    qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
+    qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
+          return _roomListModel;
     });
-    
-    engine.load(url);
-    return q_app.exec();
+
+    QObject::connect(&_engine, &QQmlApplicationEngine::objectCreated,
+                     QCoreApplication::instance(), [url](QObject *obj, const QUrl &objUrl) {
+        if (!obj && url == objUrl) {
+            QCoreApplication::instance()->exit(-1);
+        }
+    }, Qt::QueuedConnection);
+}
+
+void MatrixClient::load(){
+    _engine.load(_mainUrl);
 }

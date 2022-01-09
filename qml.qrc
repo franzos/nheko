@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>qmls/Login.qml</file>
-        <file>qmls/main.qml</file>
-        <file>qmls/RoomList.qml</file>
-        <file>qmls/RoomDelegate.qml</file>
-    </qresource>
-</RCC>
