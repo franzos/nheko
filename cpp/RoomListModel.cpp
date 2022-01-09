@@ -42,30 +42,6 @@ Qt::ItemFlags RoomListModel::flags(const QModelIndex &index) const
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool RoomListModel::setData(const QModelIndex &index,
-                              const QVariant &value, int role)
-{
-    RoomListItem room = _roomListItems[index.row()];
-    if(role == idRole){
-        room.setId(value.toString());
-        emit dataChanged(index, index);
-        return true;
-    } else if(role == nameRole){
-        room.setName(value.toString());
-        emit dataChanged(index, index);
-        return true;
-    } else if(role == avatarRole){
-        room.setAvatar(value.toString());
-        emit dataChanged(index, index);
-        return true;
-    } else if(role == inviteRole){
-        room.setInvite(value.toBool());
-        emit dataChanged(index, index);
-        return true;
-    }
-    return false;
-}
-
 QHash<int, QByteArray> RoomListModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[idRole] = "id";
@@ -95,12 +71,16 @@ bool RoomListModel::removeRows(int position, int rows, const QModelIndex &parent
 }
 
 void RoomListModel::add(RoomListItem &item){
-    if(_roomIds.contains(item.id()) && !item.invite() &&
-      _roomListItems.at(roomidToIndex(item.id())).invite()){
-        // TODO edit data and emit
-        remove({item.id()});
-        add({item});
+    if(_roomIds.contains(item.id())){
+        auto idx = roomidToIndex(item.id());
+        if (!item.invite() &&  _roomListItems.at(idx).invite()){
+            // invited --> join [room events]
+            // TODO edit data and emit
+            remove({item.id()});
+            add({item});
+        }
     } else if(!_roomIds.contains(item.id())){
+        // add new room [room events]
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         _roomListItems << item;
         _roomIds << item.id();

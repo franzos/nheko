@@ -14,6 +14,10 @@ public:
     MatrixClient(const QUrl &url, QObject *parent = nullptr);
     void load();
 
+private slots:
+    void initiateFinishedCB();
+    void newSyncCb(const mtx::responses::Sync &sync);
+
 private:
     QUrl _mainUrl;
     RoomListModel *_roomListModel = nullptr;
