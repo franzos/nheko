@@ -4,6 +4,7 @@
 #include <QAbstractListModel>
 #include <QObject>
 #include <QStringList>
+#include <matrix-client-library/Client.h>
 
 #include "RoomListItem.h"
 
@@ -16,7 +17,9 @@ public:
         idRole = Qt::UserRole + 1,
         nameRole,
         avatarRole,
-        inviteRole
+        inviteRole,
+        lastmessageRole,
+        unreadcountRole
     };
 
     RoomListModel(QObject *parent = 0)
@@ -24,6 +27,7 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const override;
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
 

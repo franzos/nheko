@@ -37,7 +37,8 @@ void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
         RoomListItem room(  QString::fromStdString(r.first),
                             roomInfo.name,
                             roomInfo.avatar_url,
-                            false);
+                            false,
+                            r.second.unread_notifications.notification_count);
         roomList << room;
     }
 

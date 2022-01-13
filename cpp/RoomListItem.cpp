@@ -1,8 +1,12 @@
 #include <QDebug>
 #include "RoomListItem.h"
 
-RoomListItem::RoomListItem(const QString &id, const QString &name, const QString &avatar, bool invite):
-    _id(id), _name(name), _avatar(avatar), _invite(invite)
+RoomListItem::RoomListItem( const QString &id, 
+                            const QString &name, 
+                            const QString &avatar, 
+                            bool invite, 
+                            int unreadCount):
+    _id(id), _name(name), _avatar(avatar), _invite(invite), _unreadCount(unreadCount)
     {}
 
 QString RoomListItem::id() const{
@@ -35,6 +39,16 @@ void RoomListItem::setAvatar(const QString &avatar){
     }
 }
 
+QString RoomListItem::lastMessage() const {
+    return _lastmessage;
+}
+
+void RoomListItem::setLastMessage(const QString &message){
+    if (message != _lastmessage) {
+        _lastmessage= message;
+    }
+}
+
 bool    RoomListItem::invite() const{
     return _invite;
 }
@@ -44,9 +58,22 @@ void RoomListItem::setInvite(bool invite){
         _invite= invite;
     }
 }
+
+void RoomListItem::setUnreadCount(int unreadCount){
+    if (unreadCount != _unreadCount) {
+        _unreadCount= unreadCount;
+    }
+}
+
+int RoomListItem::unreadCount() const{
+    return _unreadCount;
+}
+
 QString RoomListItem::toString(){
     return "{\"ID\":\""     + _id   + "\"," +
             "\"Name\":\""   + _name + "\"," +
             "\"Avatar\":\"" + _avatar + "\"," +
+            "\"Last Message\":\"" + _lastmessage + "\"," +
+            "\"Unread counts\":\"" + QString::number(_unreadCount) + "\"," +
             "\"Status\":\"" + ((_invite) ? "Invite" : "Joined") + "\"}";
 }

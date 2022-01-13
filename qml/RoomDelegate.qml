@@ -11,17 +11,50 @@ Rectangle {
     required property string name
     required property string avatar
     required property bool invite
+    required property string lastmessage
+    required property int unreadcount
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
     RowLayout {
+        width: parent.width
         RoundButton {
+            id: avatar_button
             text: name[0]
             width: 24; height: 24
             anchors.margins: 10
         }
-        Label {
-            text: name
+        Rectangle{ 
+            anchors.left: avatar_button.right
             anchors.margins: 10
-            font.italic: invite ? true : false
+            ColumnLayout{
+                Label {
+                    text: name
+                    font.italic: invite ? true : false
+                    font.pointSize: 12
+                }
+                Label {
+                    text: lastmessage
+                    visible: invite ? false : true
+                    font.pointSize: 9
+                    color: "gray"
+                }
+            }
+        }
+        Rectangle {
+            id: rect
+            width: 20
+            height: 20
+            radius: width/2
+            color: "red"
+            visible: (!invite && unreadcount) ? true : false
+            Layout.alignment: Qt.AlignRight
+            Label { 
+                anchors.centerIn: parent
+                text: unreadcount
+                color: "white"
+                font.pointSize: 9
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
     }
 }
