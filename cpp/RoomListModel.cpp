@@ -89,11 +89,16 @@ void RoomListModel::add(RoomListItem &item){
         auto timeline = Client::instance()->timeline(item.id());
         if(timeline){
             QString roomID = item.id();
-            connect(timeline, &Timeline::lastMessageChanged,[&,roomID](const DescInfo &e){
+            connect(timeline, &Timeline::lastMessageChanged,[&,roomID, timeline](const DescInfo &e){
                 auto idx = this->roomidToIndex(roomID);
                 if(idx != -1) {
                     qDebug() << "New event recieved from in " << roomID;
-                    setData(index(idx), e.body, lastmessageRole);
+                    QString body = e.body;
+                    if(e.isLocal)
+                        body = "You: " + body;
+                    else 
+                        body = timeline->displayName(e.userid) + ": " + body;
+                    setData(index(idx), body, lastmessageRole);
                 }
             });
             connect(timeline, &Timeline::notificationsChanged,[&,roomID, timeline](){
@@ -102,14 +107,6 @@ void RoomListModel::add(RoomListItem &item){
                     qDebug() << "Notification counter changed in " << roomID;
                     setData(index(idx), timeline->notificationCount(), unreadcountRole);
                 }
-            });
-            connect(timeline, &Timeline::newEventsStored, [timeline](int from, int len){
-                // auto events = timeline->getEvents(from, len);
-                // for(auto const &e: events){
-                //     qDebug() << e.userid << e.event_id << e.body << e.timestamp;
-                //     if(e.body.contains("answer",Qt::CaseInsensitive))
-                //         timeline->sendMessage("Hi, I got your message");
-                // }
             });
         }
         _roomListItems << item;
@@ -174,4 +171,8 @@ void RoomListModel::remove(const QStringList &ids){
             }
         }
     }
+}
+
+TimelineModel *RoomListModel::timelineModel(const QString &roomId){
+    return new TimelineModel(roomId);
 }

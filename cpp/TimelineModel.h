@@ -1,30 +1,28 @@
-#ifndef ROOMLISTMODEL_H
-#define ROOMLISTMODEL_H
+#ifndef TIME_LINE_MODE_H
+#define TIME_LINE_MODE_H
 
 #include <QAbstractListModel>
 #include <QObject>
 #include <QStringList>
 #include <matrix-client-library/Client.h>
 
-#include "RoomListItem.h"
-#include "TimelineModel.h"
+#include "TimelineItem.h"
 
-class RoomListModel : public QAbstractListModel{
+class TimelineModel : public QAbstractListModel{
     Q_OBJECT
 
     Q_PROPERTY(int rowCount READ rowCount NOTIFY rowCountChanged)
 public:
-    enum RoomListItemRoles {
+    enum TimelineItemRoles {
         idRole = Qt::UserRole + 1,
-        nameRole,
-        avatarRole,
-        inviteRole,
-        lastmessageRole,
-        unreadcountRole
+        senderIdRole,
+        bodyRole,
+        descriptiveTimeRole,
+        timestampRole,
+        isLocalRole
     };
 
-    RoomListModel(QObject *parent = 0)
-        : QAbstractListModel(parent) {}
+    TimelineModel(const QString roomID = "", QObject *parent = 0);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
@@ -33,22 +31,25 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
 
     Qt::ItemFlags flags(const QModelIndex &index) const override;
-    int  roomidToIndex(const QString &roomid);
+    int  timelineIdToIndex(const QString &roomid);
 
 protected:
     QHash<int, QByteArray> roleNames() const;
 
 public slots:
-    void add(RoomListItem &item);
-    void add(QList<RoomListItem> &items);
+    void add(TimelineItem &item);
+    void add(QList<TimelineItem> &items);
     void remove(const QStringList &ids);
-    TimelineModel *timelineModel(const QString &roomId);
+    void send(const QString &message);
 
 signals:
     void rowCountChanged();
+    void typingUsersChanged(const QString &text);
 
 private:
-    QList<RoomListItem> _roomListItems;
-    QStringList _roomIds;
+    void add(const QVector<DescInfo> &items);
+    QList<TimelineItem> _timelineItems;
+    QStringList _messageIds;
+    Timeline *_timeline = nullptr;
 };
 #endif

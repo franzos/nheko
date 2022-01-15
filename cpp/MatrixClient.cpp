@@ -1,7 +1,7 @@
 #include "MatrixClient.h"
 #include <QCoreApplication>
 #include <QQuickStyle>
-
+#include "TimelineModel.h"
 MatrixClient::MatrixClient(const QUrl &url, QObject *parent): 
     QObject(parent),
     _mainUrl(url),
@@ -9,15 +9,16 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     _client(Client::instance()){
 
     _client->enableLogger(true, true);
-    QObject::connect(_client, &Client::newUpdated,this, &MatrixClient::newSyncCb);
-    QObject::connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
-
+    connect(_client, &Client::newUpdated,this, &MatrixClient::newSyncCb);
+    connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
+    // qmlRegisterType<Timeline>("Timeline", 1, 0, "Timeline");
+    qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
-          return _roomListModel;
+        return _roomListModel;
     });
 
-    QObject::connect(&_engine, &QQmlApplicationEngine::objectCreated,
+    connect(&_engine, &QQmlApplicationEngine::objectCreated,
                      QCoreApplication::instance(), [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl) {
             QCoreApplication::instance()->exit(-1);

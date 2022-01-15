@@ -27,6 +27,8 @@ public:
     void setUnreadCount(int unreadCount);
     int    unreadCount() const;
     
+    Timeline *timeline();
+
     QString toString();
 
 private:

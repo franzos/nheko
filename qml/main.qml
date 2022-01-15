@@ -17,6 +17,33 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
+    header: Rectangle {
+        width: parent.width
+        height: 30
+        Row {
+            anchors.fill: parent
+            Button {
+                id: backButton
+                text: "<"
+                width: 24
+                height: parent.height
+                enabled: !stack.empty
+                onClicked: stack.pop()
+            }
+
+            Label {
+                id: titleLabel
+                anchors.centerIn: parent
+            }
+        }
+    }
+
+    function setTitle(title){
+        titleLabel.text = title
+        backButton.enabled= !stack.empty
+    }
+
+
     BusyIndicator {
         id: loginIndicator
         width: 64; height: 64
@@ -26,6 +53,10 @@ ApplicationWindow {
     RoomList {
         id: roomList
         visible: false
+        onRoomClicked:{
+            setTitle(timeline.name)
+            stack.push(timeline)
+        }
     }
 
     Login {
@@ -45,12 +76,14 @@ ApplicationWindow {
         }
 
         function onInitiateFinished(){
+            setTitle("Room List")
             stack.replace(loginIndicator, roomList)
         }
     }
 
     Component.onCompleted: {
         stack.push(loginIndicator)
+        setTitle("Login")
         MatrixClient.start()
     }
 

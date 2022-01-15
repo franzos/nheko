@@ -8,6 +8,7 @@ import Rooms 1.0
 Page {
     id: roomPage
     width: parent.width
+    signal roomClicked(Timeline timeline)
     ListView {
         id: roomListView
         anchors.fill: parent
@@ -17,14 +18,11 @@ Page {
         boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {}
         model: Rooms
-        header: Rectangle {
-            width: parent.width
-            height: 30
-            Text {
-                anchors.centerIn: parent
-                text: "Room List"
+        delegate:RoomDelegate{
+            id: roomItems
+            onTimelineClicked: {
+                roomClicked(timeline)
             }
         }
-        delegate:RoomDelegate{}
     }
 }

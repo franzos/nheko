@@ -5,8 +5,10 @@ import QtQuick.Layouts 1.3
 import Rooms 1.0
 
 Rectangle {
+    id: room
     width: roomListView.width
     height: childrenRect.height
+    required property string index
     required property string id
     required property string name
     required property string avatar
@@ -14,6 +16,7 @@ Rectangle {
     required property string lastmessage
     required property int unreadcount
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
+    signal timelineClicked(Timeline timeline)
     RowLayout {
         width: parent.width
         RoundButton {
@@ -22,7 +25,7 @@ Rectangle {
             width: 24; height: 24
             anchors.margins: 10
         }
-        Rectangle{ 
+        Rectangle{
             anchors.left: avatar_button.right
             anchors.margins: 10
             ColumnLayout{
@@ -47,7 +50,7 @@ Rectangle {
             color: "red"
             visible: (!invite && unreadcount) ? true : false
             Layout.alignment: Qt.AlignRight
-            Label { 
+            Label {
                 anchors.centerIn: parent
                 text: unreadcount
                 color: "white"
@@ -55,6 +58,17 @@ Rectangle {
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
             }
+        }
+    }
+    MouseArea {
+        anchors.fill: parent
+        Timeline {
+            id: timeline
+            visible: false
+        }
+        onClicked: {
+            timeline.load(room.id, room.name, room.avatar)
+            timelineClicked(timeline)
         }
     }
 }

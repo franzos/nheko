@@ -69,6 +69,11 @@ int RoomListItem::unreadCount() const{
     return _unreadCount;
 }
 
+Timeline *RoomListItem::timeline(){
+    return Client::instance()->timeline(_id);
+}
+    
+
 QString RoomListItem::toString(){
     return "{\"ID\":\""     + _id   + "\"," +
             "\"Name\":\""   + _name + "\"," +

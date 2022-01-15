@@ -4,5 +4,8 @@
         <file>main.qml</file>
         <file>RoomList.qml</file>
         <file>RoomDelegate.qml</file>
+        <file>Timeline.qml</file>
+        <file>TypingIndicator.qml</file>
+        <file>TimelineDelegate.qml</file>
     </qresource>
 </RCC>
