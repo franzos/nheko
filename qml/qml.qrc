@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/qml">
+        <file>InvitationRoom.qml</file>
         <file>Login.qml</file>
         <file>main.qml</file>
         <file>RoomList.qml</file>

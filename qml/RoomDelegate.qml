@@ -16,7 +16,8 @@ Rectangle {
     required property string lastmessage
     required property int unreadcount
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
-    signal timelineClicked(Timeline timeline)
+    signal clicked(string id, string name, string avatar, bool invite)
+    
     RowLayout {
         width: parent.width
         RoundButton {
@@ -25,23 +26,23 @@ Rectangle {
             width: 24; height: 24
             anchors.margins: 10
         }
-        Rectangle{
-            anchors.left: avatar_button.right
-            anchors.margins: 10
-            ColumnLayout{
-                Label {
-                    text: name
-                    font.italic: invite ? true : false
-                    font.pointSize: 12
-                }
-                Label {
-                    text: lastmessage
-                    visible: invite ? false : true
-                    font.pointSize: 9
-                    color: "gray"
-                }
+        
+        ColumnLayout{
+            Layout.fillWidth: true
+            width: parent.width - avatar_button.width
+            Layout.preferredWidth: parent.width - avatar_button.width
+            Label {
+                text: name
+                font.italic: invite ? true : false
+                font.pointSize: 12
+            }
+            Label {
+                text: invite ? "Pending invite." : lastmessage 
+                font.pointSize: 9
+                color: "gray"
             }
         }
+        
         Rectangle {
             id: rect
             width: 20
@@ -62,13 +63,8 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
-        Timeline {
-            id: timeline
-            visible: false
-        }
         onClicked: {
-            timeline.load(room.id, room.name, room.avatar)
-            timelineClicked(timeline)
+            room.clicked(room.id, room.name, room.avatar, room.invite)
         }
     }
 }

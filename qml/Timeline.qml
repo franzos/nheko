@@ -10,9 +10,9 @@ import Rooms 1.0
 Page {
     id: timeline
     anchors.fill: parent
-    property string roomid
-    property string name
-    property string avatar
+    required property string roomid
+    required property string name
+    required property string avatar
     property TimelineModel timelineModel
 
     ListView {
@@ -60,7 +60,7 @@ Page {
             TextField {
                 id: messageInput
                 width: parent.width - sendButton.width
-                placeholderText: qsTr("Enter your message" + footer.height)
+                placeholderText: qsTr("Enter your message ...")
             }
             Button {
                 id: sendButton
@@ -74,12 +74,8 @@ Page {
         }
     }
 
-    function load(rid, rname, ravatar){
-        roomid = rid
-        name = rname
-        avatar = ravatar
-        if(roomid)
-            timelineModel = Rooms.timelineModel(roomid)
+    Component.onCompleted: {
+        timelineModel = Rooms.timelineModel(roomid)
     }
 
     Connections {

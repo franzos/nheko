@@ -43,19 +43,56 @@ ApplicationWindow {
         backButton.enabled= !stack.empty
     }
 
-
     BusyIndicator {
         id: loginIndicator
         width: 64; height: 64
         anchors.centerIn: parent
     }
 
+    Component {
+        id: timelineFactory
+        Timeline {}
+    }
+
+    Component {
+        id: invitationFactory
+        InvitationRoom {}
+    }
+
+    function onRoomInvitationAccepted(id,name,avatar){
+        createTimeline(id,name,avatar,true)
+    }
+
+    function onRoomInvitationDeclined(){
+        setTitle("Room List")
+        stack.pop()
+    }
+
+    function createTimeline(id,name,avatar,replace){
+        var timeline = timelineFactory.createObject(stack, {"roomid": id,
+                                                            "name": name,
+                                                            "avatar": avatar});
+        setTitle(timeline.name)
+        if(replace)
+            stack.pop()
+        stack.push(timeline)
+    }
+
     RoomList {
         id: roomList
         visible: false
         onRoomClicked:{
-            setTitle(timeline.name)
-            stack.push(timeline)
+            if(invite){
+                var invitationRoom = invitationFactory.createObject(stack, {"roomid": id,
+                                                                            "name": name,
+                                                                            "avatar": avatar})
+                invitationRoom.roomInvitationAccepted.connect(onRoomInvitationAccepted)
+                invitationRoom.roomInvitationDeclined.connect(onRoomInvitationDeclined)
+                setTitle(invitationRoom.name)
+                stack.push(invitationRoom)    
+            } else {
+                createTimeline(id,name,avatar, false)
+            }
         }
     }
 

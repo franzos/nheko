@@ -15,27 +15,33 @@ Rectangle {
     required property bool isLocal
 
     RowLayout {
+        Layout.fillWidth: true
         width: parent.width
+        Layout.preferredWidth: parent.width 
+
         RoundButton {
             id: avatar_button
             text: senderId[0]
-            width: 24; height: 24
+            width: 20; height: 20
             anchors.margins: 10
+            Layout.alignment: Qt.AlignTop
         }
-        Rectangle{
-            anchors.left: avatar_button.right
-            anchors.margins: 10
-            ColumnLayout{
-                Label {
-                    text: senderId
-                    color: (isLocal ? "green" : "red")
-                }
-                Label {
-                    text: body
-                    x: 20
-                    y: 20
-                    wrapMode: Label.WordWrap
-                }
+
+        ColumnLayout {
+            Layout.fillWidth: true
+            width: parent.width - avatar_button.width
+            Layout.preferredWidth: parent.width - avatar_button.width
+                
+            Label {
+                text: senderId
+                color: (isLocal ? "green" : "red")
+            }
+            Label {
+                text: body
+                x: 20
+                y: 20
+                Layout.maximumWidth: parent.width - avatar_button.width
+                wrapMode: Label.WordWrap
             }
         }
     }

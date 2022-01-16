@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.2
 import TimelineModel 1.0
 
 Item {
-    implicitHeight: Math.max(fontMetrics.height * 1.2, typingDisplay.height)
+    // implicitHeight: Math.max(fontMetrics.height * 1.2, typingDisplay.height)
     Layout.fillWidth: true
 
     Rectangle {

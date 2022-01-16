@@ -8,7 +8,8 @@ import Rooms 1.0
 Page {
     id: roomPage
     width: parent.width
-    signal roomClicked(Timeline timeline)
+    signal roomClicked(string id, string name, string avatar, bool invite)
+    
     ListView {
         id: roomListView
         anchors.fill: parent
@@ -20,8 +21,8 @@ Page {
         model: Rooms
         delegate:RoomDelegate{
             id: roomItems
-            onTimelineClicked: {
-                roomClicked(timeline)
+            onClicked: {
+                roomClicked(id, name, avatar, invite)                
             }
         }
     }

@@ -94,10 +94,12 @@ void RoomListModel::add(RoomListItem &item){
                 if(idx != -1) {
                     qDebug() << "New event recieved from in " << roomID;
                     QString body = e.body;
+                    body.remove(QRegExp("[\\n\\t\\r]"));
                     if(e.isLocal)
                         body = "You: " + body;
                     else 
                         body = timeline->displayName(e.userid) + ": " + body;
+                    
                     setData(index(idx), body, lastmessageRole);
                 }
             });
