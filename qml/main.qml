@@ -11,6 +11,8 @@ ApplicationWindow {
     height: 600
     visible: true
     Material.theme: Material.Dark
+    
+    property string displayName;
 
     StackView {
         id: stack
@@ -76,7 +78,7 @@ ApplicationWindow {
     function replaceInStack(oldPage,newPage){
         stack.replace(oldPage,newPage)
         if (stack.currentItem == roomList){
-            setTitle("Room List")
+            setTitle(displayName)
             header.visible= true
         } else if (stack.currentItem == loginPage){
             header.visible= false
@@ -91,7 +93,7 @@ ApplicationWindow {
     function popStack(){
         stack.pop()
         if (stack.currentItem == roomList){
-            setTitle("Room List")
+            setTitle(displayName)
             header.visible= true
         }
     }
@@ -148,6 +150,11 @@ ApplicationWindow {
 
         function onInitiateFinished(){
             replaceInStack(loginIndicator, roomList)
+        }
+
+        function onUserDisplayNameReady(name){
+            displayName = name
+            setTitle(displayName)
         }
     }
 
