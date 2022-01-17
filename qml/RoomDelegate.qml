@@ -1,7 +1,9 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.2
 
+import MatrixClient 1.0
 import Rooms 1.0
 
 Rectangle {
@@ -62,9 +64,24 @@ Rectangle {
         }
     }
     MouseArea {
+        Dialog {
+            id: dialog
+            title: "Leave \"" + room.name + "\" ?"
+            standardButtons: Dialog.Cancel | Dialog.Ok
+
+            onAccepted: {
+                MatrixClient.leaveRoom(room.id)
+            }
+            onRejected: {}
+        }
+
         anchors.fill: parent
         onClicked: {
             room.clicked(room.id, room.name, room.avatar, room.invite)
+        }
+        onPressAndHold: {
+            console.log(room.id)
+            dialog.open()
         }
     }
 }

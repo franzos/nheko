@@ -28,12 +28,25 @@ ApplicationWindow {
                 width: 24
                 height: parent.height
                 enabled: !stack.empty
-                onClicked: stack.pop()
+                onClicked: popStack()
             }
 
             Label {
                 id: titleLabel
-                anchors.centerIn: parent
+                width: parent.width - backButton.width - logoutButton.width
+                // anchors.centerIn: parent
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: backButton.right
+            }
+
+            Button {
+                id: logoutButton
+                text: "Logout"
+                height: parent.height
+                anchors.left: titleLabel.right
+                onClicked:{
+                    MatrixClient.logout()
+                }
             }
         }
     }
@@ -59,23 +72,44 @@ ApplicationWindow {
         InvitationRoom {}
     }
 
+    function replaceInStack(oldPage,newPage){
+        stack.replace(oldPage,newPage)
+        if (stack.currentItem == roomList){
+            setTitle("Room List")
+            header.visible= true
+        } else if (stack.currentItem == loginPage){
+            header.visible= false
+        }
+    }
+
+    function pushToStack(item, title){
+        stack.push(item)
+        setTitle(title)
+    }
+
+    function popStack(){
+        stack.pop()
+        if (stack.currentItem == roomList){
+            setTitle("Room List")
+            header.visible= true
+        }
+    }
+
     function onRoomInvitationAccepted(id,name,avatar){
         createTimeline(id,name,avatar,true)
     }
 
     function onRoomInvitationDeclined(){
-        setTitle("Room List")
-        stack.pop()
+        popStack()
     }
 
     function createTimeline(id,name,avatar,replace){
         var timeline = timelineFactory.createObject(stack, {"roomid": id,
                                                             "name": name,
                                                             "avatar": avatar});
-        setTitle(timeline.name)
         if(replace)
-            stack.pop()
-        stack.push(timeline)
+            popStack()
+        pushToStack(timeline, timeline.name)
     }
 
     RoomList {
@@ -87,9 +121,8 @@ ApplicationWindow {
                                                                             "name": name,
                                                                             "avatar": avatar})
                 invitationRoom.roomInvitationAccepted.connect(onRoomInvitationAccepted)
-                invitationRoom.roomInvitationDeclined.connect(onRoomInvitationDeclined)
-                setTitle(invitationRoom.name)
-                stack.push(invitationRoom)    
+                invitationRoom.roomInvitationDeclined.connect(onRoomInvitationDeclined)   
+                pushToStack(invitationRoom, invitationRoom.name)
             } else {
                 createTimeline(id,name,avatar, false)
             }
@@ -105,7 +138,7 @@ ApplicationWindow {
         target: MatrixClient
 
         function onDropToLogin(msg) {
-            stack.replace(loginIndicator,loginPage)
+            replaceInStack(loginIndicator,loginPage)
         }
 
         function onLoginOk(user) {
@@ -113,14 +146,13 @@ ApplicationWindow {
         }
 
         function onInitiateFinished(){
-            setTitle("Room List")
-            stack.replace(loginIndicator, roomList)
+            replaceInStack(loginIndicator, roomList)
         }
     }
 
     Component.onCompleted: {
-        stack.push(loginIndicator)
-        setTitle("Login")
+        pushToStack(loginIndicator,"Login")
+        header.visible = false
         MatrixClient.start()
     }
 
