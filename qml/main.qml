@@ -33,7 +33,8 @@ ApplicationWindow {
 
             Label {
                 id: titleLabel
-                width: parent.width - backButton.width - logoutButton.width
+                width: parent.width - backButton.width - logoutButton.width - 10
+                anchors.leftMargin: 10
                 // anchors.centerIn: parent
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: backButton.right

@@ -66,9 +66,11 @@ Rectangle {
     MouseArea {
         Dialog {
             id: dialog
-            title: "Leave \"" + room.name + "\" ?"
+            title: "Leave room"
             standardButtons: Dialog.Cancel | Dialog.Ok
-
+            Label {
+                text: "Are you sure you want to leave " + room.name + " ?"
+            }
             onAccepted: {
                 MatrixClient.leaveRoom(room.id)
             }
