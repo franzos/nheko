@@ -31,10 +31,21 @@ Rectangle {
             Layout.fillWidth: true
             width: parent.width - avatar_button.width
             Layout.preferredWidth: parent.width - avatar_button.width
-                
-            Label {
-                text: senderId
-                color: (isLocal ? "green" : "red")
+            
+            Row{
+                id: topRow
+                Layout.fillWidth: true
+                width: parent.width - avatar_button.width
+                Label {
+                    text: senderId
+                    color: (isLocal ? "green" : "red")
+                    width: topRow.width - timelabel.width
+                }
+                Label {
+                    id: timelabel
+                    text: descriptiveTime
+                    color: "gray"
+                }
             }
             Label {
                 text: body
