@@ -44,8 +44,14 @@ Page {
     Connections {
         target: MatrixClient
         function onLoginErrorOccurred(msg) {
-            loginButton.enabled= true
+            loginButton.enabled = true
         }
+    }
+
+    function reload(){
+        userIdText.text = ""
+        passwordText.text = ""
+        loginButton.enabled = true
     }
 }
 

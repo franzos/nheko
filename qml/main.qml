@@ -6,6 +6,7 @@ import QtQuick.Controls.Material 2.15
 import MatrixClient 1.0
 
 ApplicationWindow {
+    id: qmlApplication
     title: qsTr("Matrix Client")
     width: 400
     height: 600
@@ -33,10 +34,11 @@ ApplicationWindow {
                 onClicked: popStack()
             }
 
-            Label {
+            Button {
                 id: titleLabel
-                width: parent.width - backButton.width - logoutButton.width - 10
-                anchors.leftMargin: 10
+                width: parent.width - backButton.width - logoutButton.width - 2
+                height: parent.height
+                anchors.leftMargin: 2
                 // anchors.centerIn: parent
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: backButton.right
@@ -45,11 +47,25 @@ ApplicationWindow {
             Button {
                 id: logoutButton
                 text: "Logout"
+                anchors.leftMargin: 2
                 height: parent.height
                 anchors.left: titleLabel.right
-                onClicked:{
+                onClicked: logoutDialog.open()
+            }
+            Dialog {
+                id: logoutDialog
+                x: (qmlApplication.width - width) / 2
+                y: (qmlApplication.height - height) / 2
+                title: "Logout"
+                standardButtons: Dialog.Cancel | Dialog.Ok
+                Label {
+                    text: "Are you sure you want to logout ?"
+                }
+                onAccepted: {
+                    pushToStack(loginIndicator,"...")
                     MatrixClient.logout()
                 }
+                onRejected: {}
             }
         }
     }
@@ -75,19 +91,23 @@ ApplicationWindow {
         InvitationRoom {}
     }
 
-    function replaceInStack(oldPage,newPage){
-        stack.replace(oldPage,newPage)
+    function replaceInStack(newPage){
+        stack.replace(stack.currentItem,newPage)
         if (stack.currentItem == roomList){
             setTitle(displayName)
             header.visible= true
-        } else if (stack.currentItem == loginPage){
+        } else if (stack.currentItem == loginPage || stack.currentItem == loginIndicator){
             header.visible= false
         }
     }
 
     function pushToStack(item, title){
+        console.log(item, title)
         stack.push(item)
-        setTitle(title)
+        if(stack.currentItem == loginPage || stack.currentItem == loginIndicator)
+            header.visible= false
+        else
+            setTitle(title)
     }
 
     function popStack(){
@@ -141,7 +161,7 @@ ApplicationWindow {
         target: MatrixClient
 
         function onDropToLogin(msg) {
-            replaceInStack(loginIndicator,loginPage)
+            replaceInStack(loginPage)
         }
 
         function onLoginOk(user) {
@@ -149,18 +169,27 @@ ApplicationWindow {
         }
 
         function onInitiateFinished(){
-            replaceInStack(loginIndicator, roomList)
+            replaceInStack(roomList)
         }
 
         function onUserDisplayNameReady(name){
             displayName = name
             setTitle(displayName)
         }
-    }
 
+        function onLogoutErrorOccurred(){
+            popStack()
+        }
+
+        function onLogoutOk(){
+            stack.pop(null)
+            loginPage.reload()
+            replaceInStack(loginPage)
+        }
+    }
+    
     Component.onCompleted: {
-        pushToStack(loginIndicator,"Login")
-        header.visible = false
+        pushToStack(loginIndicator,"")
         MatrixClient.start()
     }
 
