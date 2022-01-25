@@ -5,11 +5,11 @@ import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import Rooms 1.0
 
-Page {
+CustomPage {
     id: roomPage
     width: parent.width
-    signal roomClicked(string id, string name, string avatar, bool invite)
-    
+    property string displayName;
+
     ListView {
         id: roomListView
         anchors.fill: parent
@@ -19,11 +19,15 @@ Page {
         boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {}
         model: Rooms
-        delegate:RoomDelegate{
-            id: roomItems
-            onClicked: {
-                roomClicked(id, name, avatar, invite)                
-            }
+        delegate:RoomDelegate{}
+    }
+
+    Connections {
+        target: MatrixClient
+
+        function onUserDisplayNameReady(name){
+            displayName = name
+            setTitle(displayName)
         }
     }
 }

@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 
 import MatrixClient 1.0
 
-Page {
+CustomPage {
     id: loginPage
     width: parent.width
     ColumnLayout{
@@ -52,6 +52,10 @@ Page {
         userIdText.text = ""
         passwordText.text = ""
         loginButton.enabled = true
+    }
+
+    Component.onCompleted: {
+        header.visible = false
     }
 }
 

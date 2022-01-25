@@ -18,8 +18,24 @@ Rectangle {
     required property string lastmessage
     required property int unreadcount
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
-    signal clicked(string id, string name, string avatar, bool invite)
-    
+
+    Component {
+        id: timelineFactory
+        Timeline {}
+    }
+
+    Component {
+        id: invitationFactory
+        InvitationRoom {}
+    }
+
+    function createTimeline(id,name,avatar){
+        var timeline = timelineFactory.createObject(stack, {"roomid": id,
+                                                            "name": name,
+                                                            "avatar": avatar});
+        stack.push(timeline)
+    }  
+
     RowLayout {
         width: parent.width
         RoundButton {
@@ -63,6 +79,7 @@ Rectangle {
             }
         }
     }
+
     MouseArea {
         Dialog {
             id: dialog
@@ -79,7 +96,15 @@ Rectangle {
 
         anchors.fill: parent
         onClicked: {
-            room.clicked(room.id, room.name, room.avatar, room.invite)
+            if(room.invite){
+                var invitationRoom = invitationFactory.createObject(stack, {"roomid": room.id,
+                                                                            "name": room.name,
+                                                                            "avatar": room.avatar})
+                invitationRoom.roomInvitationAccepted.connect(createTimeline)
+                stack.push(invitationRoom)
+            } else {
+                createTimeline(room.id, room.name, room.avatar)
+            }   
         }
         onPressAndHold: {
             console.log(room.id)

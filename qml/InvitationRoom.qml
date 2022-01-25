@@ -4,14 +4,9 @@ import QtQuick.Layouts 1.2
 import TimelineModel 1.0
 import MatrixClient 1.0
 
-Page {
+Room {
     Layout.fillWidth: true
-    required property string roomid
-    required property string name
-    required property string avatar
 
-    signal roomInvitationAccepted(string roomid, string name, string avatar)
-    signal roomInvitationDeclined()
     width: parent.width
     ColumnLayout{
         id: inputLayout
@@ -33,7 +28,6 @@ Page {
                 text: "Join"
                 onClicked: {
                     MatrixClient.joinRoom(roomid)
-                    roomInvitationAccepted(roomid, name, avatar)
                 }
             }
 
@@ -42,7 +36,6 @@ Page {
                 text: "Decline"
                 onClicked: {
                     MatrixClient.leaveRoom(roomid)
-                    roomInvitationDeclined()
                 }
             }
         }

@@ -7,12 +7,9 @@ import MatrixClient 1.0
 import TimelineModel 1.0
 import Rooms 1.0
 
-Page {
+Room {
     id: timeline
     anchors.fill: parent
-    required property string roomid
-    required property string name
-    required property string avatar
     property TimelineModel timelineModel
 
     ListView {
