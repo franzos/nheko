@@ -1,7 +1,9 @@
 <RCC>
     <qresource prefix="/qml">
-        <file>InvitationRoom.qml</file>
+        <file>CustomHeader.qml</file>
         <file>CustomPage.qml</file>
+        <file>InvitationRoom.qml</file>
+        <file>LeaveMessage.qml</file>
         <file>Login.qml</file>
         <file>main.qml</file>
         <file>Room.qml</file>

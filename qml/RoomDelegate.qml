@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.2
 
 import MatrixClient 1.0
 import Rooms 1.0
+// import RoomInformation 1.0
 
 Rectangle {
     id: room
@@ -17,6 +18,7 @@ Rectangle {
     required property bool invite
     required property string lastmessage
     required property int unreadcount
+    // required property RoomInformation roomInformation
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
 
     Component {
@@ -81,17 +83,10 @@ Rectangle {
     }
 
     MouseArea {
-        Dialog {
+        LeaveMessage {
             id: dialog
-            title: "Leave room"
-            standardButtons: Dialog.Cancel | Dialog.Ok
-            Label {
-                text: "Are you sure you want to leave " + room.name + " ?"
-            }
-            onAccepted: {
-                MatrixClient.leaveRoom(room.id)
-            }
-            onRejected: {}
+            x: (qmlApplication.width - width) / 2
+            y: (qmlApplication.height - height) / 2
         }
 
         anchors.fill: parent

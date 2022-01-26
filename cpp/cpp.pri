@@ -4,6 +4,7 @@ CONFIG += c++17
 SOURCES += \
     $$PWD/MatrixClient.cpp \
     $$PWD/RoomListItem.cpp \
+    $$PWD/RoomListItem.h  \
     $$PWD/RoomListModel.cpp \
     $$PWD/TimelineModel.cpp \
     $$PWD/TimelineItem.cpp \

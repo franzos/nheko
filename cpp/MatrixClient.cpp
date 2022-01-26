@@ -2,16 +2,18 @@
 #include <QCoreApplication>
 #include <QQuickStyle>
 #include "TimelineModel.h"
+
 MatrixClient::MatrixClient(const QUrl &url, QObject *parent): 
     QObject(parent),
     _mainUrl(url),
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()){
-
+    
     _client->enableLogger(true, true);
     connect(_client, &Client::newUpdated,this, &MatrixClient::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
+    qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
         return _roomListModel;
@@ -35,9 +37,7 @@ void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
     for(auto const &r: rooms.join){
         auto roomInfo = _client->roomInfo(QString::fromStdString(r.first));
         RoomListItem room(  QString::fromStdString(r.first),
-                            roomInfo.name,
-                            roomInfo.avatar_url,
-                            false,
+                            roomInfo,
                             r.second.unread_notifications.notification_count);
         roomList << room;
     }
@@ -63,17 +63,13 @@ void MatrixClient::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
         RoomListItem room(  r.first,
-                            r.second.name,
-                            r.second.avatar_url,
-                            false);
+                            r.second);
         roomList << room;
     }
 
     for(auto const &r: inviteRooms.toStdMap()){
         RoomListItem room(  r.first,
-                            r.second.name,
-                            r.second.avatar_url,
-                            true);
+                            r.second);
         roomList << room;
     }
     _roomListModel->add(roomList);

@@ -24,6 +24,14 @@ QVariant RoomListModel::data(const QModelIndex &index, int role) const
         return room.lastMessage();
     else if (role == unreadcountRole)
         return room.unreadCount();
+    else if (role == memberCountRole)
+        return room.memberCount();
+    else if (role == topicRole)
+        return room.topic();
+    else if (role == versionRole)
+        return room.version();
+    else if (role == guestAccessRole)
+        return room.guestAccess();
     return QVariant();
 }
 
@@ -55,6 +63,10 @@ QHash<int, QByteArray> RoomListModel::roleNames() const {
     roles[inviteRole] = "invite";
     roles[lastmessageRole] = "lastmessage";
     roles[unreadcountRole] = "unreadcount";
+    roles[memberCountRole] = "memberCount";
+    roles[topicRole] = "topic";
+    roles[versionRole] = "version";
+    roles[guestAccessRole] = "guestaccess";
     return roles;
 }
 
@@ -144,6 +156,18 @@ bool RoomListModel::setData(const QModelIndex &index, const QVariant &value, int
         case unreadcountRole:
             item.setUnreadCount(value.toInt());
             break;
+        case memberCountRole:
+            item.setMemberCount(value.toInt());
+            break;
+        case topicRole:
+            item.setTopic(value.toString());
+            break;
+        case versionRole:
+            item.setVersion(value.toString());
+            break;
+        case guestAccessRole:
+            item.setGuestAccess(value.toBool());
+            break;
         default:
             return false;
         }
@@ -177,4 +201,12 @@ void RoomListModel::remove(const QStringList &ids){
 
 TimelineModel *RoomListModel::timelineModel(const QString &roomId){
     return new TimelineModel(roomId);
+}
+
+RoomInformation *RoomListModel::roomInformation(const QString &roomId){ 
+    for(auto const &r: _roomListItems){
+        if(r.id() == roomId)
+            return r.roomInformation();
+    }
+    return nullptr;
 }

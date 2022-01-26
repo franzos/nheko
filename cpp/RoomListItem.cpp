@@ -6,79 +6,110 @@ RoomListItem::RoomListItem( const QString &id,
                             const QString &avatar, 
                             bool invite, 
                             int unreadCount):
-    _id(id), _name(name), _avatar(avatar), _invite(invite), _unreadCount(unreadCount)
+    _roomInformation(new RoomInformation(id, name, avatar, invite, unreadCount))
+    {}
+
+RoomListItem::RoomListItem(const QString &id, const RoomInfo &roomInfo, int unreadCount):
+    _roomInformation(new RoomInformation(id, roomInfo, unreadCount))
     {}
 
 QString RoomListItem::id() const{
-    return _id;
+    return _roomInformation->id();
 }
 
 void RoomListItem::setId(const QString &id){
-    if (id != _id) {
-        _id = id;
-    }
+    _roomInformation->setId(id);
 }
 
 QString RoomListItem::name() const {
-    return _name;
+    return _roomInformation->name();
 }
 
 void RoomListItem::setName(const QString &name){
-    if (name != _name) {
-        _name = name;
-    }
+    _roomInformation->setName(name);
 }
 
 QString RoomListItem::avatar() const {
-    return _avatar;
+    return _roomInformation->avatar();
 }
 
 void RoomListItem::setAvatar(const QString &avatar){
-    if (avatar != _avatar) {
-        _avatar= avatar;
-    }
+    _roomInformation->setAvatar(avatar);
 }
 
 QString RoomListItem::lastMessage() const {
-    return _lastmessage;
+    return _roomInformation->lastmessage();
 }
 
 void RoomListItem::setLastMessage(const QString &message){
-    if (message != _lastmessage) {
-        _lastmessage= message;
-    }
+    _roomInformation->setLastMessage(message);
 }
 
 bool    RoomListItem::invite() const{
-    return _invite;
+    return _roomInformation->invite();
 }
 
-void RoomListItem::setInvite(bool invite){
-    if (invite != _invite) {
-        _invite= invite;
-    }
-}
-
-void RoomListItem::setUnreadCount(int unreadCount){
-    if (unreadCount != _unreadCount) {
-        _unreadCount= unreadCount;
-    }
+void RoomListItem::setInvite(bool invite) {
+    _roomInformation->setInvite(invite);
 }
 
 int RoomListItem::unreadCount() const{
-    return _unreadCount;
+    return _roomInformation->unreadCount();
+}
+
+void RoomListItem::setUnreadCount(int unreadCount){
+    _roomInformation->setUnreadCount(unreadCount);
 }
 
 Timeline *RoomListItem::timeline(){
-    return Client::instance()->timeline(_id);
+    return Client::instance()->timeline(_roomInformation->id());
 }
-    
+
+int RoomListItem::memberCount() const{
+    return _roomInformation->memberCount();
+}
+
+void RoomListItem::setMemberCount(int memberCount) {
+    _roomInformation->setMemberCount(memberCount);
+}
+
+QString RoomListItem::topic() const{
+    return _roomInformation->topic();
+}
+
+void RoomListItem::setTopic(const QString &topic) {
+    _roomInformation->setTopic(topic);
+}
+
+QString RoomListItem::version() const{
+    return _roomInformation->version();
+}
+
+void RoomListItem::setVersion(const QString &version){
+    _roomInformation->setVersion(version);
+}
+
+bool RoomListItem::guestAccess() const{
+    return _roomInformation->guestAccess();
+}
+
+void RoomListItem::setGuestAccess(bool access) {
+    _roomInformation->setGuestAccess(access);
+}
+
+RoomInformation *RoomListItem::roomInformation() const{
+    return _roomInformation;
+}
 
 QString RoomListItem::toString(){
-    return "{\"ID\":\""     + _id   + "\"," +
-            "\"Name\":\""   + _name + "\"," +
-            "\"Avatar\":\"" + _avatar + "\"," +
-            "\"Last Message\":\"" + _lastmessage + "\"," +
-            "\"Unread counts\":\"" + QString::number(_unreadCount) + "\"," +
-            "\"Status\":\"" + ((_invite) ? "Invite" : "Joined") + "\"}";
+    return "{\"ID\":\""     + _roomInformation->id()   + "\"," +
+            "\"Name\":\""   + _roomInformation->name() + "\"," +
+            "\"Avatar\":\"" + _roomInformation->avatar() + "\"," +
+            "\"Last Message\":\"" + _roomInformation->lastmessage() + "\"," +
+            "\"Unread counts\":\"" + QString::number(_roomInformation->unreadCount()) + "\"," +
+            "\"Member counts\":\"" + QString::number(_roomInformation->memberCount()) + "\"," +
+            "\"Topic\":\"" + _roomInformation->topic() + "\"," + 
+            "\"Version\":\"" + _roomInformation->version() + "\"," +
+            "\"Guest Access\":\"" + (_roomInformation->guestAccess() ? "True" : "False") + "\"," +
+            "\"Status\":\"" + ((_roomInformation->invite()) ? "Invite" : "Joined") + "\"}";
 }

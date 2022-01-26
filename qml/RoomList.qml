@@ -27,7 +27,7 @@ CustomPage {
 
         function onUserDisplayNameReady(name){
             displayName = name
-            setTitle(displayName)
+            header.setTitle(displayName)
         }
     }
 }

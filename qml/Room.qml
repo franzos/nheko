@@ -3,7 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 
 import MatrixClient 1.0
-
+import Rooms 1.0
 CustomPage {
     Layout.fillWidth: true
     required property string roomid
@@ -12,8 +12,19 @@ CustomPage {
     
     signal roomInvitationAccepted(string roomid, string name, string avatar)
 
+    Component {
+        id: roomInfoFactory
+        RoomInfo {}
+    }
+
+    function showRoomInfo(){
+        var roominfo = roomInfoFactory.createObject(stack, {"roomid":roomid});
+        stack.push(roominfo)
+    }
+
     Component.onCompleted: {
-        setTitle(name)
+        header.setTitle(name)
+        header.titleClicked.connect(showRoomInfo)
     }
 
     Connections {

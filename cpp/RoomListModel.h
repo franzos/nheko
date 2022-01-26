@@ -20,7 +20,11 @@ public:
         avatarRole,
         inviteRole,
         lastmessageRole,
-        unreadcountRole
+        unreadcountRole,
+        memberCountRole,
+        topicRole,
+        versionRole,
+        guestAccessRole
     };
 
     RoomListModel(QObject *parent = 0)
@@ -43,6 +47,7 @@ public slots:
     void add(QList<RoomListItem> &items);
     void remove(const QStringList &ids);
     TimelineModel *timelineModel(const QString &roomId);
+    RoomInformation *roomInformation(const QString &roomId);
 
 signals:
     void rowCountChanged();
