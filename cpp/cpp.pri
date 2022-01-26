@@ -15,6 +15,3 @@ HEADERS += \
     $$PWD/TimelineModel.h \
     $$PWD/TimelineItem.h \
     $$PWD/RoomListModel.h
-
-LIBS += -lmatrix-client-library
-LIBS += -lmatrix_client
