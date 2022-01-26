@@ -52,3 +52,27 @@ Preparing the dependencies you need to run following command to build vendor lib
     ```bash
     $ bash ./vendor/setup_ios.sh all
     ```
+
+## Build for Android
+since third-party libraries are not compatible with default NDK installed bt QtCreator, we need to setup custom Kit for our application. following steps describe how we can setup required configurations.
+
+### Setup NDK 
+install NDK `v23.23.1.7779620` using the SDK manager:
+
+`Tools` > `Options` > `Devices` > `Android` > `SDK Manager` > `Tools`
+
+**Note:** be aware the use same NDK version both for the application and third-party libraries.
+
+### Prepare Compiler
+installing the NDK, we need to add it manually to the list of compilers:
+
+1. go to `Tools` > `Options` > `Kits` > `Compilers`
+2. Clone default Clang C compiler: `Android Clang (C, arm, NDK 21.x.xxxxx)` and change it to the matching one for our installed NDK
+3. Clone default Clang C++ compiler: `Android Clang (C++, arm, NDK 21.x.xxxxx)` and change it to the matching one for our installed NDK
+
+### Setup Kit
+in order to setup Kit:
+
+1. go to `Tools` > `Options` > `Kits` > `Kits`
+2. Clone default Android `5.15.x` Kit: `Android Qt %{Qt:Version} Clang Multi-Abi`
+3. Set C and C++ compilers to the ones you created before
