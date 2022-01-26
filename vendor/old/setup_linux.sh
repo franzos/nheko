@@ -171,6 +171,14 @@ function BUILD_MTXCLIENT {
                   "-DBUILD_SHARED_LIBS=ON"
 }
 
+function BUILD_CMARK {
+    BUILD_LIBRARY "cmark"
+}
+
+function BUILD_MATRIX-CLIENT-LIBRARY {
+    BUILD_LIBRARY "matrix-client-library"
+}
+
 function BUILD_ALL {
     BUILD_SPDLOG
     BUILD_COEURL
@@ -178,7 +186,8 @@ function BUILD_ALL {
     BUILD_OLM
     BUILD_LMDB
     BUILD_MTXCLIENT
-    
+    BUILD_CMARK
+    BUILD_MATRIX-CLIENT-LIBRARY
 }
 
 ###############################################################################
