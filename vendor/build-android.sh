@@ -13,12 +13,14 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 TEMP_DIR="$SCRIPT_DIR/_temp"
 BUILD_DIR="$SCRIPT_DIR/_build"
 DIST_DIR="$SCRIPT_DIR/_dist"
+PATCH_DIR="$SCRIPT_DIR/patches"
 
 ##### [Build Utility Functions] ###############################################
 OPENSSL_CMAKE_DEFINITIONS=( "-DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR" 
         "-DOPENSSL_INCLUDE_DIR=$OPENSSL_ROOT_DIR/static/include" 
         "-DOPENSSL_CRYPTO_LIBRARY=$OPENSSL_ROOT_DIR/latest/arm/libcrypto_1_1.so" 
         "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/latest/arm/libssl_1_1.so" )
+
 function BUILD_LIB {
     params=( "$@" )
     src_path=${params[0]}
@@ -81,6 +83,15 @@ function FETCH_REPOSITORY {
     else
         echo ">> Use cached version: $src_path"
     fi
+}
+
+function APPLY_PATCH {
+    params=( "$@" )
+    repo=${params[0]}
+    unset params[0]
+
+    git -C "$src_path" config commit.gpgsign off
+    git -C "$src_path" am ${params[@]}
 }
 
 
@@ -186,11 +197,17 @@ function BUILD_COEURL {
 function BUILD_MTXCLIENT {
     target="$1"
     name="mtxclient"
-    version="0.6.1"
-    download_url="https://github.com/Nheko-Reborn/mtxclient/archive/refs/tags/v$version.tar.gz"
-    DOWNLOAD_EXTRACT $name $version $download_url
+    # version="0.6.1"
+    # download_url="https://github.com/Nheko-Reborn/mtxclient/archive/refs/tags/v$version.tar.gz"
+    # DOWNLOAD_EXTRACT $name $version $download_url
+    tag="v0.6.1"
+    download_url="https://github.com/Nheko-Reborn/mtxclient.git"
+    FETCH_REPOSITORY $name $tag $download_url
+    APPLY_PATCH $src_path \
+        "$PATCH_DIR/mtxclient/0001-disable-Tls-verification-on-coeurl.patch"
+    
 
-    BUILD_LIB "$TEMP_DIR/$name-$version" "$build_path" $target \
+    BUILD_LIB "$src_path" "$build_path" $target \
         ${OPENSSL_CMAKE_DEFINITIONS[@]} \
         -Dfmt_DIR=${DIST_DIR}/$target/lib/cmake/fmt \
         -Dspdlog_DIR=${DIST_DIR}/$target/lib/cmake/spdlog \
