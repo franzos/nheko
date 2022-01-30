@@ -50,15 +50,18 @@ Room {
                 id: messageInput
                 width: parent.width - sendButton.width
                 placeholderText: qsTr("Enter your message ...")
+                Keys.onReturnPressed: sendButton.sendMessage() // Enter key
+                Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
             }
             Button {
                 id: sendButton
                 text: "Send"
                 enabled: messageInput.text ? true : false
-                onClicked: {
+                function sendMessage(){
                     timelineModel.send(messageInput.text);
                     messageInput.text = ""
                 }
+                onClicked: sendMessage()
             }
         }
     }
