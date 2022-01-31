@@ -17,6 +17,8 @@ CustomPage {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             placeholderText: qsTr("User ID")
+            Keys.onReturnPressed: loginButton.gotoLogin()
+            Keys.onEnterPressed: loginButton.gotoLogin()
         }
 
         TextField {
@@ -26,19 +28,23 @@ CustomPage {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             placeholderText: qsTr("Password")
+            Keys.onReturnPressed: loginButton.gotoLogin()
+            Keys.onEnterPressed: loginButton.gotoLogin()
         }
 
         Button {
             id: loginButton
             text: "Login"
             Layout.alignment: Qt.AlignHCenter
-            onClicked: {
+            function gotoLogin(){
                 loginButton.enabled= false;
                 MatrixClient.loginWithPassword(String("matrix_client_application"),
                                          String("@" + userIdText.text + ":pantherx.org"),
                                          String(passwordText.text),
                                          String("https://matrix.pantherx.org"))
             }
+
+            onClicked: gotoLogin()
         }
     }
     Connections {
