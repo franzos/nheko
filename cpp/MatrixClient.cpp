@@ -12,6 +12,9 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     _client->enableLogger(true, true);
     connect(_client, &Client::newUpdated,this, &MatrixClient::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
+    connect(_client, &Client::logoutOk,[&](){
+        _roomListModel->removeRows(0,_roomListModel->rowCount());
+    });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
