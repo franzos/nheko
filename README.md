@@ -2,6 +2,16 @@
 
 Mobile client for [Matrix](https://matrix.org)
 
+## Build for Android
+
+in order to build on Guix, prepare the environment using:
+
+```shell
+$ guix environment -m vendor/manifest.scm
+$ mkdir build && cd build
+$ qmake -o Makefile ../MatrixClient.pro
+$ make
+```
 
 ## Build 3rd party libraries
 

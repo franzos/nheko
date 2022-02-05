@@ -1,0 +1,13 @@
+(specifications->manifest
+  '("coeurl"
+    "curl"
+    "json-modern-cxx"
+    "libolm"
+    "lmdb"
+    "lmdbxx"
+    "matrix-client-library"
+    "mtxclient"
+    "qtbase@5.15"
+    "qtquickcontrols2"
+    "qtdeclarative"
+    "spdlog"))
