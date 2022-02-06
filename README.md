@@ -2,7 +2,7 @@
 
 Mobile client for [Matrix](https://matrix.org)
 
-## Build for Android
+## Build on Guix
 
 in order to build on Guix, prepare the environment using:
 
