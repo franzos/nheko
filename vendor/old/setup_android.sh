@@ -145,7 +145,8 @@ function BUILD_CURL {
     PREPARE_AUTOMAKE_ENVIRONMENT $target
     [ $? -ne 0 ] && PRINT_ERROR_EXIT "Failed to prepare build environment."
 
-    SSL_DIR="$DIST_DIR/$target/"
+    # SSL_DIR="$DIST_DIR/$target/"
+    SSL_DIR=~/Android/Sdk/android_openssl/static/
     
     cd $target_dir
     ./configure --host=$TARGET_HOST \
@@ -160,6 +161,11 @@ function BUILD_CURL {
 }
 
 function BUILD_LIBEVENT {
+    target="$1"
+    BUILD_LIBRARY "libevent" "$target"
+}
+
+function BUILD_LIBEVENT_ {
     libname="libevent"
     version="2.1.12-stable"
     # version_underlined=$(echo $version | sed s/[.]/_/g)
@@ -200,6 +206,7 @@ function BUILD_COEURL {
     export PKG_CONFIG_PATH="${DIST_DIR}/lib/pkgconfig"
     BUILD_LIBRARY "coeurl" $target \
         -Dspdlog_DIR="${DIST_DIR}/${target}/lib/cmake/spdlog" \
+        -DCMAKE_CXX_FLAGS=-I/home/reza/Downloads/mtx_related/build/curl/armeabi-v7a/include \
         -DBUILD_SHARED_LIBS=ON
 }
 
@@ -240,6 +247,37 @@ function BUILD_MTXCLIENT {
                   "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/lib/libssl.so" \
                   "-DBUILD_SHARED_LIBS=ON"
 }
+
+function BUILD_CMARK {
+    target="$1"
+    BUILD_LIBRARY "cmark" $target
+
+}
+
+function BUILD_MATRIX-CLIENT-LIBRARY {
+    target="$1"
+    export OPENSSL_ROOT_DIR="${DIST_DIR}/${target}"
+    export PKG_CONFIG_PATH="${DIST_DIR}/${target}/lib/pkgconfig"
+
+    BUILD_LIBRARY "matrix-client-library" $target \
+                  "-Dspdlog_DIR=${DIST_DIR}/${target}/lib/cmake/spdlog" \
+                  "-DLMDB_INCLUDE_DIR=${DIST_DIR}/${target}/include" \
+                  "-DLMDB_LIBRARY=${DIST_DIR}/${target}/lib/liblmdb.a" \
+                  "-DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}" \
+                  "-DOPENSSL_INCLUDE_DIR=${OPENSSL_ROOT_DIR}/include" \
+                  "-DOPENSSL_LIBRARIES=${OPENSSL_ROOT_DIR}/lib" \
+                  "-DOPENSSL_CRYPTO_LIBRARY=${OPENSSL_ROOT_DIR}/lib/libcrypto.so" \
+                  "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/lib/libssl.so" \
+                  "-DMatrixClient_DIR=${DIST_DIR}/${target}/lib/cmake/MatrixClient" \
+                  "-DOlm_DIR=${DIST_DIR}/${target}/lib/cmake/Olm" \
+                  "-Dnlohmann_json_DIR=${DIST_DIR}/${target}/lib/cmake/nlohmann_json" \
+                  "-DCMARK_INCLUDE_DIR=${DIST_DIR}/${target}/include" \
+                  "-DCMARK_LIBRARY=${DIST_DIR}/${target}/lib/libcmark.so" \
+                  "-DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android"
+
+                #   "-DCMAKE_PREFIX_PATH=${DIST_DIR}/${target}/lib/cmake/cmark" \
+}
+
 
 function BUILD_ALL {
     BUILD_SPDLOG $1

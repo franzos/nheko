@@ -1,0 +1,25 @@
+From ec3537d2260085f6ef034dcfb5b961faf4389d8a Mon Sep 17 00:00:00 2001
+From: Reza Alizadeh Majd <r.majd@pantherx.org>
+Date: Thu, 27 Jan 2022 12:35:27 +0330
+Subject: [PATCH] disable Tls verification on coeurl
+
+---
+ lib/http/client.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/http/client.cpp b/lib/http/client.cpp
+index db067c8..3d1b3a1 100644
+--- a/lib/http/client.cpp
++++ b/lib/http/client.cpp
+@@ -37,7 +37,7 @@ Client::Client(const std::string &server, uint16_t port)
+     set_server(server);
+     set_port(port);
+ 
+-    p->client.set_verify_peer(true);
++    p->client.set_verify_peer(false);
+     p->client.connection_timeout(60);
+ }
+ 
+-- 
+2.34.1
+
