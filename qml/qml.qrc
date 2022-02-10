@@ -13,5 +13,10 @@
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
         <file>TimelineDelegate.qml</file>
+        <file>EmojiVerification.qml</file>
+        <file>UnverifiedDevicesMessage.qml</file>
+        <file>UnverifiedMasterKeyMessage.qml</file>
+        <file>VerifyWithPassphraseMessage.qml</file>
+        <file>WaitingForAcceptVerifyMessage.qml</file>
     </qresource>
 </RCC>
