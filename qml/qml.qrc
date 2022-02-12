@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/qml">
+    <qresource prefix="/qml/">
         <file>CustomHeader.qml</file>
         <file>CustomPage.qml</file>
         <file>InvitationRoom.qml</file>
@@ -13,10 +13,10 @@
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
         <file>TimelineDelegate.qml</file>
-        <file>EmojiVerification.qml</file>
-        <file>UnverifiedDevicesMessage.qml</file>
-        <file>UnverifiedMasterKeyMessage.qml</file>
-        <file>VerifyWithPassphraseMessage.qml</file>
-        <file>WaitingForAcceptVerifyMessage.qml</file>
+        <file>verification/EmojiVerification.qml</file>
+        <file>verification/UnverifiedDevicesMessage.qml</file>
+        <file>verification/UnverifiedMasterKeyMessage.qml</file>
+        <file>verification/VerifyWithPassphraseMessage.qml</file>
+        <file>verification/WaitingForAcceptVerifyMessage.qml</file>
     </qresource>
 </RCC>

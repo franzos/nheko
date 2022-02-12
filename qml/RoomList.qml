@@ -7,6 +7,8 @@ import SelfVerificationStatus 1.0
 import Rooms 1.0
 import VerificationManager 1.0
 
+import "verification"
+
 CustomPage {
     id: roomPage
     width: parent.width
@@ -75,8 +77,6 @@ CustomPage {
             y: (qmlApplication.height - height) / 2
         }
     }
-
-
 
     function verification(){
         var status = SelfVerificationStatus.status
