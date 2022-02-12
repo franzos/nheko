@@ -103,7 +103,6 @@ CustomPage {
             var emojiVerification = emojiVerificationFactory.createObject(roomPage,{"flow":flow})
             emojiVerification.open()
             var emojiList = flow.sasList
-            console.log(emojiList)
         }
     }
 

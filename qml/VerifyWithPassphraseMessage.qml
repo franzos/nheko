@@ -21,6 +21,7 @@ Dialog {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
+            width: parent.width
             echoMode: TextInput.Password
             placeholderText: qsTr("Recovery Key")
             Keys.onReturnPressed: passphraseEntered(passphraseText.text)

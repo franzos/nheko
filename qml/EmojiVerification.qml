@@ -8,9 +8,9 @@ Dialog {
     width: parent.width
     property DeviceVerificationFlow flow
 
-    ColumnLayout {
+    Column {
         spacing: 16
-
+        width: parent.width
         Label {
             width: parent.width
             wrapMode: Text.Wrap
@@ -369,43 +369,32 @@ Dialog {
                             Layout.alignment: Qt.AlignHCenter
                             text: col.emoji.emoji
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            font.family: Settings.emojiFont
-                            color: Nheko.colors.text
                         }
 
                         Label {
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                             text: col.emoji.description
-                            color: Nheko.colors.text
                         }
-
                     }
-
                 }
-
             }
+        }
+    }
 
+    footer: DialogButtonBox{
+        Button {
+            text: qsTr("They do not match!")
+            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            onClicked: {
+                flow.cancel();
+                dialog.close();
+            }
         }
 
-        RowLayout {
-            Button {
-                Layout.alignment: Qt.AlignLeft
-                text: qsTr("They do not match!")
-                onClicked: {
-                    flow.cancel();
-                    dialog.close();
-                }
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Button {
-                Layout.alignment: Qt.AlignRight
-                text: qsTr("They match!")
-                onClicked: flow.next()
-            }
+        Button {
+            text: qsTr("They match!")
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            onClicked: flow.next()
         }
     }
 }
