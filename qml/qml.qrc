@@ -20,6 +20,7 @@
         <file>device-verification/EmojiVerification.qml</file>
         <file>device-verification/Failed.qml</file>
         <file>device-verification/NewVerificationRequest.qml</file>
+        <file>device-verification/SelfVerificationCheck.qml</file>
         <file>device-verification/Success.qml</file>
         <file>device-verification/UnverifiedDevicesMessage.qml</file>
         <file>device-verification/UnverifiedMasterKeyMessage.qml</file>
