@@ -11,7 +11,6 @@ ApplicationWindow {
     onClosing: VerificationManager.removeVerificationFlow(flow)
     title: stack.currentItem.title
     modality: Qt.NonModal
-    height: stack.implicitHeight
     // width: stack.implicitWidth
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
@@ -19,8 +18,7 @@ ApplicationWindow {
         id: stack
 
         initialItem: newVerificationRequest
-        implicitHeight: currentItem.implicitHeight
-        width: parent.width
+        anchors.fill: parent
     }
 
     Component {

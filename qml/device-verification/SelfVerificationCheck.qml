@@ -90,9 +90,10 @@ Item {
         id: deviceVerificationDialog
 
         DeviceVerification {
-            width: parent.width
-            x: (qmlApplication.width - width) / 2
-            y: (qmlApplication.height - height) / 2
+            width: qmlApplication.width
+            height: qmlApplication.height
+            // x: (qmlApplication.width - width) / 2
+            // y: (qmlApplication.height - height) / 2
         }
     }
 }
