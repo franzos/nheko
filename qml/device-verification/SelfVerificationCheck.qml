@@ -6,6 +6,7 @@ import SelfVerificationStatus 1.0
 import VerificationManager 1.0
 
 Item {
+    id: selfVerificationCheck
     visible: false
     width: qmlApplication.width
     height: qmlApplication.height
@@ -79,7 +80,7 @@ Item {
     }
 
     function onNewDeviceVerificationRequest(flow) {
-        var dialog = deviceVerificationDialog.createObject(roomPage, {
+        var dialog = deviceVerificationDialog.createObject(selfVerificationCheck, {
             "flow": flow
         });
         dialog.show();
