@@ -7,7 +7,7 @@ import SelfVerificationStatus 1.0
 import Rooms 1.0
 import VerificationManager 1.0
 
-import "verification"
+import "device-verification"
 
 CustomPage {
     id: roomPage
@@ -59,25 +59,6 @@ CustomPage {
         }
     }
 
-    WaitingForAcceptVerifyMessage {
-        id: waitingForAcceptVerifyMessage
-        width: parent.width
-        x: (qmlApplication.width - width) / 2
-        y: (qmlApplication.height - height) / 2
-        onRejected:{
-            console.log("TODO")
-        }
-    }
-
-    Component {
-        id: emojiVerificationFactory
-        EmojiVerification {
-            width: parent.width
-            x: (qmlApplication.width - width) / 2
-            y: (qmlApplication.height - height) / 2
-        }
-    }
-
     function verification(){
         var status = SelfVerificationStatus.status
         console.log("Status: " + status)
@@ -94,26 +75,6 @@ CustomPage {
             default:
                 return
         }
-    }
-
-    function flowStateChangedHandler(flow){
-        console.log("=> " + flow.state)
-        if(flow.state == "CompareEmoji") {
-            waitingForAcceptVerifyMessage.close()
-            var emojiVerification = emojiVerificationFactory.createObject(roomPage,{"flow":flow})
-            emojiVerification.open()
-            var emojiList = flow.sasList
-        }
-    }
-
-    function newDeviceVerificationRequestHandler(flow){
-        flow.stateChanged.connect(function(flow){
-            return function(){
-                flowStateChangedHandler(flow)
-            }
-        }(flow))
-        flow.next()
-        waitingForAcceptVerifyMessage.open()
     }
 
     function verificationStatusChanged(status){
@@ -133,8 +94,25 @@ CustomPage {
 
     Component.onCompleted: {
         header.titleClicked.connect(verification)
-        VerificationManager.newDeviceVerificationRequest.connect(newDeviceVerificationRequestHandler)
+        VerificationManager.newDeviceVerificationRequest.connect(onNewDeviceVerificationRequest)
         SelfVerificationStatus.statusChanged.connect(verificationStatusChanged)
+    }
+
+    function onNewDeviceVerificationRequest(flow) {
+        var dialog = deviceVerificationDialog.createObject(roomPage, {
+            "flow": flow
+        });
+        dialog.show();
+    }
+
+    Component {
+        id: deviceVerificationDialog
+
+        DeviceVerification {
+            width: parent.width
+            x: (qmlApplication.width - width) / 2
+            y: (qmlApplication.height - height) / 2
+        }
     }
 
     Connections {

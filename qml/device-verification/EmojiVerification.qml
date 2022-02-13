@@ -1,18 +1,19 @@
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.5
-import DeviceVerificationFlow 1.0
+import QtQuick 2.3
+import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.10
 
-Dialog {
-    title: "Verification Code"
+Pane {
+    property string title: qsTr("Verification Code")
     width: parent.width
-    property DeviceVerificationFlow flow
 
-    Column {
+    ColumnLayout {
         spacing: 16
         width: parent.width
+
         Label {
-            width: parent.width
+            Layout.maximumWidth: 400
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
             color: Nheko.colors.text
@@ -369,32 +370,46 @@ Dialog {
                             Layout.alignment: Qt.AlignHCenter
                             text: col.emoji.emoji
                             font.pixelSize: Qt.application.font.pixelSize * 2
+                            font.family: Settings.emojiFont
+                            color: Nheko.colors.text
                         }
 
                         Label {
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                             text: col.emoji.description
+                            color: Nheko.colors.text
                         }
+
                     }
+
+                }
+
+            }
+
+        }
+
+        RowLayout {
+            Button {
+                Layout.alignment: Qt.AlignLeft
+                text: qsTr("They do not match!")
+                onClicked: {
+                    flow.cancel();
+                    dialog.close();
                 }
             }
-        }
-    }
 
-    footer: DialogButtonBox{
-        Button {
-            text: qsTr("They do not match!")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-            onClicked: {
-                flow.cancel();
-                dialog.close();
+            Item {
+                Layout.fillWidth: true
             }
+
+            Button {
+                Layout.alignment: Qt.AlignRight
+                text: qsTr("They match!")
+                onClicked: flow.next()
+            }
+
         }
 
-        Button {
-            text: qsTr("They match!")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            onClicked: flow.next()
-        }
     }
+
 }
