@@ -6,7 +6,7 @@ import SelfVerificationStatus 1.0
 Dialog {
     title: "Verify"
     signal verifyClicked()
-    width: parent.width
+    anchors.centerIn: parent
     Label {
         width: parent.width
         text: "To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)"

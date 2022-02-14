@@ -7,7 +7,7 @@ Dialog {
     title: "Verify with passphrase"
     standardButtons: Dialog.Cancel | Dialog.Ok
     signal passphraseEntered(string passphrase)
-
+    anchors.centerIn: parent
     Column{
         width: parent.width
         Label {

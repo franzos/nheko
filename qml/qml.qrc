@@ -19,6 +19,7 @@
         <file>device-verification/EmojiElement.qml</file>
         <file>device-verification/EmojiVerification.qml</file>
         <file>device-verification/Failed.qml</file>
+        <file>device-verification/NoMasterKeyMessage.qml</file>
         <file>device-verification/NewVerificationRequest.qml</file>
         <file>device-verification/SelfVerificationCheck.qml</file>
         <file>device-verification/Success.qml</file>
