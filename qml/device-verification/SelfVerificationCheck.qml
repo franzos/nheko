@@ -67,15 +67,16 @@ Item {
         anchors.centerIn: parent
         title: "Failed"
         standardButtons: Dialog.Ok
-
+        width: parent.width
 
         Label {
             id: errorLabel
-            text: qsTr("Failed to setup encryption")
+            width: parent.width
+            wrapMode: Text.Wrap
         }        
 
         function setError(errorMessage){
-            errorLabel.text = qsTr("Failed to setup encryption: %1").arg(errorMessage)
+            errorLabel.text = errorMessage
         }
     }
 
@@ -149,16 +150,22 @@ Item {
     }
 
     function onSetupFailed(m) {
-        failureDialog.setError(m);
+        failureDialog.setError(qsTr("Failed to setup encryption: %1").arg(m));
         failureDialog.open();
     }
     
+    function onVerifyFailed(m) {
+        failureDialog.setError(m);
+        failureDialog.open();
+    }
+
     Component.onCompleted: {
         VerificationManager.newDeviceVerificationRequest.connect(onNewDeviceVerificationRequest)
         SelfVerificationStatus.statusChanged.connect(onVerificationStatusChanged)
         SelfVerificationStatus.showRecoveryKey.connect(onShowRecoveryKey)
         SelfVerificationStatus.setupCompleted.connect(onSetupCompleted)
         SelfVerificationStatus.setupFailed.connect(onSetupFailed)
+        SelfVerificationStatus.verifyMasterKeyWithPassphraseFailed.connect(onVerifyFailed)
     }
 
     function onNewDeviceVerificationRequest(flow) {

@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QQuickStyle>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
+#include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
 
 MatrixClient::MatrixClient(const QUrl &url, QObject *parent): 
@@ -20,6 +21,7 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
+    qmlRegisterSingletonInstance<UIA>("UIA", 1, 0, "UIA", UIA::instance());
     qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
     qmlRegisterSingletonInstance<VerificationManager>("VerificationManager", 1, 0, "VerificationManager", _verificationManager);
     qmlRegisterSingletonInstance<SelfVerificationStatus>("SelfVerificationStatus", 1, 0, "SelfVerificationStatus", _verificationManager->selfVerificationStatus());
