@@ -30,6 +30,25 @@ Rectangle {
             onClicked: {titleClicked()}
         }
 
+        Rectangle {
+            id: verifyRect
+            height: parent.height - 5
+            width: height 
+            radius: width/2
+            color: "#ffaf49"
+            anchors.right: logoutButton.left
+            anchors.verticalCenter: parent.verticalCenter
+            visible: false
+            Label {
+                anchors.centerIn: parent
+                color: "white"
+                font.pointSize: 10
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: "!"
+            }
+        }
+
         Button {
             id: logoutButton
             text: "Logout"
@@ -58,6 +77,14 @@ Rectangle {
     function setTitle(title){
         titleLabel.text = title
         backButton.enabled= !stack.empty
+    }
+
+    function setVerified(flag){
+        if(flag){
+            verifyRect.visible = false
+        } else {
+            verifyRect.visible = true
+        }
     }
 }
 

@@ -12,10 +12,13 @@ ApplicationWindow {
     height: 600
     visible: true
     Material.theme: Material.Dark
-    
+
     StackView {
         id: stack
         anchors.fill: parent
+    }
+
+    UIA{
     }
 
     BusyIndicator {
@@ -34,9 +37,7 @@ ApplicationWindow {
         visible: false
     }
 
-    Connections {
-        target: MatrixClient
-        
+    Connections {        
         function onDropToLogin(msg) {
             stack.replace(loginPage)
         }
@@ -58,6 +59,8 @@ ApplicationWindow {
             loginPage.reload()
             stack.replace(loginPage)
         }
+
+        target: MatrixClient
     }
     
     Component.onCompleted: {

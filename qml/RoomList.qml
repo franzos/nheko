@@ -5,6 +5,8 @@ import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import Rooms 1.0
 
+import "device-verification"
+
 CustomPage {
     id: roomPage
     width: parent.width
@@ -22,12 +24,26 @@ CustomPage {
         delegate:RoomDelegate{}
     }
 
+    function onVerificationStatusChanged(){
+        header.setVerified(selfVerificationCheck.isVerified())
+    }
+
+    SelfVerificationCheck{
+        id: selfVerificationCheck
+    }
+
+    Component.onCompleted: {
+        header.titleClicked.connect(selfVerificationCheck.verify)
+        selfVerificationCheck.statusChanged.connect(onVerificationStatusChanged)
+    }
+
     Connections {
         target: MatrixClient
 
         function onUserDisplayNameReady(name){
             displayName = name
             header.setTitle(displayName)
+            onVerificationStatusChanged()
         }
     }
 }

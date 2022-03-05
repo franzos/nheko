@@ -23,5 +23,6 @@ private:
     RoomListModel *_roomListModel = nullptr;
     Client *_client = nullptr;
     QQmlApplicationEngine _engine;
+    VerificationManager *_verificationManager;
 };
 #endif // CLIENT_H

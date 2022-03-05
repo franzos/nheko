@@ -16,6 +16,7 @@ CustomPage {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
+            // text: "hamzeh_test04"
             placeholderText: qsTr("User ID")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
@@ -24,6 +25,7 @@ CustomPage {
         TextField {
             id: passwordText
             echoMode: TextInput.Password
+            // text: "tingly-headdress-earthlike"
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
