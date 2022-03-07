@@ -4,8 +4,9 @@ import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 
 Page {
+    id: page
     width: parent.width
-    header: CustomHeader {}
+    header: CustomHeader {}   
 }
 
 

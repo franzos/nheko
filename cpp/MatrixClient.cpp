@@ -18,6 +18,9 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+    connect(_client, &Client::createRoom, [&](const mtx::requests::CreateRoom &req){
+        qDebug() << "+6+6++6+6+6+6+6+6+6+6+6";
+    });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
