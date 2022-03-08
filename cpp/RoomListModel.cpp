@@ -94,6 +94,8 @@ void RoomListModel::add(RoomListItem &item){
         auto idx = roomidToIndex(item.id());
         if(_roomListItems.at(idx).invite() && !item.invite()){
             setData(index(idx), false, inviteRole);
+        } else {
+            setData(index(idx), item.name(), nameRole);
         }
     } else if(!_roomIds.contains(item.id())) {
         // add new room [room events]

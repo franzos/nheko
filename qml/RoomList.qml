@@ -23,6 +23,22 @@ CustomPage {
         model: Rooms
         delegate:RoomDelegate{}
     }
+    DirectChatDialog{
+        id:directChat
+        x: (qmlApplication.width - width) / 2
+        y: (qmlApplication.height - height) / 2
+    }
+
+    RoundButton {
+        id: newChatButton
+        height: 50
+        width: height 
+        x: parent.width - width -10
+        y: parent.height - height -10
+        font.pointSize: 15            
+        text: "+"
+        onClicked: directChat.open()
+    }   
 
     function onVerificationStatusChanged(){
         header.setVerified(selfVerificationCheck.isVerified())
@@ -36,6 +52,18 @@ CustomPage {
         header.titleClicked.connect(selfVerificationCheck.verify)
         selfVerificationCheck.statusChanged.connect(onVerificationStatusChanged)
     }
+    
+    Component {
+        id: timelineFactory
+        Timeline {}
+    }
+
+    function createTimeline(id,name,avatar){
+        var timeline = timelineFactory.createObject(stack, {"roomid": id,
+                                                            "name": name,
+                                                            "avatar": avatar});
+        stack.push(timeline)
+    }  
 
     Connections {
         target: MatrixClient
@@ -45,5 +73,10 @@ CustomPage {
             header.setTitle(displayName)
             onVerificationStatusChanged()
         }
+        function onRoomCreated(id){
+            var roomInf = Rooms.roomInformation(id)
+            createTimeline(roomInf.id(),roomInf.name(),roomInf.avatar())
+        }       
+       
     }
 }
