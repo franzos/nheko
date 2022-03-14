@@ -13,60 +13,7 @@ ApplicationWindow {
     visible: true
     Material.theme: Material.Dark
 
-    StackView {
-        id: stack
-        anchors.fill: parent
-    }
-
-    UIA{
-    }
-
-    BusyIndicator {
-        id: busyIndicator
-        width: 64; height: 64
-        anchors.centerIn: parent
-    }
-
-    RoomList {
-        id: roomList
-        visible: false
-    }
-
-    Login {
-        id: loginPage
-        visible: false
-    }
-
-    Connections {        
-        function onDropToLogin(msg) {
-            stack.replace(loginPage)
-        }
-
-        function onLoginOk(user) {
-            MatrixClient.start()
-        }
-
-        function onInitiateFinished(){
-            stack.replace(roomList)
-        }
-
-        function onLogoutErrorOccurred(){
-            stack.pop()
-        }
-
-        function onLogoutOk(){
-            stack.pop(null)
-            loginPage.reload()
-            stack.replace(loginPage)
-        }
-
-        target: MatrixClient
-    }
-    
-    Component.onCompleted: {
-        stack.push(busyIndicator)
-        MatrixClient.start()
-    }
+    MainLib{}
 
     onClosing: {
         MatrixClient.stop()
