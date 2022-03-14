@@ -1,4 +1,4 @@
-QT += network qml quick quickcontrols2 widgets
+QT += network qml quick quickcontrols2 widgets quickwidgets
 CONFIG += c++17
 
 SOURCES += \
@@ -7,8 +7,7 @@ SOURCES += \
     $$PWD/RoomListItem.h  \
     $$PWD/RoomListModel.cpp \
     $$PWD/TimelineModel.cpp \
-    $$PWD/TimelineItem.cpp \
-    $$PWD/main.cpp
+    $$PWD/TimelineItem.cpp
 
 HEADERS += \
     $$PWD/MatrixClient.h \

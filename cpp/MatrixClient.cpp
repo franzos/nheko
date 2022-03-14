@@ -5,9 +5,8 @@
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
 
-MatrixClient::MatrixClient(const QUrl &url, QObject *parent): 
+MatrixClient::MatrixClient(QObject *parent): 
     QObject(parent),
-    _mainUrl(url),
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
     _verificationManager(_client->verificationManager()){
@@ -17,9 +16,6 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
-    });
-    connect(_client, &Client::createRoom, [&](const mtx::requests::CreateRoom &req){
-        qDebug() << "+6+6++6+6+6+6+6+6+6+6+6";
     });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
@@ -31,17 +27,14 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
         return _roomListModel;
     });
-
-    connect(&_engine, &QQmlApplicationEngine::objectCreated,
-                     QCoreApplication::instance(), [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl) {
-            QCoreApplication::instance()->exit(-1);
-        }
-    }, Qt::QueuedConnection);
 }
 
-void MatrixClient::load(){
-    _engine.load(_mainUrl);
+QUrl MatrixClient::mainLibQMLurl(){
+    return QUrl(QStringLiteral("qrc:/qml/MainLib.qml"));
+}
+
+QUrl MatrixClient::mainAppQMLurl(){
+    return QUrl(QStringLiteral("qrc:/qml/main.qml"));
 }
 
 void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
@@ -86,4 +79,22 @@ void MatrixClient::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
         roomList << room;
     }
     _roomListModel->add(roomList);
+}
+
+MatrixClientQmlApplicationEngine::MatrixClientQmlApplicationEngine(QObject *parent): 
+    MatrixClient(parent), QQmlApplicationEngine(parent){            
+    // connect(this, &QQmlApplicationEngine::objectCreated,
+    //             QCoreApplication::instance(), [&](QObject *obj, const QUrl &objUrl) {
+    //     if (!obj && mainAppQMLurl() == objUrl) {
+    //         QCoreApplication::instance()->exit(-1);
+    //     }
+    // }, Qt::QueuedConnection);
+}
+
+void MatrixClientQmlApplicationEngine::load(){
+    QQmlApplicationEngine::load(mainAppQMLurl());
+}
+
+MatrixClientQuickView::MatrixClientQuickView(QWindow *parent): 
+    MatrixClient(parent) ,QQuickView(mainLibQMLurl(), parent){
 }
