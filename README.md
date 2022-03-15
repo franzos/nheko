@@ -103,3 +103,22 @@ in order to setup Kit:
 1. go to `Tools` > `Options` > `Kits` > `Kits`
 2. Clone default Android `5.15.x` Kit: `Android Qt %{Qt:Version} Clang Multi-Abi`
 3. Set C and C++ compilers to the ones you created before
+
+
+## Build for Linux
+
+* Building the Application:
+
+```bash
+mkdir build
+cd build
+qmake ../MatrixClientApp.pro
+```
+
+* Building the Library:
+
+```bash
+mkdir build
+cd build
+qmake ../MatrixClientLib.pro
+```

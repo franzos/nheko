@@ -1,5 +1,4 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#pragma once 
 
 #include <QObject>
 #include <QUrl>
@@ -11,10 +10,11 @@
 #include "RoomListModel.h"
 #include "RoomListItem.h"
 
-class MatrixClient : public QObject {
+namespace PX::GUI::MATRIX{
+class QmlInterface : public QObject {
     Q_OBJECT
 public: 
-    MatrixClient(QObject *parent = nullptr);
+    QmlInterface(QObject *parent = nullptr);
     Client *client();
     QUrl mainLibQMLurl();
     QUrl mainAppQMLurl();
@@ -28,15 +28,4 @@ private:
     Client *_client = nullptr;
     VerificationManager *_verificationManager;
 };
-
-class MatrixClientQmlApplicationEngine : public MatrixClient ,public QQmlApplicationEngine{
-public:
-    MatrixClientQmlApplicationEngine(QObject *parent = nullptr);
-    void load();
-};
-
-class MatrixClientQuickView : public MatrixClient, public QQuickView{
-public:
-    MatrixClientQuickView(QWindow *parent = nullptr);
-};
-#endif // CLIENT_H
+}

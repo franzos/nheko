@@ -3,15 +3,17 @@
 #include <QQuickWidget>
 #include <QMainWindow>
 #include <spdlog/spdlog.h>
-#include "../cpp/MatrixClient.h"
+#include "../cpp/MatrixQmlApplicationEngine.h"
 #ifdef __ANDROID__
 #include <spdlog/sinks/android_sink.h>
 #endif
 
+using namespace PX::GUI::MATRIX;
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    MatrixClientQmlApplicationEngine matrixClientApp;
+    MatrixQmlApplicationEngine matrixClientApp;
     matrixClientApp.load();
     spdlog::info("info log from spdlog");
 

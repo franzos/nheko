@@ -1,19 +1,20 @@
-#include "MatrixClient.h"
+#include "QmlInterface.h"
 #include <QCoreApplication>
 #include <QQuickStyle>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
 
-MatrixClient::MatrixClient(QObject *parent): 
+namespace PX::GUI::MATRIX{
+QmlInterface::QmlInterface(QObject *parent): 
     QObject(parent),
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
     _verificationManager(_client->verificationManager()){
     
     _client->enableLogger(true, true);
-    connect(_client, &Client::newUpdated,this, &MatrixClient::newSyncCb);
-    connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
+    connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
+    connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
@@ -29,15 +30,15 @@ MatrixClient::MatrixClient(QObject *parent):
     });
 }
 
-QUrl MatrixClient::mainLibQMLurl(){
+QUrl QmlInterface::mainLibQMLurl(){
     return QUrl(QStringLiteral("qrc:/qml/MainLib.qml"));
 }
 
-QUrl MatrixClient::mainAppQMLurl(){
+QUrl QmlInterface::mainAppQMLurl(){
     return QUrl(QStringLiteral("qrc:/qml/main.qml"));
 }
 
-void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
+void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     auto rooms = sync.rooms;
     QList<RoomListItem> roomList;
     for(auto const &r: rooms.join){
@@ -64,7 +65,7 @@ void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
     _roomListModel->remove(leaveRooms);
 }
 
-void MatrixClient::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomList();
+void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomList();
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
@@ -80,21 +81,4 @@ void MatrixClient::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
     }
     _roomListModel->add(roomList);
 }
-
-MatrixClientQmlApplicationEngine::MatrixClientQmlApplicationEngine(QObject *parent): 
-    MatrixClient(parent), QQmlApplicationEngine(parent){            
-    // connect(this, &QQmlApplicationEngine::objectCreated,
-    //             QCoreApplication::instance(), [&](QObject *obj, const QUrl &objUrl) {
-    //     if (!obj && mainAppQMLurl() == objUrl) {
-    //         QCoreApplication::instance()->exit(-1);
-    //     }
-    // }, Qt::QueuedConnection);
-}
-
-void MatrixClientQmlApplicationEngine::load(){
-    QQmlApplicationEngine::load(mainAppQMLurl());
-}
-
-MatrixClientQuickView::MatrixClientQuickView(QWindow *parent): 
-    MatrixClient(parent) ,QQuickView(mainLibQMLurl(), parent){
 }
