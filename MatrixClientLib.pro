@@ -8,7 +8,7 @@ include(cpp/cpp.pri)
 include(qml/qml.pri)
 
 headers.path = /usr/include/matrix-client-gui-library
-headers.files = cpp/MatrixClient.h cpp/RoomListItem.h cpp/RoomListModel.h cpp/TimelineItem.h cpp/TimelineModel.h
+headers.files = cpp/QmlInterface.h cpp/MatrixQuickView.h cpp/MatrixQmlApplicationEngine.h cpp/RoomListItem.h cpp/RoomListModel.h cpp/TimelineItem.h cpp/TimelineModel.h
 
 target.path = /usr/lib/
 INSTALLS += target headers

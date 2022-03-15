@@ -104,4 +104,4 @@
              (invoke "qmake" "MatrixClientApp.pro" ))))))))
     
 matrix-client-gui-library
-matrix-client-gui
+; matrix-client-gui
