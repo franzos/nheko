@@ -19,8 +19,9 @@ Item {
 
     BusyIndicator {
         id: busyIndicator
-        width: 64; height: 64
-        anchors.centerIn: parent
+        width: 64; height: width
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
     }
 
     RoomList {

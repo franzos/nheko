@@ -10,6 +10,7 @@ Rectangle {
     signal titleClicked()
     Row {
         anchors.fill: parent
+        spacing: 2
         Button {
             id: backButton
             text: "<"
@@ -24,9 +25,6 @@ Rectangle {
             width: parent.width - backButton.width - logoutButton.width - 2
             height: parent.height
             anchors.leftMargin: 2
-            // anchors.centerIn: parent
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: backButton.right
             onClicked: {titleClicked()}
         }
 
@@ -54,7 +52,6 @@ Rectangle {
             text: "Logout"
             anchors.leftMargin: 2
             height: parent.height
-            anchors.left: titleLabel.right
             onClicked: logoutDialog.open()
         }
 

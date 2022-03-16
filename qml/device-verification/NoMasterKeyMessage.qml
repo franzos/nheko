@@ -27,7 +27,6 @@ Dialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.columnSpan: 2
-                font.pointSize: fontMetrics.font.pointSize * 2
                 text: qsTr("Setup Encryption")
                 wrapMode: Text.Wrap
             }
