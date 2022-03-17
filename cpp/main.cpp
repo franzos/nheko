@@ -10,7 +10,8 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     MatrixClient matrixClient(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     matrixClient.load();
     spdlog::info("info log from spdlog");
