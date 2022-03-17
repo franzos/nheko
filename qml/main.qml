@@ -37,14 +37,24 @@ ApplicationWindow {
         visible: false
     }
 
+    ErrorDialog{
+        id:errorPage
+        x: (qmlApplication.width - width) / 2
+        y: (qmlApplication.height - height) / 2
+    }
+
     Connections {        
         function onDropToLogin(msg) {
             stack.replace(loginPage)
         }
 
-        function onLoginOk(user) {
+       function onLoginOk(user) {
             MatrixClient.start()
-        }
+       }
+
+       function onLoginErrorOccurred(msg) {
+            errorPage.loadMessage("Login Error",msg)
+       }
 
         function onInitiateFinished(){
             stack.replace(roomList)

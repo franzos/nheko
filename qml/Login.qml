@@ -48,6 +48,23 @@ CustomPage {
 
             onClicked: gotoLogin()
         }
+
+        Component {
+            id: cibaLoginFactory
+            CibaLogin {}
+        }
+
+        
+        Button {
+            id: cibaLoginButton
+            text: "BC-Login"
+            Layout.alignment: Qt.AlignHCenter 
+            function showCibaLogin(){
+                var cibaLogin = cibaLoginFactory.createObject(stack, {});
+                stack.push(cibaLogin)
+            }          
+            onClicked: showCibaLogin()
+        }
     }
     Connections {
         target: MatrixClient
