@@ -34,6 +34,12 @@ Item {
         visible: false
     }
 
+    ErrorDialog{
+        id:errorPage
+        x: (qmlApplication.width - width) / 2
+        y: (qmlApplication.height - height) / 2
+    }
+
     Connections {        
         target: MatrixClient
         function onDropToLogin(msg) {
@@ -42,6 +48,10 @@ Item {
 
         function onLoginOk(user) {
             MatrixClient.start()
+        }
+
+        function onLoginErrorOccurred(msg) {
+            errorPage.loadMessage("Login Error",msg)
         }
 
         function onInitiateFinished(){
