@@ -103,3 +103,41 @@ in order to setup Kit:
 1. go to `Tools` > `Options` > `Kits` > `Kits`
 2. Clone default Android `5.15.x` Kit: `Android Qt %{Qt:Version} Clang Multi-Abi`
 3. Set C and C++ compilers to the ones you created before
+
+
+## Build for Linux
+
+* Building the Application:
+
+```bash
+mkdir build
+cd build
+qmake ../MatrixClientApp.pro
+```
+
+* Building the Library:
+
+```bash
+mkdir build
+cd build
+qmake ../MatrixClientLib.pro
+```
+
+## Version release flow
+
+![release flow](docs/assets/release-flow.svg)
+
+in order to release new versions for the `MatrixClient` we follow below steps:
+
+1. implement features in `feature` branches
+2. submit merge requests to the `development` branch
+3. after merge request approval, we need to update the mobile version before providing new tags:
+    - for Android we need to modify `configurations/android/AndroidManifest.xml` file, updating the `android:versionName` and `android:versionCode`.
+        - `android:versionCode` is an integer which should be incrementally increased for each release
+        - `android:versionName` is the string value shows to the users. we need to set it to match with the tag we want to set
+    - it's also recommended to update the `CHANGELOG.md` mentioning the changes applied on current version
+4. committing the version related changes, now we can set the regarding tag on `development` branch.
+5. in order to release new versions for mobile, we need to submit a merge request from `development` branch to the `master` branch. we need to test the provided reference against mobile, and if it was acceptable, we approve the merge request and release new version for mobile.
+
+
+    

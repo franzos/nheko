@@ -85,8 +85,8 @@ Rectangle {
     MouseArea {
         LeaveMessage {
             id: dialog
-            x: (qmlApplication.width - width) / 2
-            y: (qmlApplication.height - height) / 2
+            x: (qmlLibRoot.width - width) / 2
+            y: (qmlLibRoot.height - height) / 2
         }
 
         anchors.fill: parent

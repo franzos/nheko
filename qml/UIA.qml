@@ -7,8 +7,8 @@ import UIA 1.0
 
 Item {
     visible: false
-    width: qmlApplication.width
-    height: qmlApplication.height
+    width: qmlLibRoot.width
+    height: qmlLibRoot.height
 
     Dialog {
         id: uiaPassPrompt

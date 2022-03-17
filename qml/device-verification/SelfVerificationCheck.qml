@@ -8,8 +8,8 @@ import VerificationManager 1.0
 Item {
     id: selfVerificationCheck
     visible: false
-    width: qmlApplication.width
-    height: qmlApplication.height
+    width: qmlLibRoot.width
+    height: qmlLibRoot.height
 
     signal statusChanged()
 
@@ -179,8 +179,8 @@ Item {
         id: deviceVerificationDialog
 
         DeviceVerification {
-            width: qmlApplication.width
-            height: qmlApplication.height
+            width: qmlLibRoot.width
+            height: qmlLibRoot.height
         }
     }
 }

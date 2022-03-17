@@ -13,70 +13,7 @@ ApplicationWindow {
     visible: true
     Material.theme: Material.Dark
 
-    StackView {
-        id: stack
-        anchors.fill: parent
-    }
-
-    UIA{
-    }
-
-    BusyIndicator {
-        id: busyIndicator
-        width: 64; height: 64
-        anchors.centerIn: parent
-    }
-
-    RoomList {
-        id: roomList
-        visible: false
-    }
-
-    Login {
-        id: loginPage
-        visible: false
-    }
-
-    ErrorDialog{
-        id:errorPage
-        x: (qmlApplication.width - width) / 2
-        y: (qmlApplication.height - height) / 2
-    }
-
-    Connections {        
-        function onDropToLogin(msg) {
-            stack.replace(loginPage)
-        }
-
-       function onLoginOk(user) {
-            MatrixClient.start()
-       }
-
-       function onLoginErrorOccurred(msg) {
-            errorPage.loadMessage("Login Error",msg)
-       }
-
-        function onInitiateFinished(){
-            stack.replace(roomList)
-        }
-
-        function onLogoutErrorOccurred(){
-            stack.pop()
-        }
-
-        function onLogoutOk(){
-            stack.pop(null)
-            loginPage.reload()
-            stack.replace(loginPage)
-        }
-
-        target: MatrixClient
-    }
-    
-    Component.onCompleted: {
-        stack.push(busyIndicator)
-        MatrixClient.start()
-    }
+    MainLib{}
 
     onClosing: {
         MatrixClient.stop()
