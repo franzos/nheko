@@ -1,17 +1,20 @@
-QT += network qml quick quickcontrols2 widgets
+QT += network qml quick quickcontrols2 widgets quickwidgets
 CONFIG += c++17
 
 SOURCES += \
-    $$PWD/MatrixClient.cpp \
+    $$PWD/QmlInterface.cpp \
+    $$PWD/MatrixQmlApplicationEngine.cpp \
+    $$PWD/MatrixQuickView.cpp \
     $$PWD/RoomListItem.cpp \
     $$PWD/RoomListItem.h  \
     $$PWD/RoomListModel.cpp \
     $$PWD/TimelineModel.cpp \
-    $$PWD/TimelineItem.cpp \
-    $$PWD/main.cpp
+    $$PWD/TimelineItem.cpp
 
 HEADERS += \
-    $$PWD/MatrixClient.h \
+    $$PWD/QmlInterface.h \
+    $$PWD/MatrixQmlApplicationEngine.h \
+    $$PWD/MatrixQuickView.h \
     $$PWD/RoomListItem.h  \
     $$PWD/TimelineModel.h \
     $$PWD/TimelineItem.h \

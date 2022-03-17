@@ -1,25 +1,22 @@
-#include "MatrixClient.h"
+#include "QmlInterface.h"
 #include <QCoreApplication>
 #include <QQuickStyle>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
 
-MatrixClient::MatrixClient(const QUrl &url, QObject *parent): 
+namespace PX::GUI::MATRIX{
+QmlInterface::QmlInterface(QObject *parent): 
     QObject(parent),
-    _mainUrl(url),
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
     _verificationManager(_client->verificationManager()){
     
     _client->enableLogger(true, true);
-    connect(_client, &Client::newUpdated,this, &MatrixClient::newSyncCb);
-    connect(_client, &Client::initiateFinished,this, &MatrixClient::initiateFinishedCB);
+    connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
+    connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
-    });
-    connect(_client, &Client::createRoom, [&](const mtx::requests::CreateRoom &req){
-        qDebug() << "+6+6++6+6+6+6+6+6+6+6+6";
     });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
@@ -31,20 +28,17 @@ MatrixClient::MatrixClient(const QUrl &url, QObject *parent):
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
         return _roomListModel;
     });
-
-    connect(&_engine, &QQmlApplicationEngine::objectCreated,
-                     QCoreApplication::instance(), [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl) {
-            QCoreApplication::instance()->exit(-1);
-        }
-    }, Qt::QueuedConnection);
 }
 
-void MatrixClient::load(){
-    _engine.load(_mainUrl);
+QUrl QmlInterface::mainLibQMLurl(){
+    return QUrl(QStringLiteral("qrc:/qml/MainLib.qml"));
 }
 
-void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
+QUrl QmlInterface::mainAppQMLurl(){
+    return QUrl(QStringLiteral("qrc:/qml/main.qml"));
+}
+
+void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     auto rooms = sync.rooms;
     QList<RoomListItem> roomList;
     for(auto const &r: rooms.join){
@@ -71,7 +65,7 @@ void MatrixClient::newSyncCb(const mtx::responses::Sync &sync){
     _roomListModel->remove(leaveRooms);
 }
 
-void MatrixClient::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomList();
+void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomList();
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
@@ -86,4 +80,5 @@ void MatrixClient::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
         roomList << room;
     }
     _roomListModel->add(roomList);
+}
 }
