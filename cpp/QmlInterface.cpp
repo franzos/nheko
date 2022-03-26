@@ -4,6 +4,7 @@
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
+#include "GlobalObject.h"
 
 namespace PX::GUI::MATRIX{
 QmlInterface::QmlInterface(QObject *parent): 
@@ -28,6 +29,10 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
         return _roomListModel;
     });
+    qmlRegisterSingletonType<GlobalObject>(
+      "GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new GlobalObject();
+      });
 }
 
 QUrl QmlInterface::mainLibQMLurl(){
