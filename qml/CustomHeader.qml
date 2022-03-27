@@ -3,9 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 
-Rectangle {
+ToolBar {
     width: parent.width
-    height: 30
 
     signal titleClicked()
     Row {
@@ -14,7 +13,7 @@ Rectangle {
         Button {
             id: backButton
             text: "<"
-            width: 24
+            width: parent.height
             height: parent.height
             enabled: !stack.empty
             onClicked: stack.pop()
