@@ -11,6 +11,7 @@
         <file>Login.qml</file>
         <file>main.qml</file>
         <file>MainLib.qml</file>
+        <file>MainMenu.qml</file>
         <file>Room.qml</file>
         <file>RoomInfo.qml</file>
         <file>RoomList.qml</file>

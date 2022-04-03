@@ -24,7 +24,7 @@ CustomPage {
 
     Component.onCompleted: {
         header.setTitle(name)
-        header.titleClicked.connect(showRoomInfo)
+        header.titleClicked.connect(showRoomInfo) 
     }
 
     Connections {

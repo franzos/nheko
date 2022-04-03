@@ -5,6 +5,7 @@ SOURCES += \
     $$PWD/../cpp/QmlInterface.cpp \
     $$PWD/../cpp/MatrixQmlApplicationEngine.cpp \
     $$PWD/../cpp/MatrixQuickView.cpp \
+    $$PWD/../cpp/mydevice.cpp \
     $$PWD/../cpp/RoomListItem.cpp \
     $$PWD/../cpp/RoomListItem.h  \
     $$PWD/../cpp/RoomListModel.cpp \
@@ -16,6 +17,7 @@ HEADERS += \
     $$PWD/../cpp/QmlInterface.h \
     $$PWD/../cpp/MatrixQmlApplicationEngine.h \
     $$PWD/../cpp/MatrixQuickView.h \
+    $$PWD/../cpp/mydevice.h \
     $$PWD/../cpp/RoomListItem.h  \
     $$PWD/../cpp/TimelineModel.h \
     $$PWD/../cpp/TimelineItem.h \

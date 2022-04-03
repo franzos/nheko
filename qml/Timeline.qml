@@ -53,9 +53,9 @@ Room {
                 Keys.onReturnPressed: sendButton.sendMessage() // Enter key
                 Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
             }
-            Button {
+            ToolButton {
                 id: sendButton
-                text: "Send"
+                icon.source: "qrc:/images/send.svg"
                 enabled: messageInput.text ? true : false
                 function sendMessage(){
                     timelineModel.send(messageInput.text);
@@ -67,7 +67,8 @@ Room {
     }
 
     Component.onCompleted: {
-        timelineModel = Rooms.timelineModel(roomid)
+        timelineModel = Rooms.timelineModel(roomid)    
+        header.setTimelineButtonsVisible(true)
     }
 
     Connections {

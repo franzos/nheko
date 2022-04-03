@@ -3,72 +3,104 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 
-Rectangle {
+ToolBar {
     width: parent.width
-    height: 30
 
     signal titleClicked()
+    signal menuClicked()
+    signal verifyClicked()
+    signal voiceCallClicked()
+    signal videoCallClicked()
+    signal optionClicked()
     Row {
         anchors.fill: parent
         spacing: 2
-        Button {
+        ToolButton{
+            id: menuButton
+            icon.source: "qrc:/images/drawer.png"
+            width: parent.height
+            height: parent.height
+            enabled: !stack.empty
+            onClicked: {
+                menuClicked()
+            }
+        }
+        ToolButton {
             id: backButton
-            text: "<"
-            width: 24
+            icon.source: "qrc:/images/angle-arrow-left.svg"
+            width: parent.height
             height: parent.height
             enabled: !stack.empty
             onClicked: stack.pop()
         }
 
-        Button {
-            id: titleLabel
-            width: parent.width - backButton.width - logoutButton.width - 2
-            height: parent.height
-            anchors.leftMargin: 2
-            onClicked: {titleClicked()}
-        }
-
-        Rectangle {
+        ToolButton {
             id: verifyRect
-            height: parent.height - 5
-            width: height 
-            radius: width/2
-            color: "#ffaf49"
-            anchors.right: logoutButton.left
-            anchors.verticalCenter: parent.verticalCenter
-            visible: false
-            Label {
-                anchors.centerIn: parent
-                color: "white"
-                font.pointSize: 10
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                text: "!"
-            }
-        }
-
-        Button {
-            id: logoutButton
-            text: "Logout"
-            anchors.leftMargin: 2
+            icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+            width: parent.height
             height: parent.height
-            onClicked: logoutDialog.open()
+            enabled: !stack.empty
+            onClicked: {verifyClicked()}
+        }
+        Item{
+            width: parent.width-backButton.width - voiceCallButton.width - videoCallButton.width - optionsButton.width - verifyRect.width -2
+            height: parent.height            
+            Label {
+                id: titleLabel
+                width: parent.width 
+                height: parent.height
+                anchors.leftMargin: 2
+                verticalAlignment:Text.AlignVCenter
+            }
+
+            MouseArea {
+                id: ma
+                anchors.fill: parent
+                onClicked: {
+                    titleClicked()                    
+                }
+            }
+        }
+       
+       
+        ToolButton {
+            id: voiceCallButton
+            icon.source: "qrc:/images/place-call.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {voiceCallClicked()}
         }
 
-        Dialog {
-            id: logoutDialog
-            x: (qmlLibRoot.width - width) / 2
-            y: (qmlLibRoot.height - height) / 2
-            title: "Logout"
-            standardButtons: Dialog.Cancel | Dialog.Ok
-            Label {
-                text: "Are you sure you want to logout ?"
-            }
-            onAccepted: {
-                MatrixClient.logout()
-            }
-            onRejected: {}
+        ToolButton {
+            id: videoCallButton
+            icon.source: "qrc:/images/video.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {videoCallClicked()}
+        } 
+        
+        ToolButton {
+            id: optionsButton
+            icon.source: "qrc:/images/options.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {optionClicked()}
         }
+
+    }
+
+    function setHomeButtonsVisible(visible){
+        menuButton.visible = visible;
+        backButton.visible = !visible;
+    }
+
+    function setTimelineButtonsVisible(visible){
+        optionsButton.visible = visible;
+        voiceCallButton.visible = visible;
+        videoCallButton.visible = visible;
     }
 
     function setTitle(title){
@@ -82,6 +114,10 @@ Rectangle {
         } else {
             verifyRect.visible = true
         }
+    }
+
+    Component.onCompleted: {
+        setHomeButtonsVisible(false)
     }
 }
 
