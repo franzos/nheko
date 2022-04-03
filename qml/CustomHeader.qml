@@ -7,12 +7,23 @@ ToolBar {
     width: parent.width
 
     signal titleClicked()
+    signal menuClicked()
     Row {
         anchors.fill: parent
         spacing: 2
-        Button {
+        ToolButton{
+            id: menuButton
+            icon.source: "qrc:/images/drawer.png"
+            width: parent.height
+            height: parent.height
+            enabled: !stack.empty
+            onClicked: {
+                menuClicked()
+            }
+        }
+        ToolButton {
             id: backButton
-            text: "<"
+            icon.source: "qrc:/images/back.png"
             width: parent.height
             height: parent.height
             enabled: !stack.empty
@@ -21,7 +32,7 @@ ToolBar {
 
         Button {
             id: titleLabel
-            width: parent.width - backButton.width - logoutButton.width - 2
+            width: parent.width - backButton.width - 2
             height: parent.height
             anchors.leftMargin: 2
             onClicked: {titleClicked()}
@@ -33,7 +44,7 @@ ToolBar {
             width: height 
             radius: width/2
             color: "#ffaf49"
-            anchors.right: logoutButton.left
+            anchors.right: titleLabel.right
             anchors.verticalCenter: parent.verticalCenter
             visible: false
             Label {
@@ -45,29 +56,11 @@ ToolBar {
                 text: "!"
             }
         }
+    }
 
-        Button {
-            id: logoutButton
-            text: "Logout"
-            anchors.leftMargin: 2
-            height: parent.height
-            onClicked: logoutDialog.open()
-        }
-
-        Dialog {
-            id: logoutDialog
-            x: (qmlLibRoot.width - width) / 2
-            y: (qmlLibRoot.height - height) / 2
-            title: "Logout"
-            standardButtons: Dialog.Cancel | Dialog.Ok
-            Label {
-                text: "Are you sure you want to logout ?"
-            }
-            onAccepted: {
-                MatrixClient.logout()
-            }
-            onRejected: {}
-        }
+    function setHomeButtonsVisible(visible){
+        menuButton.visible = visible;
+        backButton.visible = !visible;
     }
 
     function setTitle(title){
@@ -81,6 +74,10 @@ ToolBar {
         } else {
             verifyRect.visible = true
         }
+    }
+
+    Component.onCompleted: {
+        setHomeButtonsVisible(false)
     }
 }
 

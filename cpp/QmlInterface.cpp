@@ -4,6 +4,7 @@
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
+#include "mydevice.h"
 
 namespace PX::GUI::MATRIX{
 QmlInterface::QmlInterface(QObject *parent): 
@@ -18,6 +19,7 @@ QmlInterface::QmlInterface(QObject *parent):
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+    qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);

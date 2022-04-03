@@ -12,12 +12,9 @@ using namespace PX::GUI::MATRIX;
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    // MatrixClient matrixClient(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    // matrixClient.load();
-    // QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
     MatrixQmlApplicationEngine matrixClientApp;
     matrixClientApp.load();
     spdlog::info("info log from spdlog");
