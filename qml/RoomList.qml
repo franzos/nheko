@@ -48,8 +48,7 @@ CustomPage {
         id: selfVerificationCheck
     }
 
-    Component.onCompleted: {
-        header.titleClicked.connect(selfVerificationCheck.verify)
+    Component.onCompleted: {        
         selfVerificationCheck.statusChanged.connect(onVerificationStatusChanged)
     }
     

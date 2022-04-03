@@ -13,7 +13,7 @@ Drawer {
         id: modelMenu
         ListElement {
             item: "logout"
-            icon: "qrc:/images/logout.png"
+            icon: "qrc:/images/power-off.svg"
         }
     }
 

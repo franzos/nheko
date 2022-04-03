@@ -8,6 +8,10 @@ ToolBar {
 
     signal titleClicked()
     signal menuClicked()
+    signal verifyClicked()
+    signal voiceCallClicked()
+    signal videoCallClicked()
+    signal optionClicked()
     Row {
         anchors.fill: parent
         spacing: 2
@@ -23,44 +27,80 @@ ToolBar {
         }
         ToolButton {
             id: backButton
-            icon.source: "qrc:/images/back.png"
+            icon.source: "qrc:/images/angle-arrow-left.svg"
             width: parent.height
             height: parent.height
             enabled: !stack.empty
             onClicked: stack.pop()
         }
 
-        Button {
-            id: titleLabel
-            width: parent.width - backButton.width - 2
-            height: parent.height
-            anchors.leftMargin: 2
-            onClicked: {titleClicked()}
-        }
-
-        Rectangle {
+        ToolButton {
             id: verifyRect
-            height: parent.height - 5
-            width: height 
-            radius: width/2
-            color: "#ffaf49"
-            anchors.right: titleLabel.right
-            anchors.verticalCenter: parent.verticalCenter
-            visible: false
+            icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+            width: parent.height
+            height: parent.height
+            enabled: !stack.empty
+            onClicked: {verifyClicked()}
+        }
+        Item{
+            width: parent.width-backButton.width - voiceCallButton.width - videoCallButton.width - optionsButton.width - verifyRect.width -2
+            height: parent.height            
             Label {
-                anchors.centerIn: parent
-                color: "white"
-                font.pointSize: 10
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                text: "!"
+                id: titleLabel
+                width: parent.width 
+                height: parent.height
+                anchors.leftMargin: 2
+                verticalAlignment:Text.AlignVCenter
+            }
+
+            MouseArea {
+                id: ma
+                anchors.fill: parent
+                onClicked: {
+                    titleClicked()                    
+                }
             }
         }
+       
+       
+        ToolButton {
+            id: voiceCallButton
+            icon.source: "qrc:/images/place-call.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {voiceCallClicked()}
+        }
+
+        ToolButton {
+            id: videoCallButton
+            icon.source: "qrc:/images/video.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {videoCallClicked()}
+        } 
+        
+        ToolButton {
+            id: optionsButton
+            icon.source: "qrc:/images/options.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {optionClicked()}
+        }
+
     }
 
     function setHomeButtonsVisible(visible){
         menuButton.visible = visible;
         backButton.visible = !visible;
+    }
+
+    function setTimelineButtonsVisible(visible){
+        optionsButton.visible = visible;
+        voiceCallButton.visible = visible;
+        videoCallButton.visible = visible;
     }
 
     function setTitle(title){
