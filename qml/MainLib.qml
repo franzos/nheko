@@ -14,7 +14,9 @@ Item {
         id: stack
         anchors.fill: parent
     }
-
+    FontMetrics {
+        id: fontMetrics
+    }
     UIA{
     }
 
@@ -47,6 +49,11 @@ Item {
         id:errorPage
         x: (qmlApplication.width - width) / 2
         y: (qmlApplication.height - height) / 2
+    }
+    
+    function destroyOnClose(obj) {
+        if (obj.closing != undefined) obj.closing.connect(() => obj.destroy(1000));
+        else if (obj.aboutToHide != undefined) obj.aboutToHide.connect(() => obj.destroy(1000));
     }
 
     function onNewInviteState() {

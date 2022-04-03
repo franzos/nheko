@@ -58,7 +58,7 @@ Popup {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "image": ":/icons/icons/ui/place-call.svg"
+                        "image": ":/images/place-call.svg"
                     });
                     dialog.open();
                     return false;
@@ -81,7 +81,7 @@ Popup {
 
             Button {
                 text: qsTr("Voice")
-                icon.source: "qrc:/icons/icons/ui/place-call.svg"
+                icon.source: "qrc:/images/place-call.svg"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
@@ -94,7 +94,7 @@ Popup {
             Button {
                 visible: CallManager.cameras.length > 0
                 text: qsTr("Video")
-                icon.source: "qrc:/icons/icons/ui/video.svg"
+                icon.source: "qrc:/images/video.svg"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
@@ -108,7 +108,7 @@ Popup {
             Button {
                 visible: CallManager.screenShareSupported
                 text: qsTr("Screen")
-                icon.source: "qrc:/icons/icons/ui/screen-share.svg"
+                icon.source: "qrc:/images/screen-share.svg"
                 onClicked: {
                     var dialog = screenShareDialog.createObject(timelineRoot);
                     dialog.open();
@@ -136,7 +136,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + GlobalObject.colors.windowText
+                    source: "image://colorimage/:/images/microphone-unmute.svg?" + GlobalObject.colors.windowText
                 }
 
                 ComboBox {
@@ -157,7 +157,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video.svg?" + GlobalObject.colors.windowText
+                    source: "image://colorimage/:/images/video.svg?" + GlobalObject.colors.windowText
                 }
 
                 ComboBox {

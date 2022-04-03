@@ -1,4 +1,6 @@
 #include "MatrixQmlApplicationEngine.h"
+#include <QQuickView>
+#include "ColorImageProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -10,6 +12,7 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     //         QCoreApplication::instance()->exit(-1);
     //     }
     // }, Qt::QueuedConnection);
+    addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
 }
 
 void MatrixQmlApplicationEngine::load(){

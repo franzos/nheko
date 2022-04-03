@@ -1,11 +1,18 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import GlobalObject 1.0
 import CallManager 1.0
-
+import CallType 1.0
 Popup {
+    id: callInv
+
     closePolicy: Popup.NoAutoClose
     width: parent.width
     height: parent.height
@@ -36,16 +43,18 @@ Popup {
 
         Label {
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: msgView.height / 25
+            Layout.topMargin: callInv.parent.height / 25
+            Layout.fillWidth: true
             text: CallManager.callPartyDisplayName
             font.pointSize: fontMetrics.font.pointSize * 2
             color: GlobalObject.colors.windowText
+            horizontalAlignment: Text.AlignHCenter
         }
 
         // Avatar {
         //     Layout.alignment: Qt.AlignCenter
-        //     width: msgView.height / 5
-        //     height: msgView.height / 5
+        //     Layout.preferredHeight: callInv.height / 5
+        //     Layout.preferredWidth: callInv.height / 5
         //     url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
         //     userid: CallManager.callParty
         //     displayName: CallManager.callPartyDisplayName
@@ -53,14 +62,14 @@ Popup {
 
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: msgView.height / 25
+            Layout.bottomMargin: callInv.height / 25
 
             Image {
-                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
+                property string image: CallManager.callType == CallType.VIDEO ? ":/images/video.svg" : ":/images/place-call.svg"
 
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: msgView.height / 10
-                Layout.preferredHeight: msgView.height / 10
+                Layout.preferredWidth: callInv.height / 10
+                Layout.preferredHeight: callInv.height / 10
                 source: "image://colorimage/" + image + "?" + GlobalObject.colors.windowText
             }
 
@@ -76,10 +85,10 @@ Popup {
         ColumnLayout {
             id: deviceCombos
 
-            property int imageSize: msgView.height / 20
+            property int imageSize: callInv.height / 20
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: msgView.height / 25
+            Layout.bottomMargin: callInv.height / 25
 
             RowLayout {
                 Layout.alignment: Qt.AlignCenter
@@ -87,7 +96,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + GlobalObject.colors.windowText
+                    source: "image://colorimage/:/images/microphone-unmute.svg?" + GlobalObject.colors.windowText
                 }
 
                 ComboBox {
@@ -106,7 +115,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/video.svg?" + GlobalObject.colors.windowText
+                    source: "image://colorimage/:/images/video.svg?" + GlobalObject.colors.windowText
                 }
 
                 ComboBox {
@@ -123,22 +132,23 @@ Popup {
         RowLayout {
             id: buttonLayout
 
-            property int buttonSize: msgView.height / 8
+            property int buttonSize: callInv.height / 8
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "image": ":/icons/icons/ui/place-call.svg"
+                        "image": ":/images/place-call.svg"
                     });
                     dialog.open();
+                    destroyOnClose(dialog);
                     return false;
                 }
                 return true;
             }
 
             Layout.alignment: Qt.AlignCenter
-            spacing: msgView.height / 6
+            spacing: callInv.height / 6
 
             RoundButton {
                 implicitWidth: buttonLayout.buttonSize
@@ -154,7 +164,7 @@ Popup {
                 }
 
                 contentItem: Image {
-                    source: "image://colorimage/:/icons/icons/ui/end-call.svg?#ffffff"
+                    source: "image://colorimage/:/images/end-call.svg?#ffffff"
                 }
 
             }
@@ -162,7 +172,7 @@ Popup {
             RoundButton {
                 id: acceptButton
 
-                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
+                property string image: CallManager.callType == CallType.VIDEO ? ":/images/video.svg" : ":/images/place-call.svg"
 
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize

@@ -1,3 +1,3 @@
  RESOURCES += \
     $$PWD/qml.qrc \
-    $$PWD/../resources/res.qrc
+    $$PWD/../resources/resources.qrc \

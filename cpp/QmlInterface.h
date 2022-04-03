@@ -4,6 +4,7 @@
 #include <QUrl>
 #include <QQmlApplicationEngine>
 #include <matrix-client-library/Client.h>
+#include <matrix-client-library/voip/CallManager.h>
 #include <QQuickView>
 #include <QWindow>
 

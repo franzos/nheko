@@ -53,7 +53,7 @@ Rectangle {
             Layout.leftMargin: 4
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video.svg" : "qrc:/icons/icons/ui/place-call.svg"
+            source: CallManager.callType == CallType.VIDEO ? "qrc:/images/video.svg" : "qrc:/images/place-call.svg"
         }
 
         Label {
@@ -71,7 +71,7 @@ Rectangle {
             width: 20
             height: 20
             buttonTextColor: "#000000"
-            image: ":/icons/icons/ui/settings.svg"
+            image: ":/images/settings.svg"
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Devices")
@@ -83,21 +83,21 @@ Rectangle {
 
         Button {
             Layout.rightMargin: 4
-            icon.source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video.svg" : "qrc:/icons/icons/ui/place-call.svg"
+            icon.source: CallManager.callType == CallType.VIDEO ? "qrc:/images/video.svg" : "qrc:/images/place-call.svg"
             text: qsTr("Accept")
             palette: GlobalObject.colors
             onClicked: {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "image": ":/icons/icons/ui/place-call.svg"
+                        "image": ":/images/place-call.svg"
                     });
                     dialog.open();
                     return ;
                 } else if (!CallManager.mics.includes(Settings.microphone)) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("Unknown microphone: %1").arg(Settings.microphone),
-                        "image": ":/icons/icons/ui/place-call.svg"
+                        "image": ":/images/place-call.svg"
                     });
                     dialog.open();
                     return ;
@@ -105,7 +105,7 @@ Rectangle {
                 if (CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("Unknown camera: %1").arg(Settings.camera),
-                        "image": ":/icons/icons/ui/video.svg"
+                        "image": ":/images/video.svg"
                     });
                     dialog.open();
                     return ;
@@ -116,7 +116,7 @@ Rectangle {
 
         Button {
             Layout.rightMargin: 16
-            icon.source: "qrc:/icons/icons/ui/end-call.svg"
+            icon.source: "qrc:/images/end-call.svg"
             text: qsTr("Decline")
             palette: GlobalObject.colors
             onClicked: {

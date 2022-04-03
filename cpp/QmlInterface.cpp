@@ -5,8 +5,13 @@
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
 #include "GlobalObject.h"
+#include "mydevice.h"
 
 namespace PX::GUI::MATRIX{
+
+using webrtc::CallType;
+using webrtc::State;
+
 QmlInterface::QmlInterface(QObject *parent): 
     QObject(parent),
     _roomListModel(new RoomListModel({})),
@@ -46,10 +51,14 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
         return _roomListModel;
     });
-    qmlRegisterSingletonType<GlobalObject>(
-      "GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
+    qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new GlobalObject();
-      });
+    });
+
+    qRegisterMetaType<webrtc::CallType>();
+    qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
+    qRegisterMetaType<webrtc::State>();
+    qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "WebRTCState", 1, 0, "WebRTCState", QStringLiteral("Can't instantiate enum"));
 }
 
 QUrl QmlInterface::mainLibQMLurl(){
@@ -68,7 +77,6 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
         RoomListItem room(  QString::fromStdString(r.first),
                             roomInfo,
                             r.second.unread_notifications.notification_count);
-        connect(_client->timeline(QString::fromStdString(r.first)), &Timeline::newCallEvent, _callMgr, &CallManager::syncEvent, Qt::UniqueConnection);
         roomList << room;
     }
 
@@ -94,7 +102,6 @@ void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
     for(auto const &r: joinedRooms.toStdMap()){
         RoomListItem room(  r.first,
                             r.second);
-        connect(_client->timeline(r.first), &Timeline::newCallEvent, _callMgr, &CallManager::syncEvent, Qt::UniqueConnection);
         roomList << room;
     }
 

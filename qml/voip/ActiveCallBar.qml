@@ -58,7 +58,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: callTypeIcon
-                        source: "qrc:/icons/icons/ui/place-call.svg"
+                        source: "qrc:/images/place-call.svg"
                     }
 
                 },
@@ -68,7 +68,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: callTypeIcon
-                        source: "qrc:/icons/icons/ui/video.svg"
+                        source: "qrc:/images/video.svg"
                     }
 
                 },
@@ -78,7 +78,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: callTypeIcon
-                        source: "qrc:/icons/icons/ui/screen-share.svg"
+                        source: "qrc:/images/screen-share.svg"
                     }
 
                 }
@@ -201,7 +201,7 @@ Rectangle {
             width: 24
             height: 24
             buttonTextColor: "#000000"
-            image: ":/icons/icons/ui/picture-in-picture.svg"
+            image: ":/images/picture-in-picture.svg"
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Hide/Show Picture-in-Picture")
@@ -214,7 +214,7 @@ Rectangle {
             width: 24
             height: 24
             buttonTextColor: "#000000"
-            image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.svg" : ":/icons/icons/ui/microphone-mute.svg"
+            image: CallManager.isMicMuted ? ":/images/microphone-unmute.svg" : ":/images/microphone-mute.svg"
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")

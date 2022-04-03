@@ -27,7 +27,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + GlobalObject.colors.windowText
+                    source: "image://colorimage/:/images/microphone-unmute.svg?" + GlobalObject.colors.windowText
                 }
 
                 ComboBox {
@@ -45,7 +45,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.svg?" + GlobalObject.colors.windowText
+                    source: "image://colorimage/:/images/video-call.svg?" + GlobalObject.colors.windowText
                 }
 
                 ComboBox {

@@ -48,8 +48,7 @@ CustomPage {
         id: selfVerificationCheck
     }
 
-    Component.onCompleted: {
-        header.titleClicked.connect(selfVerificationCheck.verify)
+    Component.onCompleted: {        
         selfVerificationCheck.statusChanged.connect(onVerificationStatusChanged)
     }
     
@@ -71,6 +70,7 @@ CustomPage {
         function onUserDisplayNameReady(name){
             displayName = name
             header.setTitle(displayName)
+            header.setHomeButtonsVisible(true)
             onVerificationStatusChanged()
         }
         function onRoomCreated(id){
