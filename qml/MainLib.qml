@@ -2,8 +2,9 @@ import QtQuick 2.9
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-
+import CallManager 1.0
 import MatrixClient 1.0
+import "voip/"
 
 Item {
     id: qmlLibRoot
@@ -15,6 +16,14 @@ Item {
     }
 
     UIA{
+    }
+
+    Component {
+        id: mobileCallInviteDialog
+
+        CallInvite {
+        }
+
     }
 
     BusyIndicator {
@@ -38,6 +47,15 @@ Item {
         id:errorPage
         x: (qmlApplication.width - width) / 2
         y: (qmlApplication.height - height) / 2
+    }
+
+    function onNewInviteState() {
+        if (CallManager.haveCallInvite) {
+            console.log("New Call Invite!")
+            var dialog = mobileCallInviteDialog.createObject(qmlLibRoot);
+            dialog.open();
+            destroyOnClose(dialog);
+        }
     }
 
     Connections {        
@@ -71,6 +89,7 @@ Item {
     
     Component.onCompleted: {
         stack.push(busyIndicator)
+        CallManager.onNewInviteState.connect(onNewInviteState)
         MatrixClient.start()
     }
 }

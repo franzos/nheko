@@ -26,6 +26,7 @@ private slots:
 private:
     RoomListModel *_roomListModel = nullptr;
     Client *_client = nullptr;
+    CallManager *_callMgr = nullptr;
     VerificationManager *_verificationManager;
 };
 }

@@ -3,6 +3,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import GlobalObject 1.0
+import CallManager 1.0
 
 Popup {
     closePolicy: Popup.NoAutoClose
@@ -41,14 +42,14 @@ Popup {
             color: GlobalObject.colors.windowText
         }
 
-        Avatar {
-            Layout.alignment: Qt.AlignCenter
-            width: msgView.height / 5
-            height: msgView.height / 5
-            url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-            userid: CallManager.callParty
-            displayName: CallManager.callPartyDisplayName
-        }
+        // Avatar {
+        //     Layout.alignment: Qt.AlignCenter
+        //     width: msgView.height / 5
+        //     height: msgView.height / 5
+        //     url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
+        //     userid: CallManager.callParty
+        //     displayName: CallManager.callPartyDisplayName
+        // }
 
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter

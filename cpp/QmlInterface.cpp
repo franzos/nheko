@@ -11,6 +11,7 @@ QmlInterface::QmlInterface(QObject *parent):
     QObject(parent),
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
+    _callMgr(_client->callManager()),
     _verificationManager(_client->verificationManager()){
     
     _client->enableLogger(true, true);
@@ -19,9 +20,25 @@ QmlInterface::QmlInterface(QObject *parent):
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+    QObject::connect(_callMgr, &CallManager::devicesChanged, [=]() {
+        auto defaultMic = UserSettings::instance()->microphone();
+        auto defaultCam = UserSettings::instance()->camera();
+        auto mics = CallDevices::instance().names(false, defaultMic.toStdString());
+        auto cams = CallDevices::instance().names(true, defaultCam.toStdString());
+        nhlog::ui()->info(">>> DEVICES CHANGED: mics: {} - cams: {}", mics.size(), cams.size());
+        if (mics.size() > 0) {
+            UserSettings::instance()->setMicrophone(QString::fromStdString(mics[0]));
+            nhlog::ui()->info("   - [mic]: {}", mics[0]);
+        }
+        if (cams.size() > 0) {
+            UserSettings::instance()->setCamera(QString::fromStdString(cams[0]));
+            nhlog::ui()->info("   - [cam]: {}", cams[0]);
+        }
+    });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
+    qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);
     qmlRegisterSingletonInstance<UIA>("UIA", 1, 0, "UIA", UIA::instance());
     qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
     qmlRegisterSingletonInstance<VerificationManager>("VerificationManager", 1, 0, "VerificationManager", _verificationManager);
@@ -51,6 +68,7 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
         RoomListItem room(  QString::fromStdString(r.first),
                             roomInfo,
                             r.second.unread_notifications.notification_count);
+        connect(_client->timeline(QString::fromStdString(r.first)), &Timeline::newCallEvent, _callMgr, &CallManager::syncEvent, Qt::UniqueConnection);
         roomList << room;
     }
 
@@ -76,6 +94,7 @@ void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
     for(auto const &r: joinedRooms.toStdMap()){
         RoomListItem room(  r.first,
                             r.second);
+        connect(_client->timeline(r.first), &Timeline::newCallEvent, _callMgr, &CallManager::syncEvent, Qt::UniqueConnection);
         roomList << room;
     }
 
