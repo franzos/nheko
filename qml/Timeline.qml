@@ -70,6 +70,7 @@ Room {
         timelineModel = Rooms.timelineModel(roomid)    
         header.setCallButtonsVisible(true)
         header.setOptionButtonsVisible(true)
+        header.optionClicked.connect(onOptionClicked)
     }
 
     Connections {
@@ -77,5 +78,46 @@ Room {
         function onTypingUsersChanged(text) {
             typingIndicator.setTypingDisplayText(text)
         }
+    }
+
+    function onOptionClicked(){
+        contextMenu.popup()     
+    }
+
+    Menu {
+        id: contextMenu
+        margins: 10
+        Action {
+            id: inviteUserAction
+            text: qsTr("&Invite User")
+            icon.source: "qrc:/images/add-square-button.svg"
+            shortcut: StandardKey.Copy
+            // onTriggered: 
+        }
+        
+        Action {
+            id: leaveRoomAction
+            text: qsTr("&Leave Room")
+            icon.source: "qrc:/images/ban.svg"
+            shortcut: StandardKey.Copy
+            // onTriggered: 
+        }
+
+        Action {
+            id: membersAction
+            text: qsTr("&Members")
+            icon.source: "qrc:/images/people.svg"
+            shortcut: StandardKey.Copy
+            // onTriggered: 
+        }
+
+        Action {
+            id: settingAction
+            text: qsTr("&Setting")
+            icon.source: "qrc:/images/settings.svg"
+            shortcut: StandardKey.Copy
+            // onTriggered:
+        }
+              
     }
 }
