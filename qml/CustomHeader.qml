@@ -13,7 +13,7 @@ ToolBar {
     signal videoCallClicked()
     signal endCallClicked()
     signal optionClicked()
-    Row {
+    RowLayout {
         anchors.fill: parent
         spacing: 2
         ToolButton{
@@ -22,6 +22,7 @@ ToolBar {
             width: parent.height
             height: parent.height
             enabled: !stack.empty
+            visible: false
             onClicked: {
                 menuClicked()
             }
@@ -44,7 +45,7 @@ ToolBar {
             onClicked: {verifyClicked()}
         }
         Item{
-            width: parent.width-backButton.width - voiceCallButton.width - videoCallButton.width - optionsButton.width - verifyRect.width -2
+            Layout.fillWidth: true
             height: parent.height            
             Label {
                 id: titleLabel
@@ -107,7 +108,7 @@ ToolBar {
         backButton.visible = !visible;
     }
 
-    function setTimelineButtonsVisible(visible){
+    function setCallButtonsVisible(visible){
         voiceCallButton.visible = visible;
         videoCallButton.visible = visible;
     }
@@ -118,6 +119,10 @@ ToolBar {
 
     function setOptionButtonsVisible(visible){        
         optionsButton.visible = visible;
+    }
+
+    function setBackButtonsVisible(visible){        
+        backButton.visible = visible
     }
 
     function setTitle(title){
@@ -131,10 +136,6 @@ ToolBar {
         } else {
             verifyRect.visible = true
         }
-    }
-
-    Component.onCompleted: {
-        setHomeButtonsVisible(false)
     }
 }
 
