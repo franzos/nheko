@@ -11,6 +11,7 @@ ToolBar {
     signal verifyClicked()
     signal voiceCallClicked()
     signal videoCallClicked()
+    signal endCallClicked()
     signal optionClicked()
     Row {
         anchors.fill: parent
@@ -80,6 +81,15 @@ ToolBar {
             visible: false
             onClicked: {videoCallClicked()}
         } 
+
+        ToolButton {
+            id: endCallButton
+            icon.source: "qrc:/images/end-call.svg"
+            width: parent.height
+            height: parent.height
+            visible: false
+            onClicked: {endCallClicked()}
+        }
         
         ToolButton {
             id: optionsButton
@@ -98,9 +108,16 @@ ToolBar {
     }
 
     function setTimelineButtonsVisible(visible){
-        optionsButton.visible = visible;
         voiceCallButton.visible = visible;
         videoCallButton.visible = visible;
+    }
+
+    function setEndCallButtonsVisible(visible){
+        endCallButton.visible = visible;
+    }
+
+    function setOptionButtonsVisible(visible){        
+        optionsButton.visible = visible;
     }
 
     function setTitle(title){
