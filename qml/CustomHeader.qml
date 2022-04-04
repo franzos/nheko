@@ -5,7 +5,7 @@ import MatrixClient 1.0
 
 ToolBar {
     width: parent.width
-
+    // TODO : important -> currently one header will be create for each page and they will be accumulated.
     signal titleClicked()
     signal menuClicked()
     signal verifyClicked()
@@ -130,6 +130,10 @@ ToolBar {
         backButton.enabled= !stack.empty
     }
 
+    function title(){
+        return titleLabel.text
+    }
+    
     function setVerified(flag){
         if(flag){
             verifyRect.visible = false

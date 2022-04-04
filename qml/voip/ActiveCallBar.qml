@@ -14,7 +14,6 @@ Rectangle {
         onClicked: {
             if (CallManager.callType != CallType.VOICE)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
-
         }
     }
 

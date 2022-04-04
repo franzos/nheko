@@ -75,25 +75,13 @@ Room {
     function startVideoCall(){
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
-    
-    function onNewCallState(){
-        if(CallManager.isOnCall){
-            header.setTimelineButtonsVisible(false)
-            header.setEndCallButtonsVisible(true)
-        } else {
-            header.setTimelineButtonsVisible(true)
-            header.setEndCallButtonsVisible(false)
-        }
-    }
 
     Component.onCompleted: {
         timelineModel = Rooms.timelineModel(roomid)    
-        header.setCallButtonsVisible(true)
         header.setOptionButtonsVisible(true)
-        header.setEndCallButtonsVisible(false)
         header.voiceCallClicked.connect(startVoiceCall)
         header.videoCallClicked.connect(startVideoCall)
-        CallManager.onNewCallState.connect(onNewCallState)
+        listenToCallManager()
     }
 
     Connections {

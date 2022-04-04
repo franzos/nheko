@@ -74,13 +74,10 @@ Item {
     function onNewCallState(){
         if(CallManager.isOnCall && CallManager.callType != CallType.VOICE){
             stack.push(videoItem);
-            // videoItem.visible = true;
             QmlInterface.setVideoCallItem();
-        } else {
-            // item = stack.currentItem()
-            // if(item == videoItem)
+        } else if (!CallManager.isOnCall) {
+            if(stack.currentItem == videoItem)
                 stack.pop()
-            // videoItem.visible = false;
         }
     }
 
