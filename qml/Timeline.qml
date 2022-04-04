@@ -68,7 +68,7 @@ Room {
 
     Component.onCompleted: {
         timelineModel = Rooms.timelineModel(roomid)    
-        header.setTimelineButtonsVisible(true)
+        header.setCallButtonsVisible(true)
         header.setOptionButtonsVisible(true)
     }
 
