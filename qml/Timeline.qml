@@ -69,18 +69,31 @@ Room {
     }
 
     function startVoiceCall(){
-        CallManager.sendInvite(roomid, CallType.VOICE);
+        CallManager.sendInvite(roomid,CallType.VOICE)
     }
     
     function startVideoCall(){
-        CallManager.sendInvite(roomid, CallType.VIDEO);
+        CallManager.sendInvite(roomid,CallType.VIDEO)
     }
     
+    function onNewCallState(){
+        if(CallManager.isOnCall){
+            header.setTimelineButtonsVisible(false)
+            header.setEndCallButtonsVisible(true)
+        } else {
+            header.setTimelineButtonsVisible(true)
+            header.setEndCallButtonsVisible(false)
+        }
+    }
+
     Component.onCompleted: {
         timelineModel = Rooms.timelineModel(roomid)    
         header.setTimelineButtonsVisible(true)
+        header.setOptionButtonsVisible(true)
+        header.setEndCallButtonsVisible(false)
         header.voiceCallClicked.connect(startVoiceCall)
         header.videoCallClicked.connect(startVideoCall)
+        CallManager.onNewCallState.connect(onNewCallState)
     }
 
     Connections {
