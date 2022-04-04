@@ -13,9 +13,11 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     //     }
     // }, Qt::QueuedConnection);
     addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
+    QmlInterface::_engine=this;
 }
 
 void MatrixQmlApplicationEngine::load(){
     QQmlApplicationEngine::load(mainAppQMLurl());
 }
+
 }

@@ -10,6 +10,8 @@ import QtQuick.Layouts 1.2
 import GlobalObject 1.0
 import CallManager 1.0
 import CallType 1.0
+import Settings 1.0
+
 Popup {
     id: callInv
 
@@ -183,6 +185,7 @@ Popup {
                             Settings.camera = cameraCombo.currentText;
 
                         CallManager.acceptInvite();
+                        console.log("Call invite Accepted!");
                         close();
                     }
                 }

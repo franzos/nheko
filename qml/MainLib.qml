@@ -2,8 +2,11 @@ import QtQuick 2.9
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
+import org.freedesktop.gstreamer.GLVideoItem 1.0
 import CallManager 1.0
 import MatrixClient 1.0
+import CallType 1.0
+import QmlInterface 1.0
 import "voip/"
 
 Item {
@@ -20,12 +23,15 @@ Item {
     UIA{
     }
 
+    VideoCall {
+        id: videoItem
+        visible: false
+    }
+
     Component {
         id: mobileCallInviteDialog
-
         CallInvite {
         }
-
     }
 
     BusyIndicator {
@@ -65,6 +71,19 @@ Item {
         }
     }
 
+    function onNewCallState(){
+        if(CallManager.isOnCall && CallManager.callType != CallType.VOICE){
+            stack.push(videoItem);
+            // videoItem.visible = true;
+            QmlInterface.setVideoCallItem();
+        } else {
+            // item = stack.currentItem()
+            // if(item == videoItem)
+                stack.pop()
+            // videoItem.visible = false;
+        }
+    }
+
     Connections {        
         target: MatrixClient
         function onDropToLogin(msg) {
@@ -97,6 +116,7 @@ Item {
     Component.onCompleted: {
         stack.push(busyIndicator)
         CallManager.onNewInviteState.connect(onNewInviteState)
+        CallManager.onNewCallState.connect(onNewCallState)
         MatrixClient.start()
     }
 }
