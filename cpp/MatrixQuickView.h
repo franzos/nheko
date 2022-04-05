@@ -9,5 +9,7 @@ namespace PX::GUI::MATRIX{
 class MatrixQuickView : public QmlInterface, public QQuickView{
 public:
     MatrixQuickView(QWindow *parent = nullptr);
+public slots:
+    void setVideoCallItem() override;
 };
 }

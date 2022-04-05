@@ -23,14 +23,11 @@ public:
     QUrl mainAppQMLurl();
 
 public slots:
-    void setVideoCallItem();
+    virtual void setVideoCallItem() = 0;
 
 private slots:
     void initiateFinishedCB();
     void newSyncCb(const mtx::responses::Sync &sync);
-
-protected:
-    QQmlApplicationEngine *_engine = nullptr;
 
 private:
     RoomListModel *_roomListModel = nullptr;

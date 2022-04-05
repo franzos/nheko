@@ -160,13 +160,4 @@ void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
     }
     _roomListModel->add(roomList);
 }
-
-void QmlInterface::setVideoCallItem() {
-    if(_engine){
-        auto videoItem = _engine->rootObjects().first()->findChild<QQuickItem *>("videoCallItem");
-        if(videoItem){
-            WebRTCSession::instance().setVideoItem(videoItem);
-        }
-    }
-}
 }

@@ -9,5 +9,7 @@ class MatrixQmlApplicationEngine : public QmlInterface ,public QQmlApplicationEn
 public:
     MatrixQmlApplicationEngine(QObject *parent = nullptr);
     void load();
+public slots:
+    void setVideoCallItem() override;
 };
 }

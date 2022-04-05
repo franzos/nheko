@@ -12,7 +12,7 @@ import "voip/"
 Item {
     id: qmlLibRoot
     anchors.fill:parent
-
+    property bool embedVideoQML: false
     StackView {
         id: stack
         anchors.fill: parent
@@ -112,8 +112,10 @@ Item {
     
     Component.onCompleted: {
         stack.push(busyIndicator)
-        CallManager.onNewInviteState.connect(onNewInviteState)
-        CallManager.onNewCallState.connect(onNewCallState)
+        if(embedVideoQML){
+            CallManager.onNewInviteState.connect(onNewInviteState)
+            CallManager.onNewCallState.connect(onNewCallState)
+        }
         MatrixClient.start()
     }
 }

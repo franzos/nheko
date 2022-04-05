@@ -13,7 +13,9 @@ ApplicationWindow {
     visible: true
     Material.theme: Material.Dark
 
-    MainLib{}
+    MainLib{
+        embedVideoQML: true
+    }
 
     onClosing: {
         MatrixClient.stop()
