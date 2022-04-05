@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-import org.freedesktop.gstreamer.GLVideoItem 1.0
 import CallManager 1.0
 import MatrixClient 1.0
 import CallType 1.0
@@ -21,6 +20,11 @@ Item {
         id: fontMetrics
     }
     UIA{
+    }
+
+    VideoCallEmbedPage {
+        id: videoEmbedItem
+        visible: false
     }
 
     VideoCall {
@@ -53,8 +57,8 @@ Item {
 
     ErrorDialog{
         id:errorPage
-        x: (qmlApplication.width - width) / 2
-        y: (qmlApplication.height - height) / 2
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
     }
     
     function destroyOnClose(obj) {
@@ -112,8 +116,8 @@ Item {
     
     Component.onCompleted: {
         stack.push(busyIndicator)
+        CallManager.onNewInviteState.connect(onNewInviteState)
         if(embedVideoQML){
-            CallManager.onNewInviteState.connect(onNewInviteState)
             CallManager.onNewCallState.connect(onNewCallState)
         }
         MatrixClient.start()

@@ -8,7 +8,7 @@ import "device-verification"
 
 Page {
     id: page
-    width: parent.width
+    anchors.fill:parent
     readonly property bool inPortrait: width < height
     property string savedTitle
 

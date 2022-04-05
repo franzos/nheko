@@ -42,5 +42,6 @@
         <file>voip/PlaceCall.qml</file>
         <file>voip/ScreenShare.qml</file>
         <file>voip/VideoCall.qml</file>
+        <file>voip/VideoCallEmbedPage.qml</file>
     </qresource>
 </RCC>
