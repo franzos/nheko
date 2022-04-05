@@ -7,6 +7,7 @@
         <file>DirectChatDialog.qml</file>
         <file>ErrorDialog.qml</file>
         <file>InvitationRoom.qml</file>
+        <file>InviteUserDialog.qml</file>
         <file>LeaveMessage.qml</file>
         <file>Login.qml</file>
         <file>main.qml</file>

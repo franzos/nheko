@@ -19,6 +19,12 @@ QmlInterface::QmlInterface(QObject *parent):
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+    connect(_client, &Client::userInvitationFailed,[&](const QString &room_id, const QString user_id, const QString &error){
+        qDebug()<<"************************* invitation failed"<<user_id<<room_id<<" "<<error;
+    });
+    connect(_client, &Client::userInvited,[&](const QString &room_id, const QString user_id){
+        qDebug()<<"############################## invitation OKKKKK "<<user_id<<room_id;
+    });
     qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");

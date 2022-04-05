@@ -90,6 +90,12 @@ Room {
         y: (qmlLibRoot.height - height) / 2
     }
 
+    InviteUserDialog {
+        id: inviteuserDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+    }
+
     Menu {
         id: contextMenu
         margins: 10
@@ -98,7 +104,7 @@ Room {
             text: qsTr("&Invite User")
             icon.source: "qrc:/images/add-square-button.svg"
             shortcut: StandardKey.Copy
-            // onTriggered: 
+            onTriggered: inviteuserDialog.open()
         }
         
         Action {
