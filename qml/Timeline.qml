@@ -84,6 +84,12 @@ Room {
         contextMenu.popup()     
     }
 
+    LeaveMessage {
+        id: leaveDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+    }
+
     Menu {
         id: contextMenu
         margins: 10
@@ -100,7 +106,7 @@ Room {
             text: qsTr("&Leave Room")
             icon.source: "qrc:/images/ban.svg"
             shortcut: StandardKey.Copy
-            // onTriggered: 
+            onTriggered: leaveDialog.open()
         }
 
         Action {
