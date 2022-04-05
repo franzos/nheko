@@ -12,8 +12,12 @@ Drawer {
     ListModel {
         id: modelMenu
         ListElement {
-            item: "logout"
-            icon: "qrc:/images/power-off.svg"
+            item: "Logout"
+            icon: "qrc:/images/power-off.svg"            
+        }
+        ListElement {
+            item: "Settings"
+            icon: "qrc:/images/settings.svg"            
         }
     }
 
@@ -63,9 +67,11 @@ Drawer {
                     // menu.menuItemClicked( item, page )
                     listViewMenu.currentIndex = index
                     switch( item ) {
-                        case "logout":
+                        case "Logout":
                             logoutDialog.open()
                             break;
+                            case "Settings":
+                                break;
                     }
                 }
             }
