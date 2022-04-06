@@ -82,13 +82,7 @@ Rectangle {
         }
     }
 
-    MouseArea {
-        LeaveMessage {
-            id: dialog
-            x: (qmlLibRoot.width - width) / 2
-            y: (qmlLibRoot.height - height) / 2
-        }
-
+    MouseArea {    
         anchors.fill: parent
         onClicked: {
             if(room.invite){
@@ -100,10 +94,6 @@ Rectangle {
             } else {
                 createTimeline(room.id, room.name, room.avatar)
             }   
-        }
-        onPressAndHold: {
-            console.log(room.id)
-            dialog.open()
-        }
+        }       
     }
 }

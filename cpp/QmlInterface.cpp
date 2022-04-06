@@ -26,6 +26,13 @@ QmlInterface::QmlInterface(QObject *parent):
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+    connect(_client, &Client::userInvitationFailed,[&](const QString &room_id, const QString user_id, const QString &error){
+        //TODO 
+    });
+    connect(_client, &Client::userInvited,[&](const QString &room_id, const QString user_id){
+        //TODO
+    });
+    qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
     connect(_callMgr, &CallManager::devicesChanged, [=]() {
         auto defaultMic = UserSettings::instance()->microphone();
         auto defaultCam = UserSettings::instance()->camera();

@@ -39,6 +39,7 @@ ToolBar {
         ToolButton {
             id: verifyRect
             icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+            icon.color:"#C70039"
             width: parent.height
             height: parent.height
             enabled: !stack.empty
