@@ -1,4 +1,6 @@
 #include "MatrixQmlApplicationEngine.h"
+#include <QQuickItem>
+#include "ColorImageProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -10,9 +12,18 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     //         QCoreApplication::instance()->exit(-1);
     //     }
     // }, Qt::QueuedConnection);
+    addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
 }
 
 void MatrixQmlApplicationEngine::load(){
     QQmlApplicationEngine::load(mainAppQMLurl());
 }
+
+void MatrixQmlApplicationEngine::setVideoCallItem() {
+    auto videoItem = rootObjects().first()->findChild<QQuickItem *>("videoCallItem");
+    if(videoItem){
+        WebRTCSession::instance().setVideoItem(videoItem);
+    }
+}
+
 }

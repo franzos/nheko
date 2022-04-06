@@ -6,7 +6,6 @@ import MatrixClient 1.0
 
 CustomPage {
     id: loginPage
-    width: parent.width
     ColumnLayout{
         id: inputLayout
         anchors.centerIn: parent

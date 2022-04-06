@@ -5,7 +5,9 @@ import QtQml.Models 2.2
 
 import MatrixClient 1.0
 import TimelineModel 1.0
+import CallManager 1.0
 import Rooms 1.0
+import CallType 1.0
 
 Room {
     id: timeline
@@ -66,10 +68,20 @@ Room {
         }
     }
 
+    function startVoiceCall(){
+        CallManager.sendInvite(roomid,CallType.VOICE)
+    }
+    
+    function startVideoCall(){
+        CallManager.sendInvite(roomid,CallType.VIDEO)
+    }
+
     Component.onCompleted: {
         timelineModel = Rooms.timelineModel(roomid)    
-        header.setCallButtonsVisible(true)
         header.setOptionButtonsVisible(true)
+        header.voiceCallClicked.connect(startVoiceCall)
+        header.videoCallClicked.connect(startVideoCall)
+        listenToCallManager()
     }
 
     Connections {

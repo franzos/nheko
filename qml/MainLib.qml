@@ -2,19 +2,40 @@ import QtQuick 2.9
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-
+import CallManager 1.0
 import MatrixClient 1.0
+import CallType 1.0
+import QmlInterface 1.0
+import "voip/"
 
 Item {
     id: qmlLibRoot
     anchors.fill:parent
-
+    property bool embedVideoQML: false
     StackView {
         id: stack
         anchors.fill: parent
     }
-
+    FontMetrics {
+        id: fontMetrics
+    }
     UIA{
+    }
+
+    VideoCallEmbedPage {
+        id: videoEmbedItem
+        visible: false
+    }
+
+    VideoCall {
+        id: videoItem
+        visible: false
+    }
+
+    Component {
+        id: mobileCallInviteDialog
+        CallInvite {
+        }
     }
 
     BusyIndicator {
@@ -36,8 +57,32 @@ Item {
 
     ErrorDialog{
         id:errorPage
-        x: (qmlApplication.width - width) / 2
-        y: (qmlApplication.height - height) / 2
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+    }
+    
+    function destroyOnClose(obj) {
+        if (obj.closing != undefined) obj.closing.connect(() => obj.destroy(1000));
+        else if (obj.aboutToHide != undefined) obj.aboutToHide.connect(() => obj.destroy(1000));
+    }
+
+    function onNewInviteState() {
+        if (CallManager.haveCallInvite) {
+            console.log("New Call Invite!")
+            var dialog = mobileCallInviteDialog.createObject(qmlLibRoot);
+            dialog.open();
+            destroyOnClose(dialog);
+        }
+    }
+
+    function onNewCallState(){
+        if(CallManager.isOnCall && CallManager.callType != CallType.VOICE){
+            stack.push(videoItem);
+            QmlInterface.setVideoCallItem();
+        } else if (!CallManager.isOnCall) {
+            if(stack.currentItem == videoItem)
+                stack.pop()
+        }
     }
 
     Connections {        
@@ -71,6 +116,10 @@ Item {
     
     Component.onCompleted: {
         stack.push(busyIndicator)
+        CallManager.onNewInviteState.connect(onNewInviteState)
+        if(embedVideoQML){
+            CallManager.onNewCallState.connect(onNewCallState)
+        }
         MatrixClient.start()
     }
 }
