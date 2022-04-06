@@ -79,6 +79,7 @@ Room {
     Component.onCompleted: {
         timelineModel = Rooms.timelineModel(roomid)    
         header.setOptionButtonsVisible(true)
+        header.optionClicked.connect(onOptionClicked)
         header.voiceCallClicked.connect(startVoiceCall)
         header.videoCallClicked.connect(startVideoCall)
         listenToCallManager()
@@ -89,5 +90,58 @@ Room {
         function onTypingUsersChanged(text) {
             typingIndicator.setTypingDisplayText(text)
         }
+    }
+
+    function onOptionClicked(){
+        contextMenu.popup()     
+    }
+
+    LeaveMessage {
+        id: leaveDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+    }
+
+    InviteUserDialog {
+        id: inviteuserDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+    }
+
+    Menu {
+        id: contextMenu
+        margins: 10
+        Action {
+            id: inviteUserAction
+            text: qsTr("&Invite User")
+            icon.source: "qrc:/images/add-square-button.svg"
+            shortcut: StandardKey.Copy
+            onTriggered: inviteuserDialog.open()
+        }
+        
+        Action {
+            id: leaveRoomAction
+            text: qsTr("&Leave Room")
+            icon.source: "qrc:/images/ban.svg"
+            shortcut: StandardKey.Copy
+            onTriggered: leaveDialog.open()
+        }
+
+        Action {
+            id: membersAction
+            text: qsTr("&Members")
+            icon.source: "qrc:/images/people.svg"
+            shortcut: StandardKey.Copy
+            // onTriggered: 
+        }
+
+        Action {
+            id: settingAction
+            text: qsTr("&Setting")
+            icon.source: "qrc:/images/settings.svg"
+            shortcut: StandardKey.Copy
+            // onTriggered:
+        }
+              
     }
 }
