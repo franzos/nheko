@@ -14,7 +14,7 @@ GlobalObject::GlobalObject(){
 }
 
 QPalette GlobalObject::colors() const {
-    return Theme::paletteFromTheme("system");
+    return Theme::paletteFromTheme(QString("system"));
 }
 
 QPalette GlobalObject::inactiveColors() const {
@@ -24,7 +24,7 @@ QPalette GlobalObject::inactiveColors() const {
 }
 
 Theme GlobalObject::theme() const {
-    return Theme("system");
+    return Theme(QString("system"));
 }
 
 void GlobalObject::openLink(QString link) {
@@ -51,7 +51,7 @@ void GlobalObject::setStatusMessage(QString msg) const {
 }
 
 bool GlobalObject::handleMatrixUri(const QByteArray &uri) {
-    // nhlog::ui()->info("Received uri! {}", uri.toStdString());
+    nhlog::ui()->info("TODO: Received uri! {}", uri.toStdString());
     // QUrl uri_{QString::fromUtf8(uri)};
 
     // // Convert matrix.to URIs to proper format

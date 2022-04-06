@@ -8,8 +8,7 @@ import MatrixClient 1.0
 ApplicationWindow {
     id: qmlApplication
     title: qsTr("Matrix Client")
-    width: 400
-    height: 600
+    visibility: "Maximized"
     visible: true
     Material.theme: Material.Dark
 
