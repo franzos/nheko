@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.5]
+### Changed
+
+* Invite to room.
+* Leave reoom.
+* GUI General improvment.
+* Voice/Video Call.
 
 
 ## [0.0.5]
