@@ -45,13 +45,14 @@
 (define-public matrix-client-gui-library
   (package
     (name "matrix-client-gui-library")
-    (version "0.0.1")
+    (version "0.0.5")
     (source
      (origin
        (method url-fetch)
-        (uri (string-append "file:///home/panther/Desktop/dev/matrix-client.tgz"))
+        (uri (string-append
+          "https://source.pantherx.org/matrix-client_" version ".tgz"))
         (sha256
-         (base32 "1akhnngxkxbjwjkg5ispl6j5s2ylbcj92r3zxqqry4gbfxbjpx8k"))))
+         (base32 "0kfqbad7qzfiykv1pb87hbh26kskrkl57msczww6rk1wjrilqqb9"))))
     (arguments
      `(#:tests? #f ; no tests
        #:phases
@@ -92,7 +93,7 @@
   (package
     (inherit matrix-client-gui-library)
     (name "matrix-client-gui")
-    (version "0.0.1")
+    (version "0.0.5")
     (arguments
      `(#:tests? #f ; no tests
        #:phases

@@ -4,8 +4,8 @@ TEMPLATE = app
 TARGET = MatrixClient
 
 include(configurations/configurations.pri)
-include(qml/qml.pri)
 include(app/app.pri)
+include(qml/qml.pri)
 
 QMAKE_TARGET_BUNDLE_PREFIX = org.pantherx
 QMAKE_BUNDLE = MatrixClient

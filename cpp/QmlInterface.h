@@ -3,10 +3,13 @@
 #include <QObject>
 #include <QUrl>
 #include <QQmlApplicationEngine>
-#include <matrix-client-library/Client.h>
 #include <QQuickView>
 #include <QWindow>
-
+#include <QQmlEngine>
+#include <matrix-client-library/Client.h>
+#include <matrix-client-library/voip/CallManager.h>
+#include <matrix-client-library/UserSettings.h>
+#include <matrix-client-library/voip/WebRTCSession.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
 
@@ -18,6 +21,10 @@ public:
     Client *client();
     QUrl mainLibQMLurl();
     QUrl mainAppQMLurl();
+    ~QmlInterface();
+    
+public slots:
+    virtual void setVideoCallItem() = 0;
 
 private slots:
     void initiateFinishedCB();
@@ -26,6 +33,8 @@ private slots:
 private:
     RoomListModel *_roomListModel = nullptr;
     Client *_client = nullptr;
+    CallManager *_callMgr = nullptr;
     VerificationManager *_verificationManager;
+    QSharedPointer<UserSettings> _userSettings;
 };
 }
