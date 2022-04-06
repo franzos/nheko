@@ -1,3 +1,3 @@
  RESOURCES += \
     $$PWD/qml.qrc \
-    $$PWD/../resources/resources.qrc \
+    $$PWD/../resources/mtx_gui_library_resources.qrc \

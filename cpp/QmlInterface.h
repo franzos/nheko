@@ -21,7 +21,8 @@ public:
     Client *client();
     QUrl mainLibQMLurl();
     QUrl mainAppQMLurl();
-
+    ~QmlInterface();
+    
 public slots:
     virtual void setVideoCallItem() = 0;
 

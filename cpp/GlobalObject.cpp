@@ -10,6 +10,7 @@
 #include <matrix-client-library/Client.h>
 
 GlobalObject::GlobalObject(){
+    Q_INIT_RESOURCE(mtx_gui_library_resources);
 }
 
 QPalette GlobalObject::colors() const {

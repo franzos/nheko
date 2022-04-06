@@ -20,7 +20,6 @@ QmlInterface::QmlInterface(QObject *parent):
     _callMgr(_client->callManager()),
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()}{
-    
     _client->enableLogger(true, true);
     connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
@@ -86,6 +85,9 @@ QmlInterface::QmlInterface(QObject *parent):
                          }
                      });
 
+    qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new GlobalObject();
+    });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
@@ -98,10 +100,6 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<RoomListModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
         return _roomListModel;
     });
-    qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new GlobalObject();
-    });
-
     qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
     qRegisterMetaType<webrtc::State>();
@@ -109,6 +107,10 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
 }
 
+QmlInterface::~QmlInterface(){
+    _client->stop();
+}
+    
 QUrl QmlInterface::mainLibQMLurl(){
     return QUrl(QStringLiteral("qrc:/qml/MainLib.qml"));
 }
