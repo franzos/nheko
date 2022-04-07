@@ -24,7 +24,9 @@ int main(int argc, char *argv[]) {
     #else
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    
     QGuiApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":images/app-icon_bright.svg"));
     
     MatrixQmlApplicationEngine matrixClientApp;
     matrixClientApp.load();
