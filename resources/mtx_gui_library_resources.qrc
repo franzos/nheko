@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">        
-        <file>images/drawer.png</file>
+        <file>images/slide-icon.svg</file>
+        <file>images/leave-room-icon.svg</file>
+        <file>images/app-icon_bright.svg</file>
         <file>images/add-square-button.svg</file>
         <file>images/angle-arrow-left.svg</file>
         <file>images/attach.svg</file>

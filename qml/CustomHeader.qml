@@ -18,7 +18,7 @@ ToolBar {
         spacing: 2
         ToolButton{
             id: menuButton
-            icon.source: "qrc:/images/drawer.png"
+            icon.source: "qrc:/images/slide-icon.svg"
             width: parent.height
             height: parent.height
             enabled: !stack.empty
