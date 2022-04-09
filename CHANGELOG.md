@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.0.7] - NOT RELEASED YET
+## [0.0.7]
 ### Changed
 
 * Update icons.
 * Update GUI based on call state in Video/Voice Call.
 * Add About Dialog
+
 
 ## [0.0.6]
 ### Changed
