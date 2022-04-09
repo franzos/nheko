@@ -13,26 +13,8 @@ CustomPage {
     }
 
     function onCallStateChanged(s){
-        var callstate = CallManager.callState;
-        if(state == "oncall"){
-            var callParty = CallManager.callPartyDisplayName
-            if (callstate == WebRTCState.CONNECTED){
-                videocallembedpage.changeState("oncall")
-            } else if (callstate == WebRTCState.ANSWERSENT || callstate == WebRTCState.CONNECTING || 
-                       callstate == WebRTCState.OFFERSENT  || callstate == WebRTCState.INITIATING ){
-                videocallembedpage.changeState("transient")
-                var text = "...";
-                if(callstate == WebRTCState.ANSWERSENT)
-                    text = "Answering " + callParty + "...";
-                else if(callstate == WebRTCState.CONNECTING)
-                    text = "Connecting " + callParty + "...";
-                else if(callstate == WebRTCState.OFFERSENT)
-                    text = "Calling " + callParty + "...";
-                videocallembedpage.setTransientText(text)
-            } 
-        } else {
-            videocallembedpage.changeState("freecall")
-        }
+        videocallembedpage.setCallPartyName(CallManager.callPartyDisplayName)
+        videocallembedpage.changeState(CallManager.callState)
     }
 
     Component.onCompleted: {

@@ -14,25 +14,9 @@ MatrixQuickView::MatrixQuickView(QWindow *parent):
         // TODO Code dupplication in QML and Cpp to handle call events (signals, states, and ...)
         QObject::connect(Client::instance()->callManager(), &CallManager::newCallState,[&](){
             auto state = Client::instance()->callManager()->callState();
-            if(Client::instance()->callManager()->isOnCall()){
-                auto callParty = Client::instance()->callManager()->callPartyDisplayName();
-                if (state == webrtc::State::CONNECTED){
-                    QMetaObject::invokeMethod(_videoCallQuickView->rootObject(), "changeState", Q_ARG(QVariant, QVariant("oncall")));
-                } else if (state == webrtc::State::ANSWERSENT || state == webrtc::State::CONNECTING || 
-                           state == webrtc::State::OFFERSENT  || state == webrtc::State::INITIATING ){
-                    QMetaObject::invokeMethod(_videoCallQuickView->rootObject(), "changeState", Q_ARG(QVariant, QVariant("transient")));
-                    QString text = "...";
-                    if(state == webrtc::State::ANSWERSENT)
-                        text = "Answering " + callParty + "...";
-                    else if(state == webrtc::State::CONNECTING)
-                        text = "Connecting " + callParty + "...";
-                    else if(state == webrtc::State::OFFERSENT)
-                        text = "Calling " + callParty + "...";
-                    QMetaObject::invokeMethod(_videoCallQuickView->rootObject(), "setTransientText", Q_ARG(QVariant, QVariant(text)));
-                } 
-            } else {
-                QMetaObject::invokeMethod(_videoCallQuickView->rootObject(), "changeState", Q_ARG(QVariant, QVariant("freecall")));
-            }
+            auto callParty = Client::instance()->callManager()->callPartyDisplayName();
+            QMetaObject::invokeMethod(_videoCallQuickView->rootObject(), "setCallPartyName", Q_ARG(QVariant, QVariant(callParty)));
+            QMetaObject::invokeMethod(_videoCallQuickView->rootObject(), "changeState", Q_ARG(QVariant, QVariant(int(state))));
         });
         QObject::connect(Client::instance()->callManager(), &CallManager::newCallState,[&](){
             if(Client::instance()->callManager()->isOnCall() && Client::instance()->callManager()->callType() != CallType::VOICE){
