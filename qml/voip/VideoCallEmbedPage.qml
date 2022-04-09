@@ -3,10 +3,11 @@ import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import org.freedesktop.gstreamer.GLVideoItem 1.0
-// import CallManager 1.0
+import WebRTCState 1.0
 
 Item {
     objectName: "videoCallEmbedItem"
+    property string callpartyName: qsTr("")
     anchors.fill: parent
     GstGLVideoItem {
         id: gstglvideoitem
@@ -50,18 +51,25 @@ Item {
         }
     }
 
-    function setTransientText(text){
-        transientText.text = text
+    function setCallPartyName(text){
+        callpartyName = text
     }
 
     function changeState(s){
         state = s
     }
+    
+    function enableTransiationState(state){
+        freecallItem.visible = false
+        transientItem.visible = true
+        gstglvideoitem.visible = false
+        transientText.text = state + " " + callpartyName + "..."
+    }
 
-    state: "freecall"
+    state: WebRTCState.DISCONNECTED
     states: [
         State {
-            name: "freecall"
+            name: WebRTCState.DISCONNECTED
             StateChangeScript {
                 script: {
                     freecallItem.visible = true
@@ -71,7 +79,7 @@ Item {
             }
         },
         State {
-            name: "oncall"
+            name: WebRTCState.CONNECTED
             StateChangeScript {
                 script: {
                     freecallItem.visible = false
@@ -81,13 +89,43 @@ Item {
             }
         },
         State {
-            name: "transient"
+            name: WebRTCState.ANSWERSENT
+            StateChangeScript {
+                script: {
+                    enableTransiationState("Connecting")
+                }
+            }
+        },
+        State {
+            name: WebRTCState.CONNECTING
             StateChangeScript {
                 script: {
                     freecallItem.visible = false
                     transientItem.visible = true
                     gstglvideoitem.visible = false
-                    setTransientText("...")
+                    enableTransiationState("Connecting")
+                }
+            }
+        },
+        State {
+            name: WebRTCState.OFFERSENT
+            StateChangeScript {
+                script: {
+                    freecallItem.visible = false
+                    transientItem.visible = true
+                    gstglvideoitem.visible = false
+                    enableTransiationState("Calling")
+                }
+            }
+        },
+        State {
+            name: WebRTCState.INITIATING
+            StateChangeScript {
+                script: {
+                    freecallItem.visible = false
+                    transientItem.visible = true
+                    gstglvideoitem.visible = false
+                    enableTransiationState("Connecting")
                 }
             }
         }
