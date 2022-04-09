@@ -21,7 +21,6 @@ ToolBar {
             icon.source: "qrc:/images/slide-icon.svg"
             width: parent.height
             height: parent.height
-            enabled: !stack.empty
             visible: false
             onClicked: {
                 menuClicked()
@@ -42,7 +41,6 @@ ToolBar {
             icon.color:"#C70039"
             width: parent.height
             height: parent.height
-            enabled: !stack.empty
             onClicked: {verifyClicked()}
         }
         Item{
