@@ -17,6 +17,7 @@ SOURCES += \
     $$PWD/main.cpp
 
 HEADERS += \
+    $$PWD/../cpp//Application.h\
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/GlobalObject.h \
     $$PWD/../cpp/QmlInterface.h \

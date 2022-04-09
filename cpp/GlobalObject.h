@@ -9,6 +9,7 @@
 #include <QPalette>
 #include <QUrl>
 #include "Theme.h"
+#include "Application.h"
 
 class QWindow;
 
@@ -41,6 +42,7 @@ public:
     }
     Q_INVOKABLE void openLink(QString link);
     Q_INVOKABLE void setStatusMessage(QString msg) const;
+    Q_INVOKABLE QString getApplicationVersion(){return QString::fromStdString(VERSION_APPLICATION);}
 
 public slots:
     bool handleMatrixUri(const QByteArray &uri);

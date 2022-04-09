@@ -7,6 +7,8 @@ import QtQml 2.15
 import "device-verification"
 
 Page {
+    signal aboutClicked()
+
     id: page
     anchors.fill:parent
     readonly property bool inPortrait: width < height
@@ -46,7 +48,7 @@ Page {
         } else {
             page.state = "freecall"
         }
-    }
+    }    
 
     state: "none"
     states: [
@@ -87,6 +89,7 @@ Page {
         header.menuClicked.connect(menuClickedCallback)
         header.verifyClicked.connect(selfVerificationCheck.verify)
         header.endCallClicked.connect(endCallClicked)
+        navDrawer.aboutClicked.connect(aboutClicked)
     }
 
     MainMenu{

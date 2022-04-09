@@ -16,6 +16,7 @@ SOURCES += \
     $$PWD/TimelineItem.cpp
 
 HEADERS += \
+    $$PWD/Application.h\
     $$PWD/ColorImageProvider.h \
     $$PWD/GlobalObject.h \
     $$PWD/QmlInterface.h \
