@@ -20,7 +20,7 @@ void MatrixQmlApplicationEngine::load(){
 }
 
 void MatrixQmlApplicationEngine::setVideoCallItem() {
-    auto videoItem = rootObjects().first()->findChild<QQuickItem *>("videoCallItem");
+    auto videoItem = rootObjects().first()->findChild<QQuickItem *>("gstGlItem");
     if(videoItem){
         WebRTCSession::instance().setVideoItem(videoItem);
     }

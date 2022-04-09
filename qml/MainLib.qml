@@ -21,12 +21,7 @@ Item {
     }
     UIA{
     }
-
-    VideoCallEmbedPage {
-        id: videoEmbedItem
-        visible: false
-    }
-
+    
     VideoCall {
         id: videoItem
         visible: false
