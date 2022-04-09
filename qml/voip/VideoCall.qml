@@ -12,16 +12,10 @@ CustomPage {
         id: videocallembedpage
     }
 
-    function onCallStateChanged(s){
-        videocallembedpage.setCallPartyName(CallManager.callPartyDisplayName)
-        videocallembedpage.changeState(CallManager.callState)
-    }
-
     Component.onCompleted: {
         header.setTitle("Video Call")
         header.setOptionButtonsVisible(false)
         header.setBackButtonsVisible(false)
-        CallManager.onNewCallState.connect(onCallStateChanged)
         listenToCallManager()
     }
 }

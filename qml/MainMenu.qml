@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
+import QtQuick.Window 2.15
 import MatrixClient 1.0
 import GlobalObject 1.0
 
@@ -90,8 +91,8 @@ Drawer {
 
     Dialog {
         id: logoutDialog
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
+        x: (Screen.desktopAvailableWidth.width - width) / 2
+        y: (Screen.desktopAvailableWidth.height - height) / 2
         title: "Logout"
         standardButtons: Dialog.Cancel | Dialog.Ok
         Label {            
