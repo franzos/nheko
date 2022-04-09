@@ -80,16 +80,6 @@ Item {
         }
     }
 
-    Component {
-        id: aboutFactory
-        About {}
-    }
-
-    function showAbout(){
-        var about = aboutFactory.createObject(stack);
-        stack.push(about)
-    }
-
     Connections {        
         target: MatrixClient
         function onDropToLogin(msg) {
