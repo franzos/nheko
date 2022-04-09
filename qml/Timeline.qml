@@ -122,7 +122,7 @@ Room {
         Action {
             id: leaveRoomAction
             text: qsTr("&Leave Room")
-            icon.source: "qrc:/images/ban.svg"
+            icon.source: "qrc:/images/leave-room-icon.svg"
             shortcut: StandardKey.Copy
             onTriggered: leaveDialog.open()
         }

@@ -12,7 +12,7 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     //         QCoreApplication::instance()->exit(-1);
     //     }
     // }, Qt::QueuedConnection);
-    addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
+    addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());    
 }
 
 void MatrixQmlApplicationEngine::load(){
