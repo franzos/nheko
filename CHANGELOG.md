@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Update icons.
 * Update GUI based on call state in Video/Voice Call.
-
+* Add About Dialog
 
 ## [0.0.6]
 ### Changed

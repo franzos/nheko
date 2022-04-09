@@ -3,11 +3,13 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.15
 import MatrixClient 1.0
+import GlobalObject 1.0
+
 
 Drawer {
     id: menu
 
-    signal menuItemClicked( string item, string page )
+    signal aboutClicked()
     property alias currentItem: listViewMenu.currentIndex
 
     ListModel {
@@ -20,8 +22,13 @@ Drawer {
             item: "Settings"
             icon: "qrc:/images/settings.svg"            
         }
+        ListElement {
+            item: "About"
+            icon: "qrc:/images/star.svg"            
+        }
     }
 
+   
     ListView {
         id: listViewMenu
         anchors.top: parent.top
@@ -35,7 +42,7 @@ Drawer {
 
     Component {
         id: componentDelegate
-
+        
         Rectangle {
             id: wrapperItem
             height: 32
@@ -65,14 +72,17 @@ Drawer {
                 anchors.fill: parent
                 enabled: true
                 onClicked: {
-                    // menu.menuItemClicked( item, page )
                     listViewMenu.currentIndex = index
                     switch( item ) {
                         case "Logout":
                             logoutDialog.open()
                             break;
-                            case "Settings":
+                        case "Settings":
                                 break;
+                        case "About":
+                            aboutClicked()
+                            aboutDialog.open()
+                            break;        
                     }
                 }
             }
@@ -85,7 +95,7 @@ Drawer {
         y: (Screen.desktopAvailableWidth.height - height) / 2
         title: "Logout"
         standardButtons: Dialog.Cancel | Dialog.Ok
-        Label {
+        Label {            
             text: "Are you sure you want to logout ?"
         }
         onAccepted: {
@@ -93,5 +103,21 @@ Drawer {
         }
         onRejected: {}
     }
+
+    Dialog {
+        id: aboutDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+        title: "About"
+        standardButtons: Dialog.Ok
+        Label {
+            width: parent.width
+            wrapMode: Text.Wrap
+            text: "Library Version: "+MatrixClient.getLibraryVersion()+"\n"+"Application Version: "+GlobalObject.getApplicationVersion()         
+        }
+      
+        onAccepted: {}
+    }
+   
 }
 
