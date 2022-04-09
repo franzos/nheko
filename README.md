@@ -132,6 +132,7 @@ in order to release new versions for the `MatrixClient` we follow below steps:
 1. implement features in `feature` branches
 2. submit merge requests to the `development` branch
 3. after merge request approval, we need to update the mobile version before providing new tags:
+    - Update the pplication version number in `/home/panther/repos/matrix-client/cpp/Application.h`.
     - for Android we need to modify `configurations/android/AndroidManifest.xml` file, updating the `android:versionName` and `android:versionCode`.
         - `android:versionCode` is an integer which should be incrementally increased for each release
         - `android:versionName` is the string value shows to the users. we need to set it to match with the tag we want to set
