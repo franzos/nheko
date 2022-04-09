@@ -42,9 +42,9 @@ Page {
 
     function onNewCallState(){
         if(CallManager.isOnCall){
-            page.state = "OnCall"
+            page.state = "oncall"
         } else {
-            page.state = "FreeCall"
+            page.state = "freecall"
         }
     }
 
@@ -60,7 +60,7 @@ Page {
             }
         },
         State {
-            name: "FreeCall"
+            name: "freecall"
             StateChangeScript {
                 script: {
                     header.setCallButtonsVisible(true)
@@ -71,7 +71,7 @@ Page {
             }
         },
         State {
-            name: "OnCall"
+            name: "oncall"
             StateChangeScript {
                 script: {
                     header.setCallButtonsVisible(false)

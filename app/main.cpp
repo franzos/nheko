@@ -13,9 +13,11 @@ using namespace PX::GUI::MATRIX;
 
 int main(int argc, char *argv[]) {
     #if 0
+    // JUST An Example for using embeding the QML items into QWidgets
     QApplication app(argc, argv);
     auto qmlView = new PX::GUI::MATRIX::MatrixQuickView();
     qmlView->showMaximized();
+    qmlView->videoCallPage()->showMaximized();
     // QWidget *container = QWidget::createWindowContainer(qmlView);
     // container->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     // container->showMaximized();
