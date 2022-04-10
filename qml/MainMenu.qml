@@ -24,7 +24,7 @@ Drawer {
         }
         ListElement {
             item: "About"
-            icon: "qrc:/images/star.svg"            
+            icon: "qrc:/images/icons8-info-50.svg"            
         }
     }
 
@@ -78,7 +78,8 @@ Drawer {
                             logoutDialog.open()
                             break;
                         case "Settings":
-                                break;
+                            settingsDialog.open()
+                            break;
                         case "About":
                             aboutClicked()
                             aboutDialog.open()
@@ -91,8 +92,8 @@ Drawer {
 
     Dialog {
         id: logoutDialog
-        x: (Screen.desktopAvailableWidth.width - width) / 2
-        y: (Screen.desktopAvailableWidth.height - height) / 2
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
         title: "Logout"
         standardButtons: Dialog.Cancel | Dialog.Ok
         Label {            
@@ -117,6 +118,18 @@ Drawer {
         }
       
         onAccepted: {}
+    }
+
+    Dialog {
+        id: settingsDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+        title: "Settings"
+        standardButtons: Dialog.Ok
+        Label {            
+            text: "Coming Soon"
+        }
+        onAccepted: { }
     }
    
 }

@@ -132,7 +132,7 @@ Room {
             text: qsTr("&Members")
             icon.source: "qrc:/images/people.svg"
             shortcut: StandardKey.Copy
-            // onTriggered: 
+            onTriggered: membersDialog.open()
         }
 
         Action {
@@ -140,8 +140,31 @@ Room {
             text: qsTr("&Setting")
             icon.source: "qrc:/images/settings.svg"
             shortcut: StandardKey.Copy
-            // onTriggered:
+            onTriggered: roomSettingsDialog.open()
+        }  
+    }
+
+    Dialog {
+        id: membersDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+        title: "Members"
+        standardButtons: Dialog.Ok
+        Label {            
+            text: "Coming Soon"
         }
-              
+        onAccepted: { }
+    }
+
+    Dialog {
+        id: roomSettingsDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+        title: "Room Settings"
+        standardButtons: Dialog.Ok
+        Label {            
+            text: "Coming Soon"
+        }
+        onAccepted: { }
     }
 }
