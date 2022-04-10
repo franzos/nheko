@@ -1,8 +1,8 @@
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
-
+import GlobalObject 1.0
 import MatrixClient 1.0
 import Rooms 1.0
 // import RoomInformation 1.0
@@ -20,6 +20,7 @@ Rectangle {
     required property int unreadcount
     // required property RoomInformation roomInformation
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
+    color: GlobalObject.colors.window
 
     Component {
         id: timelineFactory
@@ -37,51 +38,63 @@ Rectangle {
                                                             "avatar": avatar});
         stack.push(timeline)
     }  
-
-    RowLayout {
+    ColumnLayout{
         width: parent.width
-        RoundButton {
-            id: avatar_button
-            text: name[0]
-            width: 24; height: 24
-            anchors.margins: 10
+
+        RowLayout {
+            width: parent.width
+            Layout.margins: 5
+            RoundButton {
+                id: avatar_button
+                text: name[0]
+                width: 36; height: 36
+                anchors.margins: 10
+                palette.button: GlobalObject.colors.alternateBase
+                Layout.alignment: Qt.AlignVCenter
+            }
+            
+            ColumnLayout{
+                Layout.fillWidth: true
+                width: parent.width - avatar_button.width
+                Layout.preferredWidth: parent.width - avatar_button.width
+                Layout.leftMargin: 5; Layout.rightMargin: 5
+                Label {
+                    text: name
+                    font.italic: invite ? true : false
+                    font.pointSize: 14
+                    color: GlobalObject.colors.windowText
+                }
+                Label {
+                    text: invite ? "Pending invite." : lastmessage 
+                    font.pointSize: 10
+                    color: "gray"
+                }
+            }
+            
+            Rectangle {
+                id: rect
+                width: 20
+                height: 20
+                radius: width/2
+                color: "#03A9F4"
+                visible: (!invite && unreadcount) ? true : false
+                Layout.alignment: Qt.AlignRight
+                Label {
+                    anchors.centerIn: parent
+                    text: unreadcount
+                    color: "white"
+                    font.pointSize: 9
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
+            }
         }
-        
-        ColumnLayout{
-            Layout.fillWidth: true
-            width: parent.width - avatar_button.width
-            Layout.preferredWidth: parent.width - avatar_button.width
-            Label {
-                text: name
-                font.italic: invite ? true : false
-                font.pointSize: 12
-            }
-            Label {
-                text: invite ? "Pending invite." : lastmessage 
-                font.pointSize: 9
-                color: "gray"
-            }
-        }
-        
-        Rectangle {
-            id: rect
-            width: 20
-            height: 20
-            radius: width/2
-            color: "red"
-            visible: (!invite && unreadcount) ? true : false
-            Layout.alignment: Qt.AlignRight
-            Label {
-                anchors.centerIn: parent
-                text: unreadcount
-                color: "white"
-                font.pointSize: 9
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-            }
+        Rectangle{
+            width: parent.width
+            height: 1
+            color: GlobalObject.colors.alternateBase
         }
     }
-
     MouseArea {    
         anchors.fill: parent
         onClicked: {

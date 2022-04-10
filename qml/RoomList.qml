@@ -15,7 +15,7 @@ CustomPage {
     ListView {
         id: roomListView
         anchors.fill: parent
-        spacing: 10
+        spacing: 0
         anchors.margins: 10
         flickableDirection: Flickable.VerticalFlick
         boundsBehavior: Flickable.StopAtBounds
@@ -23,6 +23,7 @@ CustomPage {
         model: Rooms
         delegate:RoomDelegate{}
     }
+
     DirectChatDialog{
         id:directChat
         x: (qmlLibRoot.width - width) / 2
@@ -35,6 +36,7 @@ CustomPage {
         width: height 
         x: parent.width - width -10
         y: parent.height - height -10
+        palette.dark: GlobalObject.colors.windowText
         font.pointSize: 15            
         text: "+"
         onClicked: directChat.open()

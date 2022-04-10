@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.3
 import org.freedesktop.gstreamer.GLVideoItem 1.0
 import WebRTCState 1.0
 import CallManager 1.0
+import GlobalObject 1.0
+
 Item {
     property string callpartyName: qsTr("")
     anchors.fill: parent
@@ -21,7 +23,7 @@ Item {
         width: parent.width * 3 / 4
         height: parent.height * 3 / 4
         visible: false
-        color: "gray"
+        color: GlobalObject.colors.alternateBase
         Image {
             anchors.centerIn: parent
             sourceSize.width: parent.width * 1 / 8
@@ -34,10 +36,12 @@ Item {
         id: transientItem
         anchors.fill: parent
         visible: false
+        color: GlobalObject.colors.alternateBase
         ColumnLayout{
             anchors.fill: parent
             BusyIndicator {
                 id: busyIndicator
+                palette.dark: GlobalObject.colors.windowText
                 Layout.alignment: Qt.AlignCenter
             }
             Label {
@@ -124,7 +128,7 @@ Item {
 
     function onCallStateChanged(){
         callpartyName = CallManager.callPartyDisplayName
-        state = CallManager.callState
+        state = WebRTCState.DISCONNECTED//CallManager.callState
     }
 
     Component.onCompleted: {

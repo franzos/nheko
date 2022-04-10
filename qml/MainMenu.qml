@@ -5,7 +5,6 @@ import QtQuick.Window 2.15
 import MatrixClient 1.0
 import GlobalObject 1.0
 
-
 Drawer {
     id: menu
 
@@ -47,6 +46,8 @@ Drawer {
             id: wrapperItem
             height: 32
             width: parent.width
+            color: GlobalObject.colors.window
+
             Image {
                 id: imgItem
                 anchors.verticalCenter: parent.verticalCenter

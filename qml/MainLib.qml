@@ -6,6 +6,7 @@ import CallManager 1.0
 import MatrixClient 1.0
 import CallType 1.0
 import QmlInterface 1.0
+import GlobalObject 1.0
 import "voip/"
 
 Item {
@@ -36,6 +37,7 @@ Item {
     BusyIndicator {
         id: busyIndicator
         width: 64; height: width
+        palette.dark: GlobalObject.colors.windowText
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
     }
