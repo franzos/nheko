@@ -128,7 +128,7 @@ Item {
 
     function onCallStateChanged(){
         callpartyName = CallManager.callPartyDisplayName
-        state = WebRTCState.DISCONNECTED//CallManager.callState
+        state = CallManager.callState
     }
 
     Component.onCompleted: {
