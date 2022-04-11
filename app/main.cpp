@@ -12,7 +12,7 @@
 using namespace PX::GUI::MATRIX;
 
 int main(int argc, char *argv[]) {
-    #if 1
+    #if 0
     // JUST An Example for using embeding the QML items into QWidgets
     QApplication app(argc, argv);
     auto qmlView = new PX::GUI::MATRIX::MatrixQuickView();
