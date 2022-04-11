@@ -20,7 +20,7 @@ Rectangle {
     required property int unreadcount
     // required property RoomInformation roomInformation
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
-    color: GlobalObject.colors.window
+    color: "transparent"
 
     Component {
         id: timelineFactory

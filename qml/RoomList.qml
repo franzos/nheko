@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 
 import MatrixClient 1.0
 import Rooms 1.0
+import GlobalObject 1.0
 
 import "device-verification"
 
@@ -36,7 +37,7 @@ CustomPage {
         width: height 
         x: parent.width - width -10
         y: parent.height - height -10
-        palette.dark: GlobalObject.colors.windowText
+        palette.button: GlobalObject.colors.alternateBase
         font.pointSize: 15            
         text: "+"
         onClicked: directChat.open()
