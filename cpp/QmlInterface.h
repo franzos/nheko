@@ -23,6 +23,15 @@ public:
     QUrl mainAppQMLurl();
     ~QmlInterface();
     void setStyle(const QString &style, const QString &fallback);
+    Q_INVOKABLE void setMatrixServer(const QString &server, bool asDefault) { 
+        _defaultMatrixServer = server;
+        _setServerAsDefault = asDefault;
+    };
+    Q_INVOKABLE void setUserIdFormat(const QString &format) { _defaultUserIdFormat = format;};
+    Q_INVOKABLE QString defaultMatrixServer() {return _defaultMatrixServer;};
+    Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
+    Q_INVOKABLE bool isSetServerAsDefault() {return _setServerAsDefault;};
+
 public slots:
     virtual void setVideoCallItem() = 0;
 
@@ -36,5 +45,8 @@ private:
     CallManager *_callMgr = nullptr;
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
+    bool    _setServerAsDefault = false;
+    QString _defaultMatrixServer = "https://matrix.pantherx.org";
+    QString _defaultUserIdFormat = "@user:pantherx.org";
 };
 }
