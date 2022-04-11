@@ -103,8 +103,11 @@ Drawer {
         }
         onAccepted: {
             MatrixClient.logout()
+            menu.close()
         }
-        onRejected: {}
+        onRejected: {
+            menu.close()
+        }
     }
 
     Dialog {
@@ -119,7 +122,9 @@ Drawer {
             text: "Library Version: "+MatrixClient.getLibraryVersion()+"\n"+"Application Version: "+GlobalObject.getApplicationVersion()         
         }
       
-        onAccepted: {}
+        onAccepted: {
+            menu.close()
+        }
     }
 
     Dialog {
@@ -131,7 +136,9 @@ Drawer {
         Label {            
             text: "Coming Soon"
         }
-        onAccepted: { }
+        onAccepted: {
+            menu.close()
+        }
     }
    
 }

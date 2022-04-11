@@ -1,8 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-
 import MatrixClient 1.0
+import QmlInterface 1.0
 
 CustomPage {
     id: loginPage
@@ -17,7 +17,19 @@ CustomPage {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            placeholderText: qsTr("Email")
+            placeholderText: qsTr("ID")
+            Keys.onReturnPressed: loginButton.gotoLogin()
+            Keys.onEnterPressed: loginButton.gotoLogin()
+        }
+
+        TextField {
+            id: matrixServerText
+            // text: "https://matrix.pantherx.org"
+            Layout.leftMargin: 50
+            Layout.rightMargin: 50
+            Layout.fillWidth: true
+            placeholderText: QmlInterface.defaultMatrixServer()
+            text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
@@ -37,7 +49,7 @@ CustomPage {
                 function gotoLogin(){
                     loginButton.enabled= false;
                     MatrixClient.loginWithCiba(String(userIdText.text),
-                                            String("https://matrix.pantherx.dev"))
+                                               String(matrixServerText.text))
                 }
 
                 onClicked: gotoLogin()

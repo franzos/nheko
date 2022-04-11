@@ -1,8 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-
 import MatrixClient 1.0
+import QmlInterface 1.0
 
 CustomPage {
     id: loginPage
@@ -15,8 +15,8 @@ CustomPage {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            // text: "hamzeh_test04"
-            placeholderText: qsTr("User ID")
+            // text: "@hamzeh_test05:pantherx.org"
+            placeholderText: qsTr("User ID: " + QmlInterface.defaultUserIdFormat())
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
@@ -24,7 +24,7 @@ CustomPage {
         TextField {
             id: passwordText
             echoMode: TextInput.Password
-            // text: "tingly-headdress-earthlike"
+            // text: "riverbed-judiciary-sworn"
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
@@ -33,6 +33,17 @@ CustomPage {
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
 
+        TextField {
+            id: matrixServerText
+            // text: "https://matrix.pantherx.org"
+            Layout.leftMargin: 50
+            Layout.rightMargin: 50
+            Layout.fillWidth: true
+            placeholderText: QmlInterface.defaultMatrixServer()
+            text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
+            Keys.onReturnPressed: loginButton.gotoLogin()
+            Keys.onEnterPressed: loginButton.gotoLogin()
+        }
         Button {
             id: loginButton
             text: "Login"
@@ -40,9 +51,9 @@ CustomPage {
             function gotoLogin(){
                 loginButton.enabled= false;
                 MatrixClient.loginWithPassword(String("matrix_client_application"),
-                                         String("@" + userIdText.text + ":pantherx.org"),
+                                         String(userIdText.text),
                                          String(passwordText.text),
-                                         String("https://matrix.pantherx.org"))
+                                         String(matrixServerText.text))
             }
 
             onClicked: gotoLogin()
