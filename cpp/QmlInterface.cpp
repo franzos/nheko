@@ -23,17 +23,17 @@ QmlInterface::QmlInterface(QObject *parent):
     _userSettings{UserSettings::instance()}{
     _client->enableLogger(true, true);
 
-// #ifdef Q_OS_ANDROID
-//     setStyle("Material", "Default");
-// #else
-//     #ifdef Q_OS_LINUX
-//         setStyle("Breeze", "Default");
-//     #else
-//         #ifdef Q_OS_WINDOWS
-//             setStyle("Universal", "Default");
-//         #endif
-//     #endif
-// #endif
+#ifdef Q_OS_ANDROID
+    setStyle("Material", "Default");
+#else
+    #ifdef Q_OS_LINUX
+        setStyle("Breeze", "Default");
+    #else
+        #ifdef Q_OS_WINDOWS
+            setStyle("Universal", "Default");
+        #endif
+    #endif
+#endif
     connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
