@@ -22,7 +22,7 @@ public:
     QUrl mainLibQMLurl();
     QUrl mainAppQMLurl();
     ~QmlInterface();
-    
+    void setStyle(const QString &style, const QString &fallback);
 public slots:
     virtual void setVideoCallItem() = 0;
 

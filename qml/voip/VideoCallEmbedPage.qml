@@ -7,7 +7,7 @@ import WebRTCState 1.0
 import CallManager 1.0
 import GlobalObject 1.0
 
-Item {
+Page {
     property string callpartyName: qsTr("")
     anchors.fill: parent
     GstGLVideoItem {
@@ -20,15 +20,16 @@ Item {
     Rectangle {
         id: freecallItem
         anchors.centerIn: parent
-        width: parent.width * 3 / 4
-        height: parent.height * 3 / 4
+        anchors.fill: parent
         visible: false
-        color: GlobalObject.colors.alternateBase
+        color: GlobalObject.colors.base
         Image {
             anchors.centerIn: parent
-            sourceSize.width: parent.width * 1 / 8
-            sourceSize.height: sourceSize.width
-            source: "qrc:/images/video-inactive.svg"
+            source: "image://colorimage/:/images/video-inactive.svg?" + GlobalObject.colors.windowText
+            width: parent.width * 1 / 8
+            height: parent.width * 1 / 8
+            sourceSize.width: width
+            sourceSize.height: width
         }
     }
 

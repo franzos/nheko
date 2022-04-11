@@ -14,7 +14,7 @@ Rectangle {
     required property string descriptiveTime
     required property int timestamp
     required property bool isLocal
-    color: GlobalObject.colors.window
+    color: "transparent"
 
     RowLayout {
         Layout.fillWidth: true

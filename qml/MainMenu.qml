@@ -14,16 +14,16 @@ Drawer {
     ListModel {
         id: modelMenu
         ListElement {
-            item: "Logout"
-            icon: "qrc:/images/power-off.svg"            
+            item: "Settings"
+            icon: ":/images/settings.svg"            
         }
         ListElement {
-            item: "Settings"
-            icon: "qrc:/images/settings.svg"            
+            item: "Logout"
+            icon: ":/images/power-off.svg"            
         }
         ListElement {
             item: "About"
-            icon: "qrc:/images/icons8-info-50.svg"            
+            icon: ":/images/about.svg"            
         }
     }
 
@@ -34,6 +34,7 @@ Drawer {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        spacing: 2
         clip: true
         model: modelMenu
         delegate: componentDelegate
@@ -44,18 +45,18 @@ Drawer {
         
         Rectangle {
             id: wrapperItem
-            height: 32
+            height: 34
             width: parent.width
-            color: GlobalObject.colors.window
+            color: "transparent"
 
             Image {
                 id: imgItem
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 2
-                height: parent.height*0.80
+                height: parent.height
                 width: height
-                source: icon
+                source: "image://colorimage/" + icon + "?" + GlobalObject.colors.windowText
                 smooth: true
                 antialiasing: true
             }

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.8]
+### Changed
+
+* Update icons.
+* Update QML style to match with OS Theme.
+
+
 ## [0.0.7]
 ### Changed
 
