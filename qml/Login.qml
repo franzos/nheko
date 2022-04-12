@@ -22,7 +22,7 @@ CustomPage {
             Layout.fillWidth: true
             validator: validator.userIdRegex()
             // text: "@hamzeh_test05:pantherx.org"
-            placeholderText: qsTr("User ID: " + QmlInterface.defaultUserIdFormat())
+            placeholderText: "User ID" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
@@ -46,7 +46,7 @@ CustomPage {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             validator: validator.matrixServerRegex()
-            placeholderText: QmlInterface.defaultMatrixServer()
+            placeholderText: "Matrix Server (e.g.: " + QmlInterface.defaultMatrixServer() + ")"
             text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()

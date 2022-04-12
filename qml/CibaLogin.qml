@@ -33,7 +33,7 @@ CustomPage {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            placeholderText: QmlInterface.defaultMatrixServer()
+            placeholderText: "Matrix Server (e.g.: " + QmlInterface.defaultMatrixServer() + ")"
             text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
             validator: validator.matrixServerRegex()
             Keys.onReturnPressed: loginButton.gotoLogin()
