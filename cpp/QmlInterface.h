@@ -46,7 +46,7 @@ private:
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
     bool    _setServerAsDefault = false;
-    QString _defaultMatrixServer = "https://matrix.pantherx.org";
-    QString _defaultUserIdFormat = "@user:pantherx.org";
+    QString _defaultMatrixServer = "https://matrix.org";
+    QString _defaultUserIdFormat = "@user:matrix.org";
 };
 }
