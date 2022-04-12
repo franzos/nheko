@@ -1,5 +1,6 @@
 <RCC>
-    <qresource prefix="/">        
+    <qresource prefix="/">   
+        <file>images/about.svg</file>     
         <file>images/slide-icon.svg</file>
         <file>images/leave-room-icon.svg</file>
         <file>images/app-icon_bright.svg</file>

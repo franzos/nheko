@@ -5,7 +5,9 @@ import QtQuick.Layouts 1.3
 import org.freedesktop.gstreamer.GLVideoItem 1.0
 import WebRTCState 1.0
 import CallManager 1.0
-Item {
+import GlobalObject 1.0
+
+Page {
     property string callpartyName: qsTr("")
     anchors.fill: parent
     GstGLVideoItem {
@@ -18,15 +20,16 @@ Item {
     Rectangle {
         id: freecallItem
         anchors.centerIn: parent
-        width: parent.width * 3 / 4
-        height: parent.height * 3 / 4
+        anchors.fill: parent
         visible: false
-        color: "gray"
+        color: GlobalObject.colors.base
         Image {
             anchors.centerIn: parent
-            sourceSize.width: parent.width * 1 / 8
-            sourceSize.height: sourceSize.width
-            source: "qrc:/images/video-inactive.svg"
+            source: "image://colorimage/:/images/video-inactive.svg?" + GlobalObject.colors.windowText
+            width: parent.width * 1 / 8
+            height: parent.width * 1 / 8
+            sourceSize.width: width
+            sourceSize.height: width
         }
     }
 
@@ -34,10 +37,12 @@ Item {
         id: transientItem
         anchors.fill: parent
         visible: false
+        color: GlobalObject.colors.alternateBase
         ColumnLayout{
             anchors.fill: parent
             BusyIndicator {
                 id: busyIndicator
+                palette.dark: GlobalObject.colors.windowText
                 Layout.alignment: Qt.AlignCenter
             }
             Label {

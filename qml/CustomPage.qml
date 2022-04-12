@@ -95,7 +95,7 @@ Page {
     MainMenu{
         id: navDrawer
         y: header.height
-        width: parent.width / 2
+        width: (parent.width < parent.height)?parent.width/2: parent.width/5
         height: parent.height - header.height
     }
 }

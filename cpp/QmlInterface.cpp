@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QQuickStyle>
 #include <QQuickItem>
+#include <qglobalstatic.h>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
@@ -21,6 +22,18 @@ QmlInterface::QmlInterface(QObject *parent):
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()}{
     _client->enableLogger(true, true);
+
+#ifdef Q_OS_ANDROID
+    setStyle("Material", "Default");
+#else
+    #ifdef Q_OS_LINUX
+        setStyle("Breeze", "Default");
+    #else
+        #ifdef Q_OS_WINDOWS
+            setStyle("Universal", "Default");
+        #endif
+    #endif
+#endif
     connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
@@ -162,5 +175,11 @@ void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
         roomList << room;
     }
     _roomListModel->add(roomList);
+}
+
+void QmlInterface::setStyle(const QString &style, const QString &fallback){
+    QQuickStyle::setStyle(style);
+    QQuickStyle::setFallbackStyle(fallback);
+    qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
 }
 }

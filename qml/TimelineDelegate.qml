@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
+import GlobalObject 1.0
 
 Rectangle {
     id: event
@@ -13,18 +14,21 @@ Rectangle {
     required property string descriptiveTime
     required property int timestamp
     required property bool isLocal
+    color: "transparent"
 
     RowLayout {
         Layout.fillWidth: true
         width: parent.width
         Layout.preferredWidth: parent.width 
+        Layout.margins: 5
 
         RoundButton {
             id: avatar_button
             text: senderId[0]
             width: 20; height: 20
             anchors.margins: 10
-            Layout.alignment: Qt.AlignTop
+            palette.button: GlobalObject.colors.alternateBase
+            Layout.alignment: Qt.AlignVCenter
         }
 
         ColumnLayout {

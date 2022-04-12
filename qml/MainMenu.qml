@@ -5,7 +5,6 @@ import QtQuick.Window 2.15
 import MatrixClient 1.0
 import GlobalObject 1.0
 
-
 Drawer {
     id: menu
 
@@ -15,16 +14,16 @@ Drawer {
     ListModel {
         id: modelMenu
         ListElement {
-            item: "Logout"
-            icon: "qrc:/images/power-off.svg"            
+            item: "Settings"
+            icon: ":/images/settings.svg"            
         }
         ListElement {
-            item: "Settings"
-            icon: "qrc:/images/settings.svg"            
+            item: "Logout"
+            icon: ":/images/power-off.svg"            
         }
         ListElement {
             item: "About"
-            icon: "qrc:/images/star.svg"            
+            icon: ":/images/about.svg"            
         }
     }
 
@@ -35,6 +34,7 @@ Drawer {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        spacing: 2
         clip: true
         model: modelMenu
         delegate: componentDelegate
@@ -45,16 +45,18 @@ Drawer {
         
         Rectangle {
             id: wrapperItem
-            height: 32
+            height: 34
             width: parent.width
+            color: "transparent"
+
             Image {
                 id: imgItem
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 2
-                height: parent.height*0.80
+                height: parent.height
                 width: height
-                source: icon
+                source: "image://colorimage/" + icon + "?" + GlobalObject.colors.windowText
                 smooth: true
                 antialiasing: true
             }
@@ -78,7 +80,8 @@ Drawer {
                             logoutDialog.open()
                             break;
                         case "Settings":
-                                break;
+                            settingsDialog.open()
+                            break;
                         case "About":
                             aboutClicked()
                             aboutDialog.open()
@@ -91,8 +94,8 @@ Drawer {
 
     Dialog {
         id: logoutDialog
-        x: (Screen.desktopAvailableWidth.width - width) / 2
-        y: (Screen.desktopAvailableWidth.height - height) / 2
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
         title: "Logout"
         standardButtons: Dialog.Cancel | Dialog.Ok
         Label {            
@@ -100,8 +103,11 @@ Drawer {
         }
         onAccepted: {
             MatrixClient.logout()
+            menu.close()
         }
-        onRejected: {}
+        onRejected: {
+            menu.close()
+        }
     }
 
     Dialog {
@@ -116,7 +122,23 @@ Drawer {
             text: "Library Version: "+MatrixClient.getLibraryVersion()+"\n"+"Application Version: "+GlobalObject.getApplicationVersion()         
         }
       
-        onAccepted: {}
+        onAccepted: {
+            menu.close()
+        }
+    }
+
+    Dialog {
+        id: settingsDialog
+        x: (qmlLibRoot.width - width) / 2
+        y: (qmlLibRoot.height - height) / 2
+        title: "Settings"
+        standardButtons: Dialog.Ok
+        Label {            
+            text: "Coming Soon"
+        }
+        onAccepted: {
+            menu.close()
+        }
     }
    
 }
