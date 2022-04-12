@@ -6,6 +6,11 @@ import QmlInterface 1.0
 
 CustomPage {
     id: loginPage
+
+    Validator{
+        id: validator
+    }
+
     ColumnLayout{
         id: inputLayout
         anchors.centerIn: parent
@@ -15,6 +20,7 @@ CustomPage {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
+            validator: validator.userIdRegex()
             // text: "@hamzeh_test05:pantherx.org"
             placeholderText: qsTr("User ID: " + QmlInterface.defaultUserIdFormat())
             Keys.onReturnPressed: loginButton.gotoLogin()
@@ -39,17 +45,20 @@ CustomPage {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
+            validator: validator.matrixServerRegex()
             placeholderText: QmlInterface.defaultMatrixServer()
             text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
+
         Button {
             id: loginButton
             text: "Login"
             Layout.alignment: Qt.AlignHCenter
             function gotoLogin(){
                 loginButton.enabled= false;
+                matrixServerText.text = validator.checkMatrixServerUrl(matrixServerText.text)
                 MatrixClient.loginWithPassword(String("matrix_client_application"),
                                          String(userIdText.text),
                                          String(passwordText.text),

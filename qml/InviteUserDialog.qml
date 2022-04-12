@@ -7,9 +7,15 @@ import QmlInterface 1.0
 Dialog {
     title: "Invite User"
     standardButtons: Dialog.Cancel | Dialog.Ok
+
+    Validator{
+        id: validator
+    }
+
     TextField {
         id: inviteUserField
         width:parent.width
+        validator: validator.userIdRegex()
         placeholderText: qsTr("User ID: " + QmlInterface.defaultUserIdFormat())
     }    
     onAccepted: {

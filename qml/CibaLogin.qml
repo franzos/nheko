@@ -8,6 +8,11 @@ CustomPage {
     id: loginPage
     width: parent.width
     spacing: 10
+
+    Validator{
+        id: validator
+    }
+
     ColumnLayout{
         id: inputLayout
         anchors.centerIn: parent
@@ -30,6 +35,7 @@ CustomPage {
             Layout.fillWidth: true
             placeholderText: QmlInterface.defaultMatrixServer()
             text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
+            validator: validator.matrixServerRegex()
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
@@ -48,6 +54,7 @@ CustomPage {
                 anchors.verticalCenter: parent.verticalCenter
                 function gotoLogin(){
                     loginButton.enabled= false;
+                    matrixServerText.text = validator.checkMatrixServerUrl(matrixServerText.text)
                     MatrixClient.loginWithCiba(String(userIdText.text),
                                                String(matrixServerText.text))
                 }

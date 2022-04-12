@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Update icons.
 * Update QML style to match with OS Theme.
 * Get Matrix Server address from user input in Login and CIBA Login pages.
+* Set validator on Matrix Server and USER ID in the Forms.
 
 
 ## [0.0.7]
