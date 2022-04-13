@@ -21,7 +21,7 @@ ToolBar {
             icon.source: "qrc:/images/slide-icon.svg"
             width: parent.height
             height: parent.height
-            visible: false
+            visible: stack.depth == 1
             onClicked: {
                 menuClicked()
             }
@@ -31,7 +31,7 @@ ToolBar {
             icon.source: "qrc:/images/angle-arrow-left.svg"
             width: parent.height
             height: parent.height
-            enabled: !stack.empty
+            visible: stack.depth > 1
             onClicked: stack.pop()
         }
 
@@ -102,11 +102,6 @@ ToolBar {
 
     }
 
-    function setHomeButtonsVisible(visible){
-        menuButton.visible = visible;
-        backButton.visible = !visible;
-    }
-
     function setCallButtonsVisible(visible){
         voiceCallButton.visible = visible;
         videoCallButton.visible = visible;
@@ -126,7 +121,6 @@ ToolBar {
 
     function setTitle(title){
         titleLabel.text = title
-        backButton.enabled= !stack.empty
     }
 
     function title(){

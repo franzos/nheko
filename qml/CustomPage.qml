@@ -43,14 +43,15 @@ Page {
     }
 
     function onNewCallState(){
-        if(CallManager.isOnCall){
-            page.state = "oncall"
-        } else {
-            page.state = "freecall"
+        if(page.state != "none") {
+            if(CallManager.isOnCall){
+                page.state = "oncall"
+            } else {
+                page.state = "freecall"
+            }
         }
     }    
 
-    state: "none"
     states: [
         State {
             name: "none"

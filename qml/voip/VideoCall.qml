@@ -15,7 +15,6 @@ CustomPage {
     Component.onCompleted: {
         header.setTitle("Video Call")
         header.setOptionButtonsVisible(false)
-        header.setBackButtonsVisible(false)
         listenToCallManager()
     }
 }

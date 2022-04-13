@@ -13,6 +13,7 @@ Item {
     id: qmlLibRoot
     anchors.fill:parent
     property bool embedVideoQML: false
+    property bool singleVideoQML: false
     StackView {
         id: stack
         anchors.fill: parent
@@ -69,15 +70,22 @@ Item {
             var dialog = mobileCallInviteDialog.createObject(qmlLibRoot);
             dialog.open();
             destroyOnClose(dialog);
+
+            if(singleVideoQML){
+                dialog.acceptCall()
+            }
         }
     }
 
     function onNewCallState(){
         if(CallManager.isOnCall && CallManager.callType != CallType.VOICE){
-            stack.push(videoItem);
+            if(embedVideoQML){
+                stack.push(videoItem);
+            }
+            // TODO review this line
             QmlInterface.setVideoCallItem();
         } else if (!CallManager.isOnCall) {
-            if(stack.currentItem == videoItem)
+            if(stack.currentItem == videoItem && embedVideoQML)
                 stack.pop()
         }
     }
@@ -97,7 +105,14 @@ Item {
         }
 
         function onInitiateFinished(){
-            stack.replace(roomList)
+            if(singleVideoQML){
+                console.log("Running GUI application in Single Video Screen/Auto Call accept mode");
+                stack.replace(videoItem)
+                videoItem.state="none"
+                videoItem.header.setBackButtonsVisible(false)
+            } else {
+                stack.replace(roomList)
+            }
         }
 
         function onLogoutErrorOccurred(){
@@ -114,10 +129,7 @@ Item {
     Component.onCompleted: {
         stack.push(busyIndicator)
         CallManager.onNewInviteState.connect(onNewInviteState)
-        if(embedVideoQML){
-            CallManager.onNewCallState.connect(onNewCallState)
-        }
+        CallManager.onNewCallState.connect(onNewCallState)
         MatrixClient.start()
-        
     }
 }
