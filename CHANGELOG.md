@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.11]
+### Fixed
+
+* Fixing minor issue in pri file to make the project as library.
+
 
 ## [0.0.10]
 ### Changed
