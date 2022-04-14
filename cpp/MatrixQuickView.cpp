@@ -12,13 +12,6 @@ MatrixQuickView::MatrixQuickView(QWindow *parent):
     _videoCallQuickView (new QQuickView(engine(),parent)){
         _videoCallQuickView->setSource(QUrl(QStringLiteral("qrc:/qml/voip/VideoCallEmbedPage.qml")));
         engine()->addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
-        QObject::connect(Client::instance()->callManager(), &CallManager::newCallState,[&](){
-            if(Client::instance()->callManager()->isOnCall() && Client::instance()->callManager()->callType() != CallType::VOICE){
-                setVideoCallItem();
-            } else if (!Client::instance()->callManager()->isOnCall()) {
-                qWarning() << "Call finished";
-            }
-        });
 }
 
 QQuickView *MatrixQuickView::videoCallPage(){

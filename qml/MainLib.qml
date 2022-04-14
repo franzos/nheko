@@ -80,9 +80,9 @@ Item {
     function onNewCallState(){
         if(CallManager.isOnCall && CallManager.callType != CallType.VOICE){
             if(embedVideoQML){
+                videoItem.header.setBackButtonsVisible(false)
                 stack.push(videoItem);
             }
-            // TODO review this line
             QmlInterface.setVideoCallItem();
         } else if (!CallManager.isOnCall) {
             if(stack.currentItem == videoItem && embedVideoQML)
