@@ -24,7 +24,7 @@ HEADERS += \
     $$PWD/MatrixQuickView.h \
     $$PWD/mydevice.h \
     $$PWD/RoomListItem.h  \
-    $$PWD/RoomListModel.h
+    $$PWD/RoomListModel.h \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
     $$PWD/TimelineItem.h 
