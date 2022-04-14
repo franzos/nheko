@@ -178,17 +178,7 @@ Popup {
 
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
-                onClicked: {
-                    if (buttonLayout.validateMic()) {
-                        Settings.microphone = micCombo.currentText;
-                        if (cameraCombo.visible)
-                            Settings.camera = cameraCombo.currentText;
-
-                        CallManager.acceptInvite();
-                        console.log("Call invite Accepted!");
-                        close();
-                    }
-                }
+                onClicked: acceptCall()
 
                 background: Rectangle {
                     radius: buttonLayout.buttonSize / 2
@@ -208,6 +198,18 @@ Popup {
     background: Rectangle {
         color: GlobalObject.colors.window
         border.color: GlobalObject.colors.windowText
+    }
+
+    function acceptCall(){
+        if (buttonLayout.validateMic()) {
+            Settings.microphone = micCombo.currentText;
+            if (cameraCombo.visible)
+                Settings.camera = cameraCombo.currentText;
+
+            CallManager.acceptInvite();
+            console.log("Call invite Accepted!");
+            close();
+        }
     }
 
 }

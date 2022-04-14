@@ -73,7 +73,6 @@ CustomPage {
         function onUserDisplayNameReady(name){
             displayName = name
             header.setTitle(displayName)
-            header.setHomeButtonsVisible(true)
             onVerificationStatusChanged()
         }
         function onRoomCreated(id){

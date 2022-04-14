@@ -11,7 +11,8 @@
 
 using namespace PX::GUI::MATRIX;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     #if 0
     // JUST An Example for using embeding the QML items into QWidgets
     QApplication app(argc, argv);
@@ -21,8 +22,6 @@ int main(int argc, char *argv[]) {
     // QWidget *container = QWidget::createWindowContainer(qmlView);
     // container->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     // container->showMaximized();
-
-    qmlView->videoCallPage()->showMaximized();
     #else
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
