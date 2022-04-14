@@ -13,7 +13,7 @@ SOURCES += \
     $$PWD/RoomListModel.cpp \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
-    $$PWD/TimelineItem.cpp
+    $$PWD/TimelineItem.cpp 
 
 HEADERS += \
     $$PWD/Application.h\
@@ -24,7 +24,7 @@ HEADERS += \
     $$PWD/MatrixQuickView.h \
     $$PWD/mydevice.h \
     $$PWD/RoomListItem.h  \
+    $$PWD/RoomListModel.h
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
-    $$PWD/TimelineItem.h \
-    $$PWD/RoomListModel.h
+    $$PWD/TimelineItem.h 

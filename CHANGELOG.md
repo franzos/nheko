@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+
+## [0.0.9]
+### Changed
+
+* Update to support single video/voice call application with auto answer feature.
+
+
 ## [0.0.8]
 ### Changed
 

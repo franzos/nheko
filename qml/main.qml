@@ -10,10 +10,12 @@ ApplicationWindow {
     title: qsTr("Matrix Client")
     visibility: "Maximized"
     visible: true
-    Material.theme: Material.Dark
+    property bool embedVideoQML
+    property bool singleVideoQML
 
     MainLib{
-        embedVideoQML: true
+        embedVideoQML: qmlApplication.embedVideoQML
+        singleVideoQML: qmlApplication.singleVideoQML
     }
 
     onClosing: {
