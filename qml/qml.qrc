@@ -3,7 +3,6 @@
         <file>CreateRoom.qml</file>
         <file>CibaLogin.qml</file>
         <file>CustomHeader.qml</file>
-        <file>CustomPage.qml</file>
         <file>DirectChatDialog.qml</file>
         <file>ErrorDialog.qml</file>
         <file>InvitationRoom.qml</file>

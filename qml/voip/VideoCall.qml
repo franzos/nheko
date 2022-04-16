@@ -1,20 +1,21 @@
-import QtQuick 2.9
-import QtQuick.Layouts 1.2
+import QtQuick 2.15
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.15
 import org.freedesktop.gstreamer.GLVideoItem 1.0
 import WebRTCState 1.0
 import CallManager 1.0
 import ".."
 
-CustomPage {
+Page {
     Layout.fillWidth: true
     state: "oncall"
+    title: "Video Call"
     VideoCallEmbedPage {
         id: videocallembedpage
     }
 
     Component.onCompleted: {
-        header.setTitle("Video Call")
-        header.setOptionButtonsVisible(false)
-        listenToCallManager()
+        mainHeader.setOptionButtonsVisible(false)
+        // listenToCallManager()
     }
 }

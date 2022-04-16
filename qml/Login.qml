@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 import QmlInterface 1.0
 
-CustomPage {
+Page {
     id: loginPage
 
     Validator{
@@ -96,10 +96,6 @@ CustomPage {
         userIdText.text = ""
         passwordText.text = ""
         loginButton.enabled = true
-    }
-
-    Component.onCompleted: {
-        header.visible = false
     }
 }
 

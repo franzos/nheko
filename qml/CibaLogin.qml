@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 import QmlInterface 1.0
 
-CustomPage {
+Page {
     id: loginPage
     width: parent.width
     spacing: 10
@@ -85,8 +85,5 @@ CustomPage {
         loginButton.enabled = true
     }
 
-    Component.onCompleted: {
-        header.visible = false
-    }
 }
 

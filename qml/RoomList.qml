@@ -8,11 +8,11 @@ import GlobalObject 1.0
 
 import "device-verification"
 
-CustomPage {
+Page {
     id: roomPage
     width: parent.width
-    property string displayName;
-
+    // property string displayName;
+    title: "..."
     ListView {
         id: roomListView
         anchors.fill: parent
@@ -44,7 +44,7 @@ CustomPage {
     }   
 
     function onVerificationStatusChanged(){
-        header.setVerified(selfVerificationCheck.isVerified())
+        mainHeader.setVerified(selfVerificationCheck.isVerified())
     }
 
     SelfVerificationCheck{
@@ -71,8 +71,8 @@ CustomPage {
         target: MatrixClient
 
         function onUserDisplayNameReady(name){
-            displayName = name
-            header.setTitle(displayName)
+            title = name
+            mainHeader.setTitle(name)
             onVerificationStatusChanged()
         }
         function onRoomCreated(id){

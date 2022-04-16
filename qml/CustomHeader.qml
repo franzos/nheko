@@ -2,17 +2,20 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import MatrixClient 1.0
+import CallManager 1.0
+import CallType 1.0
+import QmlInterface 1.0
+import "device-verification"
 
 ToolBar {
     width: parent.width
     // TODO : important -> currently one header will be create for each page and they will be accumulated.
     signal titleClicked()
     signal menuClicked()
-    signal verifyClicked()
     signal voiceCallClicked()
     signal videoCallClicked()
-    signal endCallClicked()
     signal optionClicked()
+    property string savedTitle: ""
     RowLayout {
         anchors.fill: parent
         spacing: 2
@@ -41,7 +44,9 @@ ToolBar {
             icon.color:"#C70039"
             width: parent.height
             height: parent.height
-            onClicked: {verifyClicked()}
+            onClicked: {
+                selfVerificationCheck.verify()
+            }
         }
         Item{
             Layout.fillWidth: true
@@ -115,12 +120,9 @@ ToolBar {
         optionsButton.visible = visible;
     }
 
-    function setBackButtonsVisible(visible){        
-        backButton.visible = visible
-    }
-
     function setTitle(title){
-        titleLabel.text = title
+        if(title)
+            titleLabel.text = title
     }
 
     function title(){
@@ -133,6 +135,97 @@ ToolBar {
         } else {
             verifyRect.visible = true
         }
+    }
+
+    SelfVerificationCheck{
+        id: selfVerificationCheck
+    }
+
+    function endCallClicked(){
+        CallManager.hangUp();
+    }
+
+    // Timer {
+    //     id: updateCallManagerTimer
+    //     interval: 100; running: false; repeat: false
+    //     onTriggered: onNewCallState()
+    // }
+
+    function listenToCallManager(){
+        CallManager.onNewCallState.connect(onNewCallState)
+        onNewCallState()
+    }
+
+    function onNewCallState(){
+        if(state != "none") {
+            if(CallManager.isOnCall){
+                state = "oncall"
+                if(CallManager.callType != CallType.VOICE){
+                    if(embedVideoQML){
+                        stack.push(videoItem);
+                    }
+                    QmlInterface.setVideoCallItem();
+                }
+            } else {
+                state = "freecall"
+                if(stack.currentItem == videoItem && embedVideoQML)
+                    stack.pop()
+            }
+        }
+    }    
+
+    states: [
+        State {
+            name: "none"
+            StateChangeScript {
+                script: {
+                    setCallButtonsVisible(false)
+                    setEndCallButtonsVisible(false)
+                }
+            }
+        },
+        State {
+            name: "freecall"
+            StateChangeScript {
+                script: {
+                    setCallButtonsVisible(true)
+                    setEndCallButtonsVisible(false)
+                    if(savedTitle)
+                        setTitle(savedTitle)
+                }
+            }
+        },
+        State {
+            name: "oncall"
+            StateChangeScript {
+                script: {
+                    setCallButtonsVisible(false)
+                    setEndCallButtonsVisible(true)
+                    savedTitle = title()
+                    setTitle(CallManager.callPartyDisplayName + " calling ...")
+                }
+            }
+        }
+    ]
+
+    function menuClickedCallback(){
+        if(!navDrawer.opened)
+            navDrawer.open()
+
+        if(navDrawer.opened)
+            navDrawer.close()
+    }
+
+    Component.onCompleted: {
+        menuClicked.connect(menuClickedCallback)
+        listenToCallManager()
+    }
+
+    MainMenu{
+        id: navDrawer
+        y: mainHeader.height
+        width: (parent.width < parent.height)?parent.width/2: parent.width/5
+        height: parent.height - mainHeader.height
     }
 }
 

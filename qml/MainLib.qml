@@ -5,11 +5,10 @@ import QtQuick.Controls.Material 2.15
 import CallManager 1.0
 import MatrixClient 1.0
 import CallType 1.0
-import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
 
-Item {
+Page {
     id: qmlLibRoot
     anchors.fill:parent
     property bool embedVideoQML: false
@@ -17,13 +16,38 @@ Item {
     StackView {
         id: stack
         anchors.fill: parent
+        onCurrentItemChanged:{
+            mainHeader.setTitle(currentItem.title)
+            if(currentItem instanceof Timeline) {
+                mainHeader.state = "freecall"
+                mainHeader.onNewCallState() 
+            } else if(currentItem instanceof VideoCall){
+                if(singleVideoQML){
+                    mainHeader.state = "none"
+                } else {
+                    mainHeader.state = "freecall"
+                    mainHeader.onNewCallState() 
+                }
+            } else {
+                mainHeader.state = "none"
+            }
+            if(currentItem instanceof CibaLogin || currentItem instanceof Login){
+                mainHeader.visible= false
+            } else {
+                mainHeader.visible= true
+            }
+        }
     }
     FontMetrics {
         id: fontMetrics
     }
     UIA{
     }
-    
+
+    header: CustomHeader {
+        id: mainHeader
+    } 
+
     VideoCall {
         id: videoItem
         visible: false
@@ -77,19 +101,6 @@ Item {
         }
     }
 
-    function onNewCallState(){
-        if(CallManager.isOnCall && CallManager.callType != CallType.VOICE){
-            if(embedVideoQML){
-                videoItem.header.setBackButtonsVisible(false)
-                stack.push(videoItem);
-            }
-            QmlInterface.setVideoCallItem();
-        } else if (!CallManager.isOnCall) {
-            if(stack.currentItem == videoItem && embedVideoQML)
-                stack.pop()
-        }
-    }
-
     Connections {        
         target: MatrixClient
         function onDropToLogin(msg) {
@@ -108,8 +119,6 @@ Item {
             if(singleVideoQML){
                 console.log("Running GUI application in Single Video Screen/Auto Call accept mode");
                 stack.replace(videoItem)
-                videoItem.state="none"
-                videoItem.header.setBackButtonsVisible(false)
             } else {
                 stack.replace(roomList)
             }
@@ -129,7 +138,6 @@ Item {
     Component.onCompleted: {
         stack.push(busyIndicator)
         CallManager.onNewInviteState.connect(onNewInviteState)
-        CallManager.onNewCallState.connect(onNewCallState)
         MatrixClient.start()
     }
 }
