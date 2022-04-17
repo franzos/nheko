@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.0.12]
 ### Changed
 
+* Fixing an issue in openning the Room Info Page.
 * Optimization. (Move header from all pages to main page).
 
 
