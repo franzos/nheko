@@ -9,13 +9,14 @@ import "device-verification"
 
 ToolBar {
     width: parent.width
-    // TODO : important -> currently one header will be create for each page and they will be accumulated.
     signal titleClicked()
     signal menuClicked()
     signal voiceCallClicked()
     signal videoCallClicked()
     signal optionClicked()
     property string savedTitle: ""
+    property bool enableCallButtons: false
+    property bool inCalling: false
     RowLayout {
         anchors.fill: parent
         spacing: 2
@@ -35,7 +36,10 @@ ToolBar {
             width: parent.height
             height: parent.height
             visible: stack.depth > 1
-            onClicked: stack.pop()
+            onClicked: {
+                if(!inCalling)
+                    stack.pop()
+            }
         }
 
         ToolButton {
@@ -74,7 +78,7 @@ ToolBar {
             icon.source: "qrc:/images/place-call.svg"
             width: parent.height
             height: parent.height
-            visible: false
+            visible: enableCallButtons
             onClicked: {voiceCallClicked()}
         }
 
@@ -83,7 +87,7 @@ ToolBar {
             icon.source: "qrc:/images/video.svg"
             width: parent.height
             height: parent.height
-            visible: false
+            visible: enableCallButtons
             onClicked: {videoCallClicked()}
         } 
 
@@ -92,7 +96,7 @@ ToolBar {
             icon.source: "qrc:/images/end-call.svg"
             width: parent.height
             height: parent.height
-            visible: false
+            visible: enableCallButtons
             onClicked: { endCallClicked()}
         }
         
@@ -157,20 +161,20 @@ ToolBar {
     }
 
     function onNewCallState(){
-        if(state != "none") {
-            if(CallManager.isOnCall){
-                state = "oncall"
-                if(CallManager.callType != CallType.VOICE){
-                    if(embedVideoQML){
-                        stack.push(videoItem);
-                    }
-                    QmlInterface.setVideoCallItem();
+        if(CallManager.isOnCall){
+            state = "oncall"
+            inCalling = true
+            if(CallManager.callType != CallType.VOICE){
+                if(qmlLibRoot.embedVideoQML){
+                    stack.push(videoItem);
                 }
-            } else {
-                state = "freecall"
-                if(stack.currentItem == videoItem && embedVideoQML)
-                    stack.pop()
+                QmlInterface.setVideoCallItem();
             }
+        } else {
+            state = "freecall"
+            inCalling = false
+            if(stack.currentItem == videoItem && qmlLibRoot.embedVideoQML)
+                stack.pop()
         }
     }    
 
@@ -188,8 +192,10 @@ ToolBar {
             name: "freecall"
             StateChangeScript {
                 script: {
-                    setCallButtonsVisible(true)
-                    setEndCallButtonsVisible(false)
+                    if(enableCallButtons) {
+                        setCallButtonsVisible(true)
+                        setEndCallButtonsVisible(false)
+                    }
                     if(savedTitle)
                         setTitle(savedTitle)
                 }
@@ -199,8 +205,10 @@ ToolBar {
             name: "oncall"
             StateChangeScript {
                 script: {
-                    setCallButtonsVisible(false)
-                    setEndCallButtonsVisible(true)
+                    if(enableCallButtons) {
+                        setCallButtonsVisible(false)
+                        setEndCallButtonsVisible(true)
+                    }
                     savedTitle = title()
                     setTitle(CallManager.callPartyDisplayName + " calling ...")
                 }

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.12]
+### Changed
+
+* Optimization. (Move header from all pages to main page).
+
+
 ## [0.0.11]
 ### Fixed
 

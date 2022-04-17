@@ -18,18 +18,9 @@ Page {
         anchors.fill: parent
         onCurrentItemChanged:{
             mainHeader.setTitle(currentItem.title)
-            if(currentItem instanceof Timeline) {
-                mainHeader.state = "freecall"
+            mainHeader.state = "none"
+            if(currentItem instanceof Timeline || currentItem instanceof VideoCall) {
                 mainHeader.onNewCallState() 
-            } else if(currentItem instanceof VideoCall){
-                if(singleVideoQML){
-                    mainHeader.state = "none"
-                } else {
-                    mainHeader.state = "freecall"
-                    mainHeader.onNewCallState() 
-                }
-            } else {
-                mainHeader.state = "none"
             }
             if(currentItem instanceof CibaLogin || currentItem instanceof Login){
                 mainHeader.visible= false
@@ -46,6 +37,8 @@ Page {
 
     header: CustomHeader {
         id: mainHeader
+        enableCallButtons: !singleVideoQML
+        state: "none"
     } 
 
     VideoCall {
