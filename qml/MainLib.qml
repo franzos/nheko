@@ -17,10 +17,16 @@ Page {
         id: stack
         anchors.fill: parent
         onCurrentItemChanged:{
+            // TODO these params should be retireved from a general Page class and load to the Header
             mainHeader.setTitle(currentItem.title)
             mainHeader.state = "none"
             if(currentItem instanceof Timeline || currentItem instanceof VideoCall) {
                 mainHeader.onNewCallState() 
+            }
+            if(currentItem instanceof Timeline){
+                mainHeader.setOptionButtonsVisible(true)
+            } else {
+                mainHeader.setOptionButtonsVisible(false)
             }
             if(currentItem instanceof CibaLogin || currentItem instanceof Login){
                 mainHeader.visible= false

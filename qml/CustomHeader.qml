@@ -52,9 +52,10 @@ ToolBar {
                 selfVerificationCheck.verify()
             }
         }
+
         Item{
             Layout.fillWidth: true
-            height: parent.height            
+            Layout.fillHeight: true
             Label {
                 id: titleLabel
                 width: parent.width 
@@ -65,14 +66,12 @@ ToolBar {
 
             MouseArea {
                 id: ma
-                anchors.fill: parent
-                onClicked: {
-                    titleClicked()                    
-                }
+                height: titleLabel.height            
+                width: titleLabel.width            
+                onClicked: titleClicked()
             }
         }
-       
-       
+
         ToolButton {
             id: voiceCallButton
             icon.source: "qrc:/images/place-call.svg"

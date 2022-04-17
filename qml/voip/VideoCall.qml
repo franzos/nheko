@@ -13,9 +13,4 @@ Page {
     VideoCallEmbedPage {
         id: videocallembedpage
     }
-
-    Component.onCompleted: {
-        mainHeader.setOptionButtonsVisible(false)
-        // listenToCallManager()
-    }
 }
