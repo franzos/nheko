@@ -3,7 +3,6 @@
         <file>CreateRoom.qml</file>
         <file>CibaLogin.qml</file>
         <file>CustomHeader.qml</file>
-        <file>CustomPage.qml</file>
         <file>DirectChatDialog.qml</file>
         <file>ErrorDialog.qml</file>
         <file>InvitationRoom.qml</file>
@@ -21,7 +20,6 @@
         <file>TypingIndicator.qml</file>
         <file>TimelineDelegate.qml</file>
         <file>UIA.qml</file>
-        <file>Validator.qml</file>
         <file>device-verification/AwaitingVerificationConfirmation.qml</file>
         <file>device-verification/DeviceVerification.qml</file>
         <file>device-verification/DigitVerification.qml</file>
@@ -36,6 +34,10 @@
         <file>device-verification/UnverifiedMasterKeyMessage.qml</file>
         <file>device-verification/VerifyWithPassphraseMessage.qml</file>
         <file>device-verification/Waiting.qml</file>
+        
+        <file>regex/MatrixServerRegex.qml</file>
+        <file>regex/UserIDRegex.qml</file>
+
         <file>voip/ActiveCallBar.qml</file>
         <file>voip/CallDevices.qml</file>
         <file>voip/CallInvite.qml</file>

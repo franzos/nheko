@@ -3,15 +3,13 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 import QmlInterface 1.0
+import GlobalObject 1.0
+import "regex"
 
-CustomPage {
+Page {
     id: loginPage
     width: parent.width
     spacing: 10
-
-    Validator{
-        id: validator
-    }
 
     ColumnLayout{
         id: inputLayout
@@ -35,7 +33,7 @@ CustomPage {
             Layout.fillWidth: true
             placeholderText: "Matrix Server (e.g.: " + QmlInterface.defaultMatrixServer() + ")"
             text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
-            validator: validator.matrixServerRegex()
+            validator: MatrixServerRegex{}
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
         }
@@ -54,7 +52,7 @@ CustomPage {
                 anchors.verticalCenter: parent.verticalCenter
                 function gotoLogin(){
                     loginButton.enabled= false;
-                    matrixServerText.text = validator.checkMatrixServerUrl(matrixServerText.text)
+                    matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
                     MatrixClient.loginWithCiba(String(userIdText.text),
                                                String(matrixServerText.text))
                 }
@@ -85,8 +83,5 @@ CustomPage {
         loginButton.enabled = true
     }
 
-    Component.onCompleted: {
-        header.visible = false
-    }
 }
 
