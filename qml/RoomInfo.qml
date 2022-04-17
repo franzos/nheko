@@ -4,9 +4,10 @@ import QtQuick.Controls 2.5
 
 import Rooms 1.0
 
-CustomPage {
+Page {
     id: roomInfo
     width: parent.width
+    title: "Room Info"
 
     required property string roomid
     Column {
@@ -63,7 +64,6 @@ CustomPage {
     }
     Component.onCompleted: {
         var info = Rooms.roomInformation(roomid)
-        header.setTitle("Room Info")
         nameLabel.text = info.name()
         idLabel.text = info.id()
         memberLabel.text = info.memberCount()

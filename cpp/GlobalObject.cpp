@@ -190,3 +190,9 @@ bool GlobalObject::handleMatrixUri(const QByteArray &uri) {
 bool GlobalObject::handleMatrixUri(const QUrl &uri) {
     return handleMatrixUri(uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
 }
+
+QString GlobalObject::checkMatrixServerUrl(QString url){
+    if (url[url.size() -1] == "/")
+        url = url.remove(url.size() - 1, 1);
+    return url;
+}

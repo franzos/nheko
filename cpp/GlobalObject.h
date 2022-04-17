@@ -43,6 +43,7 @@ public:
     Q_INVOKABLE void openLink(QString link);
     Q_INVOKABLE void setStatusMessage(QString msg) const;
     Q_INVOKABLE QString getApplicationVersion(){return QString::fromStdString(VERSION_APPLICATION);}
+    Q_INVOKABLE QString checkMatrixServerUrl(QString url);
 
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
