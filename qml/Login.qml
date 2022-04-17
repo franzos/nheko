@@ -3,13 +3,11 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 import QmlInterface 1.0
+import GlobalObject 1.0
+import "regex"
 
 Page {
     id: loginPage
-
-    Validator{
-        id: validator
-    }
 
     ColumnLayout{
         id: inputLayout
@@ -20,7 +18,7 @@ Page {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            validator: validator.userIdRegex()
+            validator: UserIDRegex{}
             // text: "@hamzeh_test05:pantherx.org"
             placeholderText: "User ID" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
@@ -45,7 +43,7 @@ Page {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            validator: validator.matrixServerRegex()
+            validator: MatrixServerRegex{}
             placeholderText: "Matrix Server (e.g.: " + QmlInterface.defaultMatrixServer() + ")"
             text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
             Keys.onReturnPressed: loginButton.gotoLogin()
@@ -58,7 +56,7 @@ Page {
             Layout.alignment: Qt.AlignHCenter
             function gotoLogin(){
                 loginButton.enabled= false;
-                matrixServerText.text = validator.checkMatrixServerUrl(matrixServerText.text)
+                matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
                 MatrixClient.loginWithPassword(String("matrix_client_application"),
                                          String(userIdText.text),
                                          String(passwordText.text),

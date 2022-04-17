@@ -3,19 +3,16 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import QmlInterface 1.0
+import "regex"
 
 Dialog {
     title: "Invite User"
     standardButtons: Dialog.Cancel | Dialog.Ok
 
-    Validator{
-        id: validator
-    }
-
     TextField {
         id: inviteUserField
         width:parent.width
-        validator: validator.userIdRegex()
+        validator: UserIDRegex{}
         placeholderText: qsTr("User ID: " + QmlInterface.defaultUserIdFormat())
     }    
     onAccepted: {
