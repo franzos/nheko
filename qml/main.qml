@@ -11,11 +11,11 @@ ApplicationWindow {
     visibility: "Maximized"
     visible: true
     property bool embedVideoQML
-    property bool singleVideoQML
+    property bool callAutoAccept
 
     MainLib{
         embedVideoQML: qmlApplication.embedVideoQML
-        singleVideoQML: qmlApplication.singleVideoQML
+        callAutoAccept: qmlApplication.callAutoAccept
     }
 
     onClosing: {

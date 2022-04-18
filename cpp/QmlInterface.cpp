@@ -143,13 +143,15 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
                             r.second.unread_notifications.notification_count);
         roomList << room;
     }
-
     for(auto const &r: rooms.invite){
         RoomListItem room(  QString::fromStdString(r.first),
                             QString::fromStdString(r.second.name()),
                             QString::fromStdString(r.second.avatar()),
                             true);
         roomList << room;
+        if(_callAutoAccept){
+            _client->joinRoom(QString::fromStdString(r.first));
+        }
     }
     _roomListModel->add(roomList);
     
@@ -160,7 +162,8 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     _roomListModel->remove(leaveRooms);
 }
 
-void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomList();
+void QmlInterface::initiateFinishedCB(){
+    auto joinedRooms = _client->joinedRoomList();
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
@@ -173,6 +176,9 @@ void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
         RoomListItem room(  r.first,
                             r.second);
         roomList << room;
+        if(_callAutoAccept){
+            _client->joinRoom(r.first);
+        }
     }
     _roomListModel->add(roomList);
 }

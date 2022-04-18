@@ -15,19 +15,12 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());    
 }
 
-void MatrixQmlApplicationEngine::load(bool singleVideoCallScreen){
-    bool embedVideoQML ,singleVideoQML;
-    if(singleVideoCallScreen){
-        embedVideoQML = false;
-        singleVideoQML = true;
-    } else {
-        embedVideoQML = true;
-        singleVideoQML = false;
-    }
+void MatrixQmlApplicationEngine::load(bool callAutoAccept){
     QQmlApplicationEngine::setInitialProperties({
-        { "embedVideoQML", embedVideoQML },
-        { "singleVideoQML", singleVideoQML}
-    });    
+        { "embedVideoQML", !callAutoAccept },
+        { "callAutoAccept", callAutoAccept}
+    });
+    setAutoAcceptCall(callAutoAccept);
     QQmlApplicationEngine::load(mainAppQMLurl());
 }
 
