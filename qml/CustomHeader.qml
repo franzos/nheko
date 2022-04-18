@@ -37,8 +37,12 @@ ToolBar {
             height: parent.height
             visible: stack.depth > 1
             onClicked: {
-                if(!inCalling)
-                    stack.pop()
+                if(!inCalling){
+                    var prevPage = stack.pop()
+                    if (prevPage) {
+                        prevPage.destroy()
+                    }
+                }
             }
         }
 
