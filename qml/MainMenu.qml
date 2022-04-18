@@ -119,7 +119,7 @@ Drawer {
         Label {
             width: parent.width
             wrapMode: Text.Wrap
-            text: "Library Version: "+MatrixClient.getLibraryVersion()+"\n"+"Application Version: "+GlobalObject.getApplicationVersion()         
+            text: "Matrix Library: "+MatrixClient.getLibraryVersion()+"\n"+"Matrix GUI Library: "+GlobalObject.getApplicationVersion()         
         }
       
         onAccepted: {

@@ -8,7 +8,7 @@ namespace PX::GUI::MATRIX{
 class MatrixQmlApplicationEngine : public QmlInterface ,public QQmlApplicationEngine{
 public:
     MatrixQmlApplicationEngine(QObject *parent = nullptr);
-    void load(bool singleVideoCallScreen = false);
+    void load(bool callAutoAccept = false);
 public slots:
     void setVideoCallItem() override;
 };

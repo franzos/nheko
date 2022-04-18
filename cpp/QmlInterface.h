@@ -31,7 +31,9 @@ public:
     Q_INVOKABLE QString defaultMatrixServer() {return _defaultMatrixServer;};
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     Q_INVOKABLE bool isSetServerAsDefault() {return _setServerAsDefault;};
-
+    void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
+    bool autoAcceptCall() { return _callAutoAccept; };
+    
 public slots:
     virtual void setVideoCallItem() = 0;
 
@@ -40,6 +42,7 @@ private slots:
     void newSyncCb(const mtx::responses::Sync &sync);
 
 private:
+    bool _callAutoAccept = false;
     RoomListModel *_roomListModel = nullptr;
     Client *_client = nullptr;
     CallManager *_callMgr = nullptr;
