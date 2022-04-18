@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Changed
 
 * Auto accept invitation in Auto Accept Call mode.
+* Fixing issue in call requests (send call request to the previous contact)
 
 
 ## [0.0.12]

@@ -35,7 +35,7 @@ Rectangle {
     function createTimeline(id,name,avatar){
         var timeline = timelineFactory.createObject(stack, {"roomid": id,
                                                             "name": name,
-                                                            "avatar": avatar});
+                                                            "avatar": avatar})
         stack.push(timeline)
     }  
     ColumnLayout{
