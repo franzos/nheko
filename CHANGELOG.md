@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.13]
+### Changed
+
+* Auto accept invitation in Auto Accept Call mode.
+* Fixing issue in call requests (send call request to the previous contact)
+
+
 ## [0.0.12]
 ### Changed
 
@@ -17,7 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Fixing minor issue in pri file to make the project as library.
 
 
-## [0.0.10]
+## [0.0.9]
 ### Changed
 
 * Update to support single video/voice call application with auto answer feature.

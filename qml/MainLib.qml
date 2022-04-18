@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.15
 import CallManager 1.0
 import MatrixClient 1.0
 import CallType 1.0
+import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
 
@@ -12,7 +13,7 @@ Page {
     id: qmlLibRoot
     anchors.fill:parent
     property bool embedVideoQML: false
-    property bool singleVideoQML: false
+    property bool callAutoAccept: false
     StackView {
         id: stack
         anchors.fill: parent
@@ -43,7 +44,7 @@ Page {
 
     header: CustomHeader {
         id: mainHeader
-        enableCallButtons: !singleVideoQML
+        enableCallButtons: !callAutoAccept
         state: "none"
     } 
 
@@ -94,7 +95,7 @@ Page {
             dialog.open();
             destroyOnClose(dialog);
 
-            if(singleVideoQML){
+            if(callAutoAccept){
                 dialog.acceptCall()
             }
         }
@@ -115,7 +116,7 @@ Page {
         }
 
         function onInitiateFinished(){
-            if(singleVideoQML){
+            if(callAutoAccept){
                 console.log("Running GUI application in Single Video Screen/Auto Call accept mode");
                 stack.replace(videoItem)
             } else {

@@ -62,43 +62,6 @@ QmlInterface::QmlInterface(QObject *parent):
         }
     });
 
-
-    connect(_callMgr,
-                     qOverload<const QString &, const mtx::events::msg::CallInvite &>(&CallManager::newMessage),
-                     [=](const QString &roomid, const mtx::events::msg::CallInvite &invite) {
-                         nhlog::ui()->info("CALL INVITE: callid: {} - room: {}", invite.call_id, roomid.toStdString());
-                         if (auto timeline = _client->timeline(roomid)) {
-                             timeline->sendMessageEvent(invite, mtx::events::EventType::CallInvite);
-                         }
-                     });
-
-    connect(_callMgr,
-                     qOverload<const QString &, const mtx::events::msg::CallCandidates &>(&CallManager::newMessage),
-                     [=](const QString &roomid, const mtx::events::msg::CallCandidates &candidate) {
-                         nhlog::ui()->info("CALL CANDIDATE: callid: {} - room: {}", candidate.call_id, roomid.toStdString());
-                         if (auto timeline = _client->timeline(roomid)) {
-                             timeline->sendMessageEvent(candidate, mtx::events::EventType::CallCandidates);
-                         }
-                     });
-
-    connect(_callMgr,
-                     qOverload<const QString &, const mtx::events::msg::CallAnswer &>(&CallManager::newMessage),
-                     [=](const QString &roomid, const mtx::events::msg::CallAnswer &answer) {
-                         nhlog::ui()->info("CALL ANSWER: callid: {} - room: {}", answer.call_id, roomid.toStdString());
-                         if (auto timeline = _client->timeline(roomid)) {
-                             timeline->sendMessageEvent(answer, mtx::events::EventType::CallAnswer);
-                         }
-                     });
-
-    connect(_callMgr,
-                     qOverload<const QString &, const mtx::events::msg::CallHangUp &>(&CallManager::newMessage),
-                     [=](const QString &roomid, const mtx::events::msg::CallHangUp &hangup) {
-                         nhlog::ui()->info("CALL HANGUP: callid: {} - room: {}", hangup.call_id, roomid.toStdString());
-                         if (auto timeline = _client->timeline(roomid)) {
-                             timeline->sendMessageEvent(hangup, mtx::events::EventType::CallHangUp);
-                         }
-                     });
-
     qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new GlobalObject();
     });
@@ -143,13 +106,15 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
                             r.second.unread_notifications.notification_count);
         roomList << room;
     }
-
     for(auto const &r: rooms.invite){
         RoomListItem room(  QString::fromStdString(r.first),
                             QString::fromStdString(r.second.name()),
                             QString::fromStdString(r.second.avatar()),
                             true);
         roomList << room;
+        if(_callAutoAccept){
+            _client->joinRoom(QString::fromStdString(r.first));
+        }
     }
     _roomListModel->add(roomList);
     
@@ -160,7 +125,8 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     _roomListModel->remove(leaveRooms);
 }
 
-void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomList();
+void QmlInterface::initiateFinishedCB(){
+    auto joinedRooms = _client->joinedRoomList();
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
@@ -173,6 +139,9 @@ void QmlInterface::initiateFinishedCB(){auto joinedRooms = _client->joinedRoomLi
         RoomListItem room(  r.first,
                             r.second);
         roomList << room;
+        if(_callAutoAccept){
+            _client->joinRoom(r.first);
+        }
     }
     _roomListModel->add(roomList);
 }
