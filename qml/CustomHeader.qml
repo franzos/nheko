@@ -7,111 +7,131 @@ import CallType 1.0
 import QmlInterface 1.0
 import "device-verification"
 
-ToolBar {
-    width: parent.width
+Column {
+    width: toolBar.width
+    height: toolBar.height + 20
     signal titleClicked()
     signal menuClicked()
     signal voiceCallClicked()
     signal videoCallClicked()
     signal optionClicked()
-    property string savedTitle: ""
     property bool enableCallButtons: false
     property bool inCalling: false
-    RowLayout {
-        anchors.fill: parent
-        spacing: 2
-        ToolButton{
-            id: menuButton
-            icon.source: "qrc:/images/slide-icon.svg"
-            width: parent.height
-            height: parent.height
-            visible: stack.depth == 1
-            onClicked: {
-                menuClicked()
+
+    ToolBar {
+        id: toolBar
+        width: parent.width
+        RowLayout {
+            anchors.fill: parent
+            spacing: 2
+            ToolButton{
+                id: menuButton
+                icon.source: "qrc:/images/slide-icon.svg"
+                width: parent.height
+                height: parent.height
+                visible: stack.depth == 1
+                onClicked: {
+                    menuClicked()
+                }
             }
-        }
-        ToolButton {
-            id: backButton
-            icon.source: "qrc:/images/angle-arrow-left.svg"
-            width: parent.height
-            height: parent.height
-            visible: stack.depth > 1
-            onClicked: {
-                if(!inCalling){
-                    var prevPage = stack.pop()
-                    if (prevPage) {
-                        prevPage.destroy()
+
+            ToolButton {
+                id: backButton
+                icon.source: "qrc:/images/angle-arrow-left.svg"
+                width: parent.height
+                height: parent.height
+                visible: stack.depth > 1
+                onClicked: {
+                    if(!inCalling || (CallManager.callType == CallType.VOICE)){
+                        var prevPage = stack.pop()
+                        if (prevPage) {
+                            prevPage.destroy()
+                        }
                     }
                 }
             }
-        }
 
-        ToolButton {
-            id: verifyRect
-            icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
-            icon.color:"#C70039"
-            width: parent.height
-            height: parent.height
-            onClicked: {
-                selfVerificationCheck.verify()
-            }
-        }
-
-        Item{
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Label {
-                id: titleLabel
-                width: parent.width 
+            ToolButton {
+                id: verifyRect
+                icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+                icon.color:"#C70039"
+                width: parent.height
                 height: parent.height
-                anchors.leftMargin: 2
-                verticalAlignment:Text.AlignVCenter
+                onClicked: {
+                    selfVerificationCheck.verify()
+                }
             }
 
-            MouseArea {
-                id: ma
-                height: titleLabel.height            
-                width: titleLabel.width            
-                onClicked: titleClicked()
+            Item{
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Label {
+                    id: titleLabel
+                    width: parent.width 
+                    height: parent.height
+                    anchors.leftMargin: 2
+                    verticalAlignment:Text.AlignVCenter
+                }
+
+                MouseArea {
+                    id: ma
+                    height: titleLabel.height            
+                    width: titleLabel.width            
+                    onClicked: titleClicked()
+                }
+            }
+
+            ToolButton {
+                id: voiceCallButton
+                icon.source: "qrc:/images/place-call.svg"
+                width: parent.height
+                height: parent.height
+                visible: enableCallButtons
+                onClicked: {voiceCallClicked()}
+            }
+
+            ToolButton {
+                id: videoCallButton
+                icon.source: "qrc:/images/video.svg"
+                width: parent.height
+                height: parent.height
+                visible: enableCallButtons
+                onClicked: {videoCallClicked()}
+            } 
+
+            ToolButton {
+                id: endCallButton
+                icon.source: "qrc:/images/end-call.svg"
+                width: parent.height
+                height: parent.height
+                visible: enableCallButtons
+                onClicked: { endCallClicked()}
+            }
+            
+            ToolButton {
+                id: optionsButton
+                icon.source: "qrc:/images/options.svg"
+                width: parent.height
+                height: parent.height
+                visible: false
+                onClicked: {optionClicked()}
             }
         }
-
-        ToolButton {
-            id: voiceCallButton
-            icon.source: "qrc:/images/place-call.svg"
-            width: parent.height
-            height: parent.height
-            visible: enableCallButtons
-            onClicked: {voiceCallClicked()}
+    }
+   
+    Rectangle {
+        id: callStatusbar
+        width: parent.width
+        Text{
+            id: callStatusText
+            anchors.leftMargin: 5
+            width: parent.width
+            text: "..."
+            color: "white"
         }
-
-        ToolButton {
-            id: videoCallButton
-            icon.source: "qrc:/images/video.svg"
-            width: parent.height
-            height: parent.height
-            visible: enableCallButtons
-            onClicked: {videoCallClicked()}
-        } 
-
-        ToolButton {
-            id: endCallButton
-            icon.source: "qrc:/images/end-call.svg"
-            width: parent.height
-            height: parent.height
-            visible: enableCallButtons
-            onClicked: { endCallClicked()}
-        }
-        
-        ToolButton {
-            id: optionsButton
-            icon.source: "qrc:/images/options.svg"
-            width: parent.height
-            height: parent.height
-            visible: false
-            onClicked: {optionClicked()}
-        }
-
+        height: callStatusText.height
+        color: "#09af00"
+        visible: false
     }
 
     function setCallButtonsVisible(visible){
@@ -188,6 +208,7 @@ ToolBar {
                 script: {
                     setCallButtonsVisible(false)
                     setEndCallButtonsVisible(false)
+                    callStatusbar.visible = false
                 }
             }
         },
@@ -199,8 +220,7 @@ ToolBar {
                         setCallButtonsVisible(true)
                         setEndCallButtonsVisible(false)
                     }
-                    if(savedTitle)
-                        setTitle(savedTitle)
+                    callStatusbar.visible = false
                 }
             }
         },
@@ -212,8 +232,8 @@ ToolBar {
                         setCallButtonsVisible(false)
                         setEndCallButtonsVisible(true)
                     }
-                    savedTitle = title()
-                    setTitle(CallManager.callPartyDisplayName + " calling ...")
+                    callStatusText.text = CallManager.callPartyDisplayName + " calling ..."
+                    callStatusbar.visible = true
                 }
             }
         }

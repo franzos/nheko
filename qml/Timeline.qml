@@ -83,6 +83,12 @@ Room {
         mainHeader.videoCallClicked.connect(startVideoCall)
     }
 
+    Component.onDestruction: {
+        mainHeader.optionClicked.disconnect(onOptionClicked)
+        mainHeader.voiceCallClicked.disconnect(startVoiceCall)
+        mainHeader.videoCallClicked.disconnect(startVideoCall)
+    }
+
     Connections {
         target: timelineModel
         function onTypingUsersChanged(text) {
