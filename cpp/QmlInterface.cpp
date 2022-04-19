@@ -67,6 +67,12 @@ QmlInterface::QmlInterface(QObject *parent):
     });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
+    // qmlRegisterType<UserInformation>("UserInformation", 1, 0, "UserInformation");
+    qRegisterMetaType<UserInformation>();
+    qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate enum"));
+    
+
+    
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);

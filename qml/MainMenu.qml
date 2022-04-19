@@ -14,6 +14,10 @@ Drawer {
     ListModel {
         id: modelMenu
         ListElement {
+            item: "Profile"
+            icon: ":/images/px-user.svg"            
+        }
+        ListElement {
             item: "Settings"
             icon: ":/images/settings.svg"            
         }
@@ -24,7 +28,7 @@ Drawer {
         ListElement {
             item: "About"
             icon: ":/images/about.svg"            
-        }
+        }       
     }
 
    
@@ -34,7 +38,7 @@ Drawer {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        spacing: 2
+        spacing: 5
         clip: true
         model: modelMenu
         delegate: componentDelegate
@@ -54,7 +58,7 @@ Drawer {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 2
-                height: parent.height
+                height: parent.height - 10
                 width: height
                 source: "image://colorimage/" + icon + "?" + GlobalObject.colors.windowText
                 smooth: true
@@ -85,6 +89,9 @@ Drawer {
                         case "About":
                             aboutClicked()
                             aboutDialog.open()
+                            break;  
+                        case "Profile":
+                            showUserInfo()
                             break;        
                     }
                 }
@@ -140,6 +147,17 @@ Drawer {
             menu.close()
         }
     }
+
+    Component {
+        id: userInfoFactory
+        UserInfo {}
+    }
+
+    function showUserInfo(){
+        var userinf = userInfoFactory.createObject(stack);
+        stack.push(userinf)
+    }
+
    
 }
 
