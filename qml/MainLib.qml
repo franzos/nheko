@@ -14,6 +14,7 @@ Page {
     anchors.fill:parent
     property bool embedVideoQML: false
     property bool callAutoAccept: false
+    property var videoItem
     StackView {
         id: stack
         anchors.fill: parent
@@ -21,7 +22,7 @@ Page {
             // TODO these params should be retireved from a general Page class and load to the Header
             mainHeader.setTitle(currentItem.title)
             mainHeader.state = "none"
-            if(currentItem instanceof Timeline || currentItem instanceof VideoCall) {
+            if(currentItem instanceof Timeline || currentItem == videoItem) {
                 mainHeader.onNewCallState() 
             }
             if(currentItem instanceof Timeline){
@@ -47,11 +48,6 @@ Page {
         enableCallButtons: !callAutoAccept
         state: "none"
     } 
-
-    VideoCall {
-        id: videoItem
-        visible: false
-    }
 
     Component {
         id: mobileCallInviteDialog
@@ -137,7 +133,12 @@ Page {
     
     Component.onCompleted: {
         stack.push(busyIndicator)
-        CallManager.onNewInviteState.connect(onNewInviteState)
+        if(CallManager.callsSupported){            
+            videoItem = Qt.createQmlObject('import QtQuick 2.15; import QtQuick.Layouts 1.3; import QtQuick.Controls 2.15; import "voip/"; Page {Layout.fillWidth: true; title: "Video Call"; VideoCallEmbedPage{}}',
+                                   qmlLibRoot,
+                                   "dynamicSnippet");
+            CallManager.onNewInviteState.connect(onNewInviteState)
+        }
         MatrixClient.start()
     }
 }

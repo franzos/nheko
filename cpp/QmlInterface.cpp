@@ -23,7 +23,9 @@ QmlInterface::QmlInterface(QObject *parent):
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()}{
     _client->enableLogger(true, true);
-
+    if(_callMgr->callsSupported()){
+        qDebug() << "*** VOIP Supported";
+    }
 #ifdef Q_OS_ANDROID
     setStyle("Material", "Default");
 #else

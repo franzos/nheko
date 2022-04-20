@@ -172,8 +172,10 @@ Column {
     // }
 
     function listenToCallManager(){
-        CallManager.onNewCallState.connect(onNewCallState)
-        onNewCallState()
+        if(CallManager.callsSupported){
+            CallManager.onNewCallState.connect(onNewCallState)
+            onNewCallState()
+        }
     }
 
     function onNewCallState(){
@@ -209,7 +211,7 @@ Column {
             name: "freecall"
             StateChangeScript {
                 script: {
-                    if(enableCallButtons) {
+                    if(enableCallButtons && CallManager.callsSupported) {
                         setCallButtonsVisible(true)
                         setEndCallButtonsVisible(false)
                     }
@@ -221,11 +223,10 @@ Column {
             name: "oncall"
             StateChangeScript {
                 script: {
-                    if(enableCallButtons) {
+                    if(enableCallButtons && CallManager.callsSupported) {
                         setCallButtonsVisible(false)
                         setEndCallButtonsVisible(true)
                     }
-                    // callStatusText.text = CallManager.callPartyDisplayName + " calling ..."
                     callStatusbar.visible = true
                 }
             }
