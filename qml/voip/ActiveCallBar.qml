@@ -1,8 +1,12 @@
 import "../"
+import "../ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import GlobalObject 1.0
+import CallManager 1.0
+import CallType 1.0
+import WebRTCState 1.0
 
 Rectangle {
     visible: CallManager.isOnCall
@@ -25,14 +29,14 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: 8
 
-        Avatar {
-            width: GlobalObject.avatarSize
-            height: GlobalObject.avatarSize
-            url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-            userid: CallManager.callParty
-            displayName: CallManager.callPartyDisplayName
-            onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
-        }
+        // Avatar {
+        //     width: GlobalObject.avatarSize
+        //     height: GlobalObject.avatarSize
+        //     url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
+        //     userid: CallManager.callParty
+        //     displayName: CallManager.callPartyDisplayName
+        //     onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
+        // }
 
         Label {
             Layout.leftMargin: 8
@@ -152,10 +156,10 @@ Rectangle {
                         text: ""
                     }
 
-                    PropertyChanges {
-                        target: stackLayout
-                        currentIndex: 0
-                    }
+                    // PropertyChanges {
+                    //     target: stackLayout
+                    //     currentIndex: 0
+                    // }
 
                 }
             ]
@@ -219,7 +223,6 @@ Rectangle {
             ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
             onClicked: CallManager.toggleMicMute()
         }
-
     }
 
 }

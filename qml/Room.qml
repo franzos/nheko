@@ -27,6 +27,10 @@ Page {
         mainHeader.titleClicked.connect(showRoomInfo) 
     }
 
+    Component.onDestruction: {
+        mainHeader.titleClicked.disconnect(showRoomInfo) 
+    }
+
     Connections {
         target: MatrixClient
 
