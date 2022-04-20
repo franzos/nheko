@@ -4,10 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.15]
+### Fixed and Changed
+
+* Disconnect signals on qml object destruction. (Segmentation fault issue)
+* Adding Active Call bar status.
+* Adjsut UI based on Backend Voip Support.
+* Fixing issue in showing the Menu after login with CIBA.
+
+
 ## [0.0.14]
 ### Changed
 
 * Adding User profile.
+
 
 ## [0.0.13]
 ### Changed

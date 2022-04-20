@@ -39,6 +39,9 @@
         <file>regex/MatrixServerRegex.qml</file>
         <file>regex/UserIDRegex.qml</file>
 
+        <file>ui/ImageButton.qml</file>
+        <file>ui/Ripple.qml</file>
+
         <file>voip/ActiveCallBar.qml</file>
         <file>voip/CallDevices.qml</file>
         <file>voip/CallInvite.qml</file>
@@ -46,7 +49,6 @@
         <file>voip/DeviceError.qml</file>
         <file>voip/PlaceCall.qml</file>
         <file>voip/ScreenShare.qml</file>
-        <file>voip/VideoCall.qml</file>
         <file>voip/VideoCallEmbedPage.qml</file>
     </qresource>
 </RCC>

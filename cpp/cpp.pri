@@ -13,7 +13,9 @@ SOURCES += \
     $$PWD/RoomListModel.cpp \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
-    $$PWD/TimelineItem.cpp 
+    $$PWD/TimelineItem.cpp \
+    $$PWD/ui/NhekoCursorShape.cpp 
+    
 
 HEADERS += \
     $$PWD/Application.h\
@@ -27,4 +29,5 @@ HEADERS += \
     $$PWD/RoomListModel.h \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
-    $$PWD/TimelineItem.h 
+    $$PWD/TimelineItem.h \
+    $$PWD/ui/NhekoCursorShape.h

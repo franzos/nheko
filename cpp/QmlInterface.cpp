@@ -8,6 +8,7 @@
 #include "TimelineModel.h"
 #include "GlobalObject.h"
 #include "mydevice.h"
+#include "ui/NhekoCursorShape.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -22,7 +23,9 @@ QmlInterface::QmlInterface(QObject *parent):
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()}{
     _client->enableLogger(true, true);
-
+    if(_callMgr->callsSupported()){
+        qDebug() << "*** VOIP Supported";
+    }
 #ifdef Q_OS_ANDROID
     setStyle("Material", "Default");
 #else
@@ -67,12 +70,8 @@ QmlInterface::QmlInterface(QObject *parent):
     });
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
-    // qmlRegisterType<UserInformation>("UserInformation", 1, 0, "UserInformation");
     qRegisterMetaType<UserInformation>();
-    qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate enum"));
-    
-
-    
+    qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate enum"));    
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);
@@ -88,6 +87,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qRegisterMetaType<webrtc::State>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "WebRTCState", 1, 0, "WebRTCState", QStringLiteral("Can't instantiate enum"));
     qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
+    qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
 }
 
 QmlInterface::~QmlInterface(){
