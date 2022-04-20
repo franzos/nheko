@@ -200,7 +200,7 @@ function BUILD_MTXCLIENT {
     # version="0.6.1"
     # download_url="https://github.com/Nheko-Reborn/mtxclient/archive/refs/tags/v$version.tar.gz"
     # DOWNLOAD_EXTRACT $name $version $download_url
-    tag="v0.6.1"
+    tag="v0.7.0"
     download_url="https://github.com/Nheko-Reborn/mtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
     APPLY_PATCH $src_path \
@@ -254,12 +254,13 @@ function BUILD_CMARK {
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
-    tag="0.0.30"
+    tag="0.0.36"
     repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 
     BUILD_LIB "$src_path" "$build_path" "$target" \
         ${OPENSSL_CMAKE_DEFINITIONS[@]} \
+        -DVOIP=OFF \
         -Dfmt_DIR=${DIST_DIR}/$target/lib/cmake/fmt \
         -Dspdlog_DIR=${DIST_DIR}/$target/lib/cmake/spdlog \
         -DLMDB_INCLUDE_DIR=${DIST_DIR}/${target}/include \

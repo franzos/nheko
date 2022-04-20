@@ -3,6 +3,7 @@
 
 int RoomListModel::rowCount(const QModelIndex &parent) const
 {
+    (void)parent;
     return _roomListItems.count();
 }
 
@@ -80,6 +81,7 @@ int RoomListModel::roomidToIndex(const QString &roomid){
 
 bool RoomListModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
+    (void)parent;
     beginRemoveRows(QModelIndex(), position, position+rows-1);
     for (int row = 0; row < rows; ++row) {
         _roomListItems.removeAt(position);

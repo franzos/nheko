@@ -38,6 +38,7 @@ void TimelineModel::add(const QVector<DescInfo> &items){
 
 int TimelineModel::rowCount(const QModelIndex &parent) const
 {
+    (void)parent;
     return _timelineItems.count();
 }
 
@@ -103,6 +104,7 @@ int TimelineModel::timelineIdToIndex(const QString &roomid){
 
 bool TimelineModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
+    (void)parent;
     beginRemoveRows(QModelIndex(), position, position+rows-1);
     for (int row = 0; row < rows; ++row) {
         _timelineItems.removeAt(position);

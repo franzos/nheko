@@ -4,18 +4,19 @@ import QtQuick.Controls 2.5
 
 import MatrixClient 1.0
 import Rooms 1.0
+import GlobalObject 1.0
 
 import "device-verification"
 
-CustomPage {
+Page {
     id: roomPage
     width: parent.width
-    property string displayName;
-
+    // property string displayName;
+    title: "..."
     ListView {
         id: roomListView
         anchors.fill: parent
-        spacing: 10
+        spacing: 0
         anchors.margins: 10
         flickableDirection: Flickable.VerticalFlick
         boundsBehavior: Flickable.StopAtBounds
@@ -23,6 +24,7 @@ CustomPage {
         model: Rooms
         delegate:RoomDelegate{}
     }
+
     DirectChatDialog{
         id:directChat
         x: (qmlLibRoot.width - width) / 2
@@ -35,21 +37,21 @@ CustomPage {
         width: height 
         x: parent.width - width -10
         y: parent.height - height -10
+        palette.button: GlobalObject.colors.alternateBase
         font.pointSize: 15            
         text: "+"
         onClicked: directChat.open()
     }   
 
     function onVerificationStatusChanged(){
-        header.setVerified(selfVerificationCheck.isVerified())
+        mainHeader.setVerified(selfVerificationCheck.isVerified())
     }
 
     SelfVerificationCheck{
         id: selfVerificationCheck
     }
 
-    Component.onCompleted: {
-        header.titleClicked.connect(selfVerificationCheck.verify)
+    Component.onCompleted: {        
         selfVerificationCheck.statusChanged.connect(onVerificationStatusChanged)
     }
     
@@ -69,8 +71,8 @@ CustomPage {
         target: MatrixClient
 
         function onUserDisplayNameReady(name){
-            displayName = name
-            header.setTitle(displayName)
+            title = name
+            mainHeader.setTitle(name)
             onVerificationStatusChanged()
         }
         function onRoomCreated(id){

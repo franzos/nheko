@@ -22,6 +22,7 @@ android {
         $$DIST_DIR/lib/libcmark.so \
         $$DIST_DIR/lib/libolm.so
 
+    QT += androidextras svg
     INCLUDEPATH += $$DIST_DIR/include
     LIBS += -L$$DIST_DIR/lib
     LIBS += -lfmt -levent -levent_core -levent_extra -levent_pthreads \

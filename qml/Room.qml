@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.2
 
 import MatrixClient 1.0
 import Rooms 1.0
-CustomPage {
+Page {
     Layout.fillWidth: true
     required property string roomid
     required property string name
@@ -23,8 +23,12 @@ CustomPage {
     }
 
     Component.onCompleted: {
-        header.setTitle(name)
-        header.titleClicked.connect(showRoomInfo)
+        title = name
+        mainHeader.titleClicked.connect(showRoomInfo) 
+    }
+
+    Component.onDestruction: {
+        mainHeader.titleClicked.disconnect(showRoomInfo) 
     }
 
     Connections {
