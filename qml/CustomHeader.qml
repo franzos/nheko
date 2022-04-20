@@ -5,6 +5,7 @@ import MatrixClient 1.0
 import CallManager 1.0
 import CallType 1.0
 import QmlInterface 1.0
+import "voip"
 import "device-verification"
 
 Column {
@@ -119,17 +120,9 @@ Column {
         }
     }
    
-    Rectangle {
+    ActiveCallBar {
         id: callStatusbar
         width: parent.width
-        Text{
-            id: callStatusText
-            anchors.leftMargin: 5
-            width: parent.width
-            text: "..."
-            color: "white"
-        }
-        height: callStatusText.height
         color: "#09af00"
         visible: false
     }
@@ -232,7 +225,7 @@ Column {
                         setCallButtonsVisible(false)
                         setEndCallButtonsVisible(true)
                     }
-                    callStatusText.text = CallManager.callPartyDisplayName + " calling ..."
+                    // callStatusText.text = CallManager.callPartyDisplayName + " calling ..."
                     callStatusbar.visible = true
                 }
             }
