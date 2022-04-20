@@ -116,6 +116,7 @@ Page {
         }
 
         function onInitiateFinished(){
+            stack.pop(null)
             if(callAutoAccept){
                 console.log("Running GUI application in Single Video Screen/Auto Call accept mode");
                 stack.replace(videoItem)
