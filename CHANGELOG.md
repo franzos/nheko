@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Disconnect signals on qml object destruction. (Segmentation fault issue)
 * Adding Active Call bar status.
+* Adjsut UI based on Backend Voip Support.
 
 
 ## [0.0.14]
