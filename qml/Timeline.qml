@@ -12,7 +12,7 @@ import CallType 1.0
 Room {
     id: timeline
     anchors.fill: parent
-    property TimelineModel timelineModel
+    property TimelineModel timelineModel: Rooms.timelineModel(roomid) 
 
     ListView {
         id: timelineView
@@ -77,7 +77,7 @@ Room {
     }
 
     Component.onCompleted: {
-        timelineModel = Rooms.timelineModel(roomid)    
+        // timelineModel = Rooms.timelineModel(roomid)    
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
@@ -87,6 +87,7 @@ Room {
         mainHeader.optionClicked.disconnect(onOptionClicked)
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
+        timelineModel.destroy()
     }
 
     Connections {

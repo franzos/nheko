@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.16]
+### Fixed
+* Fixed Android build issues related to `androidextras` and `svg` support
+
 ## [0.0.15]
 ### Fixed and Changed
 
