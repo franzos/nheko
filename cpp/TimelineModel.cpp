@@ -1,6 +1,13 @@
 #include "TimelineModel.h"
 #include <QDebug>
 
+TimelineModel::~TimelineModel(){
+    if(_timeline) {
+        disconnect(_timeline, &Timeline::newEventsStored, nullptr, nullptr);
+        disconnect(_timeline, &Timeline::typingUsersChanged, nullptr, nullptr);
+    }
+}
+
 TimelineModel::TimelineModel(const QString roomID , QObject *parent ): QAbstractListModel(parent) {
     _timeline = Client::instance()->timeline(roomID);
     if(_timeline){
