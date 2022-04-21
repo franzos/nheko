@@ -77,7 +77,6 @@ Room {
     }
 
     Component.onCompleted: {
-        // timelineModel = Rooms.timelineModel(roomid)    
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
@@ -107,7 +106,10 @@ Room {
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
         onAccepted: {
-            stack.pop()
+            var prevPage = stack.pop()
+            if (prevPage) {
+                prevPage.destroy()
+            }
         }
     }
 

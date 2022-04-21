@@ -94,8 +94,9 @@ bool RoomListModel::removeRows(int position, int rows, const QModelIndex &parent
 void RoomListModel::add(RoomListItem &item){
     if(_roomIds.contains(item.id())){
         auto idx = roomidToIndex(item.id());
-        if(idx == -1)
+        if(idx == -1){
             return;
+        }
         if(_roomListItems.at(idx).invite() && !item.invite()){
             setData(index(idx), false, inviteRole);
         } else {
