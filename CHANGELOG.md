@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Fixing segmentation fault after multiple call request.
 * Fixing sefmentation fault after room creating and send/recieve message.
+* Fixing issue in decline the invitation.
+* Clean cache dir if Application Version is updated.
+* Update calls icons.
 
 
 ## [0.0.16]

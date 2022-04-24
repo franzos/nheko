@@ -2,7 +2,10 @@
 #include <QCoreApplication>
 #include <QQuickStyle>
 #include <QQuickItem>
+#include <QStandardPaths>
 #include <qglobalstatic.h>
+#include <QFile>
+#include <QDir>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include "TimelineModel.h"
@@ -15,6 +18,41 @@ namespace PX::GUI::MATRIX{
 using webrtc::CallType;
 using webrtc::State;
 
+void QmlInterface::checkCacheDirectory(){
+    GlobalObject gobject;
+    QSettings *qSettings;
+    auto cacheDirs = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
+    if(cacheDirs.size()){
+        auto cacheInfoFile = cacheDirs[0] + "/info";
+        qSettings = new QSettings(cacheInfoFile, QSettings::IniFormat);
+        qInfo() << " > QML Cache dir found:" << cacheDirs[0];
+        if(QFile(cacheInfoFile).exists()){
+            qInfo() << " > QML Cache info detected:" << cacheInfoFile;
+            if(qSettings->contains("version")) {
+                auto version = qSettings->value("version").toString();
+                if(version == gobject.getApplicationVersion()){
+                    qInfo() << " > QML Cache version matched:" << version;
+                    return;
+                } else {
+                    qInfo() << " > QML Cache should be updated from" << version << "to" << gobject.getApplicationVersion();
+                }
+            } else {
+                qInfo() << " > QML Cache version not found!";
+            }
+        } else {
+            qInfo() << " > QML Cache file info not found";
+        }
+        auto cacheDir = cacheDirs[0] + "/qmlcache";
+        if(QDir(cacheDir).exists()){
+            if(QDir(cacheDir).removeRecursively())
+                qInfo() << " > QML Cache dir deleted:" << cacheDir; 
+        }
+        qSettings->setValue("version",gobject.getApplicationVersion());
+        qSettings->sync();
+        qInfo() << " > QML Cache info created: Version" << gobject.getApplicationVersion();
+    }
+}
+
 QmlInterface::QmlInterface(QObject *parent): 
     QObject(parent),
     _roomListModel(new RoomListModel({})),
@@ -23,6 +61,7 @@ QmlInterface::QmlInterface(QObject *parent):
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()}{
     _client->enableLogger(true, true);
+    checkCacheDirectory();
     if(_callMgr->callsSupported()){
         qDebug() << "*** VOIP Supported";
     }
