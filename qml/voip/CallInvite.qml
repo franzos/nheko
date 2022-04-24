@@ -73,6 +73,7 @@ Popup {
                 Layout.preferredWidth: callInv.height / 10
                 Layout.preferredHeight: callInv.height / 10
                 source: "image://colorimage/" + image + "?" + GlobalObject.colors.windowText
+                fillMode: Image.PreserveAspectFit
             }
 
             Label {
@@ -99,6 +100,7 @@ Popup {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
                     source: "image://colorimage/:/images/microphone-unmute.svg?" + GlobalObject.colors.windowText
+                    fillMode: Image.PreserveAspectFit
                 }
 
                 ComboBox {
@@ -118,6 +120,7 @@ Popup {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
                     source: "image://colorimage/:/images/video.svg?" + GlobalObject.colors.windowText
+                    fillMode: Image.PreserveAspectFit
                 }
 
                 ComboBox {
@@ -167,6 +170,7 @@ Popup {
 
                 contentItem: Image {
                     source: "image://colorimage/:/images/end-call.svg?#ffffff"
+                    fillMode: Image.PreserveAspectFit
                 }
 
             }
@@ -187,6 +191,7 @@ Popup {
 
                 contentItem: Image {
                     source: "image://colorimage/" + acceptButton.image + "?#ffffff"
+                    fillMode: Image.PreserveAspectFit
                 }
 
             }
