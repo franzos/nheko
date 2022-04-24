@@ -21,29 +21,22 @@ Page {
         var roominfo = roomInfoFactory.createObject(stack, {"roomid":roomid});
         stack.push(roominfo)
     }
+    
+    function onJoinedRoom(id){
+        if(id == roomid) {
+            stack.pop()
+            roomInvitationAccepted(roomid, name, avatar)
+        }
+    }
 
     Component.onCompleted: {
         title = name
         mainHeader.titleClicked.connect(showRoomInfo) 
+        MatrixClient.onJoinedRoom.connect(onJoinedRoom)
     }
 
     Component.onDestruction: {
-        mainHeader.titleClicked.disconnect(showRoomInfo) 
-    }
-
-    Connections {
-        target: MatrixClient
-
-        function onLeftRoom(id){
-            if(id == roomid)
-                stack.pop()
-        }
-
-        function onJoinedRoom(id){
-            if(id == roomid) {
-                stack.pop()
-                roomInvitationAccepted(roomid, name, avatar)
-            }
-        }
+        mainHeader.titleClicked.disconnect(showRoomInfo)
+        MatrixClient.onJoinedRoom.disconnect(onJoinedRoom)
     }
 }

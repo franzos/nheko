@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.17]
+### Fixed
+
+* Fixing segmentation fault after multiple call request.
+* Fixing sefmentation fault after room creating and send/recieve message.
+
+
 ## [0.0.16]
 ### Fixed
+
 * Fixed Android build issues related to `androidextras` and `svg` support
+
 
 ## [0.0.15]
 ### Fixed and Changed

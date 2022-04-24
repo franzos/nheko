@@ -156,6 +156,7 @@ Drawer {
     function showUserInfo(){
         var userinf = userInfoFactory.createObject(stack);
         stack.push(userinf)
+        menu.close()
     }
 
    

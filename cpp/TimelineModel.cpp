@@ -5,6 +5,7 @@ TimelineModel::~TimelineModel(){
     if(_timeline) {
         disconnect(_timeline, &Timeline::newEventsStored, nullptr, nullptr);
         disconnect(_timeline, &Timeline::typingUsersChanged, nullptr, nullptr);
+        _timeline = nullptr;
     }
 }
 

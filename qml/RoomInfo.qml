@@ -8,14 +8,14 @@ Page {
     id: roomInfo
     width: parent.width
     title: "Room Info"
-
     required property string roomid
+    property var info : Rooms.roomInformation(roomid)
     Column {
         anchors.fill: parent
         anchors.margins: 10
         RoundButton {
             id: avatarButton
-            text: "."
+            text: (info.avatar() ? "" : name[0])
             width: 86; height: 86
             anchors.horizontalCenter: parent.horizontalCenter
         }
@@ -23,53 +23,43 @@ Page {
             Label { text: "Name : " }
             Label {
                 id: nameLabel
-                text: "..."
+                text: info.name()
             }
         }
         Row {
             Label { text: "ID : " }
             Label {
                 id: idLabel
-                text: "..."
+                text: info.id()
             }
         }
         Row {
             Label { text: "Members : " }
             Label {
                 id: memberLabel
-                text: "..."
+                text: info.memberCount()
             }
         }
         Row {
             Label { text: "Topic : " }
             Label {
                 id: topicLabel
-                text: "..."
+                text: info.topic()
             }
         }
         Row {
             Label { text: "Version : " }
             Label {
                 id: versionLabel
-                text: "..."
+                text: info.version()
             }
         }
         Row {
             Label { text: "Guest Access : " }
             Label {
                 id: geustAccessLabel
-                text: "..."
+                text: (info.version() ? "Enable" : "Disable")
             }
         }
-    }
-    Component.onCompleted: {
-        var info = Rooms.roomInformation(roomid)
-        nameLabel.text = info.name()
-        idLabel.text = info.id()
-        memberLabel.text = info.memberCount()
-        topicLabel.text = info.topic()
-        versionLabel.text = info.version()
-        geustAccessLabel.text = (info.version() ? "Enable" : "Disable")
-        avatarButton.text = (info.avatar() ? "" : name[0])
     }
 }

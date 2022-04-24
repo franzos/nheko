@@ -77,24 +77,22 @@ Room {
     }
 
     Component.onCompleted: {
-        // timelineModel = Rooms.timelineModel(roomid)    
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
+        timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
     }
 
     Component.onDestruction: {
         mainHeader.optionClicked.disconnect(onOptionClicked)
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
+        timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
         timelineModel.destroy()
     }
 
-    Connections {
-        target: timelineModel
-        function onTypingUsersChanged(text) {
-            typingIndicator.setTypingDisplayText(text)
-        }
+    function onTypingUsersChanged(text) {
+        typingIndicator.setTypingDisplayText(text)
     }
 
     function onOptionClicked(){
@@ -103,8 +101,16 @@ Room {
 
     LeaveMessage {
         id: leaveDialog
+        roomId: roomid
+        roomName: name
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
+        onAccepted: {
+            var prevPage = stack.pop()
+            if (prevPage) {
+                prevPage.destroy()
+            }
+        }
     }
 
     InviteUserDialog {
