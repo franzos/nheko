@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed
 
 * Fixing segmentation fault after multiple call request.
+* Fixing sefmentation fault after room creating and send/recieve message.
 
 
 ## [0.0.16]
