@@ -36,6 +36,7 @@ Room {
                 text: "Decline"
                 onClicked: {
                     MatrixClient.leaveRoom(roomid)
+                    goToPrevPage()
                 }
             }
         }

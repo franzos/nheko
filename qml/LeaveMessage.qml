@@ -6,11 +6,13 @@ import MatrixClient 1.0
 Dialog {
     title: "Leave room"
     standardButtons: Dialog.Cancel | Dialog.Ok
+    property var roomName : ""
+    property var roomId : ""
     Label {
-        text: "Are you sure you want to leave " + room.name + " ?"
+        text: "Are you sure you want to leave " + roomName + " ?"
     }
     onAccepted: {
-        MatrixClient.leaveRoom(room.id)
+        MatrixClient.leaveRoom(roomId)
     }
     onRejected: {}
 }

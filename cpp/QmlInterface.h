@@ -42,6 +42,8 @@ private slots:
     void newSyncCb(const mtx::responses::Sync &sync);
 
 private:
+    void checkCacheDirectory();
+    
     bool _callAutoAccept = false;
     RoomListModel *_roomListModel = nullptr;
     Client *_client = nullptr;

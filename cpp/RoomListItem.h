@@ -97,6 +97,6 @@ public:
     QString toString();
 
 private:
-    RoomInformation *_roomInformation;
+    RoomInformation *_roomInformation = nullptr;
 };
 #endif // ROOM_LIST_ITEM_H

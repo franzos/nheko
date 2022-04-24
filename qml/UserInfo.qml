@@ -8,7 +8,7 @@ Page {
     id: userInfo
     width: parent.width
     title: "Profile"
-   
+    property var info : MatrixClient.userInformation()
     Column {
         anchors.fill: parent
         anchors.margins: 10
@@ -22,7 +22,7 @@ Page {
             Label { text: "ID : " }
             Label {
                 id: idLabel
-                text: "..."
+                text: info.userId 
             }
         }
       
@@ -30,21 +30,15 @@ Page {
             Label { text: "Device ID : " }
             Label {
                 id: deviceIdLabel
-                text: "..."
+                text: info.deviceId
             }
         }
         Row {
             Label { text: "Server : " }
             Label {
                 id: serverLabel
-                text: "..."
+                text : info.homeServer
             }
         }       
-    }
-    Component.onCompleted: {
-        var info = MatrixClient.userInformation()
-        idLabel.text = info.userId  
-        deviceIdLabel.text =  info.deviceId
-        serverLabel.text =   info.homeServer
     }
 }
