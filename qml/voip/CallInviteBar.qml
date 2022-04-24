@@ -54,6 +54,7 @@ Rectangle {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             source: CallManager.callType == CallType.VIDEO ? "qrc:/images/video.svg" : "qrc:/images/place-call.svg"
+            fillMode: Image.PreserveAspectFit            
         }
 
         Label {
