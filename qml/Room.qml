@@ -29,6 +29,13 @@ Page {
         }
     }
 
+    function goToPrevPage(){
+        var prevPage = stack.pop()
+        if (prevPage) {
+            prevPage.destroy()
+        }
+    }
+
     Component.onCompleted: {
         title = name
         mainHeader.titleClicked.connect(showRoomInfo) 
