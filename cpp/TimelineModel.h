@@ -23,7 +23,7 @@ public:
     };
 
     TimelineModel(const QString roomID = "", QObject *parent = 0);
-
+    ~TimelineModel();
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;

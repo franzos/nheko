@@ -1,5 +1,6 @@
 #include "RoomListModel.h"
 #include <QDebug>
+#include <QQmlEngine>
 
 int RoomListModel::rowCount(const QModelIndex &parent) const
 {
@@ -94,6 +95,9 @@ bool RoomListModel::removeRows(int position, int rows, const QModelIndex &parent
 void RoomListModel::add(RoomListItem &item){
     if(_roomIds.contains(item.id())){
         auto idx = roomidToIndex(item.id());
+        if(idx == -1){
+            return;
+        }
         if(_roomListItems.at(idx).invite() && !item.invite()){
             setData(index(idx), false, inviteRole);
         } else {
@@ -105,7 +109,7 @@ void RoomListModel::add(RoomListItem &item){
         auto timeline = Client::instance()->timeline(item.id());
         if(timeline){
             QString roomID = item.id();
-            connect(timeline, &Timeline::lastMessageChanged,[&,roomID, timeline](const DescInfo &e){
+            connect(timeline, &Timeline::lastMessageChanged,[this,roomID, timeline](const DescInfo &e){
                 auto idx = this->roomidToIndex(roomID);
                 if(idx != -1) {
                     qDebug() << "New event recieved from in " << roomID;
@@ -116,14 +120,14 @@ void RoomListModel::add(RoomListItem &item){
                     else 
                         body = timeline->displayName(e.userid) + ": " + body;
                     
-                    setData(index(idx), body, lastmessageRole);
+                    this->setData(this->index(idx), body, lastmessageRole);
                 }
             });
-            connect(timeline, &Timeline::notificationsChanged,[&,roomID, timeline](){
+            connect(timeline, &Timeline::notificationsChanged,[this,roomID, timeline](){
                 auto idx = this->roomidToIndex(roomID);
                 if(idx != -1) {
                     qDebug() << "Notification counter changed in " << roomID;
-                    setData(index(idx), timeline->notificationCount(), unreadcountRole);
+                    this->setData(this->index(idx), timeline->notificationCount(), unreadcountRole);
                 }
             });
         }
@@ -204,13 +208,16 @@ void RoomListModel::remove(const QStringList &ids){
 }
 
 TimelineModel *RoomListModel::timelineModel(const QString &roomId){
+    // auto t = new TimelineModel(roomId);
     return new TimelineModel(roomId);
 }
 
 RoomInformation *RoomListModel::roomInformation(const QString &roomId){ 
     for(auto const &r: _roomListItems){
-        if(r.id() == roomId)
+        if(r.id() == roomId) {
+            QQmlEngine::setObjectOwnership(r.roomInformation(), QQmlEngine::CppOwnership);
             return r.roomInformation();
+        }
     }
     return nullptr;
 }
