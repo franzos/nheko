@@ -105,12 +105,7 @@ Room {
         roomName: name
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
-        onAccepted: {
-            var prevPage = stack.pop()
-            if (prevPage) {
-                prevPage.destroy()
-            }
-        }
+        onAccepted: goToPrevPage()
     }
 
     InviteUserDialog {
