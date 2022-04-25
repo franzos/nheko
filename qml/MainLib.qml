@@ -8,6 +8,7 @@ import CallType 1.0
 import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
+import "ui/"
 
 Page {
     id: qmlLibRoot
@@ -37,9 +38,15 @@ Page {
             }
         }
     }
+
+    Snackbar {
+        id: snackbar 
+    }
+
     FontMetrics {
         id: fontMetrics
     }
+
     UIA{
     }
 
@@ -129,6 +136,10 @@ Page {
             stack.pop(null)
             loginPage.reload()
             stack.replace(loginPage)
+        }
+
+        function onShowNotification(msg) {
+            snackbar.showNotification(msg);
         }
     }
     

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+
+## [0.0.18]
+### Changed
+
+* Handle backend `showNotification` signal and show message as pop-up.
+
+
 ## [0.0.17]
 ### Fixed
 
