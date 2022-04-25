@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+
+## [0.0.18]
+### Changed
+
+* Handle backend `showNotification` signal and show message as pop-up.
+* Fixing issue in openning PageInfo several times on title click in the room page.
+
+
 ## [0.0.17]
 ### Fixed
 

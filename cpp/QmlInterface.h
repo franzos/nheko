@@ -18,7 +18,7 @@ class QmlInterface : public QObject {
     Q_OBJECT
 public: 
     QmlInterface(QObject *parent = nullptr);
-    Client *client();
+    Client *backendClient();
     QUrl mainLibQMLurl();
     QUrl mainAppQMLurl();
     ~QmlInterface();

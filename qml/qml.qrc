@@ -41,6 +41,7 @@
 
         <file>ui/ImageButton.qml</file>
         <file>ui/Ripple.qml</file>
+        <file>ui/Snackbar.qml</file>
 
         <file>voip/ActiveCallBar.qml</file>
         <file>voip/CallDevices.qml</file>
