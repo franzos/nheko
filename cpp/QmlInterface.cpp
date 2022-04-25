@@ -18,6 +18,10 @@ namespace PX::GUI::MATRIX{
 using webrtc::CallType;
 using webrtc::State;
 
+Client *QmlInterface::backendClient(){
+    return _client;
+}
+
 void QmlInterface::checkCacheDirectory(){
     GlobalObject gobject;
     QSettings *qSettings;
