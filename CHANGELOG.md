@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Handle backend `showNotification` signal and show message as pop-up.
 * Fixing issue in openning PageInfo several times on title click in the room page.
+* Check user existence before invitation and create direct chat.
 
 
 ## [0.0.17]
