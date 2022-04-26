@@ -139,7 +139,11 @@ Page {
         }
 
         function onShowNotification(msg) {
-            snackbar.showNotification(msg);
+            snackbar.showNotification(msg)
+        }
+
+        function onUserInfoLoadingFailed(msg){
+            snackbar.showNotification(msg)
         }
     }
     
