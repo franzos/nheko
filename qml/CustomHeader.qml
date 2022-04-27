@@ -78,7 +78,10 @@ Column {
                     id: ma
                     height: titleLabel.height            
                     width: titleLabel.width            
-                    onClicked: titleClicked()
+                    onClicked: {
+                        if(stack.currentItem instanceof Timeline)
+                            titleClicked()
+                    }
                 }
             }
 

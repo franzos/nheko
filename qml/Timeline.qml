@@ -108,10 +108,14 @@ Room {
         onAccepted: goToPrevPage()
     }
 
-    InviteUserDialog {
+    AddUserDialog {
         id: inviteuserDialog
+        title: "Direct Chat"
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
+        onUserAdded:{
+            MatrixClient.inviteUser(roomid,userid,"Send invitation")
+        }
     }
 
     Menu {

@@ -25,10 +25,14 @@ Page {
         delegate:RoomDelegate{}
     }
 
-    DirectChatDialog{
+    AddUserDialog{
         id:directChat
+        title: "Direct Chat"
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
+        onUserAdded:{
+            MatrixClient.startChat(userid)
+        }
     }
 
     RoundButton {
