@@ -3,6 +3,7 @@
         <file>AddUserDialog.qml</file>
         <file>CreateRoom.qml</file>
         <file>CibaLogin.qml</file>
+        <file>CustomBorder.qml</file>
         <file>CustomHeader.qml</file>
         <file>ErrorDialog.qml</file>
         <file>InvitationRoom.qml</file>
