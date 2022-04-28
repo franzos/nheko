@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
+## [0.0.20]
+### Changed
+
+* Add left margin for message box
 
 
 ## [0.0.19]
