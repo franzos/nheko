@@ -63,7 +63,7 @@ Room {
             ToolButton {
                 id: sendButton
                 icon.source: "qrc:/images/send.svg"
-                enabled: messageInput.text ? true : false
+                enabled: messageInput.text.length >0 ? true : false
                 function sendMessage(){
                     timelineModel.send(messageInput.text);
                     messageInput.text = ""
