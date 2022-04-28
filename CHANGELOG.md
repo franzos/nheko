@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Changed
 
 * Adding Material Accent and Foreground colors to Configuration.h.
+* Remove extra space between slide menu and top menu.
 
 
 ## [0.0.21]

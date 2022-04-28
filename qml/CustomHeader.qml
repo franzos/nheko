@@ -12,7 +12,7 @@ import "device-verification"
 
 Column {
     width: toolBar.width
-    height: toolBar.height + 20
+    height: toolBar.height
     signal titleClicked()
     signal menuClicked()
     signal voiceCallClicked()
