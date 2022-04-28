@@ -1,10 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
+import QtQuick.Controls.Material 2.15
 import MatrixClient 1.0
 import CallManager 1.0
 import CallType 1.0
 import QmlInterface 1.0
+import GlobalObject 1.0
 import "voip"
 import "device-verification"
 
@@ -22,6 +24,7 @@ Column {
     ToolBar {
         id: toolBar
         width: parent.width
+        Material.foreground: GlobalObject.materialColors().primaryForeground
         RowLayout {
             anchors.fill: parent
             spacing: 2

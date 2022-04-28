@@ -13,6 +13,22 @@
 
 class QWindow;
 
+struct AndroidMaterialTheme {
+Q_GADGET
+    public:
+    QString accent;
+    QString primary;
+    QString primaryForeground;
+    QString foreground;
+    QString background;
+
+    Q_PROPERTY(QString accent MEMBER accent)
+    Q_PROPERTY(QString primary MEMBER primary)
+    Q_PROPERTY(QString primaryForeground MEMBER primaryForeground)
+    Q_PROPERTY(QString foreground MEMBER foreground)
+    Q_PROPERTY(QString background MEMBER background)
+};
+
 class GlobalObject : public QObject
 {
     Q_OBJECT
@@ -44,7 +60,7 @@ public:
     Q_INVOKABLE void setStatusMessage(QString msg) const;
     Q_INVOKABLE QString getApplicationVersion(){return QString::fromStdString(VERSION_APPLICATION);}
     Q_INVOKABLE QString checkMatrixServerUrl(QString url);
-    Q_INVOKABLE QString materialPrimaryColor();
+    Q_INVOKABLE AndroidMaterialTheme materialColors();
     
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
