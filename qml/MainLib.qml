@@ -16,6 +16,9 @@ Page {
     property bool embedVideoQML: false
     property bool callAutoAccept: false
     property var videoItem
+    Material.primary: GlobalObject.materialPrimaryColor()
+    // Material.theme: Material.System
+    // Material.accent: Material.Purple
     StackView {
         id: stack
         anchors.fill: parent

@@ -8,6 +8,7 @@
 #include <QUrl>
 #include <QWindow>
 #include <matrix-client-library/Client.h>
+#include "Configuration.h"
 
 GlobalObject::GlobalObject(){
     Q_INIT_RESOURCE(mtx_gui_library_resources);
@@ -196,3 +197,8 @@ QString GlobalObject::checkMatrixServerUrl(QString url){
         url = url.remove(url.size() - 1, 1);
     return url;
 }
+
+Q_INVOKABLE QString GlobalObject::materialPrimaryColor(){
+    return ANDROID_MATERIAL_THEME_PRIMARY_COLOR;
+};
+    

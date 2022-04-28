@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.21]
+### Changed
+
+* Add left margin for message box.
+* Android Material theme Primary Color in Configuration.h.
+
+
 
 ## [0.0.19]
 ### Changed
