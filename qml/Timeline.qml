@@ -13,7 +13,9 @@ Room {
     id: timeline
     anchors.fill: parent
     property TimelineModel timelineModel: Rooms.timelineModel(roomid) 
-
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
     ListView {
         id: timelineView
         anchors.fill: parent
@@ -43,14 +45,17 @@ Room {
         id: footer
         width: parent.width
         anchors.margins: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 10
         TypingIndicator {
             id: typingIndicator
         }
         Row {
-            width: parent.width
+            width: parent.width-20
+            
             TextField {
                 id: messageInput
-                width: parent.width - sendButton.width
+                width: parent.width - sendButton.width            
                 placeholderText: qsTr("Enter your message ...")
                 Keys.onReturnPressed: sendButton.sendMessage() // Enter key
                 Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
@@ -58,7 +63,7 @@ Room {
             ToolButton {
                 id: sendButton
                 icon.source: "qrc:/images/send.svg"
-                enabled: messageInput.text ? true : false
+                enabled: messageInput.text.length >0 ? true : false
                 function sendMessage(){
                     timelineModel.send(messageInput.text);
                     messageInput.text = ""
@@ -108,10 +113,14 @@ Room {
         onAccepted: goToPrevPage()
     }
 
-    InviteUserDialog {
+    AddUserDialog {
         id: inviteuserDialog
+        title: "Direct Chat"
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
+        onUserAdded:{
+            MatrixClient.inviteUser(roomid,userid,"Send invitation")
+        }
     }
 
     Menu {

@@ -8,6 +8,7 @@ import CallType 1.0
 import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
+import "ui/"
 
 Page {
     id: qmlLibRoot
@@ -15,6 +16,9 @@ Page {
     property bool embedVideoQML: false
     property bool callAutoAccept: false
     property var videoItem
+    Material.primary: GlobalObject.materialPrimaryColor()
+    // Material.theme: Material.System
+    // Material.accent: Material.Purple
     StackView {
         id: stack
         anchors.fill: parent
@@ -37,9 +41,15 @@ Page {
             }
         }
     }
+
+    Snackbar {
+        id: snackbar 
+    }
+
     FontMetrics {
         id: fontMetrics
     }
+
     UIA{
     }
 
@@ -129,6 +139,14 @@ Page {
             stack.pop(null)
             loginPage.reload()
             stack.replace(loginPage)
+        }
+
+        function onShowNotification(msg) {
+            snackbar.showNotification(msg)
+        }
+
+        function onUserInfoLoadingFailed(msg){
+            snackbar.showNotification(msg)
         }
     }
     

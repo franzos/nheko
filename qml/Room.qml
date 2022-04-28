@@ -24,7 +24,7 @@ Page {
     
     function onJoinedRoom(id){
         if(id == roomid) {
-            stack.pop()
+            goToPrevPage()
             roomInvitationAccepted(roomid, name, avatar)
         }
     }

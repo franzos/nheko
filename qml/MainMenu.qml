@@ -30,7 +30,6 @@ Drawer {
             icon: ":/images/about.svg"            
         }       
     }
-
    
     ListView {
         id: listViewMenu
@@ -38,7 +37,7 @@ Drawer {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        spacing: 5
+        // spacing: 10
         clip: true
         model: modelMenu
         delegate: componentDelegate
@@ -46,19 +45,18 @@ Drawer {
 
     Component {
         id: componentDelegate
-        
+
         Rectangle {
             id: wrapperItem
-            height: 34
+            height: 50
             width: parent.width
             color: "transparent"
-
             Image {
                 id: imgItem
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                anchors.leftMargin: 2
-                height: parent.height - 10
+                anchors.leftMargin: 8
+                height: parent.height - 25
                 width: height
                 source: "image://colorimage/" + icon + "?" + GlobalObject.colors.windowText
                 smooth: true
@@ -69,10 +67,20 @@ Drawer {
                 id: textItem
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: imgItem.right
-                anchors.leftMargin: 2
+                anchors.leftMargin: 8
                 text: item
             }
-
+            CustomBorder
+            {
+                anchors.top: parent.bottom
+                commonBorder: false
+                lBorderwidth: 0
+                rBorderwidth: 0
+                tBorderwidth: 0
+                bBorderwidth: 1
+                borderColor: GlobalObject.colors.alternateBase
+            }
+          
             MouseArea {
                 id: ma
                 anchors.fill: parent

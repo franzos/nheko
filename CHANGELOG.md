@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.21]
+### Changed
+
+* Add left margin for message box.
+* Android Material theme Primary Color in Configuration.h.
+
+
+
+## [0.0.19]
+### Changed
+
+* Handle backend `showNotification` signal and show message as pop-up.
+* Fixing issue in openning PageInfo several times on title click in the room page.
+* Check user existence before invitation and create direct chat.
+* Add padding and gray line to side menu.
+
+
 ## [0.0.17]
 ### Fixed
 

@@ -208,7 +208,6 @@ void RoomListModel::remove(const QStringList &ids){
 }
 
 TimelineModel *RoomListModel::timelineModel(const QString &roomId){
-    // auto t = new TimelineModel(roomId);
     return new TimelineModel(roomId);
 }
 
