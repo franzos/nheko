@@ -20,6 +20,7 @@ SOURCES += \
 HEADERS += \
     $$PWD/../cpp//Application.h\
     $$PWD/../cpp/ColorImageProvider.cpp \
+    $$PWD/../cpp/Configuration.h \
     $$PWD/../cpp/GlobalObject.h \
     $$PWD/../cpp/QmlInterface.h \
     $$PWD/../cpp/MatrixQmlApplicationEngine.h \
