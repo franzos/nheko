@@ -1,3 +1,4 @@
+#pragma once
 
 // #define ANDROID_APP_THEME   
 // #define ANDROID_APP_ACCENT
