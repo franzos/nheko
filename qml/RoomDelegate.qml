@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 import GlobalObject 1.0
 import MatrixClient 1.0
 import Rooms 1.0
-// import RoomInformation 1.0
+import "ui"
 
 Rectangle {
     id: room
@@ -44,13 +44,14 @@ Rectangle {
         RowLayout {
             width: parent.width
             Layout.margins: 5
-            RoundButton {
+            
+            Avatar {
                 id: avatar_button
-                text: name[0]
                 width: 36; height: 36
                 anchors.margins: 10
-                palette.button: GlobalObject.colors.alternateBase
-                Layout.alignment: Qt.AlignVCenter
+                url: avatar.replace("mxc://", "image://MxcImage/")
+                userid: id 
+                displayName: name
             }
             
             ColumnLayout{

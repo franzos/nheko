@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.23]
+### Changed
+
+* Avatar supported.
+
+
 ## [0.0.22]
 ### Changed
 

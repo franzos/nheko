@@ -29,14 +29,13 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: 8
 
-        // Avatar {
-        //     width: GlobalObject.avatarSize
-        //     height: GlobalObject.avatarSize
-        //     url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-        //     userid: CallManager.callParty
-        //     displayName: CallManager.callPartyDisplayName
-        //     onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
-        // }
+        Avatar {
+            width: GlobalObject.avatarSize
+            height: GlobalObject.avatarSize
+            url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
+            userid: CallManager.callParty
+            displayName: CallManager.callPartyDisplayName
+        }
 
         Label {
             Layout.leftMargin: 8

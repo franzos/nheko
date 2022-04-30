@@ -76,7 +76,6 @@ Popup {
                 url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: room.roomName
                 roomid: room.roomid
-                onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
             }
 
             Button {

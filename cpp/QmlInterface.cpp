@@ -113,6 +113,7 @@ QmlInterface::QmlInterface(QObject *parent):
     });
     qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
     qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
+    qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
