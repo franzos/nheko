@@ -59,14 +59,20 @@ Room {
                 placeholderText: qsTr("Enter your message ...")
                 Keys.onReturnPressed: sendButton.sendMessage() // Enter key
                 Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
+                onTextChanged: {
+                    sendButton.enabled = messageInput.text.length > 0 ? true : false
+                }
             }
             ToolButton {
                 id: sendButton
                 icon.source: "qrc:/images/send.svg"
-                enabled: messageInput.text.length >0 ? true : false
+                enabled: messageInput.text.length > 0 ? true : false
                 function sendMessage(){
-                    timelineModel.send(messageInput.text);
-                    messageInput.text = ""
+                    if(messageInput.text.length > 0) {
+                        timelineModel.send(messageInput.text);
+                        messageInput.text = ""
+                    }
+                    messageInput.forceActiveFocus()
                 }
                 onClicked: sendMessage()
             }

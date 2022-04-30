@@ -198,7 +198,13 @@ QString GlobalObject::checkMatrixServerUrl(QString url){
     return url;
 }
 
-Q_INVOKABLE QString GlobalObject::materialPrimaryColor(){
-    return ANDROID_MATERIAL_THEME_PRIMARY_COLOR;
+Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
+    AndroidMaterialTheme material;
+    material.accent = ANDROID_MATERIAL_ACCENT;
+    material.primary = ANDROID_MATERIAL_PRIMARY;
+    material.primaryForeground = ANDROID_MATERIAL_PRIMARY_FOREGROUND;
+    material.foreground = ANDROID_MATERIAL_FOREGROUND;
+    material.background = ANDROID_MATERIAL_BACKGROUND;
+    return material;
 };
     
