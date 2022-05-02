@@ -17,6 +17,7 @@ in order to build on Guix, following dependencies need to be installed.
 - `qtbase`                  `5.15.2`
 - `qtquickcontrols2`        `5.15.2`
 - `qtdeclarative`           `5.15.2`
+- `qtsvg`                   `5.15.2`
 - `spdlog-shared-lib`       `1.9.2`
 
 we also need to set following environment variables based on what set for `nheko` package:
