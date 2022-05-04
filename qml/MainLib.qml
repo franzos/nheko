@@ -95,16 +95,30 @@ Page {
         else if (obj.aboutToHide != undefined) obj.aboutToHide.connect(() => obj.destroy(1000));
     }
 
-    function onNewInviteState() {
+    Timer {
+        id: callAcceptTimer
+        interval: 1000
+        onTriggered: showCallInivteDialog()
+    }
+
+    function showCallInivteDialog() {
         if (CallManager.haveCallInvite) {
-            console.log("New Call Invite!")
             var dialog = mobileCallInviteDialog.createObject(qmlLibRoot);
             dialog.open();
             destroyOnClose(dialog);
-
             if(callAutoAccept){
+                console.log("Call-Auto Accept => answer")
                 dialog.acceptCall()
             }
+        }
+    }
+
+    function onNewInviteState() {
+        console.log("New Call Invitation received.")
+        if(callAutoAccept){
+            callAcceptTimer.restart()
+        } else if (CallManager.haveCallInvite) {
+            showCallInivteDialog()
         }
     }
 

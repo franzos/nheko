@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+
+## [0.0.24]
+### Changed
+
+* Seg fault after running application if there was missed call in call auto accept.
+
+
 ## [0.0.23]
 ### Changed
 
