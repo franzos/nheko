@@ -6,6 +6,7 @@ import GlobalObject 1.0
 
 Popup {
     modal: true
+    id: placeCall
     // only set the anchors on Qt 5.12 or higher
     // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
     Component.onCompleted: {
@@ -56,7 +57,7 @@ Popup {
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
-                    var dialog = deviceError.createObject(timelineRoot, {
+                    var dialog = deviceError.createObject(placeCall, {
                         "errorString": qsTr("No microphone found."),
                         "image": ":/images/place-call.svg"
                     });
@@ -109,7 +110,7 @@ Popup {
                 text: qsTr("Screen")
                 icon.source: "qrc:/images/screen-share.svg"
                 onClicked: {
-                    var dialog = screenShareDialog.createObject(timelineRoot);
+                    var dialog = screenShareDialog.createObject(placeCall);
                     dialog.open();
                     close();
                 }
