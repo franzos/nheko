@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.25]
+### Fixed and Changed
+
+* Fixing minor issue in setting the parent of qml objects.
+
+
 
 ## [0.0.24]
 ### Changed
