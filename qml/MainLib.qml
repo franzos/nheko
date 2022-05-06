@@ -98,11 +98,12 @@ Page {
     Timer {
         id: callAcceptTimer
         interval: 1000
-        onTriggered: showCallInivteDialog()
+        onTriggered: showCallInviteDialog()
     }
 
-    function showCallInivteDialog() {
+    function showCallInviteDialog() {
         if (CallManager.haveCallInvite) {
+            console.log("New Call Invitation received.")
             var dialog = mobileCallInviteDialog.createObject(qmlLibRoot);
             dialog.open();
             destroyOnClose(dialog);
@@ -114,11 +115,10 @@ Page {
     }
 
     function onNewInviteState() {
-        console.log("New Call Invitation received.")
         if(callAutoAccept){
             callAcceptTimer.restart()
-        } else if (CallManager.haveCallInvite) {
-            showCallInivteDialog()
+        } else {
+            showCallInviteDialog()
         }
     }
 
