@@ -18,16 +18,19 @@ Page {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            validator: UserIDRegex{}
-            // text: "@hamzeh_test05:pantherx.org"
-            placeholderText: "User ID" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
+            // validator: UserIDRegex{}
+            placeholderText: "User ID or CM account" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
+             onTextChanged: {                 
+                    MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
+                }
         }
 
         TextField {
             id: passwordText
             echoMode: TextInput.Password
+            visible: false
             // text: "riverbed-judiciary-sworn"
             Layout.leftMargin: 50
             Layout.rightMargin: 50
@@ -62,7 +65,6 @@ Page {
                                          String(passwordText.text),
                                          String(matrixServerText.text))
             }
-
             onClicked: gotoLogin()
         }
 
@@ -87,6 +89,20 @@ Page {
         target: MatrixClient
         function onLoginErrorOccurred(msg) {
             loginButton.enabled = true
+        }
+    }
+
+    Connections {
+        target: MatrixClient
+        function onServerChanged(server) {
+           matrixServerText.text = server
+        }
+    }
+
+    Connections {
+        target: MatrixClient
+        function onDiscoverryErrorOccurred(err) {
+          
         }
     }
 
