@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Changed
 
 * Fixing minor issue in setting the parent of qml objects.
+* Addding Server Discovery
+* Integrate Cibalogin and Password login
+* Adding login option combo box
+
 * Fixing issue in GUI library in stacking the Timeline after each Video Call request.
 
 
