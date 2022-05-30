@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Integrate Cibalogin and Password login
 * Adding login option combo box
 
+* Fixing issue in GUI library in stacking the Timeline after each Video Call request.
 
 
 ## [0.0.24]
