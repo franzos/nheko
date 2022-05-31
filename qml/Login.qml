@@ -21,7 +21,8 @@ Page {
             placeholderText: "User ID or CM account" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
-             onTextChanged: {                          
+             onTextChanged: {     
+                if(!QmlInterface.getServerAddress())                     
                     MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
                 }
         }
@@ -42,13 +43,13 @@ Page {
        
         TextField {
             id: matrixServerText
-            // text: "https://matrix.pantherx.org"
+            visible: !QmlInterface.getServerAddress()
+            text: QmlInterface.getServerAddress()
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
             validator: MatrixServerRegex{}
             placeholderText: "Matrix Server (e.g.: " + QmlInterface.defaultMatrixServer() + ")"
-            text: QmlInterface.isSetServerAsDefault()?QmlInterface.defaultMatrixServer():""
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
              onTextChanged: {                 

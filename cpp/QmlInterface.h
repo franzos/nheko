@@ -22,20 +22,17 @@ public:
     QUrl mainLibQMLurl();
     QUrl mainAppQMLurl();
     ~QmlInterface();
-    void setStyle(const QString &style, const QString &fallback);
-    Q_INVOKABLE void setMatrixServer(const QString &server, bool asDefault) { 
-        _defaultMatrixServer = server;
-        _setServerAsDefault = asDefault;
-    };
+    void setStyle(const QString &style, const QString &fallback);    
     Q_INVOKABLE void setUserIdFormat(const QString &format) { _defaultUserIdFormat = format;};
-    Q_INVOKABLE QString defaultMatrixServer() {return _defaultMatrixServer;};
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
-    Q_INVOKABLE bool isSetServerAsDefault() {return _setServerAsDefault;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
     
 public slots:
     virtual void setVideoCallItem() = 0;
+    QString getServerAddress(){return _serverAddress;};
+    void setServerAddress(QString server){_serverAddress = server;};
+
 
 private slots:
     void initiateFinishedCB();
@@ -50,8 +47,7 @@ private:
     CallManager *_callMgr = nullptr;
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
-    bool    _setServerAsDefault = false;
-    QString _defaultMatrixServer = "https://matrix.org";
     QString _defaultUserIdFormat = "@user:matrix.org";
+    QString _serverAddress = "";
 };
 }
