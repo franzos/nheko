@@ -11,8 +11,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Addding Server Discovery
 * Integrate Cibalogin and Password login
 * Adding login option combo box
-
 * Fixing issue in GUI library in stacking the Timeline after each Video Call request.
+* Adding set default server address
 
 
 ## [0.0.24]
