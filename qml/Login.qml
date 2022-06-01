@@ -21,10 +21,10 @@ Page {
             placeholderText: "User ID or CM account" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
-             onTextChanged: {     
+            onTextChanged: {     
                 if(!QmlInterface.getServerAddress())                     
                     MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
-                }
+            }
         }
 
         TextField {
@@ -145,7 +145,7 @@ Page {
 
     Connections {
         target: MatrixClient
-        function onDiscoverryErrorOccurred(err) {
+        function onDiscoveryErrorOccurred(err) {
           
         }
     }

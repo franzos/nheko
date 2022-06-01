@@ -3,16 +3,17 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import UserInformation 1.0
+import CMUserInformation 1.0
 import "ui"
 Page {
     id: userInfo
     width: parent.width
     title: "Profile"
     property var info : MatrixClient.userInformation()
-    Column {
+    Column{
         anchors.fill: parent
         anchors.margins: 10
-
+        spacing: 25
         Avatar {
             id: avatarButton
             width: 86; height: 86
@@ -21,28 +22,71 @@ Page {
             userid: info.userId 
             displayName: info.displayName 
         }
-        
-        Row {
-            Label { text: "ID : " }
-            Label {
-                id: idLabel
-                text: info.userId 
+        ColumnLayout {
+            width: parent.width
+            anchors.margins: 10
+            spacing: 5
+            Label { text: "Matrix user information : " }
+            GroupBox {
+                Layout.fillWidth: true
+                Label {
+                    id: idLabel
+                    text:   "Matrix ID :\n" + 
+                            info.userId + "\n\n" +
+                            "Server :\n" + 
+                            info.homeServer + "\n\n" +
+                            "Device ID :\n" + 
+                            info.deviceId
+                }
             }
         }
-      
-        Row {
-            Label { text: "Device ID : " }
-            Label {
-                id: deviceIdLabel
-                text: info.deviceId
+        ColumnLayout {
+            width: parent.width
+            anchors.margins: 10
+            spacing: 5
+            Label { text: "Central Management user information : " }
+            GroupBox {
+                Layout.fillWidth: true
+                Label {
+                    id: cmInfoText
+                    text: "Click on 'Refresh' button to reload."
+                    anchors.fill: parent
+                }
+            }
+
+            Button {
+                id: refreshButton
+                text: "Refresh"
+                Layout.alignment: Qt.AlignHCenter
+                enabled: true
+                onClicked:{
+                    MatrixClient.getCMuserInfo()
+                    enabled = false
+                }
             }
         }
-        Row {
-            Label { text: "Server : " }
-            Label {
-                id: serverLabel
-                text : info.homeServer
-            }
-        }       
+    }
+
+    Connections {        
+        target: MatrixClient
+        function onCmUserInfoFailure(msg) {
+            refreshButton.enabled = true
+        }
+
+        function onCmUserInfoUpdated(info) {
+            cmInfoText.text =   "CM ID:\n" + 
+                                info.username + "\n" + 
+                                "\n" + 
+                                "Fullname:\n" + 
+                                ((info.localizedFirstName || info.localizedLastName)?info.localizedTitle + " " + info.localizedFirstName + " " + info.localizedLastName:info.title + " " + info.firstname + " " + info.lastname) + "\n" + 
+                                "\n" + 
+                                "Phone number:\n" + 
+                                (info.phone?info.phone:"None") + "\n" + 
+                                "\n" +
+                                "Email address:\n" +
+                                (info.email?info.email:"None")
+            console.log(info)
+            refreshButton.enabled = true
+        }
     }
 }
