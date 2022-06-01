@@ -35,7 +35,7 @@ Page {
             } else {
                 mainHeader.setOptionButtonsVisible(false)
             }
-            if(currentItem instanceof CibaLogin || currentItem instanceof Login){
+            if(currentItem instanceof Login){
                 mainHeader.visible= false
             } else {
                 mainHeader.visible= true

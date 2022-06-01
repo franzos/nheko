@@ -9,3 +9,5 @@
 #define ANDROID_MATERIAL_FOREGROUND                 ""          // not used yet anywhere
 #define ANDROID_MATERIAL_BACKGROUND                 ""          // not used yet anywhere
 // --------------------------------------------------------------------------------------------------------------
+#define DEFAULT_SERVER      "https://matrix.pantherx.org"
+#define ALLOW_SERVER_CHANGE true                              //                       

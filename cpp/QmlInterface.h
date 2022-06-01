@@ -12,6 +12,7 @@
 #include <matrix-client-library/voip/WebRTCSession.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
+#include "Configuration.h"
 
 namespace PX::GUI::MATRIX{
 class QmlInterface : public QObject {
@@ -31,7 +32,9 @@ public:
 public slots:
     virtual void setVideoCallItem() = 0;
     QString getServerAddress(){return _serverAddress;};
-    void setServerAddress(QString server){_serverAddress = server;};
+    void setServerAddress(QString server){
+        qInfo()<<"Server default set to "<<server;
+        _serverAddress = server;};
 
 
 private slots:
