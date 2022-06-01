@@ -63,12 +63,17 @@ QmlInterface::QmlInterface(QObject *parent):
     _client(Client::instance()),
     _callMgr(_client->callManager()),
     _verificationManager(_client->verificationManager()),
-    _userSettings{UserSettings::instance()}{
-    _client->enableLogger(true, true);
+    _userSettings{UserSettings::instance()}{    
+    _client->enableLogger(true, true);    
     checkCacheDirectory();
     if(_callMgr->callsSupported()){
         qDebug() << "*** VOIP Supported";
     }
+     #if ALLOW_SERVER_CHANGE
+        setServerAddress("");
+    #else
+        setServerAddress(DEFAULT_SERVER);
+    #endif
 #ifdef Q_OS_ANDROID
     setStyle("Material", "Default");
 #else

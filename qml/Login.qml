@@ -49,7 +49,7 @@ Page {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             validator: MatrixServerRegex{}
-            placeholderText: "Matrix Server (e.g.: " + QmlInterface.defaultMatrixServer() + ")"
+            placeholderText: "Matrix Server (e.g.: https://matri.pantherx.org)"
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
              onTextChanged: {                 
