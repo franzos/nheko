@@ -13,7 +13,6 @@
 #include <matrix-client-library/CMUserInfo.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
-#include "Configuration.h"
 
 namespace PX::GUI::MATRIX{
 class QmlInterface : public QObject {

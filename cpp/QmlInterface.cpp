@@ -12,6 +12,7 @@
 #include "GlobalObject.h"
 #include "mydevice.h"
 #include "ui/NhekoCursorShape.h"
+#include "Configuration.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -69,7 +70,7 @@ QmlInterface::QmlInterface(QObject *parent):
     if(_callMgr->callsSupported()){
         qDebug() << "*** VOIP Supported";
     }
-     #if ALLOW_SERVER_CHANGE
+    #if ALLOW_SERVER_CHANGE
         setServerAddress("");
     #else
         setServerAddress(DEFAULT_SERVER);
