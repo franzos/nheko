@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import TimelineModel 1.0
 import MatrixClient 1.0
+import "ui"
 
 Room {
     Layout.fillWidth: true
@@ -23,7 +24,7 @@ Room {
         RowLayout {
             width: parent.width
             Layout.alignment: Qt.AlignCenter
-            Button {
+            LoadingButton {
                 id: joinButton
                 text: "Join"
                 onClicked: {
@@ -31,7 +32,7 @@ Room {
                 }
             }
 
-            Button {
+            LoadingButton {
                 id: declineButton
                 text: "Decline"
                 onClicked: {

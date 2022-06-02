@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import QmlInterface 1.0
 import "regex"
+import "ui"
 
 Dialog {
     signal userAdded(string userid);
@@ -16,11 +17,11 @@ Dialog {
     }    
 
     footer: DialogButtonBox{
-        Button {
+        LoadingButton {
             text: qsTr("Cancel")
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }
-        Button {
+        LoadingButton {
             text: qsTr("Ok")
             onClicked: {
                 MatrixClient.onUserInfoLoaded.connect(gotoInvite)

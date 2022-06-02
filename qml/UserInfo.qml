@@ -26,7 +26,7 @@ Page {
             width: parent.width
             anchors.margins: 10
             spacing: 5
-            Label { text: "Matrix user information : " }
+            Label { text: "Matrix profile : " }
             GroupBox {
                 Layout.fillWidth: true
                 Label {
@@ -44,24 +44,23 @@ Page {
             width: parent.width
             anchors.margins: 10
             spacing: 5
-            Label { text: "Central Management user information : " }
+            Label { text: "Global profile : " }
             GroupBox {
                 Layout.fillWidth: true
                 Label {
                     id: cmInfoText
-                    text: "Click on 'Refresh' button to reload."
+                    text: "Click on 'Refresh global profile' button to reload."
                     anchors.fill: parent
                 }
             }
 
-            Button {
+            LoadingButton {
                 id: refreshButton
-                text: "Refresh"
+                text: "Refresh global profile"
                 Layout.alignment: Qt.AlignHCenter
-                enabled: true
                 onClicked:{
                     MatrixClient.getCMuserInfo()
-                    enabled = false
+                    loadingState = true
                 }
             }
         }
@@ -70,14 +69,14 @@ Page {
     Connections {        
         target: MatrixClient
         function onCmUserInfoFailure(msg) {
-            refreshButton.enabled = true
+            refreshButton.loadingState = false
         }
 
         function onCmUserInfoUpdated(info) {
-            cmInfoText.text =   "CM ID:\n" + 
+            cmInfoText.text =   "Username :\n" + 
                                 info.username + "\n" + 
                                 "\n" + 
-                                "Fullname:\n" + 
+                                "Full name:\n" + 
                                 ((info.localizedFirstName || info.localizedLastName)?info.localizedTitle + " " + info.localizedFirstName + " " + info.localizedLastName:info.title + " " + info.firstname + " " + info.lastname) + "\n" + 
                                 "\n" + 
                                 "Phone number:\n" + 
@@ -86,7 +85,7 @@ Page {
                                 "Email address:\n" +
                                 (info.email?info.email:"None")
             console.log(info)
-            refreshButton.enabled = true
+            refreshButton.loadingState = false
         }
     }
 }

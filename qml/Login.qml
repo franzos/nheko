@@ -5,6 +5,7 @@ import MatrixClient 1.0
 import QmlInterface 1.0
 import GlobalObject 1.0
 import "regex"
+import "ui"
 
 Page {
     id: loginPage    
@@ -102,7 +103,7 @@ Page {
             }
         }
 
-        Button {
+        LoadingButton {
             id: loginButton
             text: "Login"
             Layout.alignment: Qt.AlignHCenter
