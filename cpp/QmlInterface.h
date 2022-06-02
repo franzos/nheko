@@ -10,6 +10,7 @@
 #include <matrix-client-library/voip/CallManager.h>
 #include <matrix-client-library/UserSettings.h>
 #include <matrix-client-library/voip/WebRTCSession.h>
+#include <matrix-client-library/CMUserInfo.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
 #include "Configuration.h"
@@ -34,7 +35,10 @@ public slots:
     QString getServerAddress(){return _serverAddress;};
     void setServerAddress(QString server){
         qInfo()<<"Server default set to "<<server;
-        _serverAddress = server;};
+        _serverAddress = server;
+    };
+    void setCMUserInformation(const CMUserInformation &info);
+    CMUserInformation cmUserInformation();
 
 
 private slots:
@@ -52,5 +56,6 @@ private:
     QSharedPointer<UserSettings> _userSettings;
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
+    CMUserInformation _cmUserInformation;
 };
 }

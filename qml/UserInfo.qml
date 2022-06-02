@@ -4,7 +4,9 @@ import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import UserInformation 1.0
 import CMUserInformation 1.0
+import QmlInterface 1.0
 import "ui"
+
 Page {
     id: userInfo
     width: parent.width
@@ -49,7 +51,7 @@ Page {
                 Layout.fillWidth: true
                 Label {
                     id: cmInfoText
-                    text: "Click on 'Refresh global profile' button to reload."
+                    text: (QmlInterface.cmUserInformation().username?(formatCmUserInfo(QmlInterface.cmUserInformation())):"Click on 'Refresh global profile' button to reload.")
                     anchors.fill: parent
                 }
             }
@@ -66,6 +68,20 @@ Page {
         }
     }
 
+    function formatCmUserInfo(info){
+        return  "Username :\n" + 
+                info.username + "\n" + 
+                "\n" + 
+                "Full name:\n" + 
+                ((info.localizedFirstName || info.localizedLastName)?info.localizedTitle + " " + info.localizedFirstName + " " + info.localizedLastName:info.title + " " + info.firstname + " " + info.lastname) + "\n" + 
+                "\n" + 
+                "Phone number:\n" + 
+                (info.phone?info.phone:"None") + "\n" + 
+                "\n" +
+                "Email address:\n" +
+                (info.email?info.email:"None")
+    }
+
     Connections {        
         target: MatrixClient
         function onCmUserInfoFailure(msg) {
@@ -73,17 +89,7 @@ Page {
         }
 
         function onCmUserInfoUpdated(info) {
-            cmInfoText.text =   "Username :\n" + 
-                                info.username + "\n" + 
-                                "\n" + 
-                                "Full name:\n" + 
-                                ((info.localizedFirstName || info.localizedLastName)?info.localizedTitle + " " + info.localizedFirstName + " " + info.localizedLastName:info.title + " " + info.firstname + " " + info.lastname) + "\n" + 
-                                "\n" + 
-                                "Phone number:\n" + 
-                                (info.phone?info.phone:"None") + "\n" + 
-                                "\n" +
-                                "Email address:\n" +
-                                (info.email?info.email:"None")
+            cmInfoText.text = formatCmUserInfo(info)
             console.log(info)
             refreshButton.loadingState = false
         }

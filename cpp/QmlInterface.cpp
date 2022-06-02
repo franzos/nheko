@@ -8,7 +8,6 @@
 #include <QDir>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
-#include <matrix-client-library/CMUserInfo.h>
 #include "TimelineModel.h"
 #include "GlobalObject.h"
 #include "mydevice.h"
@@ -86,6 +85,7 @@ QmlInterface::QmlInterface(QObject *parent):
         #endif
     #endif
 #endif
+    connect(_client, &Client::cmUserInfoUpdated,this, &QmlInterface::setCMUserInformation);
     connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
@@ -210,4 +210,13 @@ void QmlInterface::setStyle(const QString &style, const QString &fallback){
     QQuickStyle::setFallbackStyle(fallback);
     qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
 }
+
+void QmlInterface::setCMUserInformation(const CMUserInformation &info){
+    _cmUserInformation = info;
+}
+
+CMUserInformation QmlInterface::cmUserInformation(){
+    return _cmUserInformation;
+}
+
 }
