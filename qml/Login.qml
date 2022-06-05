@@ -13,8 +13,11 @@ Page {
         id: inputLayout
         anchors.centerIn: parent
         width: parent.width
+        spacing: 10
         TextField {
             id: userIdText
+            enabled: !QmlInterface.userId()
+            text: QmlInterface.userId()
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
@@ -50,17 +53,16 @@ Page {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             validator: MatrixServerRegex{}
-            placeholderText: "Matrix Server (e.g.: https://matri.pantherx.org)"
+            placeholderText: "Matrix Server (e.g.: https://matrix.pantherx.org)"
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
-             onTextChanged: {                 
+            onTextChanged: {            
                 var options = MatrixClient.loginOptions(matrixServerText.text)
                 combo.restart()
                 for (var prop in options) {
                     console.log("Object item:", prop, "=", options[prop])
                     combo.model.append ({ text: prop })
                 }
-
             }
         }
         
@@ -93,7 +95,6 @@ Page {
                     passwordText.visible = false
                     loginButton.enabled= true
                 }
-
             }
             function restart(){
                 combo.model.clear()
@@ -135,17 +136,11 @@ Page {
         function onLoginErrorOccurred(msg) {
             loginButton.enabled = true
         }
-    }
-
-    Connections {
-        target: MatrixClient
+        
         function onServerChanged(server) {
            matrixServerText.text = server
         }
-    }
-
-    Connections {
-        target: MatrixClient
+        
         function onDiscoveryErrorOccurred(err) {
           
         }
@@ -156,6 +151,19 @@ Page {
         passwordText.text = ""
         loginButton.enabled = true
     }   
+
+    function onServerAddressChanged(address){
+        matrixServerText.visible=!QmlInterface.getServerAddress()
+        matrixServerText.text=QmlInterface.getServerAddress()
+    }
+    
+    function onUserIdChanged(address){
+        userIdText.enabled=!QmlInterface.userId()
+        userIdText.text=QmlInterface.userId()
+    }
+    
+    Component.onCompleted: {
+        QmlInterface.onServerAddressChanged.connect(onServerAddressChanged)
+        QmlInterface.onUserIdChanged.connect(onUserIdChanged)
+    }
 }
-
-

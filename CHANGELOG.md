@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.0.27]
+### Fixed and Changed
+
+* Fixing issue in set default server from integrated applications.
+* Set User id programatically.
+* Support Login programatically in GUI library.
+
+
 ## [0.0.26]
 ### Fixed
 
