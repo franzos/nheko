@@ -10,14 +10,21 @@
 #include <matrix-client-library/voip/CallManager.h>
 #include <matrix-client-library/UserSettings.h>
 #include <matrix-client-library/voip/WebRTCSession.h>
-#include <matrix-client-library/CMUserInfo.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
 
-namespace PX::GUI::MATRIX{
+namespace PX::GUI::MATRIX {
+
 class QmlInterface : public QObject {
     Q_OBJECT
+
 public: 
+    enum class LOGIN_TYPE {
+        PASSWORD,
+        CIBA
+    };
+    Q_ENUMS(LOGIN_TYPE)
+
     QmlInterface(QObject *parent = nullptr);
     Client *backendClient();
     QUrl mainLibQMLurl();
@@ -28,17 +35,21 @@ public:
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
+    void login(LOGIN_TYPE type);
+
+signals:
+    void userIdChanged(const QString &userId);
+    void serverAddressChanged(const QString &server);
+    void loginProgramatically(LOGIN_TYPE type);
     
 public slots:
     virtual void setVideoCallItem() = 0;
-    QString getServerAddress(){return _serverAddress;};
-    void setServerAddress(QString server){
-        qInfo()<<"Server default set to "<<server;
-        _serverAddress = server;
-    };
+    QString userId();
+    void setUserId(const QString userID);
+    QString getServerAddress();
+    void setServerAddress(const QString &server);
     void setCMUserInformation(const CMUserInformation &info);
     CMUserInformation cmUserInformation();
-
 
 private slots:
     void initiateFinishedCB();
@@ -46,15 +57,16 @@ private slots:
 
 private:
     void checkCacheDirectory();
-    
+
     bool _callAutoAccept = false;
     RoomListModel *_roomListModel = nullptr;
-    Client *_client = nullptr;
+    Client      *_client = nullptr;
     CallManager *_callMgr = nullptr;
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
+    QString _userId = "";
     CMUserInformation _cmUserInformation;
 };
 }
