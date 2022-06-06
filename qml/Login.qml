@@ -90,8 +90,7 @@ Page {
                 if(currentText == "PASSWORD"){
                     passwordText.visible = true
                     loginButton.enabled= true
-                }
-                else{
+                } else {
                     passwordText.visible = false
                     loginButton.enabled= true
                 }
@@ -110,7 +109,7 @@ Page {
             Layout.alignment: Qt.AlignHCenter
             enabled: false
             function gotoLogin(){
-                loginButton.enabled= false
+                enableUserInputs(false)
                 matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
                 MatrixClient.loginWithPassword(String("matrix_client_application"),
                                          String(userIdText.text),
@@ -118,11 +117,10 @@ Page {
                                          String(matrixServerText.text))
             }
             function gotoCibaLogin(){
-                    loginButton.enabled= false;
-                    matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
-                    MatrixClient.loginWithCiba(String(userIdText.text),
-                                               String(matrixServerText.text))
-                }
+                enableUserInputs(false)
+                matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
+                MatrixClient.loginWithCiba(String(userIdText.text), String(matrixServerText.text))
+            }
             onClicked: {
                 if(combo.currentText == "PASSWORD")
                     gotoLogin()
@@ -131,10 +129,18 @@ Page {
             }
         }
     }
+
+    function enableUserInputs(enable){
+        loginButton.enabled = enable
+        combo.enabled = enable
+        matrixServerText.enabled = enable
+        passwordText.enabled = enable 
+    }
+
     Connections {
         target: MatrixClient
         function onLoginErrorOccurred(msg) {
-            loginButton.enabled = true
+            enableUserInputs(true)
         }
         
         function onServerChanged(server) {
@@ -149,7 +155,7 @@ Page {
     function reload(){
         userIdText.text = ""
         passwordText.text = ""
-        loginButton.enabled = true
+        enableUserInputs(true)
     }   
 
     function onServerAddressChanged(address){
