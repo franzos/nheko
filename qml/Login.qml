@@ -108,19 +108,6 @@ Page {
             text: "Login"
             Layout.alignment: Qt.AlignHCenter
             enabled: false
-            function gotoLogin(){
-                enableUserInputs(false)
-                matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
-                MatrixClient.loginWithPassword(String("matrix_client_application"),
-                                         String(userIdText.text),
-                                         String(passwordText.text),
-                                         String(matrixServerText.text))
-            }
-            function gotoCibaLogin(){
-                enableUserInputs(false)
-                matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
-                MatrixClient.loginWithCiba(String(userIdText.text), String(matrixServerText.text))
-            }
             onClicked: {
                 if(combo.currentText == "PASSWORD")
                     gotoLogin()
@@ -129,7 +116,22 @@ Page {
             }
         }
     }
-
+    
+    function gotoLogin(){
+        enableUserInputs(false)
+        matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
+        MatrixClient.loginWithPassword(String("matrix_client_application"),
+                                    String(userIdText.text),
+                                    String(passwordText.text),
+                                    String(matrixServerText.text))
+    }
+    
+    function gotoCibaLogin(){
+        enableUserInputs(false)
+        matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
+        MatrixClient.loginWithCiba(String(userIdText.text), String(matrixServerText.text))
+    }
+    
     function enableUserInputs(enable){
         loginButton.enabled = enable
         combo.enabled = enable
@@ -168,8 +170,16 @@ Page {
         userIdText.text=QmlInterface.userId()
     }
     
+    function onLoginProgramatically(type){
+        if(type == QmlInterface.LOGIN_TYPE.CIBA)
+            gotoCibaLogin()
+        else if(type == QmlInterface.LOGIN_TYPE.PASSWORD)
+            gotoLogin()
+    }
+
     Component.onCompleted: {
         QmlInterface.onServerAddressChanged.connect(onServerAddressChanged)
         QmlInterface.onUserIdChanged.connect(onUserIdChanged)
+        QmlInterface.onLoginProgramatically.connect(onLoginProgramatically)
     }
 }

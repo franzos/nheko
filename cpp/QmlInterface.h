@@ -14,9 +14,17 @@
 #include "RoomListItem.h"
 
 namespace PX::GUI::MATRIX {
+
 class QmlInterface : public QObject {
     Q_OBJECT
+
 public: 
+    enum class LOGIN_TYPE {
+        PASSWORD,
+        CIBA
+    };
+    Q_ENUMS(LOGIN_TYPE)
+
     QmlInterface(QObject *parent = nullptr);
     Client *backendClient();
     QUrl mainLibQMLurl();
@@ -27,11 +35,13 @@ public:
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
-    
+    void login(LOGIN_TYPE type);
+
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
-
+    void loginProgramatically(LOGIN_TYPE type);
+    
 public slots:
     virtual void setVideoCallItem() = 0;
     QString userId();

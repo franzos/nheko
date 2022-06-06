@@ -131,7 +131,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<RoomListModel>("Rooms", 1, 0, "Rooms", _roomListModel);
     qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
     qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
-
+    
     qRegisterMetaType<AndroidMaterialTheme>();
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
     qRegisterMetaType<UserInformation>();
@@ -243,5 +243,9 @@ void QmlInterface::setServerAddress(const QString &server){
         emit serverAddressChanged(_serverAddress);
     }
 };
+
+void QmlInterface::login(QmlInterface::LOGIN_TYPE type){
+    emit loginProgramatically(type);
+}
 
 }
