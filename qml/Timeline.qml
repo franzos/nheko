@@ -121,7 +121,7 @@ Room {
 
     AddUserDialog {
         id: inviteuserDialog
-        title: "Direct Chat"
+        title: "Invite user"
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
         onUserAdded:{
