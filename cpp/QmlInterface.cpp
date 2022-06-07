@@ -160,9 +160,7 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     auto rooms = sync.rooms;
     QList<RoomListItem> roomList;
     for(auto const &r: rooms.join){
-        auto roomInfo = _client->roomInfo(QString::fromStdString(r.first));
         RoomListItem room(  QString::fromStdString(r.first),
-                            roomInfo,
                             r.second.unread_notifications.notification_count);
         roomList << room;
     }
@@ -190,14 +188,12 @@ void QmlInterface::initiateFinishedCB(){
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
-        RoomListItem room(  r.first,
-                            r.second);
+        RoomListItem room(  r.first);
         roomList << room;
     }
 
     for(auto const &r: inviteRooms.toStdMap()){
-        RoomListItem room(  r.first,
-                            r.second);
+        RoomListItem room(  r.first);
         roomList << room;
         if(_callAutoAccept){
             _client->joinRoom(r.first);

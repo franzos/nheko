@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Changed
 
 * Visible/Invisible password in login form.
+* Fixing issue in showing member count in room information page.
 
 
 ## [0.0.27]
