@@ -21,6 +21,7 @@
         <file>images/empty.svg</file>
         <file>images/end-call.svg</file>
         <file>images/expanded.svg</file>
+        <file>images/hint.svg</file>
         <file>images/image-failed.svg</file>
         <file>images/lowprio.svg</file>
         <file>images/microphone-mute.svg</file>
@@ -56,6 +57,7 @@
         <file>images/music.svg</file>
         <file>images/image.svg</file>
         <file>images/zip.svg</file>
+        <file>images/visibility.svg</file>
         <file>images/video-file.svg</file>
         <file>images/shield-filled.svg</file>
         <file>images/shield-filled-exclamation-mark.svg</file>

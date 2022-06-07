@@ -31,7 +31,7 @@ Page {
             }
         }
 
-        TextField {
+        PasswordField {
             id: passwordText
             echoMode: TextInput.Password
             visible: false
