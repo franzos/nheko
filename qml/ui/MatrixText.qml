@@ -26,7 +26,7 @@ TextEdit {
     // Setting a tooltip delay makes the hover text empty .-.
     //ToolTip.delay: Nheko.tooltipDelay
     Component.onCompleted: {
-        TimelineModel.fixImageRendering(r.textDocument, r);
+        timelineModel.fixImageRendering(r.textDocument, r);
     }
 
     CursorShape {
