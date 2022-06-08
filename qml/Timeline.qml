@@ -16,30 +16,33 @@ Room {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
-    ListView {
-        id: timelineView
+    MessageView{
         anchors.fill: parent
-        spacing: 10
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        anchors.topMargin: 10
-        anchors.bottomMargin: 20
-
-        flickableDirection: Flickable.VerticalFlick
-        boundsBehavior: Flickable.StopAtBounds
-        ScrollBar.vertical: ScrollBar {}
-        model: timelineModel
-
-        delegate:TimelineDelegate{
-            id: eventItems
-        }
-
-        onCountChanged: {
-            var newIndex = count - 1
-            positionViewAtEnd()
-            currentIndex = newIndex
-        }
     }
+    // ListView {
+    //     id: timelineView
+    //     anchors.fill: parent
+    //     spacing: 10
+    //     anchors.leftMargin: 10
+    //     anchors.rightMargin: 10
+    //     anchors.topMargin: 10
+    //     anchors.bottomMargin: 20
+
+    //     flickableDirection: Flickable.VerticalFlick
+    //     boundsBehavior: Flickable.StopAtBounds
+    //     ScrollBar.vertical: ScrollBar {}
+    //     model: timelineModel
+
+    //     delegate:TimelineDelegate{
+    //         id: eventItems
+    //     }
+
+    //     onCountChanged: {
+    //         var newIndex = count - 1
+    //         positionViewAtEnd()
+    //         currentIndex = newIndex
+    //     }
+    // }
 
     footer: Column {
         id: footer
