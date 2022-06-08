@@ -39,7 +39,7 @@ Item {
     property bool fitsMetadata: (chooser.child && chooser.child.fitsMetadata) ? chooser.child.fitsMetadata : false
     property int metadataWidth
 
-    height: 96//chooser.child ? chooser.child.height : Nheko.paddingLarge
+    height: 20//chooser.child ? chooser.child.height : Nheko.paddingLarge
 
     DelegateChooser {
         id: chooser
@@ -92,7 +92,7 @@ Item {
 
             NoticeMessage {
                 formatted: timelineModel.escapeEmoji(d.userName) + " " + d.formattedBody
-                color: TimelineModel.userColor(d.userId, GlobalObject.colors.base)
+                color: timelineModel.userColor(d.userId, GlobalObject.colors.base)
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply

@@ -16,6 +16,7 @@ import QtQuick.Window 2.13
 import GlobalObject 1.0
 import CursorShape 1.0
 import MtxEvent 1.0
+import MatrixClient 1.0
 import TimelineModel 1.0
 import Presence 1.0
 
@@ -71,7 +72,7 @@ Item {
             hoverEnabled: true
             visible: true//Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             x: attached ? attachedPos.x : 0
-            y: attached ? attachedPos.y + Nheko.paddingSmall : 0
+            y: attached ? attachedPos.y + 4 : 0
             z: 10
 
             background: Rectangle {
@@ -121,7 +122,6 @@ Item {
                     onClicked: {
                         if (row.model.isEditable)
                         chat.model.editAction(row.model.eventId);
-
                     }
                 }
 
@@ -260,7 +260,7 @@ Item {
 
             Column {
                 topPadding: userName_.visible? 4: 0
-                bottomPadding: 3//Settings.bubbles? (isSender && previousMessageDay == day? 0 : 2) : 3
+                bottomPadding: (isSender && previousMessageDay == day? 0 : 2)//Settings.bubbles? (isSender && previousMessageDay == day? 0 : 2) : 3
                 spacing: 8
                 visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
@@ -321,7 +321,7 @@ Item {
                         contentItem: ElidedLabel {
                             id: userName_
                             fullText: userName
-                            color: TimelineModel.userColor(userId, GlobalObject.colors.base)
+                            color: room.userColor(userId, GlobalObject.colors.base)
                             textFormat: Text.RichText
                             elideWidth: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         }
@@ -344,17 +344,17 @@ Item {
                     Label {
                         id: statusMsg
                         color: GlobalObject.colors.buttonText
-                        text: Presence.userStatus(userId)
+                        text: MatrixClient.presenceEmitter().userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
                         width: userInfo.remainingWidth - userName_.width - parent.spacing
                         font.italic: true
 
                         Connections {
-                            target: Presence
+                            target: MatrixClient.presenceEmitter()
 
                             function onPresenceChanged(id) {
-                                if (id == userId) statusMsg.text = Presence.userStatus(userId);
+                                if (id == userId) statusMsg.text = MatrixClient.presenceEmitter().userStatus(userId);
                             }
                         }
                     }
@@ -467,14 +467,14 @@ Item {
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
 
-                // onHoveredChanged: {
-                //     if (!Settings.mobileMode && hovered) {
-                //         if (!messageActions.hovered) {
-                //             messageActions.attached = timelinerow;
-                //             messageActions.model = timelinerow;
-                //         }
-                //     }
-                // }
+                onHoveredChanged: {
+                    if (hovered) {
+                        if (!messageActions.hovered) {
+                            messageActions.attached = timelinerow;
+                            messageActions.model = timelinerow;
+                        }
+                    }
+                }
                 background: Rectangle {
                     id: scrollHighlight
 
@@ -542,15 +542,15 @@ Item {
             // hacky, but works
             height: 24//loadingSpinner.height + 2 * Nheko.paddingLarge
 
-            // Spinner {
-            //     id: loadingSpinner
+            Spinner {
+                id: loadingSpinner
 
-            //     anchors.centerIn: parent
-            //     anchors.margins: Nheko.paddingLarge
-            //     running: chat.model && chat.model.paginationInProgress
-            //     foreground: GlobalObject.colors.mid
-            //     z: 3
-            // }
+                anchors.centerIn: parent
+                anchors.margins: 20//Nheko.paddingLarge
+                running: false//chat.model && chat.model.paginationInProgress
+                foreground: GlobalObject.colors.mid
+                z: 3
+            }
 
         }
     }

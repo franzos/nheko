@@ -5,6 +5,7 @@ import QtQuick.Window 2.13
 import GlobalObject 1.0
 import MtxEvent 1.0
 import TimelineModel 1.0
+import "ui"
 
 AbstractButton {
     id: r
@@ -69,12 +70,12 @@ AbstractButton {
         anchors.right: isStateEvent? undefined: (bubbleOnRight? parent.right : undefined)
         anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
         property int maxWidth: (parent.width-(isStateEvent? 0 : GlobalObject.avatarSize+8))*(!isStateEvent? 0.9 : 1)
-        width: maxWidth// Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
+        width: Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20))// Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
         height: msg.height+msg.anchors.margins*2
 
-        property color userColor: TimelineModel.userColor(userId, GlobalObject.colors.base)
+        property color userColor: room.userColor(userId, GlobalObject.colors.base)
         property color bgColor: GlobalObject.colors.base
-        color: "#00000000"//(Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
+        color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) //(Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
 
         GridLayout {
@@ -82,7 +83,7 @@ AbstractButton {
                 left: parent.left
                 top: parent.top
                 right: parent.right
-                margins: 2//(Settings.bubbles && ! isStateEvent)? 4 : 2
+                margins: 4//(Settings.bubbles && ! isStateEvent)? 4 : 2
                 leftMargin: 4
             }
             id: msg
@@ -92,43 +93,43 @@ AbstractButton {
             rows: 3//Settings.bubbles? 3 : 2
 
             // fancy reply, if this is a reply
-            // Reply {
-            //     Layout.row: 0
-            //     Layout.column: 0
-            //     Layout.fillWidth: true
-            //     Layout.maximumWidth: Settings.bubbles? Number.MAX_VALUE : implicitWidth
-            //     Layout.bottomMargin: visible? 2 : 0
-            //     Layout.preferredHeight: height
-            //     id: reply
+            Reply {
+                Layout.row: 0
+                Layout.column: 0
+                Layout.fillWidth: true
+                Layout.maximumWidth: Number.MAX_VALUE//Settings.bubbles? Number.MAX_VALUE : implicitWidth
+                Layout.bottomMargin: visible? 2 : 0
+                Layout.preferredHeight: height
+                id: reply
 
-            //     function fromModel(role) {
-            //         return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
-            //     }
-            //     visible: replyTo
-            //     userColor: r.relatedEventCacheBuster, TimelineModel.userColor(userId, GlobalObject.colors.base)
-            //     blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
-            //     body: r.relatedEventCacheBuster, fromModel(Room.Body) ?? ""
-            //     formattedBody: r.relatedEventCacheBuster, fromModel(Room.FormattedBody) ?? ""
-            //     eventId: fromModel(Room.EventId) ?? ""
-            //     filename: r.relatedEventCacheBuster, fromModel(Room.Filename) ?? ""
-            //     filesize: r.relatedEventCacheBuster, fromModel(Room.Filesize) ?? ""
-            //     proportionalHeight: r.relatedEventCacheBuster, fromModel(Room.ProportionalHeight) ?? 1
-            //     type: r.relatedEventCacheBuster, fromModel(Room.Type) ?? MtxEvent.UnknownMessage
-            //     typeString: r.relatedEventCacheBuster, fromModel(Room.TypeString) ?? ""
-            //     url: r.relatedEventCacheBuster, fromModel(Room.Url) ?? ""
-            //     originalWidth: r.relatedEventCacheBuster, fromModel(Room.OriginalWidth) ?? 0
-            //     isOnlyEmoji: r.relatedEventCacheBuster, fromModel(Room.IsOnlyEmoji) ?? false
-            //     isStateEvent: r.relatedEventCacheBuster, fromModel(Room.IsStateEvent) ?? false
-            //     userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
-            //     userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
-            //     thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
-            //     duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? ""
-            //     roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
-            //     roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
-            //     callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
-            //     encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
-            //     relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
-            // }
+                function fromModel(role) {
+                    return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
+                }
+                visible: replyTo
+                userColor: r.relatedEventCacheBuster, timelineModel.userColor(userId, GlobalObject.colors.base)
+                // blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
+                body: r.relatedEventCacheBuster, fromModel(Room.Body) ?? ""
+                formattedBody: r.relatedEventCacheBuster, fromModel(Room.FormattedBody) ?? ""
+                // eventId: fromModel(Room.EventId) ?? ""
+                // filename: r.relatedEventCacheBuster, fromModel(Room.Filename) ?? ""
+                // filesize: r.relatedEventCacheBuster, fromModel(Room.Filesize) ?? ""
+                // proportionalHeight: r.relatedEventCacheBuster, fromModel(Room.ProportionalHeight) ?? 1
+                // type: r.relatedEventCacheBuster, fromModel(Room.Type) ?? MtxEvent.UnknownMessage
+                // typeString: r.relatedEventCacheBuster, fromModel(Room.TypeString) ?? ""
+                // url: r.relatedEventCacheBuster, fromModel(Room.Url) ?? ""
+                // originalWidth: r.relatedEventCacheBuster, fromModel(Room.OriginalWidth) ?? 0
+                // isOnlyEmoji: r.relatedEventCacheBuster, fromModel(Room.IsOnlyEmoji) ?? false
+                // isStateEvent: r.relatedEventCacheBuster, fromModel(Room.IsStateEvent) ?? false
+                // userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
+                // userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
+                // thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
+                // duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? ""
+                // roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
+                // roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
+                // callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
+                // encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
+                // relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
+            }
 
             // actual message content
             MessageDelegate {
@@ -166,17 +167,17 @@ AbstractButton {
 
             Row {
                 id: metadata
-                Layout.column: 1//Settings.bubbles? 0 : 1
-                Layout.row: 0//Settings.bubbles? 2 : 0
-                Layout.rowSpan:2// Settings.bubbles? 1 : 2
+                Layout.column: 0//Settings.bubbles? 0 : 1
+                Layout.row: 2//Settings.bubbles? 2 : 0
+                Layout.rowSpan:1// Settings.bubbles? 1 : 2
                 Layout.bottomMargin: -2
-                Layout.topMargin: 0//(contentItem.fitsMetadata && Settings.bubbles)? -height-Layout.bottomMargin : 0
+                Layout.topMargin: contentItem.fitsMetadata? -height-Layout.bottomMargin : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent
                 spacing: 2
 
-                property double scaling: 1//Settings.bubbles? 0.75 : 1
+                property double scaling: 0.75//Settings.bubbles? 0.75 : 1
 
                 property int iconSize: Math.floor(fontMetrics.ascent*scaling)
 

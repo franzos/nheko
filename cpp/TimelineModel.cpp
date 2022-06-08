@@ -342,8 +342,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         return QVariant(QString::fromStdString(blurhash(event)));
     case Filename:
         return QVariant(QString::fromStdString(filename(event)));
-    // case Filesize:
-    //     return QVariant(utils::humanReadableFileSize(filesize(event)));
+    case Filesize:
+        return QVariant(utils::humanReadableFileSize(filesize(event)));
     case MimeType:
         return QVariant(QString::fromStdString(mimetype(event)));
     case OriginalHeight:
@@ -359,12 +359,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
         return {prop > 0 ? prop : 1.};
     }
-    // case EventId: {
-    //     if (auto replaces = relations(event).replaces())
-    //         return QVariant(QString::fromStdString(replaces.value()));
-    //     else
-    //         return QVariant(QString::fromStdString(event_id(event)));
-    // }
+    case EventId: {
+        if (auto replaces = relations(event).replaces())
+            return QVariant(QString::fromStdString(replaces.value()));
+        else
+            return QVariant(QString::fromStdString(event_id(event)));
+    }
     // case State: {
     //     auto id             = QString::fromStdString(event_id(event));
     //     auto containsOthers = [](const auto &vec) {
@@ -386,15 +386,15 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     // }
     // case IsEdited:
     //     return {relations(event).replaces().has_value()};
-    // case IsEditable:
-    //     return {!is_state_event(event) &&
-    //             mtx::accessors::sender(event) == http::client()->user_id().to_string()};
-    // case IsEncrypted: {
-    //     auto encrypted_event = events.get(event_id(event), "", false);
-    //     return encrypted_event &&
-    //            std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-    //              *encrypted_event);
-    // }
+    case IsEditable:
+        return {!is_state_event(event) &&
+                mtx::accessors::sender(event) == http::client()->user_id().to_string()};
+    case IsEncrypted: {
+        auto encrypted_event = _timeline->events()->get(event_id(event), "", false);
+        return encrypted_event &&
+               std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                 *encrypted_event);
+    }
     case IsStateEvent: {
         return is_state_event(event);
     }
@@ -413,8 +413,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     //     return crypto::Trust::Unverified;
     // }
 
-    // case EncryptionError:
-    //     return events.decryptionError(event_id(event));
+    case EncryptionError:
+        return _timeline->events()->decryptionError(event_id(event));
 
     // case ReplyTo:
     //     return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
@@ -422,16 +422,16 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     //     auto id = relations(event).replaces().value_or(event_id(event));
     //     return QVariant::fromValue(events.reactions(id));
     // }
-    // case RoomId:
-    //     return QVariant(_timeline->id());
+    case RoomId:
+        return QVariant(_timeline->id());
     case RoomName:
         return QVariant(
           escapeEmoji(QString::fromStdString(room_name(event)).toHtmlEscaped()));
-    // case RoomTopic:
-    //     return QVariant(utils::replaceEmoji(
-    //       utils::linkifyMessage(QString::fromStdString(room_topic(event))
-    //                               .toHtmlEscaped()
-    //                               .replace(QLatin1String("\n"), QLatin1String("<br>")))));
+    case RoomTopic:
+        return QVariant(utils::replaceEmoji(
+          utils::linkifyMessage(QString::fromStdString(room_topic(event))
+                                  .toHtmlEscaped()
+                                  .replace(QLatin1String("\n"), QLatin1String("<br>")))));
     case CallType:
         return QVariant(QString::fromStdString(call_type(event)));
     case Dump: {
