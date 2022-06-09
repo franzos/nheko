@@ -10,8 +10,9 @@ import "./ui"
 // import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.2
+import QtGraphicalEffects 1.0
 import QtQuick.Window 2.13
 import GlobalObject 1.0
 import CursorShape 1.0
@@ -81,6 +82,7 @@ Item {
                 border.width: 1
                 radius: padding
             }
+
 
             contentItem: RowLayout {
                 id: row

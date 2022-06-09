@@ -14,6 +14,7 @@
 #include "ui/NhekoCursorShape.h"
 #include "ui/DelegateChooser.h"
 #include "Configuration.h"
+#include "ui/emoji/emojimodel.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -119,6 +120,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new GlobalObject();
     });
+    qmlRegisterType<EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
     qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
     qmlRegisterType<DelegateChoice>("DelegateChoice", 1, 0, "DelegateChoice");
     qmlRegisterType<DelegateChooser>("DelegateChooser", 1, 0, "DelegateChooser");

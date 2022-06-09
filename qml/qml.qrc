@@ -46,9 +46,11 @@
         <file>ui/Avatar.qml</file>
         <file>ui/Pill.qml</file>
         <file>ui/ElidedLabel.qml</file>
+        <file>ui/EmojiPicker.qml</file>
         <file>ui/ImageButton.qml</file>
         <file>ui/LoadingButton.qml</file>
         <file>ui/MatrixText.qml</file>
+        <file>ui/MatrixTextField.qml</file>
         <file>ui/PasswordField.qml</file>
         <file>ui/Placeholder.qml</file>
         <file>ui/PlayableMediaMessage.qml</file>
@@ -58,6 +60,7 @@
         <file>ui/Spinner.qml</file>
         <file>ui/Snackbar.qml</file>
         <file>ui/TextButton.qml</file>
+        <file>ui/TextInputBar.qml</file>
         <file>ui/TextMessage.qml</file>
         <file>ui/animations/BlinkAnimation.qml</file>
 

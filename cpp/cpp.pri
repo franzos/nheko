@@ -14,6 +14,7 @@ SOURCES += \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
     $$PWD/TimelineItem.cpp \
+    $$PWD/ui/emoji/emojimodel.cpp \
     $$PWD/ui/DelegateChooser.cpp \
     $$PWD/ui/NhekoCursorShape.cpp 
     
@@ -31,5 +32,6 @@ HEADERS += \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
     $$PWD/TimelineItem.h \
+    $$PWD/ui/emoji/emojimodel.h \
     $$PWD/ui/DelegateChooser.h \
     $$PWD/ui/NhekoCursorShape.h

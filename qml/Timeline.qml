@@ -8,6 +8,7 @@ import TimelineModel 1.0
 import CallManager 1.0
 import Rooms 1.0
 import CallType 1.0
+import "ui"
 
 Room {
     id: timeline
@@ -56,7 +57,7 @@ Room {
         Row {
             width: parent.width-20
             
-            TextField {
+            TextInputBar {
                 id: messageInput
                 width: parent.width - sendButton.width            
                 placeholderText: qsTr("Enter your message ...")
