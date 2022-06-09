@@ -20,6 +20,7 @@ import MtxEvent 1.0
 import MatrixClient 1.0
 import TimelineModel 1.0
 import Presence 1.0
+import Clipboard 1.0
 
 Item {
     id: chatRoot
@@ -575,17 +576,18 @@ Item {
             isEditable = isEditable_;
             isSender = isSender_;
             if (text_)
-            text = text_;
+                text = text_;
             else
-            text = "";
+                text = "";
             if (link_)
-            link = link_;
+                link = link_;
             else
-            link = "";
+                link = "";
             if (showAt_)
-            open(showAt_);
+                open(showAt_);
             else
-            open();
+                open();
+            console.log(eventId_ + " " + eventType_ + " " + isSender_ + " " + isEncrypted_ +  " " + isEditable_ + " " + link_ + " " + text_ + " " + showAt_)
         }
 
         // Component {

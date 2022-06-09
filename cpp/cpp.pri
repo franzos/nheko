@@ -2,6 +2,7 @@ QT += network qml quick quickcontrols2 widgets quickwidgets svg
 CONFIG += c++17
 
 SOURCES += \
+    $$PWD/Clipboard.cpp \
     $$PWD/ColorImageProvider.cpp \
     $$PWD/GlobalObject.cpp \
     $$PWD/QmlInterface.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/Application.h\
+    $$PWD/Clipboard.h\
     $$PWD/ColorImageProvider.h \
     $$PWD/GlobalObject.h \
     $$PWD/QmlInterface.h \

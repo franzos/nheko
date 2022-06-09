@@ -15,6 +15,7 @@
 #include "ui/DelegateChooser.h"
 #include "Configuration.h"
 #include "ui/emoji/emojimodel.h"
+#include "Clipboard.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -124,10 +125,6 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
     qmlRegisterType<DelegateChoice>("DelegateChoice", 1, 0, "DelegateChoice");
     qmlRegisterType<DelegateChooser>("DelegateChooser", 1, 0, "DelegateChooser");
-    // qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
-    qmlRegisterUncreatableType<TimelineModel>(
-      "TimelineModel", 1, 0, "TimelineModel", QStringLiteral("Room needs to be instantiated on the C++ side"));
-
     qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
@@ -139,7 +136,11 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<RoomListModel>("Rooms", 1, 0, "Rooms", _roomListModel);
     qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
     qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
-    
+    qmlRegisterUncreatableType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel", QStringLiteral("Room needs to be instantiated on the C++ side"));
+    qmlRegisterSingletonType<Clipboard>("Clipboard", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
+        return new Clipboard();
+    });
+
     qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));
     qRegisterMetaType<AndroidMaterialTheme>();
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
