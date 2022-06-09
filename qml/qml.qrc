@@ -12,6 +12,7 @@
         <file>MainLib.qml</file>
         <file>MainMenu.qml</file>
         <file>MessageDelegate.qml</file>
+        <file>MessageInput.qml</file>
         <file>MessageView.qml</file>
         <file>NoticeMessage.qml</file>
         <file>Reactions.qml</file>

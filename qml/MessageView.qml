@@ -643,7 +643,7 @@ Item {
         }
 
         Platform.MenuItem {
-            visible: true//(room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
+            visible: true //(room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
             enabled: visible
             text: "TODO" //visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
             // onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)

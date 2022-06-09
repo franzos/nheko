@@ -57,20 +57,20 @@ Room {
         Row {
             width: parent.width-20
             
-            TextInputBar {
+            MessageInput {
                 id: messageInput
-                width: parent.width - sendButton.width            
-                placeholderText: qsTr("Enter your message ...")
-                Keys.onReturnPressed: sendButton.sendMessage() // Enter key
-                Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
-                onTextChanged: {
-                    sendButton.enabled = messageInput.text.length > 0 ? true : false
-                }
+                width: parent.width //- sendButton.width            
+                // placeholderText: qsTr("Enter your message ...")
+                // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
+                // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
+                // onTextChanged: {
+                //     sendButton.enabled = messageInput.text.length > 0 ? true : false
+                // }
             }
             ToolButton {
                 id: sendButton
                 icon.source: "qrc:/images/send.svg"
-                enabled: messageInput.text.length > 0 ? true : false
+                enabled: true// messageInput.text.length > 0 ? true : false
                 function sendMessage(){
                     if(messageInput.text.length > 0) {
                         timelineModel.send(messageInput.text);
@@ -91,11 +91,16 @@ Room {
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
 
+    function onInputTextChanged(text){
+        messageInput.text = text
+    }
+
     Component.onCompleted: {
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
         timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
+        timelineModel.onInputTextChanged.connect(onInputTextChanged)
     }
 
     Component.onDestruction: {
@@ -103,6 +108,7 @@ Room {
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
+        timelineModel.onInputTextChanged.disconnect(onInputTextChanged)
         timelineModel.destroy()
     }
 

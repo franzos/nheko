@@ -16,16 +16,11 @@
 #include <mtxclient/http/errors.hpp>
 
 #include <matrix-client-library/Client.h>
-// #include "CacheCryptoStructs.h"
 #include <matrix-client-library/CacheStructs.h>
 #include <matrix-client-library/timeline/EventStore.h>
-// #include "InputBar.h"
-// #include "InviteesModel.h"
-// #include "MemberList.h"
-// #include "Permissions.h"
-// #include "ReadReceiptsModel.h"
-// #include "ui/RoomSettings.h"
-// #include "ui/UserProfile.h"
+#include <matrix-client-library/timeline/Timeline.h>
+
+#include "ui/InputBar.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -191,7 +186,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(bool isDirect READ isDirect NOTIFY isDirectChanged)
     Q_PROPERTY(
       QString directChatOtherUserId READ directChatOtherUserId NOTIFY directChatOtherUserIdChanged)
-    // Q_PROPERTY(InputBar *input READ input CONSTANT)
+    Q_PROPERTY(InputBar *input READ input CONSTANT)
     // Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
 
 public:
@@ -286,6 +281,7 @@ public:
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
     Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
+    Q_INVOKABLE void send(const QString &message);
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()
@@ -298,7 +294,7 @@ public:
 
     std::vector<::Reaction> reactions(const std::string &event_id)
     {
-        auto list = events.reactions(event_id);
+        auto list = events->reactions(event_id);
         std::vector<::Reaction> vec;
         vec.reserve(list.size());
         for (const auto &r : list)
@@ -324,7 +320,7 @@ public:
 
     std::optional<mtx::events::collections::TimelineEvents> eventById(const QString &id)
     {
-        auto e = events.get(id.toStdString(), "");
+        auto e = events->get(id.toStdString(), "");
         if (e)
             return *e;
         else
@@ -337,6 +333,7 @@ public slots:
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
+    Timeline *timeline() { return _timeline; };
     void updateTypingUsers(const std::vector<QString> &users)
     {
         if (this->typingUsers_ != users) {
@@ -368,11 +365,11 @@ public slots:
     void setEdit(const QString &newEdit);
     void resetEdit();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
-    void clearTimeline() { events.clearTimeline(); }
+    void clearTimeline() { events->clearTimeline(); }
     void resetState();
     void receivedSessionKey(const std::string &session_key)
     {
-        events.receivedSessionKey(session_key);
+        events->receivedSessionKey(session_key);
     }
 
     QString roomName() const;
@@ -380,7 +377,7 @@ public slots:
     QString roomTopic() const;
     QStringList pinnedMessages() const;
     QStringList widgetLinks() const;
-    // InputBar *input() { return &input_; }
+    InputBar *input() { return &input_; }
     // Permissions *permissions() { return &permissions_; }
     QString roomAvatarUrl() const;
     QString roomId() const { return room_id_; }
@@ -446,7 +443,7 @@ private:
 
     QSet<QString> read;
 
-    mutable EventStore events;
+    EventStore *events;
 
     QString currentId, currentReadId;
     QString reply_, edit_;
@@ -455,7 +452,7 @@ private:
 
     // TimelineViewManager *manager_;
 
-    // InputBar input_{this};
+    InputBar input_{this};
     // Permissions permissions_;
 
     QTimer showEventTimer{this};
@@ -475,23 +472,6 @@ private:
     bool isSpace_               = false;
     bool isEncrypted_           = false;
     QHash<QPair<QString, quint64>, QColor> userColors;
+    Timeline *_timeline = nullptr;
 };
 
-// template<class T>
-// void
-// TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventType)
-// {
-//     if constexpr (std::is_same_v<T, mtx::events::msg::StickerImage>) {
-//         mtx::events::Sticker msgCopy = {};
-//         msgCopy.content              = content;
-//         msgCopy.type                 = eventType;
-//         emit newMessageToSend(msgCopy);
-//     } else {
-//         mtx::events::RoomEvent<T> msgCopy = {};
-//         msgCopy.content                   = content;
-//         msgCopy.type                      = eventType;
-//         emit newMessageToSend(msgCopy);
-//     }
-//     resetReply();
-//     resetEdit();
-// }
