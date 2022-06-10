@@ -430,7 +430,6 @@ signals:
     void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     void scrollTargetChanged();
-    void inputTextChanged(const QString &input);
 
 private:
     // template<typename T>

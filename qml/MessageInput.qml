@@ -5,17 +5,18 @@ import QtQuick.Window 2.13
 import MtxEvent 1.0
 import GlobalObject 1.0
 import TimelineModel 1.0
+import EmojiModel 1.0
 import "ui"
 
 Rectangle {
     id: inputBar
     property var room: timelineModel
 
-    color: GlobalObject.colors.window
+    color: GlobalObject.colors.base
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
-    property bool showAllButtons: width > 450 || (messageInput.length == 0 && !messageInput.inputMethodComposing)
+    // property bool showAllButtons: width > 450 || (messageInput.length == 0 && !messageInput.inputMethodComposing)
 
 
     // Component {
@@ -38,9 +39,10 @@ Rectangle {
         id: row
 
         visible: true //room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-        anchors.fill: parent
         spacing: 0
-
+        anchors.leftMargin: 5
+        anchors.rightMargin: anchors.leftMargin
+        width: parent.width - anchors.leftMargin - anchors.rightMargin
         // ImageButton {
         //     visible: CallManager.callsSupported && showAllButtons
         //     opacity: CallManager.haveCallInvite ? 0.3 : 1
@@ -142,8 +144,9 @@ Rectangle {
                 padding: 0
                 topPadding: 8
                 bottomPadding: 8
-                leftPadding: inputBar.showAllButtons? 0 : 8
+                leftPadding: 8//inputBar.showAllButtons? 0 : 8
                 focus: true
+                textFormat: TextEdit.RichText
                 property string lastChar
                 onTextChanged: {
                     if (room)
@@ -430,22 +433,49 @@ Rectangle {
 
         // }
 
-        // ImageButton {
-        //     id: emojiButton
+        EmojiModel {
+            id: emojiModel
+            iconsPath: 'qrc:/emoji/emojiSvgs/'
+            iconsType: '.svg'
+        }
+        
+        Menu {
+            id: contextMenu
+            width: 400
+            Rectangle {
+                id: body
+                width: parent.width
+                height: 420
+                radius: 10
+                anchors.top: parent.top
+                anchors.topMargin: 40
+                anchors.horizontalCenter: parent.horizontalCenter
+                EmojiPicker {
+                    id: emojiPicker
+                    model: emojiModel
+                    editor: messageInput
+                    anchors.fill: parent
+                }
+            }
+        }
+        
+        ImageButton {
+            id: emojiButton
 
-        //     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-        //     Layout.margins: 8
-        //     hoverEnabled: true
-        //     width: 22
-        //     height: 22
-        //     image: ":/icons/icons/ui/smile.svg"
-        //     ToolTip.visible: hovered
-        //     ToolTip.text: qsTr("Emoji")
-        //     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-        //         messageInput.insert(messageInput.cursorPosition, emoji);
-        //         TimelineManager.focusMessageInput();
-        //     })
-        // }
+            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.margins: 8
+            hoverEnabled: true
+            width: 22
+            height: 22
+            image: ":/images/smile.svg"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Emoji")
+            onClicked: {contextMenu.popup()}
+            // onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+            //     messageInput.insert(messageInput.cursorPosition, emoji);
+            //     TimelineManager.focusMessageInput();
+            // })
+        }
 
         ImageButton {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
@@ -454,7 +484,7 @@ Rectangle {
             width: 22
             height: 22
             image: ":/images/send.svg"
-            Layout.rightMargin: 8
+            // Layout.rightMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
             onClicked: {
@@ -466,7 +496,7 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent
-        visible: true//room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
+        visible: false//room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
         text: qsTr("You don't have permission to send messages in this room")
         color: GlobalObject.colors.text
     }

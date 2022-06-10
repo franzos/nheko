@@ -2128,11 +2128,11 @@ TimelineModel::setEdit(const QString &newEdit)
     }
 
     if (edit_.isEmpty()) {
-        // this->textBeforeEdit  = input()->text();
+        this->textBeforeEdit  = input()->text();
         this->replyBeforeEdit = reply_;
-        emit inputTextChanged("");
         nhlog::ui()->debug("Stored: {}", textBeforeEdit.toStdString());
     }
+
     if (edit_ != newEdit) {
         auto ev = events->get(newEdit.toStdString(), "");
         if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
@@ -2162,18 +2162,18 @@ TimelineModel::setEdit(const QString &newEdit)
                 }
 
                 if (msgType == mtx::events::MessageType::Emote)
-                    emit inputTextChanged("/me " + editText);
+                    input()->setText("/me " + editText);
                 else
-                    emit inputTextChanged(editText);
+                    input()->setText(editText);
             } else {
-                emit inputTextChanged("");
+                input()->setText(QLatin1String(""));
             }
 
             edit_ = newEdit;
         } else {
             resetReply();
 
-            emit inputTextChanged("");
+            input()->setText(QLatin1String(""));
             edit_ = QLatin1String("");
         }
         emit editChanged(edit_);
@@ -2187,7 +2187,7 @@ TimelineModel::resetEdit()
         edit_ = QLatin1String("");
         emit editChanged(edit_);
         nhlog::ui()->debug("Restoring: {}", textBeforeEdit.toStdString());
-        // input()->setText(textBeforeEdit);
+        input()->setText(textBeforeEdit);
         textBeforeEdit.clear();
         if (replyBeforeEdit.isEmpty())
             resetReply();

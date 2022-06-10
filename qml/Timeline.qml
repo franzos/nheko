@@ -48,9 +48,8 @@ Room {
     footer: ColumnLayout {
         id: footer
         width: parent.width
-        anchors.margins: 10
+        // anchors.margins: 10
         anchors.left: parent.left
-        anchors.leftMargin: 10
         TypingIndicator {
             id: typingIndicator
         }
@@ -103,16 +102,11 @@ Room {
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
 
-    function onInputTextChanged(text){
-        messageInput.text = text
-    }
-
     Component.onCompleted: {
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
         timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
-        timelineModel.onInputTextChanged.connect(onInputTextChanged)
     }
 
     Component.onDestruction: {
@@ -120,7 +114,6 @@ Room {
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
-        timelineModel.onInputTextChanged.disconnect(onInputTextChanged)
         timelineModel.destroy()
     }
 
