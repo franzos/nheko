@@ -48,7 +48,7 @@ AbstractButton {
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
 
     Rectangle {
-        color: GlobalObject.colors.alternateBase //(Settings.messageHoverHighlight && hovered) ? GlobalObject.colors.alternateBase : "transparent"
+        color: hovered ? GlobalObject.colors.alternateBase : "transparent"
         anchors.fill: parent
         // this looks better without margins
         TapHandler {
@@ -73,7 +73,7 @@ AbstractButton {
         width: Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20))// Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
         height: msg.height+msg.anchors.margins*2
 
-        property color userColor: room.userColor(userId, GlobalObject.colors.base)
+        property color userColor: room.userColor(userId, "GlobalObject.colors.base")
         property color bgColor: GlobalObject.colors.base
         color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) //(Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4

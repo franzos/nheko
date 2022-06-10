@@ -45,7 +45,7 @@ Room {
     //     }
     // }
 
-    footer: Column {
+    footer: ColumnLayout {
         id: footer
         width: parent.width
         anchors.margins: 10
@@ -54,33 +54,45 @@ Room {
         TypingIndicator {
             id: typingIndicator
         }
-        Row {
-            width: parent.width-20
-            
-            MessageInput {
-                id: messageInput
-                width: parent.width //- sendButton.width            
-                // placeholderText: qsTr("Enter your message ...")
-                // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
-                // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
-                // onTextChanged: {
-                //     sendButton.enabled = messageInput.text.length > 0 ? true : false
-                // }
-            }
-            ToolButton {
-                id: sendButton
-                icon.source: "qrc:/images/send.svg"
-                enabled: true// messageInput.text.length > 0 ? true : false
-                function sendMessage(){
-                    if(messageInput.text.length > 0) {
-                        timelineModel.send(messageInput.text);
-                        messageInput.text = ""
-                    }
-                    messageInput.forceActiveFocus()
-                }
-                onClicked: sendMessage()
-            }
+        
+        MessageInput {
+            id: messageInput
+            width: parent.width //- sendButton.width            
+            // placeholderText: qsTr("Enter your message ...")
+            // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
+            // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
+            // onTextChanged: {
+            //     sendButton.enabled = messageInput.text.length > 0 ? true : false
+            // }
         }
+        
+        // Row {
+        //     width: parent.width - 20
+            
+        //     MessageInput {
+        //         id: messageInput
+        //         width: parent.width //- sendButton.width            
+        //         // placeholderText: qsTr("Enter your message ...")
+        //         // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
+        //         // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
+        //         // onTextChanged: {
+        //         //     sendButton.enabled = messageInput.text.length > 0 ? true : false
+        //         // }
+        //     }
+        //     ToolButton {
+        //     //     id: sendButton
+        //     //     icon.source: "qrc:/images/send.svg"
+        //     //     enabled: true// messageInput.text.length > 0 ? true : false
+        //     //     function sendMessage(){
+        //     //         if(messageInput.text.length > 0) {
+        //     //             timelineModel.send(messageInput.text);
+        //     //             messageInput.text = ""
+        //     //         }
+        //     //         messageInput.forceActiveFocus()
+        //     //     }
+        //     //     onClicked: sendMessage()
+        //     }
+        // }
     }
 
     function startVoiceCall(){

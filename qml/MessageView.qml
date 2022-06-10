@@ -1,13 +1,3 @@
-// SPDX-FileCopyrightText: 2021 Nheko Contributors
-// SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
-// import "./components"
-// import "./delegates"
-// import "./emoji"
-import "./ui"
-// import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.5
@@ -21,6 +11,7 @@ import MatrixClient 1.0
 import TimelineModel 1.0
 import Presence 1.0
 import Clipboard 1.0
+import "./ui"
 
 Item {
     id: chatRoot

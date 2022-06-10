@@ -1,8 +1,3 @@
-// SPDX-FileCopyrightText: 2021 Nheko Contributors
-// SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -11,7 +6,6 @@ import MtxEvent 1.0
 import GlobalObject 1.0
 import TimelineModel 1.0
 import "ui"
-// import im.nheko 1.0
 
 Rectangle {
     id: inputBar
@@ -459,7 +453,7 @@ Rectangle {
             hoverEnabled: true
             width: 22
             height: 22
-            image: ":/icons/icons/ui/send.svg"
+            image: ":/images/send.svg"
             Layout.rightMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
