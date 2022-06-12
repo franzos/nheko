@@ -122,7 +122,7 @@ Item {
                 ImageButton {
                     id: reactButton
 
-                    visible: true//chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
                     image: ":/images/smile.svg"
@@ -139,7 +139,7 @@ Item {
                 ImageButton {
                     id: replyButton
 
-                    visible: true// chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
+                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
                     image: ":/images/reply.svg"
@@ -613,7 +613,7 @@ Item {
         Platform.MenuItem {
             id: reactionOption
 
-            visible: true //room ? room.permissions.canSend(MtxEvent.Reaction) : false
+            visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
             text: qsTr("Re&act")
             onTriggered: emojiPopup.show(null, function(emoji) {
                 room.input.reaction(messageContextMenu.eventId, emoji);
@@ -621,20 +621,20 @@ Item {
         }
 
         Platform.MenuItem {
-            visible: true //room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+            visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
             text: qsTr("Repl&y")
             onTriggered: room.replyAction(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
-            visible: true// messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
+            visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
             enabled: visible
             text: qsTr("&Edit")
             onTriggered: room.editAction(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
-            visible: true //(room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
+            visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
             enabled: visible
             text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
             onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
@@ -674,7 +674,7 @@ Item {
         }
 
         Platform.MenuItem {
-            visible: true //(room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
+            visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
             text: qsTr("Remo&ve message")
             onTriggered: function() {
                 var dialog = removeReason.createObject(qmlLibRoot);

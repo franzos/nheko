@@ -25,118 +25,13 @@
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
 }
+
 namespace mtx::responses {
 struct Timeline;
 struct Messages;
 struct ClaimKeys;
 }
 struct RelatedInfo;
-
-namespace qml_mtx_events {
-Q_NAMESPACE
-
-enum EventType
-{
-    // Unsupported event
-    Unsupported,
-    /// m.room_key_request
-    KeyRequest,
-    /// m.reaction,
-    Reaction,
-    /// m.room.aliases
-    Aliases,
-    /// m.room.avatar
-    Avatar,
-    /// m.call.invite
-    CallInvite,
-    /// m.call.answer
-    CallAnswer,
-    /// m.call.hangup
-    CallHangUp,
-    /// m.call.candidates
-    CallCandidates,
-    /// m.room.canonical_alias
-    CanonicalAlias,
-    /// m.room.create
-    RoomCreate,
-    /// m.room.encrypted.
-    Encrypted,
-    /// m.room.encryption.
-    Encryption,
-    /// m.room.guest_access
-    RoomGuestAccess,
-    /// m.room.history_visibility
-    RoomHistoryVisibility,
-    /// m.room.join_rules
-    RoomJoinRules,
-    /// m.room.member
-    Member,
-    /// m.room.name
-    Name,
-    /// m.room.power_levels
-    PowerLevels,
-    /// m.room.tombstone
-    Tombstone,
-    /// m.room.topic
-    Topic,
-    /// m.room.redaction
-    Redaction,
-    /// m.room.pinned_events
-    PinnedEvents,
-    // m.sticker
-    Sticker,
-    // m.tag
-    Tag,
-    // m.widget
-    Widget,
-    /// m.room.message
-    AudioMessage,
-    EmoteMessage,
-    FileMessage,
-    ImageMessage,
-    LocationMessage,
-    NoticeMessage,
-    TextMessage,
-    VideoMessage,
-    Redacted,
-    UnknownMessage,
-    KeyVerificationRequest,
-    KeyVerificationStart,
-    KeyVerificationMac,
-    KeyVerificationAccept,
-    KeyVerificationCancel,
-    KeyVerificationKey,
-    KeyVerificationDone,
-    KeyVerificationReady,
-    //! m.image_pack, currently im.ponies.room_emotes
-    ImagePackInRoom,
-    //! m.image_pack, currently im.ponies.user_emotes
-    ImagePackInAccountData,
-    //! m.image_pack.rooms, currently im.ponies.emote_rooms
-    ImagePackRooms,
-    // m.space.parent
-    SpaceParent,
-    // m.space.child
-    SpaceChild,
-};
-Q_ENUM_NS(EventType)
-mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);
-qml_mtx_events::EventType
-toRoomEventType(mtx::events::EventType e);
-
-enum EventState
-{
-    //! The plaintext message was received by the server.
-    Received,
-    //! At least one of the participants has read the message.
-    Read,
-    //! The client sent the message. Not yet received.
-    Sent,
-    //! When the message is loaded from cache or backfill.
-    Empty,
-};
-Q_ENUM_NS(EventState)
-}
 
 class StateKeeper
 {
@@ -187,7 +82,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(
       QString directChatOtherUserId READ directChatOtherUserId NOTIFY directChatOtherUserIdChanged)
     Q_PROPERTY(InputBar *input READ input CONSTANT)
-    // Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
+    Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
 
 public:
     explicit TimelineModel(//TimelineViewManager *manager,
@@ -345,10 +240,8 @@ public slots:
     QString reply() const { return reply_; }
     void setReply(const QString &newReply)
     {
-        qDebug() << "+++++++++++++++++++" << newReply << edit_;
         if (edit_.startsWith('m'))
             return;
-        qDebug() << "+++++++++++++++++++" << reply_ << edit_;
         if (reply_ != newReply) {
             reply_ = newReply;
             emit replyChanged(reply_);
@@ -378,7 +271,7 @@ public slots:
     QStringList pinnedMessages() const;
     QStringList widgetLinks() const;
     InputBar *input() { return &input_; }
-    // Permissions *permissions() { return &permissions_; }
+    Permissions *permissions() { return _timeline->permissions(); }
     QString roomAvatarUrl() const;
     QString roomId() const { return room_id_; }
 
@@ -449,10 +342,7 @@ private:
     QString textBeforeEdit, replyBeforeEdit;
     std::vector<QString> typingUsers_;
 
-    // TimelineViewManager *manager_;
-
     InputBar input_{this};
-    // Permissions permissions_;
 
     QTimer showEventTimer{this};
     QString eventIdToShow;

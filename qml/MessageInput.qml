@@ -38,7 +38,7 @@ Rectangle {
     RowLayout {
         id: row
 
-        visible: true //room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         spacing: 0
         anchors.leftMargin: 5
         anchors.rightMargin: anchors.leftMargin
@@ -496,7 +496,7 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent
-        visible: false//room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
+        visible: room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
         text: qsTr("You don't have permission to send messages in this room")
         color: GlobalObject.colors.text
     }
