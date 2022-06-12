@@ -1,8 +1,3 @@
-// SPDX-FileCopyrightText: 2021 Nheko Contributors
-// SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -37,7 +32,7 @@ ColumnLayout {
         input.forceActiveFocus();
     }
 
-    ToolTip.delay: Nheko.tooltipDelay
+    // ToolTip.delay: Nheko.tooltipDelay
     ToolTip.visible: hover.hovered
 
     spacing: 0
@@ -46,7 +41,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: labelC.contentHeight
         Layout.margins: input.padding
-        Layout.bottomMargin: Nheko.paddingSmall
+        Layout.bottomMargin: 4
         visible: labelC.text
 
         z: 1
@@ -54,7 +49,7 @@ ColumnLayout {
         Label {
             id: labelC
 
-            y: contentHeight + input.padding + Nheko.paddingSmall
+            y: contentHeight + input.padding + 4
             enabled: false
 
             palette: GlobalObject.colors

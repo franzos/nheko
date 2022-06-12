@@ -281,7 +281,6 @@ public:
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
     Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
-    Q_INVOKABLE void send(const QString &message);
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()

@@ -186,13 +186,13 @@ Item {
 
         // }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.Redacted
+        DelegateChoice {
+            roleValue: MtxEvent.Redacted
 
-        //     Redacted {
-        //         metadataWidth: d.metadataWidth
-        //     }
-        // }
+            Redacted {
+                metadataWidth: d.metadataWidth
+            }
+        }
 
         DelegateChoice {
             roleValue: MtxEvent.Redaction

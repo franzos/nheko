@@ -213,11 +213,11 @@ Item {
             sequence: "Alt+F"
             onActivated: {
                 if (chat.model.reply) {
-                    var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                    var forwardMess = forwardCompleterComponent.createObject(qmlLibRoot);
                     forwardMess.setMessageEventId(chat.model.reply);
                     forwardMess.open();
                     chat.model.reply = null;
-                    timelineRoot.destroyOnClose(forwardMess);
+                    qmlLibRoot.destroyOnClose(forwardMess);
                 }
             }
         }
@@ -581,20 +581,20 @@ Item {
             console.log(eventId_ + " " + eventType_ + " " + isSender_ + " " + isEncrypted_ +  " " + isEditable_ + " " + link_ + " " + text_ + " " + showAt_)
         }
 
-        // Component {
-        //     id: removeReason
-        //     InputDialog {
-        //         id: removeReasonDialog
+        Component {
+            id: removeReason
+            InputDialog {
+                id: removeReasonDialog
 
-        //         property string eventId
+                property string eventId
 
-        //         title: qsTr("Reason for removal")
-        //         prompt: qsTr("Enter reason for removal or hit enter for no reason:")
-        //         onAccepted: function(text) {
-        //             room.redactEvent(eventId, text);
-        //         }
-        //     }
-        // }
+                title: qsTr("Reason for removal")
+                prompt: qsTr("Enter reason for removal or hit enter for no reason:")
+                onAccepted: function(text) {
+                    room.redactEvent(eventId, text);
+                }
+            }
+        }
 
         Platform.MenuItem {
             visible: messageContextMenu.text
@@ -636,8 +636,8 @@ Item {
         Platform.MenuItem {
             visible: true //(room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
             enabled: visible
-            text: "TODO" //visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
-            // onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
+            text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
+            onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
@@ -649,10 +649,10 @@ Item {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
             text: qsTr("&Forward")
             onTriggered: {
-                var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                var forwardMess = forwardCompleterComponent.createObject(qmlLibRoot);
                 forwardMess.setMessageEventId(messageContextMenu.eventId);
                 forwardMess.open();
-                timelineRoot.destroyOnClose(forwardMess);
+                qmlLibRoot.destroyOnClose(forwardMess);
             }
         }
 
@@ -677,11 +677,11 @@ Item {
             visible: true //(room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
             text: qsTr("Remo&ve message")
             onTriggered: function() {
-                var dialog = removeReason.createObject(timelineRoot);
+                var dialog = removeReason.createObject(qmlLibRoot);
                 dialog.eventId = messageContextMenu.eventId;
                 dialog.show();
                 dialog.forceActiveFocus();
-                timelineRoot.destroyOnClose(dialog);
+                qmlLibRoot.destroyOnClose(dialog);
             }
         }
 

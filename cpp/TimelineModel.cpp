@@ -1006,43 +1006,8 @@ isYourJoin(const mtx::events::Event<T> &)
     return false;
 }
 
-void
-TimelineModel::updateLastMessage()
-{
-    for (auto it = events->size() - 1; it >= 0; --it) {
-        auto event = events->get(it, decryptDescription);
-        if (!event)
-            continue;
-
-        if (std::visit([](const auto &e) -> bool { return isYourJoin(e); }, *event)) {
-            auto time   = mtx::accessors::origin_server_ts(*event);
-            uint64_t ts = time.toMSecsSinceEpoch();
-            auto description =
-              DescInfo{QString::fromStdString(mtx::accessors::event_id(*event)),
-                       QString::fromStdString(http::client()->user_id().to_string()),
-                       tr("You joined this room."),
-                       utils::descriptiveTime(time),
-                       ts,
-                       time, true};
-            if (description != lastMessage_) {
-                lastMessage_ = description;
-                emit lastMessageChanged();
-            }
-            return;
-        }
-        if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, *event))
-            continue;
-
-        auto description = utils::getMessageDescription(
-          *event,
-          QString::fromStdString(http::client()->user_id().to_string()),
-          cache::displayName(room_id_, QString::fromStdString(mtx::accessors::sender(*event))));
-        if (description != lastMessage_) {
-            lastMessage_ = description;
-            emit lastMessageChanged();
-        }
-        return;
-    }
+void TimelineModel::updateLastMessage() {
+    _timeline->updateLastMessage();
 }
 
 void
@@ -1084,15 +1049,11 @@ TimelineModel::readEvent(const std::string &id)
     //   !UserSettings::instance()->readReceipts());
 }
 
-QString
-TimelineModel::displayName(const QString &id) const
-{
+QString TimelineModel::displayName(const QString &id) const {
     return _timeline->displayName(id);
 }
 
-QString
-TimelineModel::avatarUrl(const QString &id) const
-{
+QString TimelineModel::avatarUrl(const QString &id) const {
     return _timeline->avatarUrl(id);
 }
 
@@ -1156,58 +1117,12 @@ TimelineModel::replyAction(const QString &id)
     setReply(id);
 }
 
-void
-TimelineModel::unpin(const QString &id)
-{
-    // auto pinned =
-    //   cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
-
-    // mtx::events::state::PinnedEvents content{};
-    // if (pinned)
-    //     content = pinned->content;
-
-    // auto idStr = id.toStdString();
-
-    // for (auto it = content.pinned.begin(); it != content.pinned.end(); ++it) {
-    //     if (*it == idStr) {
-    //         content.pinned.erase(it);
-    //         break;
-    //     }
-    // }
-
-    // http::client()->send_state_event(
-    //   room_id_.toStdString(),
-    //   content,
-    //   [idStr](const mtx::responses::EventId &, mtx::http::RequestErr err) {
-    //       if (err)
-    //           nhlog::net()->error("Failed to unpin {}: {}", idStr, *err);
-    //       else
-    //           nhlog::net()->debug("Unpinned {}", idStr);
-    //   });
+void TimelineModel::unpin(const QString &id) {
+    _timeline->unpin(id);
 }
 
-void
-TimelineModel::pin(const QString &id)
-{
-    // auto pinned =
-    //   cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
-
-    // mtx::events::state::PinnedEvents content{};
-    // if (pinned)
-    //     content = pinned->content;
-
-    // auto idStr = id.toStdString();
-    // content.pinned.push_back(idStr);
-
-    // http::client()->send_state_event(
-    //   room_id_.toStdString(),
-    //   content,
-    //   [idStr](const mtx::responses::EventId &, mtx::http::RequestErr err) {
-    //       if (err)
-    //           nhlog::net()->error("Failed to pin {}: {}", idStr, *err);
-    //       else
-    //           nhlog::net()->debug("Pinned {}", idStr);
-    //   });
+void TimelineModel::pin(const QString &id) {
+    _timeline->pin(id);
 }
 
 void
@@ -2260,18 +2175,7 @@ TimelineModel::roomTopic() const
 QStringList
 TimelineModel::pinnedMessages() const
 {
-    // auto pinned =
-    //   cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
-
-    // if (!pinned || pinned->content.pinned.empty())
-    //     return {};
-
-    QStringList list;
-    // list.reserve(pinned->content.pinned.size());
-    // for (const auto &p : pinned->content.pinned)
-    //     list.push_back(QString::fromStdString(p));
-
-    return list;
+    return _timeline->pinnedMessages();
 }
 
 QStringList
@@ -2341,23 +2245,12 @@ TimelineModel::widgetLinks() const
 //     return cache::client()->roomVerificationStatus(room_id_.toStdString());
 // }
 
-int
-TimelineModel::roomMemberCount() const
-{
-    return 0; // (int)cache::client()->memberCount(room_id_.toStdString());
+int TimelineModel::roomMemberCount() const {
+    return _timeline->roomMemberCount();
 }
 
-QString
-TimelineModel::directChatOtherUserId() const
-{
-    if (roomMemberCount() < 3) {
-        QString id;
-        for (const auto &member : cache::getMembers(room_id_.toStdString()))
-            if (member.user_id != UserSettings::instance()->userId())
-                id = member.user_id;
-        return id;
-    } else
-        return {};
+QString TimelineModel::directChatOtherUserId() const {
+    return _timeline->directChatOtherUserId();
 }
 
 QColor TimelineModel::userColor(QString id, QColor background)
@@ -2382,8 +2275,3 @@ TimelineModel::fixImageRendering(QQuickTextDocument *t, QQuickItem *i)
     }
 }
 
-void TimelineModel::send(const QString &message){
-    if(_timeline){
-        _timeline->sendMessage(message);
-    }
-}
