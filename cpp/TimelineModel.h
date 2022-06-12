@@ -346,9 +346,10 @@ public slots:
     QString reply() const { return reply_; }
     void setReply(const QString &newReply)
     {
+        qDebug() << "+++++++++++++++++++" << newReply << edit_;
         if (edit_.startsWith('m'))
             return;
-
+        qDebug() << "+++++++++++++++++++" << reply_ << edit_;
         if (reply_ != newReply) {
             reply_ = newReply;
             emit replyChanged(reply_);

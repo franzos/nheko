@@ -16,6 +16,7 @@
         <file>MessageView.qml</file>
         <file>NoticeMessage.qml</file>
         <file>Reactions.qml</file>
+        <file>ReplyPopup.qml</file>
         <file>Room.qml</file>
         <file>RoomInfo.qml</file>
         <file>RoomList.qml</file>

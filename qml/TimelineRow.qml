@@ -106,29 +106,29 @@ AbstractButton {
                     return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
                 }
                 visible: replyTo
-                userColor: r.relatedEventCacheBuster, timelineModel.userColor(userId, GlobalObject.colors.base)
-                // blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
-                body: r.relatedEventCacheBuster, fromModel(Room.Body) ?? ""
-                formattedBody: r.relatedEventCacheBuster, fromModel(Room.FormattedBody) ?? ""
-                // eventId: fromModel(Room.EventId) ?? ""
-                // filename: r.relatedEventCacheBuster, fromModel(Room.Filename) ?? ""
-                // filesize: r.relatedEventCacheBuster, fromModel(Room.Filesize) ?? ""
-                // proportionalHeight: r.relatedEventCacheBuster, fromModel(Room.ProportionalHeight) ?? 1
-                // type: r.relatedEventCacheBuster, fromModel(Room.Type) ?? MtxEvent.UnknownMessage
-                // typeString: r.relatedEventCacheBuster, fromModel(Room.TypeString) ?? ""
-                // url: r.relatedEventCacheBuster, fromModel(Room.Url) ?? ""
-                // originalWidth: r.relatedEventCacheBuster, fromModel(Room.OriginalWidth) ?? 0
-                // isOnlyEmoji: r.relatedEventCacheBuster, fromModel(Room.IsOnlyEmoji) ?? false
-                // isStateEvent: r.relatedEventCacheBuster, fromModel(Room.IsStateEvent) ?? false
-                // userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
-                // userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
-                // thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
-                // duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? ""
-                // roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
-                // roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
-                // callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
-                // encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
-                // relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
+                userColor: r.relatedEventCacheBuster, room.userColor(userId, GlobalObject.colors.base)
+                blurhash: r.relatedEventCacheBuster, fromModel(TimelineModel.Blurhash) ?? ""
+                body: r.relatedEventCacheBuster, fromModel(TimelineModel.Body) ?? ""
+                formattedBody: r.relatedEventCacheBuster, fromModel(TimelineModel.FormattedBody) ?? ""
+                eventId: fromModel(TimelineModel.EventId) ?? ""
+                filename: r.relatedEventCacheBuster, fromModel(TimelineModel.Filename) ?? ""
+                filesize: r.relatedEventCacheBuster, fromModel(TimelineModel.Filesize) ?? ""
+                proportionalHeight: r.relatedEventCacheBuster, fromModel(TimelineModel.ProportionalHeight) ?? 1
+                type: r.relatedEventCacheBuster, fromModel(TimelineModel.Type) ?? MtxEvent.UnknownMessage
+                typeString: r.relatedEventCacheBuster, fromModel(TimelineModel.TypeString) ?? ""
+                url: r.relatedEventCacheBuster, fromModel(TimelineModel.Url) ?? ""
+                originalWidth: r.relatedEventCacheBuster, fromModel(TimelineModel.OriginalWidth) ?? 0
+                isOnlyEmoji: r.relatedEventCacheBuster, fromModel(TimelineModel.IsOnlyEmoji) ?? false
+                isStateEvent: r.relatedEventCacheBuster, fromModel(TimelineModel.IsStateEvent) ?? false
+                userId: r.relatedEventCacheBuster, fromModel(TimelineModel.UserId) ?? ""
+                userName: r.relatedEventCacheBuster, fromModel(TimelineModel.UserName) ?? ""
+                thumbnailUrl: r.relatedEventCacheBuster, fromModel(TimelineModel.ThumbnailUrl) ?? ""
+                duration: r.relatedEventCacheBuster, fromModel(TimelineModel.Duration) ?? ""
+                roomTopic: r.relatedEventCacheBuster, fromModel(TimelineModel.RoomTopic) ?? ""
+                roomName: r.relatedEventCacheBuster, fromModel(TimelineModel.RoomName) ?? ""
+                callType: r.relatedEventCacheBuster, fromModel(TimelineModel.CallType) ?? ""
+                encryptionError: r.relatedEventCacheBuster, fromModel(TimelineModel.EncryptionError) ?? ""
+                relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(TimelineModel.RelatedEventCacheBuster) ?? 0
             }
 
             // actual message content

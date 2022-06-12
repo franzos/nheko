@@ -54,6 +54,8 @@ Room {
             id: typingIndicator
         }
         
+        ReplyPopup {
+        }
         MessageInput {
             id: messageInput
             width: parent.width //- sendButton.width            
@@ -64,7 +66,6 @@ Room {
             //     sendButton.enabled = messageInput.text.length > 0 ? true : false
             // }
         }
-        
         // Row {
         //     width: parent.width - 20
             

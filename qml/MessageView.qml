@@ -190,9 +190,9 @@ Item {
             sequence: StandardKey.Cancel
             onActivated: {
                 if (chat.model.reply)
-                chat.model.reply = undefined;
+                    chat.model.reply = undefined;
                 else
-                chat.model.edit = undefined;
+                    chat.model.edit = undefined;
             }
         }
 

@@ -1087,13 +1087,13 @@ TimelineModel::readEvent(const std::string &id)
 QString
 TimelineModel::displayName(const QString &id) const
 {
-    return cache::displayName(room_id_, id).toHtmlEscaped();
+    return _timeline->displayName(id);
 }
 
 QString
 TimelineModel::avatarUrl(const QString &id) const
 {
-    return cache::avatarUrl(room_id_, id);
+    return _timeline->avatarUrl(id);
 }
 
 QString
