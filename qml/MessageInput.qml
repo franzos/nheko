@@ -146,7 +146,7 @@ Rectangle {
                 bottomPadding: 8
                 leftPadding: 8//inputBar.showAllButtons? 0 : 8
                 focus: true
-                textFormat: TextEdit.RichText
+                // textFormat: TextEdit.RichText
                 property string lastChar
                 onTextChanged: {
                     if (room)

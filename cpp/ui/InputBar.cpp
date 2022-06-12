@@ -300,7 +300,6 @@ InputBar::send()
     nhlog::ui()->debug("Send: {}", text().toStdString());
 
     auto wasEdit = !room->edit().isEmpty();
-
     if (text().startsWith('/')) {
         int command_end = text().indexOf(QRegularExpression(QStringLiteral("\\s")));
         if (command_end == -1)
@@ -320,6 +319,8 @@ InputBar::send()
         history_.push_front(QLatin1String(""));
         setText(QLatin1String(""));
     }
+    room->resetEdit();
+    room->resetReply();
 }
 
 // void
