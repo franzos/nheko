@@ -4,6 +4,7 @@ CONFIG += c++17
 SOURCES += \
     $$PWD/../cpp/Clipboard.cpp \
     $$PWD/../cpp/ColorImageProvider.cpp \
+    $$PWD/../cpp/CompletionProxyModel.cpp \
     $$PWD/../cpp/GlobalObject.cpp \
     $$PWD/../cpp/QmlInterface.cpp \
     $$PWD/../cpp/MatrixQmlApplicationEngine.cpp \
@@ -12,6 +13,7 @@ SOURCES += \
     $$PWD/../cpp/RoomListItem.cpp \
     $$PWD/../cpp/RoomListItem.h  \
     $$PWD/../cpp/RoomListModel.cpp \
+    $$PWD/../cpp/RoomsModel.cpp \
     $$PWD/../cpp/Theme.cpp \
     $$PWD/../cpp/TimelineModel.cpp \
     $$PWD/../cpp/TimelineItem.cpp\
@@ -27,6 +29,8 @@ HEADERS += \
     $$PWD/../cpp/Clipboard.h \
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/Configuration.h \
+    $$PWD/../cpp/CompletionModelRoles.h \
+    $$PWD/../cpp/CompletionProxyModel.h \
     $$PWD/../cpp/GlobalObject.h \
     $$PWD/../cpp/QmlInterface.h \
     $$PWD/../cpp/MatrixQmlApplicationEngine.h \
@@ -34,6 +38,7 @@ HEADERS += \
     $$PWD/../cpp/mydevice.h \
     $$PWD/../cpp/RoomListItem.h  \
     $$PWD/../cpp/RoomListModel.h \
+    $$PWD/../cpp/RoomsModel.h \
     $$PWD/../cpp/Theme.h \
     $$PWD/../cpp/TimelineModel.h \
     $$PWD/../cpp/TimelineItem.h  \

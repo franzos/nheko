@@ -279,6 +279,7 @@ public slots:
     int notificationCount() const { return notification_count; }
 
     QString scrollTarget() const;
+    QObject *completerFor(QString completerName, QString roomId = QLatin1String(QLatin1String("")));
 
 private slots:
     // void addPendingMessage(mtx::events::collections::TimelineEvents event);

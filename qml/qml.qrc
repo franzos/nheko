@@ -5,6 +5,7 @@
         <file>CustomBorder.qml</file>
         <file>CustomHeader.qml</file>
         <file>ErrorDialog.qml</file>
+        <file>ForwardCompleter.qml</file>
         <file>InvitationRoom.qml</file>
         <file>LeaveMessage.qml</file>
         <file>Login.qml</file>
@@ -46,7 +47,7 @@
         <file>regex/UserIDRegex.qml</file>
 
         <file>ui/Avatar.qml</file>
-        <file>ui/Pill.qml</file>
+        <file>ui/Completer.qml</file>
         <file>ui/ElidedLabel.qml</file>
         <file>ui/EmojiPicker.qml</file>
         <file>ui/ImageButton.qml</file>
@@ -56,6 +57,7 @@
         <file>ui/MatrixTextField.qml</file>
         <file>ui/PasswordField.qml</file>
         <file>ui/Placeholder.qml</file>
+        <file>ui/Pill.qml</file>
         <file>ui/PlayableMediaMessage.qml</file>
         <file>ui/Redacted.qml</file>
         <file>ui/Reply.qml</file>

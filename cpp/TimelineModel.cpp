@@ -23,6 +23,9 @@
 #include <matrix-client-library/Config.h>
 #include <matrix-client-library/EventAccessors.h>
 
+#include "CompletionProxyModel.h"
+#include "RoomsModel.h"
+
 Q_DECLARE_METATYPE(QModelIndex)
 
 namespace std {
@@ -84,7 +87,7 @@ TimelineModel::TimelineModel(
           "data changed {} to {}", events->size() - to - 1, events->size() - from - 1);
         emit dataChanged(index(events->size() - to - 1, 0), index(events->size() - from - 1, 0));
     });
-
+    connect(this, &TimelineModel::forwardToRoom, Client::instance(), &Client::forwardMessageToRoom);
     connect(events, &EventStore::beginInsertRows, this, [this](int from, int to) {
         int first = events->size() - to;
         int last  = events->size() - from;
@@ -113,7 +116,6 @@ TimelineModel::TimelineModel(
     connect(events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
         this->updateFlowEventId(std::move(event_id));
     });
-
     // When a message is sent, check if the current edit/reply relates to that message,
     // and update the event_id so that it points to the sent message and not the pending one.
     connect(
@@ -785,13 +787,10 @@ TimelineModel::viewRawMessage(const QString &id)
     // emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
-void
-TimelineModel::forwardMessage(const QString &eventId, QString roomId)
-{
+void TimelineModel::forwardMessage(const QString &eventId, QString roomId) {
     auto e = events->get(eventId.toStdString(), "");
     if (!e)
         return;
-
     emit forwardToRoom(e, std::move(roomId));
 }
 
@@ -1978,3 +1977,45 @@ TimelineModel::fixImageRendering(QQuickTextDocument *t, QQuickItem *i)
     }
 }
 
+
+QObject *
+TimelineModel::completerFor(QString completerName, QString roomId)
+{
+    if (completerName == QLatin1String("user")) {
+        // auto userModel = new UsersModel(roomId.toStdString());
+        // auto proxy     = new CompletionProxyModel(userModel);
+        // userModel->setParent(proxy);
+        // return proxy;
+    } else if (completerName == QLatin1String("emoji")) {
+        // auto emojiModel = new emoji::EmojiModel();
+        // auto proxy      = new CompletionProxyModel(emojiModel);
+        // emojiModel->setParent(proxy);
+        // return proxy;
+    } else if (completerName == QLatin1String("allemoji")) {
+        // auto emojiModel = new emoji::EmojiModel();
+        // auto proxy      = new CompletionProxyModel(emojiModel, 1, static_cast<size_t>(-1) / 4);
+        // emojiModel->setParent(proxy);
+        // return proxy;
+    } else if (completerName == QLatin1String("room")) {
+        auto roomModel = new RoomsModel(false);
+        auto proxy     = new CompletionProxyModel(roomModel, 4);
+        roomModel->setParent(proxy);
+        return proxy;
+    } else if (completerName == QLatin1String("roomAliases")) {
+        auto roomModel = new RoomsModel(false);
+        auto proxy     = new CompletionProxyModel(roomModel);
+        roomModel->setParent(proxy);
+        return proxy;
+    } else if (completerName == QLatin1String("stickers")) {
+        // auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), true);
+        // auto proxy        = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
+        // stickerModel->setParent(proxy);
+        // return proxy;
+    } else if (completerName == QLatin1String("customEmoji")) {
+        // auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), false);
+        // auto proxy        = new CompletionProxyModel(stickerModel);
+        // stickerModel->setParent(proxy);
+        // return proxy;
+    }
+    return nullptr;
+}

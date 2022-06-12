@@ -578,7 +578,6 @@ Item {
                 open(showAt_);
             else
                 open();
-            console.log(eventId_ + " " + eventType_ + " " + isSender_ + " " + isEncrypted_ +  " " + isEditable_ + " " + link_ + " " + text_ + " " + showAt_)
         }
 
         Component {
@@ -708,13 +707,13 @@ Item {
 
     }
 
-    // Component {
-    //     id: forwardCompleterComponent
+    Component {
+        id: forwardCompleterComponent
 
-    //     ForwardCompleter {
-    //     }
+        ForwardCompleter {
+        }
 
-    // }
+    }
 
     Platform.Menu {
         id: replyContextMenu

@@ -6,7 +6,7 @@
 #include "CombinedImagePackModel.h"
 
 // #include "Cache_p.h"
-// #include "CompletionModelRoles.h"
+#include "../CompletionModelRoles.h"
 
 CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
                                                bool stickers,
@@ -40,9 +40,9 @@ QHash<int, QByteArray>
 CombinedImagePackModel::roleNames() const
 {
     return {
-    //   {CompletionModel::CompletionRole, "completionRole"},
-    //   {CompletionModel::SearchRole, "searchRole"},
-    //   {CompletionModel::SearchRole2, "searchRole2"},
+      {CompletionModel::CompletionRole, "completionRole"},
+      {CompletionModel::SearchRole, "searchRole"},
+      {CompletionModel::SearchRole2, "searchRole2"},
       {Roles::Url, "url"},
       {Roles::ShortCode, "shortcode"},
       {Roles::Body, "body"},
@@ -55,29 +55,29 @@ QVariant
 CombinedImagePackModel::data(const QModelIndex &index, int role) const
 {
     if (hasIndex(index.row(), index.column(), index.parent())) {
-        // switch (role) {
-        // case CompletionModel::CompletionRole:
-        //     return QStringLiteral(
-        //              "<img data-mx-emoticon height=32 src=\"%1\" alt=\"%2\" title=\"%2\">")
-        //       .arg(QString::fromStdString(images[index.row()].image.url).toHtmlEscaped(),
-        //            !images[index.row()].image.body.empty()
-        //              ? QString::fromStdString(images[index.row()].image.body)
-        //              : images[index.row()].shortcode);
-        // case Roles::Url:
-        //     return QString::fromStdString(images[index.row()].image.url);
-        // case CompletionModel::SearchRole:
-        // case Roles::ShortCode:
-        //     return images[index.row()].shortcode;
-        // case CompletionModel::SearchRole2:
-        // case Roles::Body:
-        //     return QString::fromStdString(images[index.row()].image.body);
-        // case Roles::PackName:
-        //     return images[index.row()].packname;
-        // case Roles::OriginalRow:
-        //     return index.row();
-        // default:
-        //     return {};
-        // }
+        switch (role) {
+        case CompletionModel::CompletionRole:
+            return QStringLiteral(
+                     "<img data-mx-emoticon height=32 src=\"%1\" alt=\"%2\" title=\"%2\">")
+              .arg(QString::fromStdString(images[index.row()].image.url).toHtmlEscaped(),
+                   !images[index.row()].image.body.empty()
+                     ? QString::fromStdString(images[index.row()].image.body)
+                     : images[index.row()].shortcode);
+        case Roles::Url:
+            return QString::fromStdString(images[index.row()].image.url);
+        case CompletionModel::SearchRole:
+        case Roles::ShortCode:
+            return images[index.row()].shortcode;
+        case CompletionModel::SearchRole2:
+        case Roles::Body:
+            return QString::fromStdString(images[index.row()].image.body);
+        case Roles::PackName:
+            return images[index.row()].packname;
+        case Roles::OriginalRow:
+            return index.row();
+        default:
+            return {};
+        }
     }
     return {};
 }
