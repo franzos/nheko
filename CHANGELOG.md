@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Copy link to event.
 * Copy message.
 * Mark as read the message in option menu.
+* Reaction feature.
+* Emoji feature.
 
 
 ## [0.0.27]

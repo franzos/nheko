@@ -526,26 +526,6 @@ Item {
 
                 target: chat
             }
-
-        }
-
-        footer: Item {
-            anchors.horizontalCenter: parent.horizontalCenter
-            // anchors.margins: Nheko.paddingLarge
-            visible: true//chat.model && chat.model.paginationInProgress
-            // hacky, but works
-            height: 24//loadingSpinner.height + 2 * Nheko.paddingLarge
-
-            Spinner {
-                id: loadingSpinner
-
-                anchors.centerIn: parent
-                anchors.margins: 20//Nheko.paddingLarge
-                running: false//chat.model && chat.model.paginationInProgress
-                foreground: GlobalObject.colors.mid
-                z: 3
-            }
-
         }
     }
 
