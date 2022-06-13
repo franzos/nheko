@@ -1680,9 +1680,7 @@ TimelineModel::roomTopic() const
           utils::linkifyMessage((info[room_id_].topic).toHtmlEscaped()));
 }
 
-QStringList
-TimelineModel::pinnedMessages() const
-{
+QStringList TimelineModel::pinnedMessages() const {
     return _timeline->pinnedMessages();
 }
 

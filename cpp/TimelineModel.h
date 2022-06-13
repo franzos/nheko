@@ -65,8 +65,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
     Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
-    Q_PROPERTY(
-      bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+    Q_PROPERTY(bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
     Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
@@ -203,8 +202,6 @@ public:
     void sync(const mtx::responses::JoinedRoom &room);
     void addEvents(const mtx::responses::Timeline &events);
     void syncState(const mtx::responses::State &state);
-    // template<class T>
-    // void sendMessageEvent(const T &content, mtx::events::EventType eventType);
     RelatedInfo relatedInfo(const QString &id);
 
     DescInfo lastMessage() const { return lastMessage_; }
