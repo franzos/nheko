@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Mark as read the message in option menu.
 * Reaction feature.
 * Emoji feature.
+* Pin/Unpin message in room.
 
 
 ## [0.0.27]
