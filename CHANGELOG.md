@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Rename the executable file to `matrix-client`.
 * Copy link to event.
 * Copy message.
+* Mark as read the message in option menu.
+
 
 ## [0.0.27]
 ### Fixed and Changed

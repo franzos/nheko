@@ -176,6 +176,7 @@ public:
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
     Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
+    Q_INVOKABLE void markEventsAsRead(const QString &event_id);
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()
@@ -225,7 +226,6 @@ public slots:
     void setCurrentIndex(int index);
     int currentIndex() const { return idToIndex(currentId); }
     void eventShown();
-    void markEventsAsRead(const std::vector<QString> &event_ids);
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     Timeline *timeline() { return _timeline; };
     void updateTypingUsers(const std::vector<QString> &users)

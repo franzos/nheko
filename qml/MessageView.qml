@@ -657,6 +657,7 @@ Item {
 
         Platform.MenuItem {
             text: qsTr("&Mark as read")
+            onTriggered: room.markEventsAsRead(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
