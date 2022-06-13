@@ -20,17 +20,19 @@ RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
     }
 
     for (const auto &r : roomInfos) {
-        auto roomAliasesList = Client::instance()->getRoomAliases(r.first);
-
-        if (showOnlyRoomWithAliases_) {
-            if (roomAliasesList && !roomAliasesList->alias.empty()) {
+        auto t = Client::instance()->timeline(r.first);
+        if(t){
+            auto roomAliasesList = t->getRoomAliases();
+            if (showOnlyRoomWithAliases_) {
+                if (roomAliasesList && !roomAliasesList->alias.empty()) {
+                    roomids.push_back(r.first);
+                    roomAliases.push_back(QString::fromStdString(roomAliasesList->alias));
+                }
+            } else {
                 roomids.push_back(r.first);
-                roomAliases.push_back(QString::fromStdString(roomAliasesList->alias));
+                roomAliases.push_back(roomAliasesList ? QString::fromStdString(roomAliasesList->alias)
+                                                    : QLatin1String(""));
             }
-        } else {
-            roomids.push_back(r.first);
-            roomAliases.push_back(roomAliasesList ? QString::fromStdString(roomAliasesList->alias)
-                                                  : QLatin1String(""));
         }
     }
 }

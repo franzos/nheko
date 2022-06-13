@@ -13,7 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Forwrad message support.
 * Remove message support.
 * Rename the executable file to `matrix-client`.
-
+* Copy link to event.
+* Copy message.
 
 ## [0.0.27]
 ### Fixed and Changed

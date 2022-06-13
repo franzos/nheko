@@ -1344,41 +1344,41 @@ TimelineModel::requestKeyForEvent(const QString &id)
 void
 TimelineModel::copyLinkToEvent(const QString &eventId) const
 {
-    // QStringList vias;
+    QStringList vias;
 
-    // auto alias = cache::client()->getRoomAliases(room_id_.toStdString());
-    // QString room;
-    // if (alias) {
-    //     room = QString::fromStdString(alias->alias);
-    //     if (room.isEmpty() && !alias->alt_aliases.empty()) {
-    //         room = QString::fromStdString(alias->alt_aliases.front());
-    //     }
-    // }
+    auto alias = _timeline->getRoomAliases();
+    QString room;
+    if (alias) {
+        room = QString::fromStdString(alias->alias);
+        if (room.isEmpty() && !alias->alt_aliases.empty()) {
+            room = QString::fromStdString(alias->alt_aliases.front());
+        }
+    }
 
-    // if (room.isEmpty())
-    //     room = room_id_;
+    if (room.isEmpty())
+        room = room_id_;
 
-    // vias.push_back(QStringLiteral("via=%1").arg(QString(
-    //   QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
-    // auto members = cache::getMembers(room_id_.toStdString(), 0, 100);
-    // for (const auto &m : members) {
-    //     if (vias.size() >= 4)
-    //         break;
+    vias.push_back(QStringLiteral("via=%1").arg(QString(
+      QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
+    auto members = _timeline->getMembers(0, 100);
+    for (const auto &m : members) {
+        if (vias.size() >= 4)
+            break;
 
-    //     auto user_id   = mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
-    //     QString server = QStringLiteral("via=%1").arg(
-    //       QString(QUrl::toPercentEncoding(QString::fromStdString(user_id.hostname()))));
+        auto user_id   = mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
+        QString server = QStringLiteral("via=%1").arg(
+          QString(QUrl::toPercentEncoding(QString::fromStdString(user_id.hostname()))));
 
-    //     if (!vias.contains(server))
-    //         vias.push_back(server);
-    // }
+        if (!vias.contains(server))
+            vias.push_back(server);
+    }
 
-    // auto link = QStringLiteral("https://matrix.to/#/%1/%2?%3")
-    //               .arg(QString(QUrl::toPercentEncoding(room)),
-    //                    QString(QUrl::toPercentEncoding(eventId)),
-    //                    vias.join('&'));
+    auto link = QStringLiteral("https://matrix.to/#/%1/%2?%3")
+                  .arg(QString(QUrl::toPercentEncoding(room)),
+                       QString(QUrl::toPercentEncoding(eventId)),
+                       vias.join('&'));
 
-    // QGuiApplication::clipboard()->setText(link);
+    QGuiApplication::clipboard()->setText(link);
 }
 
 QString
