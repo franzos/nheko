@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.0]
+### Fixed and Changed
+
+* Visible/Invisible password in login form.
+* Fixing issue in showing member count in room information page.
+* Reply message support.
+* Forwrad message support.
+* Remove message support.
+* Rename the executable file to `matrix-client`.
+* Copy link to event.
+* Copy message.
+* Mark as read the message in option menu.
+* Reaction feature.
+* Emoji feature.
+
+
 ## [0.0.27]
 ### Fixed and Changed
 

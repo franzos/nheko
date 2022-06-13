@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
+import GlobalObject 1.0
 
 Pane {
     property string title: qsTr("Awaiting Confirmation")
@@ -15,14 +16,14 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Waiting for other side to complete verification.")
-            color: Nheko.colors.text
+            color: GlobalObject.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 
-        Spinner {
-            Layout.alignment: Qt.AlignHCenter
-            foreground: Nheko.colors.mid
-        }
+        // Spinner {
+        //     Layout.alignment: Qt.AlignHCenter
+        //     foreground: GlobalObject.colors.mid
+        // }
 
         RowLayout {
             Button {

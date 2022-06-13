@@ -5,12 +5,19 @@
         <file>CustomBorder.qml</file>
         <file>CustomHeader.qml</file>
         <file>ErrorDialog.qml</file>
+        <file>ForwardCompleter.qml</file>
         <file>InvitationRoom.qml</file>
         <file>LeaveMessage.qml</file>
         <file>Login.qml</file>
         <file>main.qml</file>
         <file>MainLib.qml</file>
         <file>MainMenu.qml</file>
+        <file>MessageDelegate.qml</file>
+        <file>MessageInput.qml</file>
+        <file>MessageView.qml</file>
+        <file>NoticeMessage.qml</file>
+        <file>Reactions.qml</file>
+        <file>ReplyPopup.qml</file>
         <file>Room.qml</file>
         <file>RoomInfo.qml</file>
         <file>RoomList.qml</file>
@@ -18,6 +25,7 @@
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
         <file>TimelineDelegate.qml</file>
+        <file>TimelineRow.qml</file>
         <file>UIA.qml</file>
         <file>UserInfo.qml</file>
         <file>device-verification/AwaitingVerificationConfirmation.qml</file>
@@ -39,10 +47,28 @@
         <file>regex/UserIDRegex.qml</file>
 
         <file>ui/Avatar.qml</file>
+        <file>ui/Completer.qml</file>
+        <file>ui/ElidedLabel.qml</file>
+        <file>ui/EmojiPicker.qml</file>
         <file>ui/ImageButton.qml</file>
+        <file>ui/InputDialog.qml</file>
         <file>ui/LoadingButton.qml</file>
+        <file>ui/MatrixText.qml</file>
+        <file>ui/MatrixTextField.qml</file>
+        <file>ui/PasswordField.qml</file>
+        <file>ui/Placeholder.qml</file>
+        <file>ui/Pill.qml</file>
+        <file>ui/PlayableMediaMessage.qml</file>
+        <file>ui/Redacted.qml</file>
+        <file>ui/Reply.qml</file>
         <file>ui/Ripple.qml</file>
+        <file>ui/ScrollHelper.qml</file>
+        <file>ui/Spinner.qml</file>
         <file>ui/Snackbar.qml</file>
+        <file>ui/TextButton.qml</file>
+        <file>ui/TextInputBar.qml</file>
+        <file>ui/TextMessage.qml</file>
+        <file>ui/animations/BlinkAnimation.qml</file>
 
         <file>voip/ActiveCallBar.qml</file>
         <file>voip/CallDevices.qml</file>

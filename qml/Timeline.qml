@@ -8,6 +8,7 @@ import TimelineModel 1.0
 import CallManager 1.0
 import Rooms 1.0
 import CallType 1.0
+import "ui"
 
 Room {
     id: timeline
@@ -16,67 +17,89 @@ Room {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
-    ListView {
-        id: timelineView
+    MessageView{
         anchors.fill: parent
-        spacing: 10
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        anchors.topMargin: 10
-        anchors.bottomMargin: 20
-
-        flickableDirection: Flickable.VerticalFlick
-        boundsBehavior: Flickable.StopAtBounds
-        ScrollBar.vertical: ScrollBar {}
-        model: timelineModel
-
-        delegate:TimelineDelegate{
-            id: eventItems
-        }
-
-        onCountChanged: {
-            var newIndex = count - 1
-            positionViewAtEnd()
-            currentIndex = newIndex
-        }
     }
+    // ListView {
+    //     id: timelineView
+    //     anchors.fill: parent
+    //     spacing: 10
+    //     anchors.leftMargin: 10
+    //     anchors.rightMargin: 10
+    //     anchors.topMargin: 10
+    //     anchors.bottomMargin: 20
 
-    footer: Column {
+    //     flickableDirection: Flickable.VerticalFlick
+    //     boundsBehavior: Flickable.StopAtBounds
+    //     ScrollBar.vertical: ScrollBar {}
+    //     model: timelineModel
+
+    //     delegate:TimelineDelegate{
+    //         id: eventItems
+    //     }
+
+    //     onCountChanged: {
+    //         var newIndex = count - 1
+    //         positionViewAtEnd()
+    //         currentIndex = newIndex
+    //     }
+    // }
+
+    footer: ColumnLayout {
         id: footer
         width: parent.width
-        anchors.margins: 10
+        // anchors.margins: 10
         anchors.left: parent.left
-        anchors.leftMargin: 10
         TypingIndicator {
             id: typingIndicator
         }
-        Row {
-            width: parent.width-20
-            
-            TextField {
-                id: messageInput
-                width: parent.width - sendButton.width            
-                placeholderText: qsTr("Enter your message ...")
-                Keys.onReturnPressed: sendButton.sendMessage() // Enter key
-                Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
-                onTextChanged: {
-                    sendButton.enabled = messageInput.text.length > 0 ? true : false
-                }
-            }
-            ToolButton {
-                id: sendButton
-                icon.source: "qrc:/images/send.svg"
-                enabled: messageInput.text.length > 0 ? true : false
-                function sendMessage(){
-                    if(messageInput.text.length > 0) {
-                        timelineModel.send(messageInput.text);
-                        messageInput.text = ""
-                    }
-                    messageInput.forceActiveFocus()
-                }
-                onClicked: sendMessage()
-            }
+        
+        ReplyPopup {
         }
+        MessageInput {
+            id: messageInput
+            width: parent.width //- sendButton.width            
+            // placeholderText: qsTr("Enter your message ...")
+            // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
+            // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
+            // onTextChanged: {
+            //     sendButton.enabled = messageInput.text.length > 0 ? true : false
+            // }
+        }
+        // Row {
+        //     width: parent.width - 20
+            
+        //     MessageInput {
+        //         id: messageInput
+        //         width: parent.width //- sendButton.width            
+        //         // placeholderText: qsTr("Enter your message ...")
+        //         // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
+        //         // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
+        //         // onTextChanged: {
+        //         //     sendButton.enabled = messageInput.text.length > 0 ? true : false
+        //         // }
+        //     }
+        //     ToolButton {
+        //     //     id: sendButton
+        //     //     icon.source: "qrc:/images/send.svg"
+        //     //     enabled: true// messageInput.text.length > 0 ? true : false
+        //     //     function sendMessage(){
+        //     //         if(messageInput.text.length > 0) {
+        //     //             timelineModel.send(messageInput.text);
+        //     //             messageInput.text = ""
+        //     //         }
+        //     //         messageInput.forceActiveFocus()
+        //     //     }
+        //     //     onClicked: sendMessage()
+        //     }
+        // }
+    }
+
+    EmojiPicker {
+        id: emojiPopup
+
+        colors: palette
+        model: timelineModel.completerFor("allemoji", "")
     }
 
     function startVoiceCall(){
@@ -121,7 +144,7 @@ Room {
 
     AddUserDialog {
         id: inviteuserDialog
-        title: "Direct Chat"
+        title: "Invite user"
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
         onUserAdded:{

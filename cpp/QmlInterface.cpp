@@ -12,7 +12,10 @@
 #include "GlobalObject.h"
 #include "mydevice.h"
 #include "ui/NhekoCursorShape.h"
+#include "ui/DelegateChooser.h"
 #include "Configuration.h"
+#include "ui/emoji/EmojiModel.h"
+#include "Clipboard.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -118,8 +121,12 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new GlobalObject();
     });
+    
+    qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
+    qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
     qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
-    qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
+    qmlRegisterType<DelegateChoice>("DelegateChoice", 1, 0, "DelegateChoice");
+    qmlRegisterType<DelegateChooser>("DelegateChooser", 1, 0, "DelegateChooser");
     qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
@@ -131,7 +138,12 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<RoomListModel>("Rooms", 1, 0, "Rooms", _roomListModel);
     qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
     qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
-    
+    qmlRegisterUncreatableType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel", QStringLiteral("Room needs to be instantiated on the C++ side"));
+    qmlRegisterSingletonType<Clipboard>("Clipboard", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
+        return new Clipboard();
+    });
+
+    qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));
     qRegisterMetaType<AndroidMaterialTheme>();
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
     qRegisterMetaType<UserInformation>();
@@ -160,9 +172,7 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     auto rooms = sync.rooms;
     QList<RoomListItem> roomList;
     for(auto const &r: rooms.join){
-        auto roomInfo = _client->roomInfo(QString::fromStdString(r.first));
         RoomListItem room(  QString::fromStdString(r.first),
-                            roomInfo,
                             r.second.unread_notifications.notification_count);
         roomList << room;
     }
@@ -190,14 +200,12 @@ void QmlInterface::initiateFinishedCB(){
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
-        RoomListItem room(  r.first,
-                            r.second);
+        RoomListItem room(  r.first);
         roomList << room;
     }
 
     for(auto const &r: inviteRooms.toStdMap()){
-        RoomListItem room(  r.first,
-                            r.second);
+        RoomListItem room(  r.first);
         roomList << room;
         if(_callAutoAccept){
             _client->joinRoom(r.first);

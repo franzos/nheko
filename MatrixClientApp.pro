@@ -1,7 +1,7 @@
 message("Building MatrixClient GUI Application")
 VERSION = 1.0.0
 TEMPLATE = app
-TARGET = MatrixClient
+TARGET = matrix-client
 
 include(configurations/configurations.pri)
 include(app/app.pri)
