@@ -49,7 +49,7 @@ Flow {
                 TextMetrics {
                     id: textMetrics
 
-                    // font.family: Settings.emojiFont
+                    // font.family: "OpenMoji" //Settings.emojiFont
                     elide: Text.ElideRight
                     elideWidth: 150
                     text: modelData.displayKey

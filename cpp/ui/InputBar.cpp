@@ -1153,39 +1153,39 @@ InputBar::stopTyping()
 void
 InputBar::reaction(const QString &reactedEvent, const QString &reactionKey)
 {
-    // auto reactions = room->reactions(reactedEvent.toStdString());
+    auto reactions = room->reactions(reactedEvent.toStdString());
 
-    // QString selfReactedEvent;
-    // for (const auto &reaction : reactions) {
-    //     if (reactionKey == reaction.key_) {
-    //         selfReactedEvent = reaction.selfReactedEvent_;
-    //         break;
-    //     }
-    // }
+    QString selfReactedEvent;
+    for (const auto &reaction : reactions) {
+        if (reactionKey == reaction.key_) {
+            selfReactedEvent = reaction.selfReactedEvent_;
+            break;
+        }
+    }
 
-    // if (selfReactedEvent.startsWith(QLatin1String("m")))
-    //     return;
+    if (selfReactedEvent.startsWith(QLatin1String("m")))
+        return;
 
-    // // If selfReactedEvent is empty, that means we haven't previously reacted
-    // if (selfReactedEvent.isEmpty()) {
-    //     mtx::events::msg::Reaction reaction;
-    //     mtx::common::Relation rel;
-    //     rel.rel_type = mtx::common::RelationType::Annotation;
-    //     rel.event_id = reactedEvent.toStdString();
-    //     rel.key      = reactionKey.toStdString();
-    //     reaction.relations.relations.push_back(rel);
+    // If selfReactedEvent is empty, that means we haven't previously reacted
+    if (selfReactedEvent.isEmpty()) {
+        mtx::events::msg::Reaction reaction;
+        mtx::common::Relation rel;
+        rel.rel_type = mtx::common::RelationType::Annotation;
+        rel.event_id = reactedEvent.toStdString();
+        rel.key      = reactionKey.toStdString();
+        reaction.relations.relations.push_back(rel);
 
-    //     room->timeline()->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
+        room->timeline()->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
 
-    //     auto recents = UserSettings::instance()->recentReactions();
-    //     if (recents.contains(reactionKey))
-    //         recents.removeOne(reactionKey);
-    //     else if (recents.size() >= 6)
-    //         recents.removeLast();
-    //     recents.push_front(reactionKey);
-    //     UserSettings::instance()->setRecentReactions(recents);
-    //     // Otherwise, we have previously reacted and the reaction should be redacted
-    // } else {
-    //     room->redactEvent(selfReactedEvent);
-    // }
+        // auto recents = UserSettings::instance()->recentReactions();
+        // if (recents.contains(reactionKey))
+            // recents.removeOne(reactionKey);
+        // else if (recents.size() >= 6)
+            // recents.removeLast();
+        // recents.push_front(reactionKey);
+        // UserSettings::instance()->setRecentReactions(recents);
+        // Otherwise, we have previously reacted and the reaction should be redacted
+    } else {
+        room->redactEvent(selfReactedEvent);
+    }
 }

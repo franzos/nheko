@@ -25,6 +25,7 @@
 
 #include "CompletionProxyModel.h"
 #include "RoomsModel.h"
+#include "ui/emoji/EmojiModel.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -1792,15 +1793,15 @@ TimelineModel::completerFor(QString completerName, QString roomId)
         // userModel->setParent(proxy);
         // return proxy;
     } else if (completerName == QLatin1String("emoji")) {
-        // auto emojiModel = new emoji::EmojiModel();
-        // auto proxy      = new CompletionProxyModel(emojiModel);
-        // emojiModel->setParent(proxy);
-        // return proxy;
+        auto emojiModel = new emoji::EmojiModel();
+        auto proxy      = new CompletionProxyModel(emojiModel);
+        emojiModel->setParent(proxy);
+        return proxy;
     } else if (completerName == QLatin1String("allemoji")) {
-        // auto emojiModel = new emoji::EmojiModel();
-        // auto proxy      = new CompletionProxyModel(emojiModel, 1, static_cast<size_t>(-1) / 4);
-        // emojiModel->setParent(proxy);
-        // return proxy;
+        auto emojiModel = new emoji::EmojiModel();
+        auto proxy      = new CompletionProxyModel(emojiModel, 1, static_cast<size_t>(-1) / 4);
+        emojiModel->setParent(proxy);
+        return proxy;
     } else if (completerName == QLatin1String("room")) {
         auto roomModel = new RoomsModel(false);
         auto proxy     = new CompletionProxyModel(roomModel, 4);
@@ -1827,4 +1828,9 @@ TimelineModel::completerFor(QString completerName, QString roomId)
 
 void TimelineModel::markEventsAsRead(const QString &event_id){
     _timeline->markEventsAsRead(QStringList() << event_id);
+}
+
+
+void TimelineModel::focusMessageInput() {
+    emit focusInput();
 }

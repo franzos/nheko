@@ -132,7 +132,7 @@ Item {
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
                         var event_id = row.model ? row.model.eventId : "";
                         room.input.reaction(event_id, emoji);
-                        TimelineModel.focusMessageInput();
+                        room.focusMessageInput();
                     })
                 }
 

@@ -388,13 +388,13 @@ Rectangle {
                     target: room
                 }
 
-                // Connections {
-                //     function onFocusInput() {
-                //         messageInput.forceActiveFocus();
-                //     }
+                Connections {
+                    function onFocusInput() {
+                        messageInput.forceActiveFocus();
+                    }
 
-                //     target: TimelineManager
-                // }
+                    target: room
+                }
 
                 MouseArea {
                     // workaround for wrong cursor shape on some platforms
@@ -433,31 +433,48 @@ Rectangle {
 
         // }
 
-        EmojiModel {
-            id: emojiModel
-            iconsPath: 'qrc:/emoji/emojiSvgs/'
-            iconsType: '.svg'
-        }
+        // EmojiModel {
+        //     id: emojiModel
+        //     iconsPath: 'qrc:/emoji/emojiSvgs/'
+        //     iconsType: '.svg'
+        // }
+
+        // ImageButton {
+        //     id: emojiButton
+
+        //     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+        //     Layout.margins: 8
+        //     hoverEnabled: true
+        //     width: 22
+        //     height: 22
+        //     image: ":/icons/icons/ui/smile.svg"
+        //     ToolTip.visible: hovered
+        //     ToolTip.text: qsTr("Emoji")
+        //     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+        //         messageInput.insert(messageInput.cursorPosition, emoji);
+        //         TimelineModel.focusMessageInput();
+        //     })
+        // }
         
-        Menu {
-            id: contextMenu
-            width: 400
-            Rectangle {
-                id: body
-                width: parent.width
-                height: 420
-                radius: 10
-                anchors.top: parent.top
-                anchors.topMargin: 40
-                anchors.horizontalCenter: parent.horizontalCenter
-                EmojiPicker {
-                    id: emojiPicker
-                    model: emojiModel
-                    editor: messageInput
-                    anchors.fill: parent
-                }
-            }
-        }
+        // Menu {
+        //     id: contextMenu
+        //     width: 400
+        //     Rectangle {
+        //         id: body
+        //         width: parent.width
+        //         height: 420
+        //         radius: 10
+        //         anchors.top: parent.top
+        //         anchors.topMargin: 40
+        //         anchors.horizontalCenter: parent.horizontalCenter
+        //         EmojiPicker {
+        //             id: emojiPicker
+        //             model: emojiModel
+        //             editor: messageInput
+        //             anchors.fill: parent
+        //         }
+        //     }
+        // }
         
         ImageButton {
             id: emojiButton
@@ -470,11 +487,11 @@ Rectangle {
             image: ":/images/smile.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: {contextMenu.popup()}
-            // onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-            //     messageInput.insert(messageInput.cursorPosition, emoji);
-            //     TimelineManager.focusMessageInput();
-            // })
+            // onClicked: {contextMenu.popup()}
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+                messageInput.insert(messageInput.cursorPosition, emoji);
+                room.focusMessageInput();
+            })
         }
 
         ImageButton {

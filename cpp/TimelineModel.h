@@ -177,6 +177,8 @@ public:
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
     Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
     Q_INVOKABLE void markEventsAsRead(const QString &event_id);
+    Q_INVOKABLE void focusMessageInput();
+
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()
@@ -299,6 +301,7 @@ signals:
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
+    void focusInput();
 
     void lastMessageChanged();
     void notificationsChanged();

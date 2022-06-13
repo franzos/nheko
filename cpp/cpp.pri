@@ -7,6 +7,7 @@ SOURCES += \
     $$PWD/CompletionProxyModel.cpp \
     $$PWD/GlobalObject.cpp \
     $$PWD/QmlInterface.cpp \
+    $$PWD/Reaction.cpp \
     $$PWD/MatrixQmlApplicationEngine.cpp \
     $$PWD/MatrixQuickView.cpp \
     $$PWD/mydevice.cpp \
@@ -17,7 +18,8 @@ SOURCES += \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
     $$PWD/TimelineItem.cpp \
-    $$PWD/ui/emoji/emojimodel.cpp \
+    $$PWD/ui/emoji/EmojiModel.cpp \
+    $$PWD/ui/emoji/Provider.cpp \
     $$PWD/ui/CombinedImagePackModel.cpp \
     $$PWD/ui/DelegateChooser.cpp \
     $$PWD/ui/InputBar.cpp \
@@ -32,6 +34,7 @@ HEADERS += \
     $$PWD/CompletionProxyModel.h \
     $$PWD/GlobalObject.h \
     $$PWD/QmlInterface.h \
+    $$PWD/Reaction.h \
     $$PWD/MatrixQmlApplicationEngine.h \
     $$PWD/MatrixQuickView.h \
     $$PWD/mydevice.h \
@@ -41,7 +44,8 @@ HEADERS += \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
     $$PWD/TimelineItem.h \
-    $$PWD/ui/emoji/emojimodel.h \
+    $$PWD/ui/emoji/EmojiModel.h \
+    $$PWD/ui/emoji/Provider.h \
     $$PWD/ui/CombinedImagePackModel.h \
     $$PWD/ui/DelegateChooser.h \
     $$PWD/ui/InputBar.h \

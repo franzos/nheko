@@ -67,6 +67,14 @@
 
     <qresource prefix="/">
         <file>emoji/emoji.json</file>
+        <file>emoji/emoji-categories/activity.svg</file>
+        <file>emoji/emoji-categories/flags.svg</file>
+        <file>emoji/emoji-categories/foods.svg</file>
+        <file>emoji/emoji-categories/nature.svg</file>
+        <file>emoji/emoji-categories/objects.svg</file>
+        <file>emoji/emoji-categories/people.svg</file>
+        <file>emoji/emoji-categories/symbols.svg</file>
+        <file>emoji/emoji-categories/travel.svg</file>
         <file>emoji/icons/emoji-activity-blue.svg</file>
         <file>emoji/icons/emoji-activity.svg</file>
         <file>emoji/icons/emoji-animal-blue.svg</file>

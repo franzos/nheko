@@ -95,6 +95,13 @@ Room {
         // }
     }
 
+    EmojiPicker {
+        id: emojiPopup
+
+        colors: palette
+        model: timelineModel.completerFor("allemoji", "")
+    }
+
     function startVoiceCall(){
         CallManager.sendInvite(roomid,CallType.VOICE)
     }
