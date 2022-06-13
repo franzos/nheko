@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Visible/Invisible password in login form.
 * Fixing issue in showing member count in room information page.
+* Reply message support.
+* Forwrad message support.
+* Remove message support.
+* Rename the executable file to `matrix-client`.
 
 
 ## [0.0.27]
