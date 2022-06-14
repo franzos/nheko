@@ -83,7 +83,7 @@ AbstractButton {
                 left: parent.left
                 top: parent.top
                 right: parent.right
-                margins: 4//(Settings.bubbles && ! isStateEvent)? 4 : 2
+                margins: !isStateEvent? 4 : 2//(Settings.bubbles && ! isStateEvent)? 4 : 2
                 leftMargin: 4
             }
             id: msg
@@ -181,14 +181,14 @@ AbstractButton {
 
                 property int iconSize: Math.floor(fontMetrics.ascent*scaling)
 
-                // StatusIndicator {
-                //     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                //     height: parent.iconSize
-                //     width: parent.iconSize
-                //     status: r.status
-                //     eventId: r.eventId
-                //     anchors.verticalCenter: ts.verticalCenter
-                // }
+                StatusIndicator {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    height: parent.iconSize
+                    width: parent.iconSize
+                    status: r.status
+                    eventId: r.eventId
+                    anchors.verticalCenter: ts.verticalCenter
+                }
 
                 Image {
                     visible: isEdited || eventId == chat.model.edit
