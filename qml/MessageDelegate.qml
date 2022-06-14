@@ -39,7 +39,7 @@ Item {
     property bool fitsMetadata: (chooser.child && chooser.child.fitsMetadata) ? chooser.child.fitsMetadata : false
     property int metadataWidth
 
-    height: 20//chooser.child ? chooser.child.height : Nheko.paddingLarge
+    height: chooser.child ? chooser.child.height : 20
 
     DelegateChooser {
         id: chooser
