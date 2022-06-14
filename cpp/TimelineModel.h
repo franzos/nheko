@@ -321,13 +321,10 @@ signals:
     void isDirectChanged();
     void directChatOtherUserIdChanged();
     void permissionsChanged();
-    void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     void scrollTargetChanged();
 
 private:
-    // template<typename T>
-    // void sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType);
     void readEvent(const std::string &id);
 
     void setPaginationInProgress(const bool paginationInProgress);

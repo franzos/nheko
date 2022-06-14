@@ -88,7 +88,6 @@ TimelineModel::TimelineModel(
           "data changed {} to {}", events->size() - to - 1, events->size() - from - 1);
         emit dataChanged(index(events->size() - to - 1, 0), index(events->size() - from - 1, 0));
     });
-    connect(this, &TimelineModel::forwardToRoom, Client::instance(), &Client::forwardMessageToRoom);
     connect(events, &EventStore::beginInsertRows, this, [this](int from, int to) {
         int first = events->size() - to;
         int last  = events->size() - from;
@@ -778,32 +777,22 @@ TimelineModel::formatDateSeparator(QDate date) const
     return date.toString(fmt);
 }
 
-void
-TimelineModel::viewRawMessage(const QString &id)
-{
-    auto e = events->get(id.toStdString(), "", false);
-    // if (!e)
-    //     return;
-    // std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-    // emit showRawMessageDialog(QString::fromStdString(ev));
+void TimelineModel::viewRawMessage(const QString &id) {
+    auto e = _timeline->viewRawMessage(id);
+    if (e.isEmpty())
+        return;
+    emit showRawMessageDialog(e);
 }
 
 void TimelineModel::forwardMessage(const QString &eventId, QString roomId) {
-    auto e = events->get(eventId.toStdString(), "");
-    if (!e)
-        return;
-    emit forwardToRoom(e, std::move(roomId));
+    _timeline->forwardMessage(eventId, roomId);
 }
 
-void
-TimelineModel::viewDecryptedRawMessage(const QString &id)
-{
-    // auto e = events->get(id.toStdString(), "");
-    // if (!e)
-    //     return;
-
-    // std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-    // emit showRawMessageDialog(QString::fromStdString(ev));
+void TimelineModel::viewDecryptedRawMessage(const QString &id) {
+    auto e = _timeline->viewDecryptedRawMessage(id);
+    if (e.isEmpty())
+        return;
+    emit showRawMessageDialog(e);
 }
 
 void

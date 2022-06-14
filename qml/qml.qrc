@@ -69,6 +69,8 @@
         <file>ui/TextButton.qml</file>
         <file>ui/TextInputBar.qml</file>
         <file>ui/TextMessage.qml</file>
+        <file>ui/dialogs/RawMessageDialog.qml</file>
+        <file>ui/dialogs/ReadReceipts.qml</file>
         <file>ui/animations/BlinkAnimation.qml</file>
 
         <file>voip/ActiveCallBar.qml</file>

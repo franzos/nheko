@@ -9,6 +9,8 @@ import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
 import "ui/"
+import "ui/dialogs/"
+
 
 Page {
     id: qmlLibRoot
@@ -67,6 +69,21 @@ Page {
         }
     }
 
+    // Component {
+    //     id: readReceiptsDialog
+
+    //     ReadReceipts {
+    //     }
+
+    // }
+
+    Component {
+        id: rawMessageDialog
+
+        RawMessageDialog {
+        }
+
+    }
     BusyIndicator {
         id: busyIndicator
         width: 64; height: width

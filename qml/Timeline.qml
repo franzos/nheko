@@ -112,11 +112,24 @@ Room {
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
 
+
+    function onShowRawMessageDialog(rawMessage) {
+        var dialog = rawMessageDialog.createObject(timelineModel, {
+            "rawMessage": rawMessage
+        });
+
+        dialog.x= (qmlLibRoot.width - dialog.width) / 2
+        dialog.y= (qmlLibRoot.height - dialog.height) / 2
+        dialog.show();
+        timelineModel.destroyOnClose(dialog);
+    }
+    
     Component.onCompleted: {
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
         timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
+        timelineModel.onShowRawMessageDialog.connect(onShowRawMessageDialog)
     }
 
     Component.onDestruction: {
@@ -124,6 +137,7 @@ Room {
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
+        timelineModel.onShowRawMessageDialog.disconnect(onShowRawMessageDialog)
         timelineModel.destroy()
     }
 
