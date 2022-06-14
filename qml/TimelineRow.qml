@@ -62,6 +62,32 @@ AbstractButton {
     onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     onDoubleClicked: chat.model.reply = eventId
 
+    DragHandler {
+        id: draghandler
+        yAxis.enabled: false
+        xAxis.maximum: 100
+        xAxis.minimum: -100
+        onActiveChanged: {
+            if(!active && (x < -70 || x > 70))
+                chat.model.reply = eventId
+        }
+    }
+    states: State {
+        name: "dragging"
+        when: draghandler.active
+    }
+    transitions: Transition {
+        from: "dragging"
+        to: ""
+        PropertyAnimation {
+            target: r
+            properties: "x"
+            easing.type: Easing.InOutQuad
+            to: 0
+            duration: 100
+        }
+    }
+
     Rectangle {
         id: row
         property bool bubbleOnRight : isSender
@@ -75,7 +101,7 @@ AbstractButton {
 
         property color userColor: room.userColor(userId, "GlobalObject.colors.base")
         property color bgColor: GlobalObject.colors.base
-        color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) //(Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
+        color: !isStateEvent ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
 
         GridLayout {
