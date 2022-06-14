@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Show raw message.
 * Read receipts of message.
 * Status indicator for messages.
+* Markdown support.
 
 
 ## [0.0.27]
