@@ -8,8 +8,8 @@ include(app/app.pri)
 include(qml/qml.pri)
 
 QMAKE_TARGET_BUNDLE_PREFIX = org.pantherx
-QMAKE_BUNDLE = MatrixClient
+QMAKE_BUNDLE = matrix-client
 
-MatrixClient.path = /usr/bin/
-MatrixClient.files = MatrixClient
-INSTALLS += MatrixClient 
+target.path = /usr/bin/
+target.files = matrix-client
+INSTALLS += target

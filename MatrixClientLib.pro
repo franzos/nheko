@@ -7,8 +7,32 @@ include(configurations/configurations.pri)
 include(cpp/cpp.pri)
 include(qml/qml.pri)
 
-headers.path = /usr/include/matrix-client-gui-library
-headers.files = cpp/QmlInterface.h cpp/MatrixQuickView.h cpp/MatrixQmlApplicationEngine.h cpp/RoomListItem.h cpp/RoomListModel.h cpp/TimelineItem.h cpp/TimelineModel.h
+headers.path  = /usr/include/matrix-client-gui-library
+headers.files = cpp/Application.h \
+                cpp/CompletionModelRoles.h \
+                cpp/GlobalObject.h \
+                cpp/mydevice.h \
+                cpp/ReadReceiptsModel.h \ 
+                cpp/RoomsModel.h \   
+                cpp/TimelineModel.h \
+                cpp/Clipboard.h \
+                cpp/CompletionProxyModel.h \
+                cpp/MatrixQmlApplicationEngine.h \
+                cpp/QmlInterface.h \
+                cpp/RoomListItem.h \
+                cpp/Theme.h \
+                cpp/ColorImageProvider.h \
+                cpp/Configuration.h \
+                cpp/MatrixQuickView.h \
+                cpp/Reaction.h \
+                cpp/RoomListModel.h \
+                cpp/TimelineItem.h 
+
+ui_headers.path  = /usr/include/matrix-client-gui-library/ui
+ui_headers.files =  cpp/ui/CombinedImagePackModel.h \
+                    cpp/ui/DelegateChooser.h \
+                    cpp/ui/InputBar.h \
+                    cpp/ui/NhekoCursorShape.h
 
 target.path = /usr/lib/
-INSTALLS += target headers
+INSTALLS += target headers ui_headers
