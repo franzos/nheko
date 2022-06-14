@@ -17,6 +17,8 @@ Room {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
+    header :RoomTopBar {
+    }
     MessageView{
         anchors.fill: parent
     }
@@ -110,11 +112,33 @@ Room {
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
 
+    function onOpenReadReceiptsDialog(rr) {
+        var dialog = readReceiptsDialog.createObject(timelineModel, {
+            "readReceipts": rr,
+            "room": room
+        });
+        dialog.show();
+        timelineModel.destroyOnClose(dialog);
+    }
+
+    function onShowRawMessageDialog(rawMessage) {
+        var dialog = rawMessageDialog.createObject(timelineModel, {
+            "rawMessage": rawMessage
+        });
+
+        dialog.x= (qmlLibRoot.width - dialog.width) / 2
+        dialog.y= (qmlLibRoot.height - dialog.height) / 2
+        dialog.show();
+        timelineModel.destroyOnClose(dialog);
+    }
+    
     Component.onCompleted: {
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
         timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
+        timelineModel.onOpenReadReceiptsDialog.connect(onOpenReadReceiptsDialog)
+        timelineModel.onShowRawMessageDialog.connect(onShowRawMessageDialog)
     }
 
     Component.onDestruction: {
@@ -122,6 +146,8 @@ Room {
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
+        timelineModel.onOpenReadReceiptsDialog.disconnect(onOpenReadReceiptsDialog)
+        timelineModel.onShowRawMessageDialog.disconnect(onShowRawMessageDialog)
         timelineModel.destroy()
     }
 

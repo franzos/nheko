@@ -7,10 +7,11 @@ SOURCES += \
     $$PWD/CompletionProxyModel.cpp \
     $$PWD/GlobalObject.cpp \
     $$PWD/QmlInterface.cpp \
-    $$PWD/Reaction.cpp \
     $$PWD/MatrixQmlApplicationEngine.cpp \
     $$PWD/MatrixQuickView.cpp \
     $$PWD/mydevice.cpp \
+    $$PWD/Reaction.cpp \
+    $$PWD/ReadReceiptsModel.cpp \
     $$PWD/RoomListItem.cpp \
     $$PWD/RoomListItem.h  \
     $$PWD/RoomListModel.cpp \
@@ -34,10 +35,11 @@ HEADERS += \
     $$PWD/CompletionProxyModel.h \
     $$PWD/GlobalObject.h \
     $$PWD/QmlInterface.h \
-    $$PWD/Reaction.h \
     $$PWD/MatrixQmlApplicationEngine.h \
     $$PWD/MatrixQuickView.h \
     $$PWD/mydevice.h \
+    $$PWD/Reaction.h \
+    $$PWD/ReadReceiptsModel.h \
     $$PWD/RoomListItem.h  \
     $$PWD/RoomListModel.h \
     $$PWD/RoomsModel.h \

@@ -4,6 +4,8 @@
         <file>CreateRoom.qml</file>
         <file>CustomBorder.qml</file>
         <file>CustomHeader.qml</file>
+        <file>Encrypted.qml</file>
+        <file>EncryptionIndicator.qml</file>
         <file>ErrorDialog.qml</file>
         <file>ForwardCompleter.qml</file>
         <file>InvitationRoom.qml</file>
@@ -22,6 +24,8 @@
         <file>RoomInfo.qml</file>
         <file>RoomList.qml</file>
         <file>RoomDelegate.qml</file>
+        <file>RoomTopBar.qml</file>
+        <file>StatusIndicator.qml</file>
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
         <file>TimelineDelegate.qml</file>
@@ -68,6 +72,8 @@
         <file>ui/TextButton.qml</file>
         <file>ui/TextInputBar.qml</file>
         <file>ui/TextMessage.qml</file>
+        <file>ui/dialogs/RawMessageDialog.qml</file>
+        <file>ui/dialogs/ReadReceipts.qml</file>
         <file>ui/animations/BlinkAnimation.qml</file>
 
         <file>voip/ActiveCallBar.qml</file>

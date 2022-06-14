@@ -43,57 +43,6 @@ Rectangle {
         anchors.leftMargin: 5
         anchors.rightMargin: anchors.leftMargin
         width: parent.width - anchors.leftMargin - anchors.rightMargin
-        // ImageButton {
-        //     visible: CallManager.callsSupported && showAllButtons
-        //     opacity: CallManager.haveCallInvite ? 0.3 : 1
-        //     Layout.alignment: Qt.AlignBottom
-        //     hoverEnabled: true
-        //     width: 22
-        //     height: 22
-        //     image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
-        //     ToolTip.visible: hovered
-        //     ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
-        //     Layout.margins: 8
-        //     onClicked: {
-        //         if (room) {
-        //             if (CallManager.haveCallInvite) {
-        //                 return ;
-        //             } else if (CallManager.isOnCall) {
-        //                 CallManager.hangUp();
-        //             } else {
-        //                 var dialog = placeCallDialog.createObject(timelineRoot);
-        //                 dialog.open();
-        //                 timelineRoot.destroyOnClose(dialog);
-        //             }
-        //         }
-        //     }
-        // }
-
-        // ImageButton {
-        //     visible: showAllButtons
-        //     Layout.alignment: Qt.AlignBottom
-        //     hoverEnabled: true
-        //     width: 22
-        //     height: 22
-        //     image: ":/icons/icons/ui/attach.svg"
-        //     Layout.margins: 8
-        //     onClicked: room.input.openFileSelection()
-        //     ToolTip.visible: hovered
-        //     ToolTip.text: qsTr("Send a file")
-
-        //     Rectangle {
-        //         anchors.fill: parent
-        //         color: GlobalObject.colors.window
-        //         visible: room && room.input.uploading
-
-        //         NhekoBusyIndicator {
-        //             anchors.fill: parent
-        //             running: parent.visible
-        //         }
-
-        //     }
-
-        // }
 
         ScrollView {
             id: textInput
@@ -417,7 +366,7 @@ Rectangle {
         //     hoverEnabled: true
         //     width: 22
         //     height: 22
-        //     image: ":/icons/icons/ui/sticky-note-solid.svg"
+        //     image: ":/images/sticky-note-solid.svg"
         //     ToolTip.visible: hovered
         //     ToolTip.text: qsTr("Stickers")
         //     onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function(row) {
@@ -437,23 +386,6 @@ Rectangle {
         //     id: emojiModel
         //     iconsPath: 'qrc:/emoji/emojiSvgs/'
         //     iconsType: '.svg'
-        // }
-
-        // ImageButton {
-        //     id: emojiButton
-
-        //     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-        //     Layout.margins: 8
-        //     hoverEnabled: true
-        //     width: 22
-        //     height: 22
-        //     image: ":/icons/icons/ui/smile.svg"
-        //     ToolTip.visible: hovered
-        //     ToolTip.text: qsTr("Emoji")
-        //     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-        //         messageInput.insert(messageInput.cursorPosition, emoji);
-        //         TimelineModel.focusMessageInput();
-        //     })
         // }
         
         // Menu {

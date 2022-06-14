@@ -32,9 +32,9 @@ MatrixText {
     </style>
     " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + GlobalObject.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     width: parent.width
-    height: implicitHeight//isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
+    height: isReply ? Math.round(Math.min(timeline.height / 8, implicitHeight)) : implicitHeight
     clip: isReply
-    selectByMouse: true//!Settings.mobileMode && !isReply
+    selectByMouse: !isReply//!Settings.mobileMode && !isReply
     // font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     CursorShape {

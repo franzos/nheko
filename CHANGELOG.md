@@ -18,6 +18,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Mark as read the message in option menu.
 * Reaction feature.
 * Emoji feature.
+* Pin/Unpin message in room.
+* Show avatar in the timeline header.
+* Show raw message.
+* Read receipts of message.
+* Status indicator for messages.
+* Markdown support.
 
 
 ## [0.0.27]

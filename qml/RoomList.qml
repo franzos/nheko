@@ -83,6 +83,11 @@ Page {
             mainHeader.setTitle(name)
             onVerificationStatusChanged()
         }
+        
+        function onUserAvatarReady(avatarUrl){
+            mainHeader.setRoomInfo(title, "", avatarUrl)
+        }
+
         function onRoomCreated(id){
             var roomInf = Rooms.roomInformation(id)
             createTimeline(roomInf.id(),roomInf.name(),roomInf.avatar())

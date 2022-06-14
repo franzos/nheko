@@ -20,6 +20,7 @@
 #include <matrix-client-library/timeline/EventStore.h>
 #include <matrix-client-library/timeline/Timeline.h>
 
+#include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
 
 namespace mtx::http {
@@ -65,8 +66,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
     Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
-    Q_PROPERTY(
-      bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+    Q_PROPERTY(bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
     Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
@@ -203,8 +203,6 @@ public:
     void sync(const mtx::responses::JoinedRoom &room);
     void addEvents(const mtx::responses::Timeline &events);
     void syncState(const mtx::responses::State &state);
-    // template<class T>
-    // void sendMessageEvent(const T &content, mtx::events::EventType eventType);
     RelatedInfo relatedInfo(const QString &id);
 
     DescInfo lastMessage() const { return lastMessage_; }
@@ -284,7 +282,6 @@ public slots:
     QObject *completerFor(QString completerName, QString roomId = QLatin1String(QLatin1String("")));
 
 private slots:
-    // void addPendingMessage(mtx::events::collections::TimelineEvents event);
     void scrollTimerEvent();
 
 signals:
@@ -296,7 +293,7 @@ signals:
     void typingUsersChanged(std::vector<QString> users);
     void replyChanged(QString reply);
     void editChanged(QString reply);
-    // void openReadReceiptsDialog(ReadReceiptsProxy *rr);
+    void openReadReceiptsDialog(ReadReceiptsProxy *rr);
     void showRawMessageDialog(QString rawMessage);
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
@@ -324,13 +321,10 @@ signals:
     void isDirectChanged();
     void directChatOtherUserIdChanged();
     void permissionsChanged();
-    void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     void scrollTargetChanged();
 
 private:
-    // template<typename T>
-    // void sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType);
     void readEvent(const std::string &id);
 
     void setPaginationInProgress(const bool paginationInProgress);

@@ -15,7 +15,7 @@ import "./ui"
 
 Item {
     id: chatRoot
-    // property int padding: Nheko.paddingMedium
+    property int padding: 8
     property var room: timelineModel
     property int availableWidth: width
 
@@ -60,7 +60,7 @@ Item {
             property alias model: row.model
             // use comma to update on scroll
             property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
-            // padding: Nheko.paddingSmall
+            padding: 4
 
             hoverEnabled: true
             visible: true//Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)

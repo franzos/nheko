@@ -62,6 +62,32 @@ AbstractButton {
     onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     onDoubleClicked: chat.model.reply = eventId
 
+    DragHandler {
+        id: draghandler
+        yAxis.enabled: false
+        xAxis.maximum: 100
+        xAxis.minimum: -100
+        onActiveChanged: {
+            if(!active && (x < -70 || x > 70))
+                chat.model.reply = eventId
+        }
+    }
+    states: State {
+        name: "dragging"
+        when: draghandler.active
+    }
+    transitions: Transition {
+        from: "dragging"
+        to: ""
+        PropertyAnimation {
+            target: r
+            properties: "x"
+            easing.type: Easing.InOutQuad
+            to: 0
+            duration: 100
+        }
+    }
+
     Rectangle {
         id: row
         property bool bubbleOnRight : isSender
@@ -75,7 +101,7 @@ AbstractButton {
 
         property color userColor: room.userColor(userId, "GlobalObject.colors.base")
         property color bgColor: GlobalObject.colors.base
-        color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) //(Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
+        color: !isStateEvent ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
 
         GridLayout {
@@ -83,7 +109,7 @@ AbstractButton {
                 left: parent.left
                 top: parent.top
                 right: parent.right
-                margins: 4//(Settings.bubbles && ! isStateEvent)? 4 : 2
+                margins: !isStateEvent? 4 : 2//(Settings.bubbles && ! isStateEvent)? 4 : 2
                 leftMargin: 4
             }
             id: msg
@@ -91,7 +117,6 @@ AbstractButton {
             columnSpacing: 2
             columns: 1//Settings.bubbles? 1 : 2
             rows: 3//Settings.bubbles? 3 : 2
-
             // fancy reply, if this is a reply
             Reply {
                 Layout.row: 0
@@ -181,14 +206,14 @@ AbstractButton {
 
                 property int iconSize: Math.floor(fontMetrics.ascent*scaling)
 
-                // StatusIndicator {
-                //     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                //     height: parent.iconSize
-                //     width: parent.iconSize
-                //     status: r.status
-                //     eventId: r.eventId
-                //     anchors.verticalCenter: ts.verticalCenter
-                // }
+                StatusIndicator {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    height: parent.iconSize
+                    width: parent.iconSize
+                    status: r.status
+                    eventId: r.eventId
+                    anchors.verticalCenter: ts.verticalCenter
+                }
 
                 Image {
                     visible: isEdited || eventId == chat.model.edit
@@ -209,17 +234,17 @@ AbstractButton {
 
                 }
 
-                // EncryptionIndicator {
-                //     visible: room.isEncrypted
-                //     encrypted: isEncrypted
-                //     trust: trustlevel
-                //     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                //     height: parent.iconSize
-                //     width: parent.iconSize
-                //     sourceSize.width: parent.iconSize * Screen.devicePixelRatio
-                //     sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                //     anchors.verticalCenter: ts.verticalCenter
-                // }
+                EncryptionIndicator {
+                    visible: room.isEncrypted
+                    encrypted: isEncrypted
+                    trust: trustlevel
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    height: parent.iconSize
+                    width: parent.iconSize
+                    sourceSize.width: parent.iconSize * Screen.devicePixelRatio
+                    sourceSize.height: parent.iconSize * Screen.devicePixelRatio
+                    anchors.verticalCenter: ts.verticalCenter
+                }
 
                 Label {
                     id: ts

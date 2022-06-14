@@ -14,7 +14,7 @@ ApplicationWindow {
     modality: Qt.NonModal
     flags: Qt.Dialog
     width: 350
-    height: fontMetrics.lineSpacing * 7
+    height: 2 * footer.height
 
     function forceActiveFocus() {
         statusInput.forceActiveFocus();

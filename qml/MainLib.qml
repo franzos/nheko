@@ -9,6 +9,8 @@ import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
 import "ui/"
+import "ui/dialogs/"
+
 
 Page {
     id: qmlLibRoot
@@ -32,6 +34,7 @@ Page {
             }
             if(currentItem instanceof Timeline){
                 mainHeader.setOptionButtonsVisible(true)
+                mainHeader.setRoomInfo(currentItem.title, currentItem.roomid, currentItem.avatar)
             } else {
                 mainHeader.setOptionButtonsVisible(false)
             }
@@ -63,6 +66,20 @@ Page {
     Component {
         id: mobileCallInviteDialog
         CallInvite {
+        }
+    }
+
+    Component {
+        id: readReceiptsDialog
+
+        ReadReceipts {
+        }
+    }
+
+    Component {
+        id: rawMessageDialog
+
+        RawMessageDialog {
         }
     }
 
