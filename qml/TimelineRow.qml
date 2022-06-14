@@ -117,7 +117,6 @@ AbstractButton {
             columnSpacing: 2
             columns: 1//Settings.bubbles? 1 : 2
             rows: 3//Settings.bubbles? 3 : 2
-
             // fancy reply, if this is a reply
             Reply {
                 Layout.row: 0

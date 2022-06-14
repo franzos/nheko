@@ -214,15 +214,15 @@ Item {
 
         }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.Encrypted
+        DelegateChoice {
+            roleValue: MtxEvent.Encrypted
 
-        //     Encrypted {
-        //         encryptionError: d.encryptionError
-        //         eventId: d.eventId
-        //     }
+            Encrypted {
+                encryptionError: d.encryptionError
+                eventId: d.eventId
+            }
 
-        // }
+        }
 
         DelegateChoice {
             roleValue: MtxEvent.Name
