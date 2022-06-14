@@ -32,6 +32,7 @@ Page {
             }
             if(currentItem instanceof Timeline){
                 mainHeader.setOptionButtonsVisible(true)
+                mainHeader.setRoomInfo(currentItem.title, currentItem.roomid, currentItem.avatar)
             } else {
                 mainHeader.setOptionButtonsVisible(false)
             }

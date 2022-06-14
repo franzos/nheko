@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Reaction feature.
 * Emoji feature.
 * Pin/Unpin message in room.
+* Show avatar in the timeline header.
 
 
 ## [0.0.27]
