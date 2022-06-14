@@ -22,6 +22,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Show avatar in the timeline header.
 * Show raw message.
 * Read receipts of message.
+* Status indicator for messages.
+
 
 ## [0.0.27]
 ### Fixed and Changed

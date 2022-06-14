@@ -209,17 +209,17 @@ AbstractButton {
 
                 }
 
-                // EncryptionIndicator {
-                //     visible: room.isEncrypted
-                //     encrypted: isEncrypted
-                //     trust: trustlevel
-                //     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                //     height: parent.iconSize
-                //     width: parent.iconSize
-                //     sourceSize.width: parent.iconSize * Screen.devicePixelRatio
-                //     sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                //     anchors.verticalCenter: ts.verticalCenter
-                // }
+                EncryptionIndicator {
+                    visible: room.isEncrypted
+                    encrypted: isEncrypted
+                    trust: trustlevel
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    height: parent.iconSize
+                    width: parent.iconSize
+                    sourceSize.width: parent.iconSize * Screen.devicePixelRatio
+                    sourceSize.height: parent.iconSize * Screen.devicePixelRatio
+                    anchors.verticalCenter: ts.verticalCenter
+                }
 
                 Label {
                     id: ts

@@ -4,6 +4,7 @@
         <file>CreateRoom.qml</file>
         <file>CustomBorder.qml</file>
         <file>CustomHeader.qml</file>
+        <file>EncryptionIndicator.qml</file>
         <file>ErrorDialog.qml</file>
         <file>ForwardCompleter.qml</file>
         <file>InvitationRoom.qml</file>
