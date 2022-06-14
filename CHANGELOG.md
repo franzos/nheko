@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Pin/Unpin message in room.
 * Show avatar in the timeline header.
 * Show raw message.
-
+* Read receipts of message.
 
 ## [0.0.27]
 ### Fixed and Changed
