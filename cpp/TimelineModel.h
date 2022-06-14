@@ -20,6 +20,7 @@
 #include <matrix-client-library/timeline/EventStore.h>
 #include <matrix-client-library/timeline/Timeline.h>
 
+#include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
 
 namespace mtx::http {
@@ -281,7 +282,6 @@ public slots:
     QObject *completerFor(QString completerName, QString roomId = QLatin1String(QLatin1String("")));
 
 private slots:
-    // void addPendingMessage(mtx::events::collections::TimelineEvents event);
     void scrollTimerEvent();
 
 signals:
@@ -293,7 +293,7 @@ signals:
     void typingUsersChanged(std::vector<QString> users);
     void replyChanged(QString reply);
     void editChanged(QString reply);
-    // void openReadReceiptsDialog(ReadReceiptsProxy *rr);
+    void openReadReceiptsDialog(ReadReceiptsProxy *rr);
     void showRawMessageDialog(QString rawMessage);
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);

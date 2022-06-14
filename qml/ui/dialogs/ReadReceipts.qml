@@ -8,19 +8,21 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import GlobalObject 1.0
+import CursorShape 1.0
+import ReadReceiptsProxy 1.0
 
 ApplicationWindow {
     id: readReceiptsRoot
 
     property ReadReceiptsProxy readReceipts
-    property Room room
+    // property Room room
 
     height: 380
     width: 340
     minimumHeight: 380
-    minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    minimumWidth: headerTitle.width + 2 * 8
+    palette: GlobalObject.colors
+    color: GlobalObject.colors.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -30,21 +32,21 @@ ApplicationWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Nheko.paddingMedium
-        spacing: Nheko.paddingMedium
+        anchors.margins: 8
+        spacing: 8
 
         Label {
             id: headerTitle
 
-            color: Nheko.colors.text
+            color: GlobalObject.colors.text
             Layout.alignment: Qt.AlignCenter
             text: qsTr("Read receipts")
             font.pointSize: fontMetrics.font.pointSize * 1.5
         }
 
         ScrollView {
-            palette: Nheko.colors
-            padding: Nheko.paddingMedium
+            palette: GlobalObject.colors
+            padding: 8
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
             Layout.minimumHeight: 200
@@ -60,27 +62,27 @@ ApplicationWindow {
                 delegate: ItemDelegate {
                     id: del
 
-                    onClicked: room.openUserProfile(model.mxid)
-                    padding: Nheko.paddingMedium
+                    // onClicked: room.openUserProfile(model.mxid)
+                    padding: 8
                     width: ListView.view.width
-                    height: receiptLayout.implicitHeight + Nheko.paddingSmall * 2
+                    height: receiptLayout.implicitHeight + 4 * 2
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
                     background: Rectangle {
-                        color: del.hovered ? Nheko.colors.dark : readReceiptsRoot.color
+                        color: del.hovered ? GlobalObject.colors.dark : readReceiptsRoot.color
                     }
 
                     RowLayout {
                         id: receiptLayout
 
-                        spacing: Nheko.paddingMedium
+                        spacing: 8
                         anchors.fill: parent
-                        anchors.margins: Nheko.paddingSmall
+                        anchors.margins: 4
 
                         Avatar {
-                            width: Nheko.avatarSize
-                            height: Nheko.avatarSize
+                            width: GlobalObject.avatarSize
+                            height: GlobalObject.avatarSize
                             userid: model.mxid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             displayName: model.displayName
@@ -88,17 +90,17 @@ ApplicationWindow {
                         }
 
                         ColumnLayout {
-                            spacing: Nheko.paddingSmall
+                            spacing: 4
 
                             Label {
                                 text: model.displayName
-                                color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
+                                color: TimelineManager.userColor(model ? model.mxid : "", GlobalObject.colors.window)
                                 font.pointSize: fontMetrics.font.pointSize
                             }
 
                             Label {
                                 text: model.timestamp
-                                color: Nheko.colors.buttonText
+                                color: GlobalObject.colors.buttonText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                             }
 

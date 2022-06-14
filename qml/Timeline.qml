@@ -112,6 +112,14 @@ Room {
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
 
+    function onOpenReadReceiptsDialog(rr) {
+        var dialog = readReceiptsDialog.createObject(timelineModel, {
+            "readReceipts": rr,
+            "room": room
+        });
+        dialog.show();
+        timelineModel.destroyOnClose(dialog);
+    }
 
     function onShowRawMessageDialog(rawMessage) {
         var dialog = rawMessageDialog.createObject(timelineModel, {
@@ -129,6 +137,7 @@ Room {
         mainHeader.voiceCallClicked.connect(startVoiceCall)
         mainHeader.videoCallClicked.connect(startVideoCall)
         timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
+        timelineModel.onOpenReadReceiptsDialog.connect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.connect(onShowRawMessageDialog)
     }
 
@@ -137,6 +146,7 @@ Room {
         mainHeader.voiceCallClicked.disconnect(startVoiceCall)
         mainHeader.videoCallClicked.disconnect(startVideoCall)
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
+        timelineModel.onOpenReadReceiptsDialog.disconnect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.disconnect(onShowRawMessageDialog)
         timelineModel.destroy()
     }

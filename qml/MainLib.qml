@@ -69,21 +69,20 @@ Page {
         }
     }
 
-    // Component {
-    //     id: readReceiptsDialog
+    Component {
+        id: readReceiptsDialog
 
-    //     ReadReceipts {
-    //     }
-
-    // }
+        ReadReceipts {
+        }
+    }
 
     Component {
         id: rawMessageDialog
 
         RawMessageDialog {
         }
-
     }
+
     BusyIndicator {
         id: busyIndicator
         width: 64; height: width

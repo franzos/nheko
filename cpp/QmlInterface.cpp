@@ -142,7 +142,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<Clipboard>("Clipboard", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new Clipboard();
     });
-
+    qmlRegisterUncreatableType<ReadReceiptsProxy>( "ReadReceiptsProxy", 1, 0,"ReadReceiptsProxy", QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));
     qRegisterMetaType<AndroidMaterialTheme>();
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   

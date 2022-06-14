@@ -836,7 +836,7 @@ TimelineModel::relatedInfo(const QString &id)
 void
 TimelineModel::showReadReceipts(QString id)
 {
-    // emit openReadReceiptsDialog(new ReadReceiptsProxy{id, roomId(), this});
+    emit openReadReceiptsDialog(new ReadReceiptsProxy{id, roomId(), this});
 }
 
 void
