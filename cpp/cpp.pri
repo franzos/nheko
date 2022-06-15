@@ -9,6 +9,7 @@ SOURCES += \
     $$PWD/QmlInterface.cpp \
     $$PWD/MatrixQmlApplicationEngine.cpp \
     $$PWD/MatrixQuickView.cpp \
+    $$PWD/MemberList.cpp \
     $$PWD/mydevice.cpp \
     $$PWD/Reaction.cpp \
     $$PWD/ReadReceiptsModel.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     $$PWD/QmlInterface.h \
     $$PWD/MatrixQmlApplicationEngine.h \
     $$PWD/MatrixQuickView.h \
+    $$PWD/MemberList.h \
     $$PWD/mydevice.h \
     $$PWD/Reaction.h \
     $$PWD/ReadReceiptsModel.h \

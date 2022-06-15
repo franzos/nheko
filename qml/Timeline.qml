@@ -202,7 +202,7 @@ Room {
             text: qsTr("&Members")
             icon.source: "qrc:/images/people.svg"
             shortcut: StandardKey.Copy
-            onTriggered: membersDialog.open()
+            onTriggered: timelineModel.openRoomMembers()
         }
 
         Action {
@@ -212,18 +212,6 @@ Room {
             shortcut: StandardKey.Copy
             onTriggered: roomSettingsDialog.open()
         }  
-    }
-
-    Dialog {
-        id: membersDialog
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
-        title: "Members"
-        standardButtons: Dialog.Ok
-        Label {            
-            text: "Coming Soon"
-        }
-        onAccepted: { }
     }
 
     Dialog {

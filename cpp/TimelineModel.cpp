@@ -17,6 +17,7 @@
 #include <QMimeDatabase>
 #include <QRegularExpression>
 #include <QStandardPaths>
+#include <QQmlEngine>
 #include <QVariant>
 #include <utility>
 
@@ -26,6 +27,7 @@
 #include "CompletionProxyModel.h"
 #include "RoomsModel.h"
 #include "ui/emoji/EmojiModel.h"
+#include "MemberList.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -1820,4 +1822,13 @@ void TimelineModel::markEventsAsRead(const QString &event_id){
 
 void TimelineModel::focusMessageInput() {
     emit focusInput();
+}
+
+void
+TimelineModel::openRoomMembers( )
+{ 
+    MemberList *memberList = new MemberList(_timeline->id());
+    QQmlEngine::setObjectOwnership(memberList, QQmlEngine::JavaScriptOwnership);
+    qDebug()<<"***************** MEMBERLIST"<<memberList->rowCount();
+    // emit openRoomMembersDialog(memberList, room);
 }
