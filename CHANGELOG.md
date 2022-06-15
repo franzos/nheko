@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.2]
+### Fixed and Changed
+
+* Go to end chat in the timeline view.
+* Fixing minor issues.
+
+
 ## [0.1.1]
 ### Fixed
 
