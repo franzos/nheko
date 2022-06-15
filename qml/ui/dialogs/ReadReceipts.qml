@@ -10,12 +10,13 @@ import QtQuick.Layouts 1.15
 import GlobalObject 1.0
 import CursorShape 1.0
 import ReadReceiptsProxy 1.0
+import TimelineModel 1.0
 
 ApplicationWindow {
     id: readReceiptsRoot
 
     property ReadReceiptsProxy readReceipts
-    // property Room room
+    property TimelineModel timelineModel
 
     height: 380
     width: 340
@@ -94,7 +95,7 @@ ApplicationWindow {
 
                             Label {
                                 text: model.displayName
-                                color: TimelineManager.userColor(model ? model.mxid : "", GlobalObject.colors.window)
+                                color: timelineModel.userColor(model ? model.mxid : "", GlobalObject.colors.window)
                                 font.pointSize: fontMetrics.font.pointSize
                             }
 
