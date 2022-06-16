@@ -22,6 +22,7 @@
 
 #include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
+#include "MemberList.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -300,6 +301,7 @@ signals:
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
     void focusInput();
+    void openRoomMembersDialog(MemberList *members);
 
     void lastMessageChanged();
     void notificationsChanged();

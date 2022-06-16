@@ -225,4 +225,16 @@ Room {
         }
         onAccepted: { }
     }
+
+    Connections{
+        function onOpenRoomMembersDialog(members) {
+            var membersDialog = roomMembersComponent.createObject(qmlLibRoot, {
+                "members": members,
+                "room": timelineModel
+            });
+            membersDialog.show();
+            destroyOnClose(membersDialog);
+        }
+        target: timelineModel
+    }
 }

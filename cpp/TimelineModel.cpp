@@ -1829,6 +1829,5 @@ TimelineModel::openRoomMembers( )
 { 
     MemberList *memberList = new MemberList(_timeline->id());
     QQmlEngine::setObjectOwnership(memberList, QQmlEngine::JavaScriptOwnership);
-    qDebug()<<"***************** MEMBERLIST"<<memberList->rowCount();
-    // emit openRoomMembersDialog(memberList, room);
+    emit openRoomMembersDialog(memberList);
 }
