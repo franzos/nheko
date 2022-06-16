@@ -15,11 +15,13 @@ using namespace PX::GUI::MATRIX;
 int main(int argc, char *argv[])
 {
     #if 0
-    // JUST An Example for using embeding the QML items into QWidgets
+    // JUST as an Example for using embeding the QML items into QWidgets
     QApplication app(argc, argv);
     auto qmlView = new PX::GUI::MATRIX::MatrixQuickView();
     qmlView->showMaximized();
     qmlView->videoCallPage()->showMaximized();
+    qmlView->setUserId("USERID@pantherx.org");
+    qmlView->setServerAddress("https://matrix.pantherx.dev");
     // QWidget *container = QWidget::createWindowContainer(qmlView);
     // container->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     // container->showMaximized();

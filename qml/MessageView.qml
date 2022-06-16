@@ -732,4 +732,64 @@ Item {
         }
 
     }
+    RoundButton {
+        id: toEndButton
+        anchors {
+            bottom: parent.bottom
+            right: scrollbar.left
+            bottomMargin: 8+(fullWidth-width)/2
+            rightMargin: 8+(fullWidth-width)/2
+        }
+        property int fullWidth: 40
+        width: 0
+        height: width
+        radius: width/2
+        onClicked: chat.positionViewAtBeginning();
+        flat: true
+        hoverEnabled: true
+
+        background: Rectangle {
+            color: toEndButton.down ? GlobalObject.colors.highlight : GlobalObject.colors.button
+            opacity: enabled ? 1 : 0.3
+            border.color: toEndButton.hovered ? GlobalObject.colors.highlight : GlobalObject.colors.buttonText
+            border.width: 1
+            radius: toEndButton.radius
+        }
+
+        states: [
+            State {
+                name: ""
+                PropertyChanges { target: toEndButton; width: 0 }
+            },
+            State {
+                name: "shown"
+                when: !chat.atYEnd
+                PropertyChanges { target: toEndButton; width: toEndButton.fullWidth }
+            }
+        ]
+
+        Image {
+            id: buttonImg
+            anchors.fill: parent
+            anchors.margins: 8
+            source: "image://colorimage/:/images/end-chat.svg?" + (toEndButton.down ? GlobalObject.colors.highlightedText : GlobalObject.colors.buttonText)
+            // fillMode: Image.PreserveAspectFit
+        }
+
+        transitions: Transition {
+            from: ""
+            to: "shown"
+            reversible: true
+
+            SequentialAnimation {
+                PauseAnimation { duration: 500 }
+                PropertyAnimation {
+                    target: toEndButton
+                    properties: "width"
+                    easing.type: Easing.InOutQuad
+                    duration: 200
+                }
+            }
+        }
+    }
 }

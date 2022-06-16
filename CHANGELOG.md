@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.2]
+### Fixed and Changed
+
+* Go to end chat in the timeline view.
+* Fixing issue to reload the user id field after logout based on the default value.
+* Fixing minor issues.
+
+
 ## [0.1.1]
 ### Fixed
 

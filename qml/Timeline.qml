@@ -113,23 +113,23 @@ Room {
     }
 
     function onOpenReadReceiptsDialog(rr) {
-        var dialog = readReceiptsDialog.createObject(timelineModel, {
+        var dialog = readReceiptsDialog.createObject(timeline, {
             "readReceipts": rr,
-            "room": room
+            "timelineModel": timelineModel
         });
         dialog.show();
-        timelineModel.destroyOnClose(dialog);
+        destroyOnClose(dialog);
     }
 
     function onShowRawMessageDialog(rawMessage) {
-        var dialog = rawMessageDialog.createObject(timelineModel, {
+        var dialog = rawMessageDialog.createObject(timeline, {
             "rawMessage": rawMessage
         });
 
         dialog.x= (qmlLibRoot.width - dialog.width) / 2
         dialog.y= (qmlLibRoot.height - dialog.height) / 2
         dialog.show();
-        timelineModel.destroyOnClose(dialog);
+        destroyOnClose(dialog);
     }
     
     Component.onCompleted: {
