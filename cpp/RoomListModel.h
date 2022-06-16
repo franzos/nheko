@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QStringList>
 #include <matrix-client-library/Client.h>
-
+#include <QDBusConnection>
 #include "RoomListItem.h"
 #include "TimelineModel.h"
 
@@ -27,8 +27,7 @@ public:
         guestAccessRole
     };
 
-    RoomListModel(QObject *parent = 0)
-        : QAbstractListModel(parent) {}
+    RoomListModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
@@ -38,9 +37,6 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     int  roomidToIndex(const QString &roomid);
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
 
 public slots:
     void add(RoomListItem &item);
@@ -52,7 +48,8 @@ public slots:
 signals:
     void rowCountChanged();
 
-private:
+protected:
+    QHash<int, QByteArray> roleNames() const;
     QList<RoomListItem> _roomListItems;
     QStringList _roomIds;
 };

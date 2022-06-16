@@ -12,6 +12,9 @@
 #include <matrix-client-library/voip/WebRTCSession.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
+#include "notifications/Manager.h"
+
+class NotificationsManager;
 
 namespace PX::GUI::MATRIX {
 
@@ -36,6 +39,7 @@ public:
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
     void login(LOGIN_TYPE type);
+    bool dbusAvailable() const { return _dbusAvailable; }
 
 signals:
     void userIdChanged(const QString &userId);
@@ -68,5 +72,7 @@ private:
     QString _serverAddress = "";
     QString _userId = "";
     CMUserInformation _cmUserInformation;
+    NotificationsManager _notificationsManager;
+    bool _dbusAvailable;
 };
 }

@@ -7,6 +7,10 @@ int RoomListModel::rowCount(const QModelIndex &parent) const
     (void)parent;
     return _roomListItems.count();
 }
+RoomListModel:: RoomListModel(QObject *parent)
+    : QAbstractListModel(parent) {
+    
+}
 
 QVariant RoomListModel::data(const QModelIndex &index, int role) const
 {

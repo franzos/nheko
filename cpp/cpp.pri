@@ -1,7 +1,8 @@
-QT += network qml quick quickcontrols2 widgets quickwidgets svg
+QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus
 CONFIG += c++17
 
 SOURCES += \
+    $$PWD/AvatarProvider.cpp \
     $$PWD/Clipboard.cpp \
     $$PWD/ColorImageProvider.cpp \
     $$PWD/CompletionProxyModel.cpp \
@@ -19,6 +20,10 @@ SOURCES += \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
     $$PWD/TimelineItem.cpp \
+    \
+    $$PWD/notifications/Manager.cpp \
+    $$PWD/notifications/ManagerLinux.cpp \
+    \
     $$PWD/ui/emoji/EmojiModel.cpp \
     $$PWD/ui/emoji/Provider.cpp \
     $$PWD/ui/CombinedImagePackModel.cpp \
@@ -29,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/Application.h\
+    $$PWD/AvatarProvider.h \
     $$PWD/Clipboard.h\
     $$PWD/ColorImageProvider.h \
     $$PWD/CompletionModelRoles.h \
@@ -46,6 +52,9 @@ HEADERS += \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
     $$PWD/TimelineItem.h \
+    \
+    $$PWD/notifications/Manager.h \
+    \
     $$PWD/ui/emoji/EmojiModel.h \
     $$PWD/ui/emoji/Provider.h \
     $$PWD/ui/CombinedImagePackModel.h \

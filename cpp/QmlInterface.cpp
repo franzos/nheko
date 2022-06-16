@@ -16,6 +16,7 @@
 #include "Configuration.h"
 #include "ui/emoji/EmojiModel.h"
 #include "Clipboard.h"
+#include "AvatarProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -67,7 +68,8 @@ QmlInterface::QmlInterface(QObject *parent):
     _client(Client::instance()),
     _callMgr(_client->callManager()),
     _verificationManager(_client->verificationManager()),
-    _userSettings{UserSettings::instance()}{    
+    _userSettings{UserSettings::instance()},
+    _notificationsManager(this){
     _client->enableLogger(true, true);    
     checkCacheDirectory();
     if(_callMgr->callsSupported()){
@@ -90,11 +92,57 @@ QmlInterface::QmlInterface(QObject *parent):
     #endif
 #endif
     connect(_client, &Client::cmUserInfoUpdated,this, &QmlInterface::setCMUserInformation);
-    connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
+    connect(_client, &Client::newUpdate,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+    connect(_client, &Client::newNotifications,[&](const mtx::responses::Notifications &notifications){
+        for (auto const &item : notifications.notifications) {
+            auto info = _client->roomInfo(QString::fromStdString(item.room_id));
+            AvatarProvider::resolve(info.avatar_url,
+                                            96,
+                                            this,
+                                            [this, item](QPixmap image) {
+                                                _notificationsManager.postNotification(
+                                                  item, image.toImage());
+                                            });
+        }
+    });
+    connect(&_notificationsManager,
+            &NotificationsManager::notificationClicked,
+            this,
+            [this](const QString &roomid, const QString &eventid) {
+                qDebug() << "--- TODO notificationClicked" << roomid << eventid;
+                // Q_UNUSED(eventid)
+                // auto exWin = MainWindow::instance()->windowForRoom(roomid);
+                // if (exWin) {
+                //     exWin->requestActivate();
+                // } else {
+                //     view_manager_->rooms()->setCurrentRoom(roomid);
+                //     MainWindow::instance()->requestActivate();
+                // }
+            });
+    connect(&_notificationsManager,
+            &NotificationsManager::sendNotificationReply,
+            this,
+            [this](const QString &roomid, const QString &eventid, const QString &body) {
+                qDebug() << "--- TODO sendNotificationReply" << roomid << eventid << body;
+                // view_manager_->queueReply(roomid, eventid, body);
+                // auto exWin = MainWindow::instance()->windowForRoom(roomid);
+                // if (exWin) {
+                //     exWin->requestActivate();
+                // } else {
+                //     view_manager_->rooms()->setCurrentRoom(roomid);
+                //     MainWindow::instance()->requestActivate();
+                // }
+            });
+
+    // connect(cache::client(),
+    //         &Cache::removeNotification,
+    //         &_notificationsManager,
+    //         &NotificationsManager::removeNotification);
+
     qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
     connect(_callMgr, &CallManager::devicesChanged, [=]() {
         auto defaultMic = UserSettings::instance()->microphone();
