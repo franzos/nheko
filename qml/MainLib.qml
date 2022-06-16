@@ -82,6 +82,13 @@ Page {
         RawMessageDialog {
         }
     }
+      Component {
+        id: roomMembersComponent
+
+        RoomMembers {
+        }
+
+    }
 
     BusyIndicator {
         id: busyIndicator
@@ -137,7 +144,7 @@ Page {
         } else {
             showCallInviteDialog()
         }
-    }
+    }    
 
     Connections {        
         target: MatrixClient

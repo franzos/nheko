@@ -25,6 +25,7 @@
         <file>RoomList.qml</file>
         <file>RoomDelegate.qml</file>
         <file>RoomTopBar.qml</file>
+        <file>RoomMembers.qml</file>
         <file>StatusIndicator.qml</file>
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
