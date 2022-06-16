@@ -155,7 +155,7 @@ Page {
     }
 
     function reload(){
-        userIdText.text = ""
+        userIdText.text = QmlInterface.userId()
         passwordText.text = ""
         enableUserInputs(true)
     }   

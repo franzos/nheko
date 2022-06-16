@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Changed
 
 * Go to end chat in the timeline view.
+* Fixing issue to reload the user id field after logout based on the default value.
 * Fixing minor issues.
 
 
