@@ -3,14 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
-## [0.1.3] - Not tagged yet
+## [0.1.3] - NOT RELEASED YET
 ### Fixed and Changed
 
-* Adding Room members
-
-## [0.1.3]
-### Changed
-
+* Adding Room members.
 * Desktop notification.
 
 
