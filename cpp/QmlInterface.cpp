@@ -12,6 +12,10 @@
 #include "GlobalObject.h"
 #include "mydevice.h"
 #include "ui/NhekoCursorShape.h"
+#include "ui/DelegateChooser.h"
+#include "Configuration.h"
+#include "ui/emoji/EmojiModel.h"
+#include "Clipboard.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -63,12 +67,17 @@ QmlInterface::QmlInterface(QObject *parent):
     _client(Client::instance()),
     _callMgr(_client->callManager()),
     _verificationManager(_client->verificationManager()),
-    _userSettings{UserSettings::instance()}{
-    _client->enableLogger(true, true);
+    _userSettings{UserSettings::instance()}{    
+    _client->enableLogger(true, true);    
     checkCacheDirectory();
     if(_callMgr->callsSupported()){
         qDebug() << "*** VOIP Supported";
     }
+    #if ALLOW_SERVER_CHANGE
+        setServerAddress("");
+    #else
+        setServerAddress(DEFAULT_SERVER);
+    #endif
 #ifdef Q_OS_ANDROID
     setStyle("Material", "Default");
 #else
@@ -80,6 +89,7 @@ QmlInterface::QmlInterface(QObject *parent):
         #endif
     #endif
 #endif
+    connect(_client, &Client::cmUserInfoUpdated,this, &QmlInterface::setCMUserInformation);
     connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
@@ -111,8 +121,13 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new GlobalObject();
     });
+    
+    qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
+    qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
     qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
-    qmlRegisterType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel");
+    qmlRegisterType<DelegateChoice>("DelegateChoice", 1, 0, "DelegateChoice");
+    qmlRegisterType<DelegateChooser>("DelegateChooser", 1, 0, "DelegateChooser");
+    qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
     qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
@@ -123,11 +138,20 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<RoomListModel>("Rooms", 1, 0, "Rooms", _roomListModel);
     qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
     qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
-
+    qmlRegisterUncreatableType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel", QStringLiteral("Room needs to be instantiated on the C++ side"));
+    qmlRegisterSingletonType<Clipboard>("Clipboard", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
+        return new Clipboard();
+    });
+    qmlRegisterUncreatableType<ReadReceiptsProxy>( "ReadReceiptsProxy", 1, 0,"ReadReceiptsProxy", QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableMetaObject(olm::staticMetaObject, "Olm", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(crypto::staticMetaObject, "Crypto", 1, 0, "Crypto", QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));
     qRegisterMetaType<AndroidMaterialTheme>();
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
     qRegisterMetaType<UserInformation>();
     qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
+    qRegisterMetaType<CMUserInformation>();
+    qmlRegisterUncreatableMetaObject(CMUserInformation::staticMetaObject, "CMUserInformation", 1, 0, "CMUserInformation", QStringLiteral("Can't instantiate CMUserInformation"));    
     qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
     qRegisterMetaType<webrtc::State>();
@@ -150,9 +174,7 @@ void QmlInterface::newSyncCb(const mtx::responses::Sync &sync){
     auto rooms = sync.rooms;
     QList<RoomListItem> roomList;
     for(auto const &r: rooms.join){
-        auto roomInfo = _client->roomInfo(QString::fromStdString(r.first));
         RoomListItem room(  QString::fromStdString(r.first),
-                            roomInfo,
                             r.second.unread_notifications.notification_count);
         roomList << room;
     }
@@ -180,14 +202,12 @@ void QmlInterface::initiateFinishedCB(){
     auto inviteRooms = _client->inviteRoomList();
     QList<RoomListItem> roomList;
     for(auto const &r: joinedRooms.toStdMap()){
-        RoomListItem room(  r.first,
-                            r.second);
+        RoomListItem room(  r.first);
         roomList << room;
     }
 
     for(auto const &r: inviteRooms.toStdMap()){
-        RoomListItem room(  r.first,
-                            r.second);
+        RoomListItem room(  r.first);
         roomList << room;
         if(_callAutoAccept){
             _client->joinRoom(r.first);
@@ -201,4 +221,41 @@ void QmlInterface::setStyle(const QString &style, const QString &fallback){
     QQuickStyle::setFallbackStyle(fallback);
     qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
 }
+
+void QmlInterface::setCMUserInformation(const CMUserInformation &info){
+    _cmUserInformation = info;
+}
+
+CMUserInformation QmlInterface::cmUserInformation(){
+    return _cmUserInformation;
+}
+
+QString QmlInterface::userId(){
+    return _userId;
+}
+
+void QmlInterface::setUserId(const QString userID){
+    if(userID!=_userId){
+        qInfo()<<"Default user ID set to " << userID;
+        _userId = userID;
+        emit userIdChanged(_userId);
+    }
+}
+
+QString QmlInterface::getServerAddress(){
+    return _serverAddress;
+};
+
+void QmlInterface::setServerAddress(const QString &server){
+    if(server!=_serverAddress){
+        qInfo()<<"Default server set to " << server;
+        _serverAddress = server;
+        emit serverAddressChanged(_serverAddress);
+    }
+};
+
+void QmlInterface::login(QmlInterface::LOGIN_TYPE type){
+    emit loginProgramatically(type);
+}
+
 }

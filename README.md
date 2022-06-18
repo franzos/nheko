@@ -6,18 +6,19 @@ Mobile client for [Matrix](https://matrix.org)
 
 in order to build on Guix, following dependencies need to be installed. 
 
-- `json-modern-cxx`         `3.9.1`
-- `curl`                    `7.79.1`
-- `coeurl`                  `0.1.1`
-- `lmdb`                    `0.9.29`
-- `lmdbxx`                  `1.0.0`
-- `libolm`                  `3.2.3`
-- `matrix-client-library`   `0.0.23`
-- `mtxclient`               `0.6.1`
+- `json-modern-cxx`         
+- `curl`                   
+- `coeurl`                  
+- `lmdb`                    
+- `lmdbxx`                  
+- `libolm`                  
+- `matrix-client-library`
+- `mtxclient`               
 - `qtbase`                  `5.15.2`
 - `qtquickcontrols2`        `5.15.2`
 - `qtdeclarative`           `5.15.2`
-- `spdlog-shared-lib`       `1.9.2`
+- `qtsvg`                   `5.15.2`
+- `spdlog-shared-lib`       
 
 we also need to set following environment variables based on what set for `nheko` package:
 

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.5
 import MatrixClient 1.0
+import "ui"
 
 Page {
     height:parent.height
@@ -28,14 +29,14 @@ Page {
     }   
     footer:Row{
         spacing: 10
-        Button{
+        LoadingButton{
             id: startChatButton
             text: "Start Chat"
             width: parent.width/2 - 5
             anchors.leftMargin: 2
             onClicked: stack.push(createRoom)
         }
-        Button{
+        LoadingButton{
             id: cancelChatButton
             text: "Cancel"
             width: parent.width/2 - 5

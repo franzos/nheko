@@ -9,6 +9,8 @@ import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip/"
 import "ui/"
+import "ui/dialogs/"
+
 
 Page {
     id: qmlLibRoot
@@ -32,10 +34,11 @@ Page {
             }
             if(currentItem instanceof Timeline){
                 mainHeader.setOptionButtonsVisible(true)
+                mainHeader.setRoomInfo(currentItem.title, currentItem.roomid, currentItem.avatar)
             } else {
                 mainHeader.setOptionButtonsVisible(false)
             }
-            if(currentItem instanceof CibaLogin || currentItem instanceof Login){
+            if(currentItem instanceof Login){
                 mainHeader.visible= false
             } else {
                 mainHeader.visible= true
@@ -63,6 +66,20 @@ Page {
     Component {
         id: mobileCallInviteDialog
         CallInvite {
+        }
+    }
+
+    Component {
+        id: readReceiptsDialog
+
+        ReadReceipts {
+        }
+    }
+
+    Component {
+        id: rawMessageDialog
+
+        RawMessageDialog {
         }
     }
 
@@ -95,16 +112,30 @@ Page {
         else if (obj.aboutToHide != undefined) obj.aboutToHide.connect(() => obj.destroy(1000));
     }
 
-    function onNewInviteState() {
+    Timer {
+        id: callAcceptTimer
+        interval: 1000
+        onTriggered: showCallInviteDialog()
+    }
+
+    function showCallInviteDialog() {
         if (CallManager.haveCallInvite) {
-            console.log("New Call Invite!")
+            console.log("New Call Invitation received.")
             var dialog = mobileCallInviteDialog.createObject(qmlLibRoot);
             dialog.open();
             destroyOnClose(dialog);
-
             if(callAutoAccept){
+                console.log("Call-Auto Accept => answer")
                 dialog.acceptCall()
             }
+        }
+    }
+
+    function onNewInviteState() {
+        if(callAutoAccept){
+            callAcceptTimer.restart()
+        } else {
+            showCallInviteDialog()
         }
     }
 

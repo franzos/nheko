@@ -1,15 +1,11 @@
 message("Building MatrixClient GUI Application")
 VERSION = 1.0.0
 TEMPLATE = app
-TARGET = MatrixClient
+TARGET = matrix-client
 
 include(configurations/configurations.pri)
 include(app/app.pri)
 include(qml/qml.pri)
 
 QMAKE_TARGET_BUNDLE_PREFIX = org.pantherx
-QMAKE_BUNDLE = MatrixClient
-
-MatrixClient.path = /usr/bin/
-MatrixClient.files = MatrixClient
-INSTALLS += MatrixClient 
+QMAKE_BUNDLE = matrix-client

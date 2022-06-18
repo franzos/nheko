@@ -4,6 +4,71 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.1]
+### Fixed
+
+* Fixing issue in *.pro file in building and installing the target.
+
+
+## [0.1.0]
+### Fixed and Changed
+
+* Visible/Invisible password in login form.
+* Fixing issue in showing member count in room information page.
+* Reply message support.
+* Forwrad message support.
+* Remove message support.
+* Rename the executable file to `matrix-client`.
+* Copy link to event.
+* Copy message.
+* Mark as read the message in option menu.
+* Reaction feature.
+* Emoji feature.
+* Pin/Unpin message in room.
+* Show avatar in the timeline header.
+* Show raw message.
+* Read receipts of message.
+* Status indicator for messages.
+* Markdown support.
+
+
+## [0.0.27]
+### Fixed and Changed
+
+* Fixing issue in set default server from integrated applications.
+* Set User id programatically.
+* Support Login programatically in GUI library.
+
+
+## [0.0.26]
+### Fixed
+
+* Fixing build error issue in applications which integrated with library.
+
+
+## [0.0.25]
+### Fixed and Changed
+
+* Fixing minor issue in setting the parent of qml objects.
+* Addding Server Discovery.
+* Integrate Cibalogin and Password login.
+* Adding login option combo box.
+* Fixing issue in GUI library in stacking the Timeline after each Video Call request.
+* Adding set default server address.
+* Get CM user information and showing in the profile screen.
+
+## [0.0.24]
+### Changed
+
+* Seg fault after running application if there was missed call in call auto accept.
+
+
+## [0.0.23]
+### Changed
+
+* Avatar supported.
+
+
 ## [0.0.22]
 ### Changed
 

@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "../"
+import "../ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -32,7 +33,6 @@ Popup {
         function onNewInviteState() {
             if (!CallManager.haveCallInvite)
                 close();
-
         }
 
         target: CallManager
@@ -53,14 +53,14 @@ Popup {
             horizontalAlignment: Text.AlignHCenter
         }
 
-        // Avatar {
-        //     Layout.alignment: Qt.AlignCenter
-        //     Layout.preferredHeight: callInv.height / 5
-        //     Layout.preferredWidth: callInv.height / 5
-        //     url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-        //     userid: CallManager.callParty
-        //     displayName: CallManager.callPartyDisplayName
-        // }
+        Avatar {
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: callInv.height / 5
+            Layout.preferredWidth: callInv.height / 5
+            url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
+            userid: CallManager.callParty
+            displayName: CallManager.callPartyDisplayName
+        }
 
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter
@@ -141,7 +141,7 @@ Popup {
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
-                    var dialog = deviceError.createObject(timelineRoot, {
+                    var dialog = deviceError.createObject(callInv, {
                         "errorString": qsTr("No microphone found."),
                         "image": ":/images/place-call.svg"
                     });

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import GlobalObject 1.0
+import "ui"
 
 Rectangle {
     id: event
@@ -30,6 +31,16 @@ Rectangle {
             palette.button: GlobalObject.colors.alternateBase
             Layout.alignment: Qt.AlignVCenter
         }
+
+        // Avatar {
+        //     id: avatar_button
+        //     width: 20; height: 20
+        //     anchors.margins: 10
+        //     url: info.avatar().replace("mxc://", "image://MxcImage/")
+        //     userid: senderId
+        //     displayName: senderId
+        //     Layout.alignment: Qt.AlignVCenter
+        // }
 
         ColumnLayout {
             Layout.fillWidth: true

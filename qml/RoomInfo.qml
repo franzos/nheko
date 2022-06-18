@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.5
 
 import Rooms 1.0
+import "ui"
 
 Page {
     id: roomInfo
@@ -13,12 +14,17 @@ Page {
     Column {
         anchors.fill: parent
         anchors.margins: 10
-        RoundButton {
+
+        Avatar {
             id: avatarButton
-            text: (info.avatar() ? "" : name[0])
-            width: 86; height: 86
             anchors.horizontalCenter: parent.horizontalCenter
+            width: 86; height: 86
+            anchors.margins: 10
+            url: info.avatar().replace("mxc://", "image://MxcImage/")
+            userid: info.id()
+            displayName: info.avatar()
         }
+
         Row {
             Label { text: "Name : " }
             Label {

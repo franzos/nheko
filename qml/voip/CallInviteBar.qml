@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.2
 import GlobalObject 1.0
 
 Rectangle {
+    id: callInvBar
     visible: CallManager.haveCallInvite && !Settings.mobileMode
     color: "#2ECC71"
     implicitHeight: visible ? rowLayout.height + 8 : 0
@@ -39,7 +40,6 @@ Rectangle {
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
             displayName: CallManager.callPartyDisplayName
-            onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
         }
 
         Label {
@@ -77,7 +77,7 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Devices")
             onClicked: {
-                var dialog = devicesDialog.createObject(timelineRoot);
+                var dialog = devicesDialog.createObject(callInvBar);
                 dialog.open();
             }
         }
@@ -89,14 +89,14 @@ Rectangle {
             palette: GlobalObject.colors
             onClicked: {
                 if (CallManager.mics.length == 0) {
-                    var dialog = deviceError.createObject(timelineRoot, {
+                    var dialog = deviceError.createObject(callInvBar, {
                         "errorString": qsTr("No microphone found."),
                         "image": ":/images/place-call.svg"
                     });
                     dialog.open();
                     return ;
                 } else if (!CallManager.mics.includes(Settings.microphone)) {
-                    var dialog = deviceError.createObject(timelineRoot, {
+                    var dialog = deviceError.createObject(callInvBar, {
                         "errorString": qsTr("Unknown microphone: %1").arg(Settings.microphone),
                         "image": ":/images/place-call.svg"
                     });
@@ -104,7 +104,7 @@ Rectangle {
                     return ;
                 }
                 if (CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
-                    var dialog = deviceError.createObject(timelineRoot, {
+                    var dialog = deviceError.createObject(callInvBar, {
                         "errorString": qsTr("Unknown camera: %1").arg(Settings.camera),
                         "image": ":/images/video.svg"
                     });

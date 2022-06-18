@@ -42,7 +42,7 @@ Popup {
     opacity: 0
     y: -100
     x: (parent.width - width)/2
-    // padding: Nheko.paddingLarge
+    padding: 20
 
     contentItem: Label {
         color: "#ffffff" //GlobalObject.colors.light
@@ -52,7 +52,7 @@ Popup {
     }
 
     background: Rectangle {
-        // radius: Nheko.paddingLarge
+        radius: 20
         color: "#C70039" //GlobalObject.colors.dark
         opacity: 0.8
     }

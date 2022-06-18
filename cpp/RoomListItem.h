@@ -10,26 +10,20 @@ public:
     RoomInformation(){};
     RoomInformation(const QString &id, const QString &name, const QString &avatar, bool invite, int unreadCount):
         _id(id), _name(name), _avatar(avatar), _invite(invite), _unreadCount(unreadCount){};
-    RoomInformation(const QString &id, const RoomInfo &roomInfo, int unreadCount):
+    RoomInformation(const QString &id, int unreadCount):
         _id(id), 
-        _name(roomInfo.name),
-        _avatar(roomInfo.avatar_url),
-        _invite(roomInfo.is_invite),
-        _memberCount(roomInfo.member_count),
-        _topic(roomInfo.topic),
-        _version(roomInfo.version),
-        _guestAccess(roomInfo.guest_access),
+        _name(Client::instance()->roomInfo(_id).name),
         _unreadCount(unreadCount) {};
     
     Q_INVOKABLE QString id() {return _id;};
     Q_INVOKABLE QString name() {return _name;};
-    Q_INVOKABLE QString avatar() {return _avatar;};
-    Q_INVOKABLE bool    invite() {return _invite;};
+    Q_INVOKABLE QString avatar() {return Client::instance()->roomInfo(_id).avatar_url;};
+    Q_INVOKABLE bool    invite() {return Client::instance()->roomInfo(_id).is_invite;};
     Q_INVOKABLE QString lastmessage() {return _lastmessage;};
-    Q_INVOKABLE int     memberCount() {return _memberCount;};
-    Q_INVOKABLE QString topic() {return _topic;};
-    Q_INVOKABLE QString version() {return _version;};
-    Q_INVOKABLE bool    guestAccess() {return _guestAccess;};
+    Q_INVOKABLE int     memberCount() {return Client::instance()->roomInfo(_id).member_count;};
+    Q_INVOKABLE QString topic() {return Client::instance()->roomInfo(_id).topic;};
+    Q_INVOKABLE QString version() {return Client::instance()->roomInfo(_id).version;};
+    Q_INVOKABLE bool    guestAccess() {return Client::instance()->roomInfo(_id).guest_access;};
     Q_INVOKABLE int     unreadCount() {return _unreadCount;};
 
     void setId(const QString &id) {_id = id;};
@@ -59,7 +53,7 @@ private:
 class RoomListItem{
 public: 
     RoomListItem(const QString &id, const QString &name, const QString &avatar, bool invite, int unreadCount = 0);
-    RoomListItem(const QString &id, const RoomInfo &roomInfo, int unreadCount = 0);
+    RoomListItem(const QString &id, int unreadCount = 0);
 
     QString id() const;
     void setId(const QString &id);

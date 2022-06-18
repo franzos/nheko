@@ -65,9 +65,13 @@ Page {
     }
 
     function createTimeline(id,name,avatar){
+        var currentItem = stack.currentItem
+        if((currentItem instanceof Timeline) && (currentItem.roomid == id)){
+            return
+        }
         var timeline = timelineFactory.createObject(stack, {"roomid": id,
-                                                            "name": name,
-                                                            "avatar": avatar});
+                                                        "name": name,
+                                                        "avatar": avatar});
         stack.push(timeline)
     }  
 
@@ -79,10 +83,14 @@ Page {
             mainHeader.setTitle(name)
             onVerificationStatusChanged()
         }
+        
+        function onUserAvatarReady(avatarUrl){
+            mainHeader.setRoomInfo(title, "", avatarUrl)
+        }
+
         function onRoomCreated(id){
             var roomInf = Rooms.roomInformation(id)
             createTimeline(roomInf.id(),roomInf.name(),roomInf.avatar())
-        }       
-       
+        }
     }
 }

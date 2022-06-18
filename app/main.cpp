@@ -5,6 +5,7 @@
 #include <spdlog/spdlog.h>
 #include "../cpp/MatrixQmlApplicationEngine.h"
 #include "../cpp/MatrixQuickView.h"
+
 #ifdef __ANDROID__
 #include <spdlog/sinks/android_sink.h>
 #endif
@@ -26,10 +27,10 @@ int main(int argc, char *argv[])
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":images/app-icon_bright.svg"));
     
-    MatrixQmlApplicationEngine matrixClientApp;
+    MatrixQmlApplicationEngine matrixClientApp;   
     matrixClientApp.load();
     spdlog::info("info log from spdlog");
     #endif

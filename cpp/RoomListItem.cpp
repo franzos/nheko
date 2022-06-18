@@ -9,8 +9,8 @@ RoomListItem::RoomListItem( const QString &id,
     _roomInformation(new RoomInformation(id, name, avatar, invite, unreadCount))
     {}
 
-RoomListItem::RoomListItem(const QString &id, const RoomInfo &roomInfo, int unreadCount):
-    _roomInformation(new RoomInformation(id, roomInfo, unreadCount))
+RoomListItem::RoomListItem(const QString &id, int unreadCount):
+    _roomInformation(new RoomInformation(id, unreadCount))
     {}
 
 QString RoomListItem::id() const{

@@ -9,6 +9,7 @@ import QmlInterface 1.0
 import GlobalObject 1.0
 import "voip"
 import "device-verification"
+import "ui"
 
 Column {
     width: toolBar.width
@@ -27,7 +28,7 @@ Column {
         Material.foreground: GlobalObject.materialColors().primaryForeground
         RowLayout {
             anchors.fill: parent
-            spacing: 2
+            spacing: 5
             ToolButton{
                 id: menuButton
                 icon.source: "qrc:/images/slide-icon.svg"
@@ -66,12 +67,20 @@ Column {
                 }
             }
 
+            Avatar {
+                id: avatar
+                Layout.alignment: Qt.AlignVCenter
+                width: GlobalObject.avatarSize - 5
+                height: width
+                visible: false
+            }
+
             Item{
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Label {
                     id: titleLabel
-                    width: parent.width 
+                    width: parent.width  
                     height: parent.height
                     anchors.leftMargin: 2
                     verticalAlignment:Text.AlignVCenter
@@ -146,9 +155,19 @@ Column {
         optionsButton.visible = visible;
     }
 
+    function setRoomInfo(title, roomid, avatarUrl){
+        setTitle(title)
+        avatar.url= avatarUrl.replace("mxc://", "image://MxcImage/")
+        avatar.roomid= roomid
+        avatar.userid= roomid
+        avatar.displayName= title
+        avatar.visible=true
+    }
+
     function setTitle(title){
         if(title)
             titleLabel.text = title
+        avatar.visible=false
     }
 
     function title(){
