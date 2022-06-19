@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Changed
 
 * Adding Room members
+* Fixing issue in login options
 
 ## [0.1.2]
 ### Fixed and Changed
