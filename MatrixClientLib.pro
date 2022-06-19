@@ -3,7 +3,10 @@ VERSION = 1.0.0
 TEMPLATE = lib
 TARGET = matrix-client-gui-library
 
-include(configurations/configurations.pri)
+LIBS += -lmatrix-client-library \
+        -lspdlog -lcurl -lcoeurl \
+        -lmatrix_client
+        
 include(cpp/cpp.pri)
 include(qml/qml.pri)
 
@@ -37,4 +40,5 @@ ui_headers.files =  cpp/ui/NhekoCursorShape.h \
                     cpp/ui/NhekoCursorShape.h
 
 target.path = /usr/lib/
+
 INSTALLS += target headers ui_headers
