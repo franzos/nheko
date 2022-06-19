@@ -254,7 +254,7 @@ function BUILD_CMARK {
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
-    tag="v0.0.5"
+    tag="0.1.0"
     repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 

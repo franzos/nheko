@@ -9,7 +9,3 @@ include(qml/qml.pri)
 
 QMAKE_TARGET_BUNDLE_PREFIX = org.pantherx
 QMAKE_BUNDLE = matrix-client
-
-target.path = /usr/bin/
-target.files = matrix-client
-INSTALLS += target
