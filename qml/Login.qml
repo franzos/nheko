@@ -35,7 +35,7 @@ Page {
 
          Timer {
             id: discoveryTimer
-            interval: 1000
+            interval: 400
             onTriggered: MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
         }
 
