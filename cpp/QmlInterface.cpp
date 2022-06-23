@@ -66,6 +66,7 @@ QmlInterface::QmlInterface(QObject *parent):
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
     _callMgr(_client->callManager()),
+    _callDevices(&CallDevices::instance()),
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()}{    
     _client->enableLogger(true, true);    
@@ -132,6 +133,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);
+    qmlRegisterSingletonInstance<CallDevices>("CallDevices", 1, 0, "CallDevices", _callDevices);
     qmlRegisterSingletonInstance<UIA>("UIA", 1, 0, "UIA", UIA::instance());
     qmlRegisterSingletonInstance<VerificationManager>("VerificationManager", 1, 0, "VerificationManager", _verificationManager);
     qmlRegisterSingletonInstance<SelfVerificationStatus>("SelfVerificationStatus", 1, 0, "SelfVerificationStatus", _verificationManager->selfVerificationStatus());

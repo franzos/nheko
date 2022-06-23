@@ -62,6 +62,7 @@ private:
     RoomListModel *_roomListModel = nullptr;
     Client      *_client = nullptr;
     CallManager *_callMgr = nullptr;
+    CallDevices *_callDevices;
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
     QString _defaultUserIdFormat = "@user:matrix.org";

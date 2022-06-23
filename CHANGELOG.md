@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.6]
+### Changed 
+
+* Invisible Video/Audio calls if Camera/Mic disconnected.
+
 
 ## [0.1.5]
 ### Fixed 
