@@ -11,4 +11,5 @@ linux:!android {
 }
 
 LIBS += -lspdlog -lcurl -lcoeurl \
+        -lpx-auth-lib-cpp \
         -lmatrix_client

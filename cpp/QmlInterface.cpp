@@ -153,8 +153,8 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
     qRegisterMetaType<UserInformation>();
     qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
-    qRegisterMetaType<CMUserInformation>();
-    qmlRegisterUncreatableMetaObject(CMUserInformation::staticMetaObject, "CMUserInformation", 1, 0, "CMUserInformation", QStringLiteral("Can't instantiate CMUserInformation"));    
+    qRegisterMetaType<PX::AUTH::UserProfileInfo>();
+    qmlRegisterUncreatableMetaObject(PX::AUTH::UserProfileInfo::staticMetaObject, "UserProfileInfo", 1, 0, "UserProfileInfo", QStringLiteral("Can't instantiate UserProfileInfo"));    
     qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
     qRegisterMetaType<webrtc::State>();
@@ -225,11 +225,11 @@ void QmlInterface::setStyle(const QString &style, const QString &fallback){
     qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
 }
 
-void QmlInterface::setCMUserInformation(const CMUserInformation &info){
+void QmlInterface::setCMUserInformation(const PX::AUTH::UserProfileInfo &info){
     _cmUserInformation = info;
 }
 
-CMUserInformation QmlInterface::cmUserInformation(){
+PX::AUTH::UserProfileInfo QmlInterface::cmUserInformation(){
     return _cmUserInformation;
 }
 

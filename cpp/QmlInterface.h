@@ -48,8 +48,8 @@ public slots:
     void setUserId(const QString userID);
     QString getServerAddress();
     void setServerAddress(const QString &server);
-    void setCMUserInformation(const CMUserInformation &info);
-    CMUserInformation cmUserInformation();
+    void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
+    PX::AUTH::UserProfileInfo cmUserInformation();
 
 private slots:
     void initiateFinishedCB();
@@ -68,6 +68,6 @@ private:
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
     QString _userId = "";
-    CMUserInformation _cmUserInformation;
+    PX::AUTH::UserProfileInfo _cmUserInformation;
 };
 }

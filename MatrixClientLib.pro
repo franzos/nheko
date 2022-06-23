@@ -4,6 +4,7 @@ TEMPLATE = lib
 TARGET = matrix-client-gui-library
 
 LIBS += -lmatrix-client-library \
+        -lpx-auth-lib-cpp \
         -lspdlog -lcurl -lcoeurl \
         -lmatrix_client
         
