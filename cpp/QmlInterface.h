@@ -52,8 +52,8 @@ public slots:
     void setUserId(const QString userID);
     QString getServerAddress();
     void setServerAddress(const QString &server);
-    void setCMUserInformation(const CMUserInformation &info);
-    CMUserInformation cmUserInformation();
+    void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
+    PX::AUTH::UserProfileInfo cmUserInformation();
 
 private slots:
     void initiateFinishedCB();
@@ -66,13 +66,14 @@ private:
     RoomListModel *_roomListModel = nullptr;
     Client      *_client = nullptr;
     CallManager *_callMgr = nullptr;
+    CallDevices *_callDevices;
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
     QString _userId = "";
-    CMUserInformation _cmUserInformation;
     NotificationsManager _notificationsManager;
     bool _dbusAvailable;
+    PX::AUTH::UserProfileInfo _cmUserInformation;
 };
 }

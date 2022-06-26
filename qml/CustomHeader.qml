@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.15
 import MatrixClient 1.0
 import CallManager 1.0
+import CallDevices 1.0
 import CallType 1.0
 import QmlInterface 1.0
 import GlobalObject 1.0
@@ -143,8 +144,19 @@ Column {
     }
 
     function setCallButtonsVisible(visible){
-        voiceCallButton.visible = visible;
-        videoCallButton.visible = visible;
+        if(visible){
+            if(CallDevices.haveCamera())
+                videoCallButton.visible = visible;
+            else 
+                videoCallButton.visible = false;
+            if(CallDevices.haveMic())
+                voiceCallButton.visible = visible;
+            else 
+                voiceCallButton.visible = false;
+        } else {
+            voiceCallButton.visible = visible;
+            videoCallButton.visible = visible;
+        }
     }
 
     function setEndCallButtonsVisible(visible){
@@ -221,39 +233,45 @@ Column {
         }
     }    
 
+    function noneStateHandler(){
+        setCallButtonsVisible(false)
+        setEndCallButtonsVisible(false)
+        callStatusbar.visible = false
+    }
+
+    function freeCallStateHandler(){
+        if(enableCallButtons && CallManager.callsSupported) {
+            setCallButtonsVisible(true)
+            setEndCallButtonsVisible(false)
+        }
+        callStatusbar.visible = false
+    }
+
+    function onCallStateHandler(){
+        if(enableCallButtons && CallManager.callsSupported) {
+            setCallButtonsVisible(false)
+            setEndCallButtonsVisible(true)
+        }
+        callStatusbar.visible = true
+    }
+
     states: [
         State {
             name: "none"
             StateChangeScript {
-                script: {
-                    setCallButtonsVisible(false)
-                    setEndCallButtonsVisible(false)
-                    callStatusbar.visible = false
-                }
+                script: noneStateHandler()
             }
         },
         State {
             name: "freecall"
             StateChangeScript {
-                script: {
-                    if(enableCallButtons && CallManager.callsSupported) {
-                        setCallButtonsVisible(true)
-                        setEndCallButtonsVisible(false)
-                    }
-                    callStatusbar.visible = false
-                }
+                script: freeCallStateHandler()
             }
         },
         State {
             name: "oncall"
             StateChangeScript {
-                script: {
-                    if(enableCallButtons && CallManager.callsSupported) {
-                        setCallButtonsVisible(false)
-                        setEndCallButtonsVisible(true)
-                    }
-                    callStatusbar.visible = true
-                }
+                script: onCallStateHandler()
             }
         }
     ]
@@ -266,9 +284,19 @@ Column {
             navDrawer.close()
     }
 
+    function onDevicesChanged(){
+        if(state == "none")
+            noneStateHandler()
+        else if(state == "oncall")
+            onCallStateHandler()
+        else if(state == "freecall")
+            freeCallStateHandler()
+    }
+
     Component.onCompleted: {
         menuClicked.connect(menuClickedCallback)
         listenToCallManager()
+        CallManager.onDevicesChanged.connect(onDevicesChanged)
     }
 
     MainMenu{

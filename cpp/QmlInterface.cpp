@@ -67,6 +67,7 @@ QmlInterface::QmlInterface(QObject *parent):
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
     _callMgr(_client->callManager()),
+    _callDevices(&CallDevices::instance()),
     _verificationManager(_client->verificationManager()),
     _userSettings{UserSettings::instance()},
     _notificationsManager(this){
@@ -180,6 +181,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);
+    qmlRegisterSingletonInstance<CallDevices>("CallDevices", 1, 0, "CallDevices", _callDevices);
     qmlRegisterSingletonInstance<UIA>("UIA", 1, 0, "UIA", UIA::instance());
     qmlRegisterSingletonInstance<VerificationManager>("VerificationManager", 1, 0, "VerificationManager", _verificationManager);
     qmlRegisterSingletonInstance<SelfVerificationStatus>("SelfVerificationStatus", 1, 0, "SelfVerificationStatus", _verificationManager->selfVerificationStatus());
@@ -199,8 +201,8 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
     qRegisterMetaType<UserInformation>();
     qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
-    qRegisterMetaType<CMUserInformation>();
-    qmlRegisterUncreatableMetaObject(CMUserInformation::staticMetaObject, "CMUserInformation", 1, 0, "CMUserInformation", QStringLiteral("Can't instantiate CMUserInformation"));    
+    qRegisterMetaType<PX::AUTH::UserProfileInfo>();
+    qmlRegisterUncreatableMetaObject(PX::AUTH::UserProfileInfo::staticMetaObject, "UserProfileInfo", 1, 0, "UserProfileInfo", QStringLiteral("Can't instantiate UserProfileInfo"));    
     qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
     qRegisterMetaType<webrtc::State>();
@@ -271,11 +273,11 @@ void QmlInterface::setStyle(const QString &style, const QString &fallback){
     qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
 }
 
-void QmlInterface::setCMUserInformation(const CMUserInformation &info){
+void QmlInterface::setCMUserInformation(const PX::AUTH::UserProfileInfo &info){
     _cmUserInformation = info;
 }
 
-CMUserInformation QmlInterface::cmUserInformation(){
+PX::AUTH::UserProfileInfo QmlInterface::cmUserInformation(){
     return _cmUserInformation;
 }
 

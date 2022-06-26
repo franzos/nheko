@@ -26,10 +26,20 @@ Page {
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
             onTextChanged: {     
-                if(!QmlInterface.getServerAddress())                     
-                    MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
+                if(!QmlInterface.getServerAddress()) {
+                    discoveryTimer.restart()
+                }               
+                  
             }
         }
+
+         Timer {
+            id: discoveryTimer
+            interval: 400
+            onTriggered: MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
+        }
+
+       
 
         PasswordField {
             id: passwordText
@@ -57,6 +67,13 @@ Page {
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
             onTextChanged: {            
+                serverChangTimer.restart()
+            }
+        }
+         Timer {
+            id: serverChangTimer
+            interval: 1000
+            onTriggered: {
                 var options = MatrixClient.loginOptions(matrixServerText.text)
                 combo.restart()
                 for (var prop in options) {

@@ -3,12 +3,30 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
-## [0.1.3] - NOT RELEASED YET
+
+## [0.1.7] - NOT RELEASED YET
 ### Fixed and Changed
 
-* Adding Room members.
 * Desktop notification.
 
+
+## [0.1.6]
+### Changed 
+
+* Invisible Video/Audio calls if Camera/Mic disconnected.
+
+
+## [0.1.5]
+### Fixed 
+
+* Update pro file to install header files correctly.
+
+
+## [0.1.3]
+### Fixed and Changed
+
+* Adding Room members
+* Fixing issue in login options
 
 ## [0.1.2]
 ### Fixed and Changed

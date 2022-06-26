@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import UserInformation 1.0
-import CMUserInformation 1.0
+import UserProfileInfo 1.0
 import QmlInterface 1.0
 import "ui"
 
