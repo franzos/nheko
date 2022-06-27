@@ -40,6 +40,10 @@ ui_headers.files =  cpp/ui/NhekoCursorShape.h \
                     cpp/ui/InputBar.h \
                     cpp/ui/NhekoCursorShape.h
 
+notification_headers.path  = /usr/include/matrix-client-gui-library/notifications
+notification_headers.files = cpp/notifications/Manager.h \
+                             cpp/notifications/ManagerLinux.h
+
 target.path = /usr/lib/
 
-INSTALLS += target headers ui_headers
+INSTALLS += target headers ui_headers notification_headers
