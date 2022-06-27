@@ -1,5 +1,6 @@
 #include "QmlInterface.h"
 #include <QCoreApplication>
+#include <QApplication>
 #include <QQuickStyle>
 #include <QQuickItem>
 #include <QStandardPaths>
@@ -114,29 +115,21 @@ QmlInterface::QmlInterface(QObject *parent):
             &NotificationsManager::notificationClicked,
             this,
             [this](const QString &roomid, const QString &eventid) {
-                qDebug() << "--- TODO notificationClicked" << roomid << eventid;
-                // Q_UNUSED(eventid)
-                // auto exWin = MainWindow::instance()->windowForRoom(roomid);
-                // if (exWin) {
-                //     exWin->requestActivate();
-                // } else {
-                //     view_manager_->rooms()->setCurrentRoom(roomid);
-                //     MainWindow::instance()->requestActivate();
-                // }
+                Q_UNUSED(eventid)
+                if(qApp->allWindows().size())
+                    qApp->allWindows().at(0)->requestActivate();
+                emit notificationClicked(roomid);
             });
     connect(&_notificationsManager,
             &NotificationsManager::sendNotificationReply,
             this,
             [this](const QString &roomid, const QString &eventid, const QString &body) {
-                qDebug() << "--- TODO sendNotificationReply" << roomid << eventid << body;
                 // view_manager_->queueReply(roomid, eventid, body);
-                // auto exWin = MainWindow::instance()->windowForRoom(roomid);
-                // if (exWin) {
-                //     exWin->requestActivate();
-                // } else {
-                //     view_manager_->rooms()->setCurrentRoom(roomid);
-                //     MainWindow::instance()->requestActivate();
-                // }
+                Q_UNUSED(eventid)
+                Q_UNUSED(body)
+                if(qApp->allWindows().size())
+                    qApp->allWindows().at(0)->requestActivate();
+                emit notificationClicked(roomid);
             });
 
     // connect(cache::client(),

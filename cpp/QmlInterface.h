@@ -45,6 +45,7 @@ signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
     void loginProgramatically(LOGIN_TYPE type);
+    void notificationClicked(const QString &roomid);
     
 public slots:
     virtual void setVideoCallItem() = 0;
