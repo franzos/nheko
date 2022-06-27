@@ -4,10 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.7] - NOT RELEASED YET
+## [0.1.7]
 ### Fixed and Changed
 
 * Desktop notification.
+* Update tap handler on messages to working better in Android.
 
 
 ## [0.1.6]
