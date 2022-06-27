@@ -70,8 +70,11 @@ QmlInterface::QmlInterface(QObject *parent):
     _callMgr(_client->callManager()),
     _callDevices(&CallDevices::instance()),
     _verificationManager(_client->verificationManager()),
-    _userSettings{UserSettings::instance()},
-    _notificationsManager(this){
+    _userSettings{UserSettings::instance()}
+#if defined(NOTIFICATION_DBUS_SYS)    
+    ,_notificationsManager(this)
+#endif
+    {
     _client->enableLogger(true, true);    
     checkCacheDirectory();
     if(_callMgr->callsSupported()){
@@ -99,6 +102,7 @@ QmlInterface::QmlInterface(QObject *parent):
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+#if defined(NOTIFICATION_DBUS_SYS)
     connect(_client, &Client::newNotifications,[&](const mtx::responses::Notifications &notifications){
         for (auto const &item : notifications.notifications) {
             auto info = _client->roomInfo(QString::fromStdString(item.room_id));
@@ -136,7 +140,7 @@ QmlInterface::QmlInterface(QObject *parent):
     //         &Cache::removeNotification,
     //         &_notificationsManager,
     //         &NotificationsManager::removeNotification);
-
+#endif
     qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
     connect(_callMgr, &CallManager::devicesChanged, [=]() {
         auto defaultMic = UserSettings::instance()->microphone();

@@ -13,10 +13,10 @@
 
 // convenience definition
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
-#define NHEKO_DBUS_SYS
+#define NOTIFICATION_DBUS_SYS
 #endif
 
-#if defined(NHEKO_DBUS_SYS)
+#if defined(NOTIFICATION_DBUS_SYS)
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
 

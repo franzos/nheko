@@ -73,7 +73,9 @@ private:
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
     QString _userId = "";
+#if defined(NOTIFICATION_DBUS_SYS)
     NotificationsManager _notificationsManager;
+#endif
     bool _dbusAvailable;
     PX::AUTH::UserProfileInfo _cmUserInformation;
 };

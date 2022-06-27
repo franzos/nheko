@@ -7,7 +7,7 @@
 
 #include <matrix-client-library/Client.h>
 #include <matrix-client-library/EventAccessors.h>
-
+#if defined(NOTIFICATION_DBUS_SYS)
 QString
 NotificationsManager::getMessageTemplate(const mtx::responses::Notification &notification)
 {
@@ -32,3 +32,4 @@ NotificationsManager::getMessageTemplate(const mtx::responses::Notification &not
         return QStringLiteral("%1: %2").arg(sender);
     }
 }
+#endif

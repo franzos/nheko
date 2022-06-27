@@ -6,6 +6,7 @@
 
 #include "Manager.h"
 
+#if defined(NOTIFICATION_DBUS_SYS)
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusMetaType>
@@ -313,3 +314,4 @@ operator>>(const QDBusArgument &arg, QImage &)
     Q_ASSERT(0);
     return arg;
 }
+#endif
