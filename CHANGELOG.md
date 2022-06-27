@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.9]
+### Fixed and Changed
+
+* Add desktop file to show the application in the main menu.
+
+
 ## [0.1.8]
 ### Fixed and Changed
 
