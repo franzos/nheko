@@ -53,13 +53,22 @@ AbstractButton {
         // this looks better without margins
         TapHandler {
             acceptedButtons: Qt.RightButton
-            onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-            gesturePolicy: TapHandler.ReleaseWithinBounds
+            longPressThreshold: 2
+            onSingleTapped: {
+                if(Qt.platform.os == "linux")
+                    messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+            }
+            onLongPressed: {
+                messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+            }
+            // gesturePolicy: TapHandler.ReleaseWithinBounds
         }
     }
 
-
-    onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+    onPressAndHold:{
+        if(Qt.platform.os == "linux")
+            messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+    }
     onDoubleClicked: chat.model.reply = eventId
 
     DragHandler {
