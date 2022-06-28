@@ -12,7 +12,7 @@
 #include <mtx/responses/notifications.hpp>
 
 // convenience definition
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
+#if !defined(Q_OS_ANDROID) && defined(Q_OS_LINUX)
 #define NOTIFICATION_DBUS_SYS
 #endif
 

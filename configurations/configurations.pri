@@ -3,7 +3,8 @@ include(ios/ios.pri)
 
 linux:!android {
     # Configurations only required for desktop linux (not android)
-    LIBS += -lmatrix-client-library
+    LIBS += -lmatrix-client-library 
+    QT += dbus
 
     target.path = /usr/bin/
     target.files = matrix-client
