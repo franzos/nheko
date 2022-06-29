@@ -17,6 +17,7 @@ android {
         $$DIST_DIR/lib/libevent_extra-2.1.so \
         $$DIST_DIR/lib/libevent_openssl-2.1.so \
         $$DIST_DIR/lib/libevent_pthreads-2.1.so \
+        $$DIST_DIR/lib/libpx-auth-lib-cpp_armeabi-v7a.so \
         $$DIST_DIR/lib/libmatrix-client-library_armeabi-v7a.so \
         $$DIST_DIR/lib/libmatrix_client.so \
         $$DIST_DIR/lib/libcmark.so \
@@ -26,6 +27,7 @@ android {
     INCLUDEPATH += $$DIST_DIR/include
     LIBS += -L$$DIST_DIR/lib
     LIBS += -lfmt -levent -levent_core -levent_extra -levent_pthreads \
+            -lpx-auth-lib-cpp_armeabi-v7a \
             -lmatrix-client-library_armeabi-v7a
 }
 

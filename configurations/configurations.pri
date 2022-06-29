@@ -1,9 +1,10 @@
-    include(android/android.pri)
+include(android/android.pri)
 include(ios/ios.pri)
 
 linux:!android {
     # Configurations only required for desktop linux (not android)
-    LIBS += -lmatrix-client-library 
+    LIBS += -lpx-auth-lib-cpp \
+            -lmatrix-client-library
     QT += dbus
 
     target.path = /usr/bin/
@@ -19,5 +20,4 @@ linux:!android {
 }
 
 LIBS += -lspdlog -lcurl -lcoeurl \
-        -lpx-auth-lib-cpp \
         -lmatrix_client
