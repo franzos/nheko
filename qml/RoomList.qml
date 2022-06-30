@@ -5,6 +5,7 @@ import QtQuick.Controls 2.5
 import MatrixClient 1.0
 import Rooms 1.0
 import GlobalObject 1.0
+import QmlInterface 1.0
 
 import "device-verification"
 
@@ -57,6 +58,7 @@ Page {
 
     Component.onCompleted: {        
         selfVerificationCheck.statusChanged.connect(onVerificationStatusChanged)
+        QmlInterface.onNotificationClicked.connect(openTimeline)
     }
     
     Component {
@@ -75,6 +77,12 @@ Page {
         stack.push(timeline)
     }  
 
+
+    function openTimeline(roomid){
+        var roomInf = Rooms.roomInformation(roomid)
+        createTimeline(roomInf.id(),roomInf.name(),roomInf.avatar())
+    }
+    
     Connections {
         target: MatrixClient
 
@@ -89,8 +97,7 @@ Page {
         }
 
         function onRoomCreated(id){
-            var roomInf = Rooms.roomInformation(id)
-            createTimeline(roomInf.id(),roomInf.name(),roomInf.avatar())
+            openTimeline(id)
         }
     }
 }

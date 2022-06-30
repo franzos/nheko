@@ -1,5 +1,6 @@
 #include "QmlInterface.h"
 #include <QCoreApplication>
+#include <QApplication>
 #include <QQuickStyle>
 #include <QQuickItem>
 #include <QStandardPaths>
@@ -16,6 +17,7 @@
 #include "Configuration.h"
 #include "ui/emoji/EmojiModel.h"
 #include "Clipboard.h"
+#include "AvatarProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -66,8 +68,13 @@ QmlInterface::QmlInterface(QObject *parent):
     _roomListModel(new RoomListModel({})),
     _client(Client::instance()),
     _callMgr(_client->callManager()),
+    _callDevices(&CallDevices::instance()),
     _verificationManager(_client->verificationManager()),
-    _userSettings{UserSettings::instance()}{    
+    _userSettings{UserSettings::instance()}
+#if defined(NOTIFICATION_DBUS_SYS)    
+    ,_notificationsManager(this)
+#endif
+    {
     _client->enableLogger(true, true);    
     checkCacheDirectory();
     if(_callMgr->callsSupported()){
@@ -90,11 +97,50 @@ QmlInterface::QmlInterface(QObject *parent):
     #endif
 #endif
     connect(_client, &Client::cmUserInfoUpdated,this, &QmlInterface::setCMUserInformation);
-    connect(_client, &Client::newUpdated,this, &QmlInterface::newSyncCb);
+    connect(_client, &Client::newUpdate,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
         _roomListModel->removeRows(0,_roomListModel->rowCount());
     });
+#if defined(NOTIFICATION_DBUS_SYS)
+    connect(_client, &Client::newNotifications,[&](const mtx::responses::Notifications &notifications){
+        for (auto const &item : notifications.notifications) {
+            auto info = _client->roomInfo(QString::fromStdString(item.room_id));
+            AvatarProvider::resolve(info.avatar_url,
+                                            96,
+                                            this,
+                                            [this, item](QPixmap image) {
+                                                _notificationsManager.postNotification(
+                                                  item, image.toImage());
+                                            });
+        }
+    });
+    connect(&_notificationsManager,
+            &NotificationsManager::notificationClicked,
+            this,
+            [this](const QString &roomid, const QString &eventid) {
+                Q_UNUSED(eventid)
+                if(qApp->allWindows().size())
+                    qApp->allWindows().at(0)->requestActivate();
+                emit notificationClicked(roomid);
+            });
+    connect(&_notificationsManager,
+            &NotificationsManager::sendNotificationReply,
+            this,
+            [this](const QString &roomid, const QString &eventid, const QString &body) {
+                // view_manager_->queueReply(roomid, eventid, body);
+                Q_UNUSED(eventid)
+                Q_UNUSED(body)
+                if(qApp->allWindows().size())
+                    qApp->allWindows().at(0)->requestActivate();
+                emit notificationClicked(roomid);
+            });
+
+    // connect(cache::client(),
+    //         &Cache::removeNotification,
+    //         &_notificationsManager,
+    //         &NotificationsManager::removeNotification);
+#endif
     qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
     connect(_callMgr, &CallManager::devicesChanged, [=]() {
         auto defaultMic = UserSettings::instance()->microphone();
@@ -132,6 +178,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
     qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
     qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);
+    qmlRegisterSingletonInstance<CallDevices>("CallDevices", 1, 0, "CallDevices", _callDevices);
     qmlRegisterSingletonInstance<UIA>("UIA", 1, 0, "UIA", UIA::instance());
     qmlRegisterSingletonInstance<VerificationManager>("VerificationManager", 1, 0, "VerificationManager", _verificationManager);
     qmlRegisterSingletonInstance<SelfVerificationStatus>("SelfVerificationStatus", 1, 0, "SelfVerificationStatus", _verificationManager->selfVerificationStatus());
@@ -142,6 +189,7 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterSingletonType<Clipboard>("Clipboard", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new Clipboard();
     });
+    qmlRegisterUncreatableType<MemberList>("MemberList", 1, 0, "MemberList", QStringLiteral("MemberList needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<ReadReceiptsProxy>( "ReadReceiptsProxy", 1, 0,"ReadReceiptsProxy", QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableMetaObject(olm::staticMetaObject, "Olm", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
     qmlRegisterUncreatableMetaObject(crypto::staticMetaObject, "Crypto", 1, 0, "Crypto", QStringLiteral("Can't instantiate enum!"));
@@ -150,8 +198,8 @@ QmlInterface::QmlInterface(QObject *parent):
     qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
     qRegisterMetaType<UserInformation>();
     qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
-    qRegisterMetaType<CMUserInformation>();
-    qmlRegisterUncreatableMetaObject(CMUserInformation::staticMetaObject, "CMUserInformation", 1, 0, "CMUserInformation", QStringLiteral("Can't instantiate CMUserInformation"));    
+    qRegisterMetaType<PX::AUTH::UserProfileInfo>();
+    qmlRegisterUncreatableMetaObject(PX::AUTH::UserProfileInfo::staticMetaObject, "UserProfileInfo", 1, 0, "UserProfileInfo", QStringLiteral("Can't instantiate UserProfileInfo"));    
     qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
     qRegisterMetaType<webrtc::State>();
@@ -222,11 +270,11 @@ void QmlInterface::setStyle(const QString &style, const QString &fallback){
     qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
 }
 
-void QmlInterface::setCMUserInformation(const CMUserInformation &info){
+void QmlInterface::setCMUserInformation(const PX::AUTH::UserProfileInfo &info){
     _cmUserInformation = info;
 }
 
-CMUserInformation QmlInterface::cmUserInformation(){
+PX::AUTH::UserProfileInfo QmlInterface::cmUserInformation(){
     return _cmUserInformation;
 }
 

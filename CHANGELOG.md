@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.9]
+### Fixed and Changed
+
+* Add desktop file to show the application in the main menu.
+
+
+## [0.1.8]
+### Fixed and Changed
+
+* Desktop notification.
+* Update tap handler on messages to working better in Android.
+
+
+## [0.1.6]
+### Changed 
+
+* Invisible Video/Audio calls if Camera/Mic disconnected.
+
+
+## [0.1.5]
+### Fixed 
+
+* Update pro file to install header files correctly.
+
+
+## [0.1.3]
+### Fixed and Changed
+
+* Adding Room members
+* Fixing issue in login options
+
+## [0.1.2]
+### Fixed and Changed
+
+* Go to end chat in the timeline view.
+* Fixing issue to reload the user id field after logout based on the default value.
+* Fixing minor issues.
+
+
 ## [0.1.1]
 ### Fixed
 

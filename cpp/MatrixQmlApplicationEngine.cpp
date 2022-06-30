@@ -19,7 +19,6 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     addImageProvider(QStringLiteral("MxcImage"), imgProvider);
     if (JdenticonProvider::isAvailable())
         addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
-
 }
 
 void MatrixQmlApplicationEngine::load(bool callAutoAccept){

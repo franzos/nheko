@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Matrix Client
+Comment=Matrix Client GUI Application
+Exec=matrix-client
+Icon=matrix-client-icon_bright
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;Qt;

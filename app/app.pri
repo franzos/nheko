@@ -2,6 +2,7 @@ QT += network qml quick quickcontrols2 widgets quickwidgets svg
 CONFIG += c++17
 
 SOURCES += \
+    $$PWD/../cpp/AvatarProvider.cpp \
     $$PWD/../cpp/Clipboard.cpp \
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/CompletionProxyModel.cpp \
@@ -9,6 +10,7 @@ SOURCES += \
     $$PWD/../cpp/QmlInterface.cpp \
     $$PWD/../cpp/MatrixQmlApplicationEngine.cpp \
     $$PWD/../cpp/MatrixQuickView.cpp \
+    $$PWD/../cpp/MemberList.cpp \
     $$PWD/../cpp/mydevice.cpp \
     $$PWD/../cpp/Reaction.cpp \
     $$PWD/../cpp/ReadReceiptsModel.cpp \
@@ -18,7 +20,11 @@ SOURCES += \
     $$PWD/../cpp/RoomsModel.cpp \
     $$PWD/../cpp/Theme.cpp \
     $$PWD/../cpp/TimelineModel.cpp \
-    $$PWD/../cpp/TimelineItem.cpp\
+    $$PWD/../cpp/TimelineItem.cpp \
+    \
+    $$PWD/../cpp/notifications/Manager.cpp \
+    $$PWD/../cpp/notifications/ManagerLinux.cpp \
+    \
     $$PWD/../cpp/ui/emoji/EmojiModel.cpp \
     $$PWD/../cpp/ui/emoji/Provider.cpp \
     $$PWD/../cpp/ui/CombinedImagePackModel.cpp \
@@ -29,6 +35,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/../cpp/Application.h\
+    $$PWD/../cpp/AvatarProvider.h \
     $$PWD/../cpp/Clipboard.h \
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/Configuration.h \
@@ -38,6 +45,7 @@ HEADERS += \
     $$PWD/../cpp/QmlInterface.h \
     $$PWD/../cpp/MatrixQmlApplicationEngine.h \
     $$PWD/../cpp/MatrixQuickView.h \
+    $$PWD/../cpp/MemberList.h \
     $$PWD/../cpp/mydevice.h \
     $$PWD/../cpp/Reaction.h \
     $$PWD/../cpp/ReadReceiptsModel.h \
@@ -47,6 +55,9 @@ HEADERS += \
     $$PWD/../cpp/Theme.h \
     $$PWD/../cpp/TimelineModel.h \
     $$PWD/../cpp/TimelineItem.h  \
+    \
+    $$PWD/../cpp/notifications/Manager.h \
+    \
     $$PWD/../cpp/ui/emoji/EmojiModel.h \
     $$PWD/../cpp/ui/emoji/Provider.h \
     $$PWD/../cpp/ui/CombinedImagePackModel.h \

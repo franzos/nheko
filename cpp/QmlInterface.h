@@ -12,6 +12,9 @@
 #include <matrix-client-library/voip/WebRTCSession.h>
 #include "RoomListModel.h"
 #include "RoomListItem.h"
+#include "notifications/Manager.h"
+
+class NotificationsManager;
 
 namespace PX::GUI::MATRIX {
 
@@ -36,11 +39,13 @@ public:
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
     void login(LOGIN_TYPE type);
+    bool dbusAvailable() const { return _dbusAvailable; }
 
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
     void loginProgramatically(LOGIN_TYPE type);
+    void notificationClicked(const QString &roomid);
     
 public slots:
     virtual void setVideoCallItem() = 0;
@@ -48,8 +53,8 @@ public slots:
     void setUserId(const QString userID);
     QString getServerAddress();
     void setServerAddress(const QString &server);
-    void setCMUserInformation(const CMUserInformation &info);
-    CMUserInformation cmUserInformation();
+    void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
+    PX::AUTH::UserProfileInfo cmUserInformation();
 
 private slots:
     void initiateFinishedCB();
@@ -62,11 +67,16 @@ private:
     RoomListModel *_roomListModel = nullptr;
     Client      *_client = nullptr;
     CallManager *_callMgr = nullptr;
+    CallDevices *_callDevices;
     VerificationManager *_verificationManager;
     QSharedPointer<UserSettings> _userSettings;
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
     QString _userId = "";
-    CMUserInformation _cmUserInformation;
+#if defined(NOTIFICATION_DBUS_SYS)
+    NotificationsManager _notificationsManager;
+#endif
+    bool _dbusAvailable;
+    PX::AUTH::UserProfileInfo _cmUserInformation;
 };
 }

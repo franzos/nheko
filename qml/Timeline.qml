@@ -113,23 +113,23 @@ Room {
     }
 
     function onOpenReadReceiptsDialog(rr) {
-        var dialog = readReceiptsDialog.createObject(timelineModel, {
+        var dialog = readReceiptsDialog.createObject(timeline, {
             "readReceipts": rr,
-            "room": room
+            "timelineModel": timelineModel
         });
         dialog.show();
-        timelineModel.destroyOnClose(dialog);
+        destroyOnClose(dialog);
     }
 
     function onShowRawMessageDialog(rawMessage) {
-        var dialog = rawMessageDialog.createObject(timelineModel, {
+        var dialog = rawMessageDialog.createObject(timeline, {
             "rawMessage": rawMessage
         });
 
         dialog.x= (qmlLibRoot.width - dialog.width) / 2
         dialog.y= (qmlLibRoot.height - dialog.height) / 2
         dialog.show();
-        timelineModel.destroyOnClose(dialog);
+        destroyOnClose(dialog);
     }
     
     Component.onCompleted: {
@@ -202,7 +202,7 @@ Room {
             text: qsTr("&Members")
             icon.source: "qrc:/images/people.svg"
             shortcut: StandardKey.Copy
-            onTriggered: membersDialog.open()
+            onTriggered: timelineModel.openRoomMembers()
         }
 
         Action {
@@ -215,18 +215,6 @@ Room {
     }
 
     Dialog {
-        id: membersDialog
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
-        title: "Members"
-        standardButtons: Dialog.Ok
-        Label {            
-            text: "Coming Soon"
-        }
-        onAccepted: { }
-    }
-
-    Dialog {
         id: roomSettingsDialog
         x: (qmlLibRoot.width - width) / 2
         y: (qmlLibRoot.height - height) / 2
@@ -236,5 +224,17 @@ Room {
             text: "Coming Soon"
         }
         onAccepted: { }
+    }
+
+    Connections{
+        function onOpenRoomMembersDialog(members) {
+            var membersDialog = roomMembersComponent.createObject(qmlLibRoot, {
+                "members": members,
+                "room": timelineModel
+            });
+            membersDialog.show();
+            destroyOnClose(membersDialog);
+        }
+        target: timelineModel
     }
 }
