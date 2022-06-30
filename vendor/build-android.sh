@@ -251,6 +251,17 @@ function BUILD_CMARK {
         # -DCMARK_SHARED=OFF
 }
 
+function BUILD_PX_AUTH_LIB_CPP {
+    target="$1"
+    name="px-auth-lib-cpp"
+    tag="0.0.13"
+    repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
+    FETCH_REPOSITORY $name $tag $repo
+
+    BUILD_LIB "$src_path" "$build_path" "$target" \
+        -DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android
+}
+
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
@@ -287,6 +298,7 @@ function BUILD_ALL {
         BUILD_LMDB "$target" && \
         BUILD_LMDBXX "$target" && \
         BUILD_CMARK "$target" && \
+        BUILD_PX_AUTH_LIB_CPP && \
         BUILD_MATRIX_CLIENT_LIBRARY "$target" && \
         echo "DONE"
 }
