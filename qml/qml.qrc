@@ -33,6 +33,7 @@
         <file>TimelineRow.qml</file>
         <file>UIA.qml</file>
         <file>UserInfo.qml</file>
+        <file>UserProfileQm.qml</file>
         <file>device-verification/AwaitingVerificationConfirmation.qml</file>
         <file>device-verification/DeviceVerification.qml</file>
         <file>device-verification/DigitVerification.qml</file>

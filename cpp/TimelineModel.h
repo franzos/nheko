@@ -19,6 +19,7 @@
 #include <matrix-client-library/CacheStructs.h>
 #include <matrix-client-library/timeline/EventStore.h>
 #include <matrix-client-library/timeline/Timeline.h>
+#include <matrix-client-library/UserProfile.h>
 
 #include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
@@ -302,6 +303,7 @@ signals:
     void scrollToIndex(int index);
     void focusInput();
     void openRoomMembersDialog(MemberList *members);
+    void openProfile(UserProfile *profile);
 
     void lastMessageChanged();
     void notificationsChanged();

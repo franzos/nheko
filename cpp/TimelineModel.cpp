@@ -24,6 +24,7 @@
 #include <matrix-client-library/Config.h>
 #include <matrix-client-library/EventAccessors.h>
 
+
 #include "CompletionProxyModel.h"
 #include "RoomsModel.h"
 #include "ui/emoji/EmojiModel.h"
@@ -800,9 +801,9 @@ void TimelineModel::viewDecryptedRawMessage(const QString &id) {
 void
 TimelineModel::openUserProfile(QString userid)
 {
-    // UserProfile *userProfile = new UserProfile(room_id_, std::move(userid), manager_, this);
-    // connect(this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
-    // emit manager_->openProfile(userProfile);
+    UserProfile *userProfile = new UserProfile(room_id_, std::move(userid),this);
+    connect(this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
+    emit openProfile(userProfile);
 }
 
 void

@@ -7,6 +7,7 @@
 #include <QWindow>
 #include <QQmlEngine>
 #include <matrix-client-library/Client.h>
+#include <matrix-client-library/UserProfile.h>
 #include <matrix-client-library/voip/CallManager.h>
 #include <matrix-client-library/UserSettings.h>
 #include <matrix-client-library/voip/WebRTCSession.h>

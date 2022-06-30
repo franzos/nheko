@@ -8,6 +8,7 @@ import TimelineModel 1.0
 import CallManager 1.0
 import Rooms 1.0
 import CallType 1.0
+import UserProfile 1.0
 import "ui"
 
 Room {
@@ -139,6 +140,7 @@ Room {
         timelineModel.onTypingUsersChanged.connect(onTypingUsersChanged)
         timelineModel.onOpenReadReceiptsDialog.connect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.connect(onShowRawMessageDialog)
+        timelineModel.onOpenProfile.connect(onOpenProfile)
     }
 
     Component.onDestruction: {
@@ -148,6 +150,7 @@ Room {
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
         timelineModel.onOpenReadReceiptsDialog.disconnect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.disconnect(onShowRawMessageDialog)
+         timelineModel.onOpenProfile.disconnect(onOpenProfile)
         timelineModel.destroy()
     }
 
@@ -226,6 +229,22 @@ Room {
         onAccepted: { }
     }
 
+    Component {
+        id: userProfileComponent
+
+        UserProfileQm {
+        }
+
+    }
+
+    function onOpenProfile(profile) {
+        var userProfile = userProfileComponent.createObject(qmlLibRoot, {
+            "profile": profile
+        });
+        userProfile.show();
+        destroyOnClose(userProfile);
+    }
+
     Connections{
         function onOpenRoomMembersDialog(members) {
             var membersDialog = roomMembersComponent.createObject(qmlLibRoot, {
@@ -235,6 +254,7 @@ Room {
             membersDialog.show();
             destroyOnClose(membersDialog);
         }
+         
         target: timelineModel
     }
 }
