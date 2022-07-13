@@ -66,8 +66,7 @@ AbstractButton {
     // }
 
     onPressAndHold:{
-        if(Qt.platform.os == "linux")
-            messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+        messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     }
     onDoubleClicked: chat.model.reply = eventId
 
