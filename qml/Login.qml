@@ -129,7 +129,7 @@ Page {
                 if(combo.currentText == "PASSWORD")
                     gotoLogin()
                 else if (combo.currentText == "CIBA")
-                    gotoCibaLogin()
+                    gotoCibaLogin("")
             }
         }
     }
@@ -143,10 +143,10 @@ Page {
                                     String(matrixServerText.text))
     }
     
-    function gotoCibaLogin(){
+    function gotoCibaLogin(token){
         enableUserInputs(false)
         matrixServerText.text = GlobalObject.checkMatrixServerUrl(matrixServerText.text)
-        MatrixClient.loginWithCiba(String(userIdText.text), String(matrixServerText.text))
+        MatrixClient.loginWithCiba(String(userIdText.text), String(matrixServerText.text), token)
     }
     
     function enableUserInputs(enable){
@@ -187,9 +187,9 @@ Page {
         userIdText.text=QmlInterface.userId()
     }
     
-    function onLoginProgramatically(type){
+    function onLoginProgramatically(type, accessToken){
         if(type == QmlInterface.LOGIN_TYPE.CIBA)
-            gotoCibaLogin()
+            gotoCibaLogin(accessToken)
         else if(type == QmlInterface.LOGIN_TYPE.PASSWORD)
             gotoLogin()
     }

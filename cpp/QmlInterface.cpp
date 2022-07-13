@@ -302,8 +302,8 @@ void QmlInterface::setServerAddress(const QString &server){
     }
 };
 
-void QmlInterface::login(QmlInterface::LOGIN_TYPE type){
-    emit loginProgramatically(type);
+void QmlInterface::login(QmlInterface::LOGIN_TYPE type, const QString &accessToken){
+    emit loginProgramatically(type, accessToken);
 }
 
 }
