@@ -19,7 +19,7 @@ Column {
     signal menuClicked()
     signal voiceCallClicked()
     signal videoCallClicked()
-    signal optionClicked()
+    signal optionClicked(Item item)
     property bool enableCallButtons: false
     property bool inCalling: false
 
@@ -131,7 +131,9 @@ Column {
                 width: parent.height
                 height: parent.height
                 visible: false
-                onClicked: {optionClicked()}
+                onClicked: {
+                    optionClicked(optionsButton)
+                }
             }
         }
     }
@@ -187,11 +189,11 @@ Column {
     }
     
     function setVerified(flag){
-        if(flag){
-            verifyRect.visible = false
-        } else {
-            verifyRect.visible = true
-        }
+        // if(flag){
+        //     verifyRect.visible = false
+        // } else {
+        //     verifyRect.visible = true
+        // }
     }
 
     SelfVerificationCheck{

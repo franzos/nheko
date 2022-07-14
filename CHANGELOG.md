@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Changed
 
 * CIBA Login with access token.
+* Temporarily disable verification setup button.
+* Fixing issue in scrolling in Android OS.
+* Fixing issue to show the menu on pressAndHold on messages in Android OS.
 
 
 ## [0.1.9]
