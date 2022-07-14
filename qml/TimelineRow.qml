@@ -47,9 +47,16 @@ AbstractButton {
     width: parent.width
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
 
-    // Rectangle {
-    //     color: hovered ? GlobalObject.colors.alternateBase : "transparent"
-    //     anchors.fill: parent
+    Rectangle {
+        color: hovered ? GlobalObject.colors.alternateBase : "transparent"
+        anchors.fill: parent
+
+        MouseArea {
+            anchors.fill: parent
+            onPressAndHold: {
+                messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+            }
+        }
     //     // this looks better without margins
     //     TapHandler {
     //         acceptedButtons: Qt.RightButton
@@ -63,11 +70,11 @@ AbstractButton {
     //         }
     //         // gesturePolicy: TapHandler.ReleaseWithinBounds
     //     }
-    // }
-
-    onPressAndHold:{
-        messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     }
+
+    // onPressAndHold:{
+    //     messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+    // }
     onDoubleClicked: chat.model.reply = eventId
 
     DragHandler {
