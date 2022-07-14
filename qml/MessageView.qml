@@ -1,4 +1,4 @@
-import Qt.labs.platform 1.1 as Platform
+// import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.2
@@ -529,7 +529,7 @@ Item {
         }
     }
 
-    Platform.Menu {
+    Menu {
         id: messageContextMenu
 
         property string eventId
@@ -575,116 +575,116 @@ Item {
             }
         }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.text
-            enabled: visible
+        Action {
+            // visible: messageContextMenu.text
+            enabled:  messageContextMenu.text
             text: qsTr("&Copy")
             onTriggered: Clipboard.text = messageContextMenu.text
         }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.link
-            enabled: visible
+        Action {
+            // visible: messageContextMenu.link
+            enabled: messageContextMenu.link
             text: qsTr("Copy &link location")
             onTriggered: Clipboard.text = messageContextMenu.link
         }
 
-        Platform.MenuItem {
-            id: reactionOption
+        // Action {
+        //     id: reactionOption
 
-            visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-            text: qsTr("Re&act")
-            onTriggered: emojiPopup.show(null, function(emoji) {
-                room.input.reaction(messageContextMenu.eventId, emoji);
-            })
-        }
+        //     visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+        //     text: qsTr("Re&act")
+        //     onTriggered: emojiPopup.show(null, function(emoji) {
+        //         room.input.reaction(messageContextMenu.eventId, emoji);
+        //     })
+        // }
 
-        Platform.MenuItem {
-            visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-            text: qsTr("Repl&y")
-            onTriggered: room.replyAction(messageContextMenu.eventId)
-        }
+        // Action {
+        //     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+        //     text: qsTr("Repl&y")
+        //     onTriggered: room.replyAction(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
-            enabled: visible
-            text: qsTr("&Edit")
-            onTriggered: room.editAction(messageContextMenu.eventId)
-        }
+        // Action {
+        //     visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
+        //     enabled: visible
+        //     text: qsTr("&Edit")
+        //     onTriggered: room.editAction(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
-            enabled: visible
-            text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
-            onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
-        }
+        // Action {
+        //     visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
+        //     enabled: visible
+        //     text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
+        //     onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            text: qsTr("Read receip&ts")
-            onTriggered: room.showReadReceipts(messageContextMenu.eventId)
-        }
+        // Action {
+        //     text: qsTr("Read receip&ts")
+        //     onTriggered: room.showReadReceipts(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
-            text: qsTr("&Forward")
-            onTriggered: {
-                var forwardMess = forwardCompleterComponent.createObject(qmlLibRoot);
-                forwardMess.setMessageEventId(messageContextMenu.eventId);
-                forwardMess.open();
-                qmlLibRoot.destroyOnClose(forwardMess);
-            }
-        }
+        // Action {
+        //     visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
+        //     text: qsTr("&Forward")
+        //     onTriggered: {
+        //         var forwardMess = forwardCompleterComponent.createObject(qmlLibRoot);
+        //         forwardMess.setMessageEventId(messageContextMenu.eventId);
+        //         forwardMess.open();
+        //         qmlLibRoot.destroyOnClose(forwardMess);
+        //     }
+        // }
 
-        Platform.MenuItem {
-            text: qsTr("&Mark as read")
-            onTriggered: room.markEventsAsRead(messageContextMenu.eventId)
-        }
+        // Action {
+        //     text: qsTr("&Mark as read")
+        //     onTriggered: room.markEventsAsRead(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            text: qsTr("View raw message")
-            onTriggered: room.viewRawMessage(messageContextMenu.eventId)
-        }
+        // Action {
+        //     text: qsTr("View raw message")
+        //     onTriggered: room.viewRawMessage(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
-            visible: messageContextMenu.isEncrypted
-            enabled: visible
-            text: qsTr("View decrypted raw message")
-            onTriggered: room.viewDecryptedRawMessage(messageContextMenu.eventId)
-        }
+        // Action {
+        //     // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
+        //     visible: messageContextMenu.isEncrypted
+        //     enabled: visible
+        //     text: qsTr("View decrypted raw message")
+        //     onTriggered: room.viewDecryptedRawMessage(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
-            text: qsTr("Remo&ve message")
-            onTriggered: function() {
-                var dialog = removeReason.createObject(qmlLibRoot);
-                dialog.eventId = messageContextMenu.eventId;
-                dialog.show();
-                dialog.forceActiveFocus();
-                qmlLibRoot.destroyOnClose(dialog);
-            }
-        }
+        // Action {
+        //     visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
+        //     text: qsTr("Remo&ve message")
+        //     onTriggered: function() {
+        //         var dialog = removeReason.createObject(qmlLibRoot);
+        //         dialog.eventId = messageContextMenu.eventId;
+        //         dialog.show();
+        //         dialog.forceActiveFocus();
+        //         qmlLibRoot.destroyOnClose(dialog);
+        //     }
+        // }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
-            enabled: visible
-            text: qsTr("&Save as")
-            onTriggered: room.saveMedia(messageContextMenu.eventId)
-        }
+        // Action {
+        //     visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+        //     enabled: visible
+        //     text: qsTr("&Save as")
+        //     onTriggered: room.saveMedia(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
-            enabled: visible
-            text: qsTr("&Open in external program")
-            onTriggered: room.openMedia(messageContextMenu.eventId)
-        }
+        // Action {
+        //     visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+        //     enabled: visible
+        //     text: qsTr("&Open in external program")
+        //     onTriggered: room.openMedia(messageContextMenu.eventId)
+        // }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.eventId
-            enabled: visible
-            text: qsTr("Copy link to eve&nt")
-            onTriggered: room.copyLinkToEvent(messageContextMenu.eventId)
-        }
+        // Action {
+        //     visible: messageContextMenu.eventId
+        //     enabled: visible
+        //     text: qsTr("Copy link to eve&nt")
+        //     onTriggered: room.copyLinkToEvent(messageContextMenu.eventId)
+        // }
 
     }
 
@@ -696,7 +696,7 @@ Item {
 
     }
 
-    Platform.Menu {
+    Menu {
         id: replyContextMenu
 
         property string text
@@ -710,21 +710,21 @@ Item {
             open();
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: replyContextMenu.text
             enabled: visible
             text: qsTr("&Copy")
             onTriggered: Clipboard.text = replyContextMenu.text
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: replyContextMenu.link
             enabled: visible
             text: qsTr("Copy &link location")
             onTriggered: Clipboard.text = replyContextMenu.link
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: true
             enabled: visible
             text: qsTr("&Go to quoted message")

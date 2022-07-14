@@ -54,7 +54,7 @@ AbstractButton {
         MouseArea {
             anchors.fill: parent
             onPressAndHold: {
-                messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+                messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText, r)
             }
         }
     //     // this looks better without margins
