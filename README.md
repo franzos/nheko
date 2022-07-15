@@ -141,3 +141,14 @@ in order to release new versions for the `MatrixClient` we follow below steps:
 4. committing the version related changes, now we can set the regarding tag on `development` branch.
 5. in order to release new versions for mobile, we need to submit a merge request from `development` branch to the `master` branch. we need to test the provided reference against mobile, and if it was acceptable, we approve the merge request and release new version for mobile.
 - **Note 1:** If we have a recent change in the vendor dependencies like updating the library version, we need to both mention in the submitted merge request and apply the related change in the `vendor/build-android.sh` file.
+
+
+## Android bundle release steps
+
+in order to publish new signed bundle for android: 
+
+1. open project in Qt Creator
+2. in `Projects` > `Build` > `Build Steps` > `Build Android APK`
+    - select proper keystore file to sign the APK with
+    - provide the password for the keystore
+    - select the `Build Android App bundle (*.aab)` option
