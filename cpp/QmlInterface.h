@@ -38,13 +38,13 @@ public:
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
-    void login(LOGIN_TYPE type);
+    void login(LOGIN_TYPE type, const QString &accessToken = "");
     bool dbusAvailable() const { return _dbusAvailable; }
 
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
-    void loginProgramatically(LOGIN_TYPE type);
+    void loginProgramatically(LOGIN_TYPE type, const QString &accessToken);
     void notificationClicked(const QString &roomid);
     
 public slots:

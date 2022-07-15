@@ -47,27 +47,11 @@ AbstractButton {
     width: parent.width
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
 
-    Rectangle {
-        color: hovered ? GlobalObject.colors.alternateBase : "transparent"
+    MouseArea {
         anchors.fill: parent
-        // this looks better without margins
-        TapHandler {
-            acceptedButtons: Qt.RightButton
-            longPressThreshold: 2
-            onSingleTapped: {
-                if(Qt.platform.os == "linux")
-                    messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-            }
-            onLongPressed: {
-                messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-            }
-            // gesturePolicy: TapHandler.ReleaseWithinBounds
+        onPressAndHold: {
+            messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText, r, mouse.x, mouse.y)
         }
-    }
-
-    onPressAndHold:{
-        if(Qt.platform.os == "linux")
-            messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     }
     onDoubleClicked: chat.model.reply = eventId
 

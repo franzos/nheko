@@ -155,8 +155,8 @@ Room {
         typingIndicator.setTypingDisplayText(text)
     }
 
-    function onOptionClicked(){
-        contextMenu.popup()     
+    function onOptionClicked(parent){
+        contextMenu.popup(parent,0, 0)     
     }
 
     LeaveMessage {

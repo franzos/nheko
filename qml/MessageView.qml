@@ -1,4 +1,4 @@
-import Qt.labs.platform 1.1 as Platform
+// import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.2
@@ -529,7 +529,7 @@ Item {
         }
     }
 
-    Platform.Menu {
+    Menu {
         id: messageContextMenu
 
         property string eventId
@@ -539,8 +539,8 @@ Item {
         property bool isEncrypted
         property bool isEditable
         property bool isSender
-
-        function show(eventId_, eventType_, isSender_, isEncrypted_, isEditable_, link_, text_, showAt_) {
+        
+        function show(eventId_, eventType_, isSender_, isEncrypted_, isEditable_, link_, text_, showAt_,x ,y) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
@@ -554,10 +554,10 @@ Item {
                 link = link_;
             else
                 link = "";
-            if (showAt_)
-                open(showAt_);
-            else
-                open();
+            if (showAt_){
+                popup(showAt_,x,y);
+            } else
+                popup();
         }
 
         Component {
@@ -575,57 +575,59 @@ Item {
             }
         }
 
-        Platform.MenuItem {
-            visible: messageContextMenu.text
-            enabled: visible
+        MenuItem {
+            visible:  messageContextMenu.text
+            height: visible ? implicitHeight : 0
             text: qsTr("&Copy")
             onTriggered: Clipboard.text = messageContextMenu.text
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: messageContextMenu.link
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("Copy &link location")
             onTriggered: Clipboard.text = messageContextMenu.link
         }
 
-        Platform.MenuItem {
+        MenuItem {
             id: reactionOption
-
             visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+            height: visible ? implicitHeight : 0
             text: qsTr("Re&act")
             onTriggered: emojiPopup.show(null, function(emoji) {
                 room.input.reaction(messageContextMenu.eventId, emoji);
             })
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+            height: visible ? implicitHeight : 0
             text: qsTr("Repl&y")
             onTriggered: room.replyAction(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("&Edit")
             onTriggered: room.editAction(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
             onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             text: qsTr("Read receip&ts")
             onTriggered: room.showReadReceipts(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
+            height: visible ? implicitHeight : 0
             text: qsTr("&Forward")
             onTriggered: {
                 var forwardMess = forwardCompleterComponent.createObject(qmlLibRoot);
@@ -635,26 +637,27 @@ Item {
             }
         }
 
-        Platform.MenuItem {
+        MenuItem {
             text: qsTr("&Mark as read")
             onTriggered: room.markEventsAsRead(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             text: qsTr("View raw message")
             onTriggered: room.viewRawMessage(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
             visible: messageContextMenu.isEncrypted
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("View decrypted raw message")
             onTriggered: room.viewDecryptedRawMessage(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
+            height: visible ? implicitHeight : 0
             text: qsTr("Remo&ve message")
             onTriggered: function() {
                 var dialog = removeReason.createObject(qmlLibRoot);
@@ -665,23 +668,23 @@ Item {
             }
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("&Save as")
             onTriggered: room.saveMedia(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("&Open in external program")
             onTriggered: room.openMedia(messageContextMenu.eventId)
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: messageContextMenu.eventId
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("Copy link to eve&nt")
             onTriggered: room.copyLinkToEvent(messageContextMenu.eventId)
         }
@@ -696,37 +699,35 @@ Item {
 
     }
 
-    Platform.Menu {
+    Menu {
         id: replyContextMenu
 
         property string text
         property string link
         property string eventId
 
-        function show(text_, link_, eventId_) {
+        function show(text_, link_, eventId_, parent, x, y) {
             text = text_;
             link = link_;
             eventId = eventId_;
-            open();
+            popup(showAt_,x,y);
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: replyContextMenu.text
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("&Copy")
             onTriggered: Clipboard.text = replyContextMenu.text
         }
 
-        Platform.MenuItem {
+        MenuItem {
             visible: replyContextMenu.link
-            enabled: visible
+            height: visible ? implicitHeight : 0
             text: qsTr("Copy &link location")
             onTriggered: Clipboard.text = replyContextMenu.link
         }
 
-        Platform.MenuItem {
-            visible: true
-            enabled: visible
+        MenuItem {
             text: qsTr("&Go to quoted message")
             onTriggered: chat.model.showEvent(replyContextMenu.eventId)
         }
