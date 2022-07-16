@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QStringList>
 #include <matrix-client-library/Client.h>
-#include <QDBusConnection>
 #include "RoomListItem.h"
 #include "TimelineModel.h"
 
