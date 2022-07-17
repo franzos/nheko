@@ -5,6 +5,8 @@ android {
     DIST_DIR=$$PWD/../../vendor/_dist/armeabi-v7a
     !exists($$DIST_DIR):error("vendor packages has not been setup yet! (run vendor/build-android.sh)")
 
+    ANDROID_TARGET_SDK_VERSION = 30
+
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD
 
     DEFINES += SPDLOG_FMT_EXTERNAL=ON
