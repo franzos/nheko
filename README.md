@@ -152,6 +152,8 @@ in order to publish new signed bundle for android:
     - select proper keystore file to sign the APK with
     - provide the password for the keystore
     - select the `Build Android App bundle (*.aab)` option
+- **Note:** release the bundle file, we need to increment the application version code, otherwise Google rejects the submitted bundle with the following message:
+  > Version code XX has already been used. Try another version code.
 
 following the above steps, we have the signed APK and bundle files. however since we updated the `ANDROID_TARGET_SDK_VERSION` to 30, we need to sign them manually with newer version of the signature schema than what supports by Qt Creator ( [reference](https://bugreports.qt.io/browse/QTBUG-91255?focusedCommentId=579924&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-579924) ). 
 

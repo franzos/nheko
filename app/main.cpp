@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QStandardPaths>
 #include <QDebug>
 #include <QQuickWidget>
 #include <QMainWindow>
@@ -39,7 +40,9 @@ int main(int argc, char *argv[])
 #ifdef __ANDROID__
     std::string tag = "android-logs";
     auto android_logger = spdlog::android_logger_mt("android", tag);
-    android_logger->critical("log from android.");
+    android_logger->info("log from android.");
+    android_logger->info("- DATA LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString());
+    android_logger->info("- CACHE LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString());
 #endif
 
     return app.exec();
