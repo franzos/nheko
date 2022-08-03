@@ -76,6 +76,7 @@ Column {
             ToolButton {
                 id: callSettingsItem
                 icon.source: "qrc:/images/call-settings.svg"
+                icon.color:"gray"
                 width: parent.height
                 height: parent.height
                 visible: CallManager.callsSupported
@@ -310,6 +311,17 @@ Column {
             onCallStateHandler()
         else if(state == "freecall")
             freeCallStateHandler()
+        if(CallManager.callsSupported){
+            var mics = CallManager.mics
+            var cams = CallManager.cameras
+            if(mics.length && cams.length){
+                callSettingsItem.icon.color="green"
+            } else if (mics.length || cams.length){
+                callSettingsItem.icon.color="red"
+            } else {
+                callSettingsItem.icon.color="gray"
+            }
+        }
     }
 
     Component.onCompleted: {
