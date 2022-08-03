@@ -23,6 +23,11 @@ Column {
     property bool enableCallButtons: false
     property bool inCalling: false
 
+    Component {
+        id: callSettingsDialogFactory
+        CallSettingsDialog {}
+    }
+
     ToolBar {
         id: toolBar
         width: parent.width
@@ -40,7 +45,7 @@ Column {
                     menuClicked()
                 }
             }
-
+            
             ToolButton {
                 id: backButton
                 icon.source: "qrc:/images/angle-arrow-left.svg"
@@ -67,6 +72,18 @@ Column {
             //         selfVerificationCheck.verify()
             //     }
             // }
+
+            ToolButton {
+                id: callSettingsItem
+                icon.source: "qrc:/images/call-settings.svg"
+                width: parent.height
+                height: parent.height
+                visible: CallManager.callsSupported
+                onClicked: {
+                    var callSettingsDialog = callSettingsDialogFactory.createObject(parent);
+                    callSettingsDialog.open()
+                }
+            }
 
             Avatar {
                 id: avatar
