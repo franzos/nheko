@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.13] - NOT RELEASED YET
+### Fixed and Changed
+
+* Fixing an issue in shortkey assignment.
+
 
 ## [0.1.12]
 ### Changed
