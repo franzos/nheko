@@ -19,6 +19,8 @@
 #include "Clipboard.h"
 #include "AvatarProvider.h"
 
+Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+
 namespace PX::GUI::MATRIX{
 
     using webrtc::CallType;
@@ -141,28 +143,28 @@ QmlInterface::QmlInterface(QObject *parent):
     //         &_notificationsManager,
     //         &NotificationsManager::removeNotification);
 #endif
-    qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
-    connect(_callMgr, &CallManager::devicesChanged, [=]() {
-        auto defaultMic = UserSettings::instance()->microphone();
-        auto defaultCam = UserSettings::instance()->camera();
-        auto mics = CallDevices::instance().names(false, defaultMic.toStdString());
-        auto cams = CallDevices::instance().names(true, defaultCam.toStdString());
-        nhlog::ui()->info(">>> DEVICES CHANGED: mics: {} - cams: {}", mics.size(), cams.size());
+        qmlRegisterType<MyDevice>("mydevice", 1, 0, "MyDevice");
+        connect(_callMgr, &CallManager::devicesChanged, [=]() {
+            auto defaultMic = UserSettings::instance()->microphone();
+            auto defaultCam = UserSettings::instance()->camera();
+            auto mics = CallDevices::instance().names(false, defaultMic.toStdString());
+            auto cams = CallDevices::instance().names(true, defaultCam.toStdString());
+            nhlog::ui()->info(">>> DEVICES CHANGED: mics: {} - cams: {}", mics.size(), cams.size());
 
-        for (const auto &mic : mics) {
-            nhlog::ui()->info("   - [mic]: {}", mic);
-        }
-        for (const auto &cam : cams) {
-            nhlog::ui()->info("   - [cam]: {}", cam);
-        }
-        nhlog::ui()->info("   - [default mic]: {}", defaultMic.toStdString());
-        nhlog::ui()->info("   - [default cam]: {}", defaultCam.toStdString());
-    });
+            for (const auto &mic : mics) {
+                nhlog::ui()->info("   - [mic]: {}", mic);
+            }
+            for (const auto &cam : cams) {
+                nhlog::ui()->info("   - [cam]: {}", cam);
+            }
+            nhlog::ui()->info("   - [default mic]: {}", defaultMic.toStdString());
+            nhlog::ui()->info("   - [default cam]: {}", defaultCam.toStdString());
+        });
 
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new GlobalObject();
         });
-        
+        qRegisterMetaType<std::vector<DeviceInfo>>();
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
         qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
