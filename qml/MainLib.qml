@@ -82,12 +82,12 @@ Page {
         RawMessageDialog {
         }
     }
-      Component {
+
+    Component {
         id: roomMembersComponent
 
         RoomMembers {
         }
-
     }
 
     BusyIndicator {

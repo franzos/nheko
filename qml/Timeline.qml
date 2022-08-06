@@ -238,7 +238,7 @@ Room {
     }
 
     function onOpenProfile(profile) {
-        var userProfile = userProfileComponent.createObject(qmlLibRoot, {
+        var userProfile = userProfileComponent.createObject(timeline, {
             "profile": profile
         });
         userProfile.show();
@@ -247,7 +247,7 @@ Room {
 
     Connections{
         function onOpenRoomMembersDialog(members) {
-            var membersDialog = roomMembersComponent.createObject(qmlLibRoot, {
+            var membersDialog = roomMembersComponent.createObject(timeline, {
                 "members": members,
                 "room": timelineModel
             });
