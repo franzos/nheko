@@ -183,33 +183,29 @@ Room {
         margins: 10
         Action {
             id: inviteUserAction
-            text: qsTr("&Invite User")
+            text: qsTr("Invite User")
             icon.source: "qrc:/images/add-square-button.svg"
-            shortcut: StandardKey.Copy
             onTriggered: inviteuserDialog.open()
         }
         
         Action {
             id: leaveRoomAction
-            text: qsTr("&Leave Room")
+            text: qsTr("Leave Room")
             icon.source: "qrc:/images/leave-room-icon.svg"
-            shortcut: StandardKey.Copy
             onTriggered: leaveDialog.open()
         }
 
         Action {
             id: membersAction
-            text: qsTr("&Members")
+            text: qsTr("Members")
             icon.source: "qrc:/images/people.svg"
-            shortcut: StandardKey.Copy
             onTriggered: timelineModel.openRoomMembers()
         }
 
         Action {
             id: settingAction
-            text: qsTr("&Setting")
+            text: qsTr("Setting")
             icon.source: "qrc:/images/settings.svg"
-            shortcut: StandardKey.Copy
             onTriggered: roomSettingsDialog.open()
         }  
     }
