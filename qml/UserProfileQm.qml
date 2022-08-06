@@ -13,6 +13,7 @@ import GlobalObject 1.0
 import UserProfile 1.0
 import Permissions 1.0
 import VerificationStatus 1.0
+import Crypto 1.0
 
 ApplicationWindow {
     id: userProfileDialog

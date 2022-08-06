@@ -9,12 +9,11 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.13
 import MemberList 1.0
-
-
 import MatrixClient 1.0
 import GlobalObject 1.0
 import TimelineModel 1.0
 import CursorShape 1.0
+import Crypto 1.0
 
 ApplicationWindow {
     id: roomMembersRoot
