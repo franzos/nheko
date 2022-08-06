@@ -19,9 +19,14 @@ Column {
     signal menuClicked()
     signal voiceCallClicked()
     signal videoCallClicked()
-    signal optionClicked()
+    signal optionClicked(Item item)
     property bool enableCallButtons: false
     property bool inCalling: false
+
+    Component {
+        id: callSettingsDialogFactory
+        CallSettingsDialog {}
+    }
 
     ToolBar {
         id: toolBar
@@ -40,7 +45,7 @@ Column {
                     menuClicked()
                 }
             }
-
+            
             ToolButton {
                 id: backButton
                 icon.source: "qrc:/images/angle-arrow-left.svg"
@@ -57,14 +62,27 @@ Column {
                 }
             }
 
+            // ToolButton {
+            //     id: verifyRect
+            //     icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+            //     icon.color:"#C70039"
+            //     width: parent.height
+            //     height: parent.height
+            //     onClicked: {
+            //         selfVerificationCheck.verify()
+            //     }
+            // }
+
             ToolButton {
-                id: verifyRect
-                icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
-                icon.color:"#C70039"
+                id: callSettingsItem
+                icon.source: "qrc:/images/call-settings.svg"
+                icon.color:"gray"
                 width: parent.height
                 height: parent.height
+                visible: CallManager.callsSupported
                 onClicked: {
-                    selfVerificationCheck.verify()
+                    var callSettingsDialog = callSettingsDialogFactory.createObject(parent);
+                    callSettingsDialog.open()
                 }
             }
 
@@ -131,7 +149,9 @@ Column {
                 width: parent.height
                 height: parent.height
                 visible: false
-                onClicked: {optionClicked()}
+                onClicked: {
+                    optionClicked(optionsButton)
+                }
             }
         }
     }
@@ -187,11 +207,11 @@ Column {
     }
     
     function setVerified(flag){
-        if(flag){
-            verifyRect.visible = false
-        } else {
-            verifyRect.visible = true
-        }
+        // if(flag){
+        //     verifyRect.visible = false
+        // } else {
+        //     verifyRect.visible = true
+        // }
     }
 
     SelfVerificationCheck{
@@ -291,6 +311,17 @@ Column {
             onCallStateHandler()
         else if(state == "freecall")
             freeCallStateHandler()
+        if(CallManager.callsSupported){
+            var mics = CallManager.mics
+            var cams = CallManager.cameras
+            if(mics.length && cams.length){
+                callSettingsItem.icon.color="green"
+            } else if (mics.length || cams.length){
+                callSettingsItem.icon.color="red"
+            } else {
+                callSettingsItem.icon.color="gray"
+            }
+        }
     }
 
     Component.onCompleted: {

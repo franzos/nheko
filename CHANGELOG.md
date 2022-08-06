@@ -5,10 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 
+## [0.1.12]
+### Changed
+
+* Video/Audio input settings.
+
+
+## [0.1.11]
+### Changed
+
+* Disable auto start matrix client backend in gui library.
+
+
 ## [0.1.10]
 ### Fixed and Changed
 
 * CIBA Login with access token.
+* Temporarily disable verification setup button.
+* Fixing issue in scrolling in Android OS.
+* Fixing issue to show the menu on pressAndHold on messages in Android OS.
 
 
 ## [0.1.9]

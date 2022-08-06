@@ -148,20 +148,15 @@ QmlInterface::QmlInterface(QObject *parent):
         auto mics = CallDevices::instance().names(false, defaultMic.toStdString());
         auto cams = CallDevices::instance().names(true, defaultCam.toStdString());
         nhlog::ui()->info(">>> DEVICES CHANGED: mics: {} - cams: {}", mics.size(), cams.size());
-        if (mics.size() > 0) {
-            for (const auto &mic : mics) {
-                auto q_mic = QString::fromStdString(mic);
-                if (!q_mic.toLower().startsWith("monitor")) {
-                    UserSettings::instance()->setMicrophone(q_mic);
-                    nhlog::ui()->info("   - [mic]: {}", mic);
-                    break;
-                }
-            }
+
+        for (const auto &mic : mics) {
+            nhlog::ui()->info("   - [mic]: {}", mic);
         }
-        if (cams.size() > 0) {
-            UserSettings::instance()->setCamera(QString::fromStdString(cams[0]));
-            nhlog::ui()->info("   - [cam]: {}", cams[0]);
+        for (const auto &cam : cams) {
+            nhlog::ui()->info("   - [cam]: {}", cam);
         }
+        nhlog::ui()->info("   - [default mic]: {}", defaultMic.toStdString());
+        nhlog::ui()->info("   - [default cam]: {}", defaultCam.toStdString());
     });
 
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {

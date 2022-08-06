@@ -18,6 +18,10 @@ ApplicationWindow {
         callAutoAccept: qmlApplication.callAutoAccept
     }
 
+    Component.onCompleted: {
+        MatrixClient.start()
+    }
+
     onClosing: {
         MatrixClient.stop()
     }

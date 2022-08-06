@@ -197,6 +197,5 @@ Page {
                                    "dynamicSnippet");
             CallManager.onNewInviteState.connect(onNewInviteState)
         }
-        MatrixClient.start()
     }
 }

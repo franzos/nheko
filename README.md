@@ -141,3 +141,45 @@ in order to release new versions for the `MatrixClient` we follow below steps:
 4. committing the version related changes, now we can set the regarding tag on `development` branch.
 5. in order to release new versions for mobile, we need to submit a merge request from `development` branch to the `master` branch. we need to test the provided reference against mobile, and if it was acceptable, we approve the merge request and release new version for mobile.
 - **Note 1:** If we have a recent change in the vendor dependencies like updating the library version, we need to both mention in the submitted merge request and apply the related change in the `vendor/build-android.sh` file.
+
+
+## Android bundle release steps
+
+in order to publish new signed bundle for android: 
+
+1. open project in Qt Creator
+2. in `Projects` > `Build` > `Build Steps` > `Build Android APK`
+    - select proper keystore file to sign the APK with
+    - provide the password for the keystore
+    - select the `Build Android App bundle (*.aab)` option
+
+following the above steps, we have the signed APK and bundle files. however since we updated the `ANDROID_TARGET_SDK_VERSION` to 30, we need to sign them manually with newer version of the signature schema than what supports by Qt Creator ( [reference](https://bugreports.qt.io/browse/QTBUG-91255?focusedCommentId=579924&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-579924) ). 
+
+- firt we need to adjust the archive file using the `zipalign` tool
+  ```shell
+  $ zipalign -v 4 "${file_path}" "${output_file}"
+  ```
+- then we sign the APK with a new version of signature schema using the `apksigner`
+  ```shell
+  $ apksigner sign --ks "${keystore_file}" --ks-key-alias "${keystore_alias}" --ks-pass "pass:${keystore_password}" --key-pass "pass:${key_password}" --verbose "${file_path}"
+  ```
+- later we can check the signature status using the following comand
+  ```shell
+  $ apksign verify --verbose "${file_path}"
+  Verifies
+  Verified using v1 scheme (JAR signing): true
+  Verified using v2 scheme (APK Signature Scheme v2): true
+  Verified using v3 scheme (APK Signature Scheme v3): true
+  Verified using v4 scheme (APK Signature Scheme v4): false
+  Verified for SourceStamp: false
+  Number of signers: 1
+  ```
+- for the bundle file we use the `jarsigner` tool as bellow:
+  ```shell
+  $ jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore "${keystore_file}" "${file_path}" "${keystore_alias}" -storepass "${keystore_password}" -keypass "${key_password}"
+  ```
+- we can also strip the .aab signing if you want to replace it:
+  ```shell
+  $ zip -d "${file_path}" META-INF/\*
+  ```
+more info over here: https://source.android.com/security/apksigning
