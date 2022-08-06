@@ -300,52 +300,7 @@ QmlInterface::QmlInterface(QObject *parent):
         }
     };
 
-    void QmlInterface::login(QmlInterface::LOGIN_TYPE type){
-        emit loginProgramatically(type);
+    void QmlInterface::login(LOGIN_TYPE type, const QString &accessToken){
+        emit loginProgramatically(type, accessToken);
     }
-    _roomListModel->add(roomList);
-}
-
-void QmlInterface::setStyle(const QString &style, const QString &fallback){
-    QQuickStyle::setStyle(style);
-    QQuickStyle::setFallbackStyle(fallback);
-    qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
-}
-
-void QmlInterface::setCMUserInformation(const PX::AUTH::UserProfileInfo &info){
-    _cmUserInformation = info;
-}
-
-PX::AUTH::UserProfileInfo QmlInterface::cmUserInformation(){
-    return _cmUserInformation;
-}
-
-QString QmlInterface::userId(){
-    return _userId;
-}
-
-void QmlInterface::setUserId(const QString userID){
-    if(userID!=_userId){
-        qInfo()<<"Default user ID set to " << userID;
-        _userId = userID;
-        emit userIdChanged(_userId);
-    }
-}
-
-QString QmlInterface::getServerAddress(){
-    return _serverAddress;
-};
-
-void QmlInterface::setServerAddress(const QString &server){
-    if(server!=_serverAddress){
-        qInfo()<<"Default server set to " << server;
-        _serverAddress = server;
-        emit serverAddressChanged(_serverAddress);
-    }
-};
-
-void QmlInterface::login(QmlInterface::LOGIN_TYPE type, const QString &accessToken){
-    emit loginProgramatically(type, accessToken);
-}
-
 }
