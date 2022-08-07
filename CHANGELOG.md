@@ -9,7 +9,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Fixing an issue in shortkey assignment.
 * Fixing an issue in showing the avatar in member list.
-
+* Move image providers classes from backend library to here.
+* Fixing jdenticon warning message.
 
 ## [0.1.12]
 ### Changed

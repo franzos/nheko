@@ -18,6 +18,7 @@
 #include "ui/emoji/EmojiModel.h"
 #include "Clipboard.h"
 #include "AvatarProvider.h"
+#include "JdenticonProvider.h"
 
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
@@ -305,4 +306,9 @@ QmlInterface::QmlInterface(QObject *parent):
     void QmlInterface::login(LOGIN_TYPE type, const QString &accessToken){
         emit loginProgramatically(type, accessToken);
     }
+    
+    bool QmlInterface::jdenticonProviderisAvailable(){
+        return JdenticonProvider::isAvailable();
+    }
+    
 }

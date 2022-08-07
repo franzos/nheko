@@ -7,10 +7,12 @@ SOURCES += \
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/CompletionProxyModel.cpp \
     $$PWD/../cpp/GlobalObject.cpp \
+    $$PWD/../cpp/JdenticonProvider.cpp \
     $$PWD/../cpp/QmlInterface.cpp \
     $$PWD/../cpp/MatrixQmlApplicationEngine.cpp \
     $$PWD/../cpp/MatrixQuickView.cpp \
     $$PWD/../cpp/MemberList.cpp \
+    $$PWD/../cpp/MxcImageProvider.cpp \
     $$PWD/../cpp/mydevice.cpp \
     $$PWD/../cpp/Reaction.cpp \
     $$PWD/../cpp/ReadReceiptsModel.cpp \
@@ -42,10 +44,13 @@ HEADERS += \
     $$PWD/../cpp/CompletionModelRoles.h \
     $$PWD/../cpp/CompletionProxyModel.h \
     $$PWD/../cpp/GlobalObject.h \
+    $$PWD/../cpp/jdenticoninterface.h \
+    $$PWD/../cpp/JdenticonProvider.h \
     $$PWD/../cpp/QmlInterface.h \
     $$PWD/../cpp/MatrixQmlApplicationEngine.h \
     $$PWD/../cpp/MatrixQuickView.h \
     $$PWD/../cpp/MemberList.h \
+    $$PWD/../cpp/MxcImageProvider.h \
     $$PWD/../cpp/mydevice.h \
     $$PWD/../cpp/Reaction.h \
     $$PWD/../cpp/ReadReceiptsModel.h \
