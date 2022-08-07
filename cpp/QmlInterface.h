@@ -55,7 +55,8 @@ public slots:
     void setServerAddress(const QString &server);
     void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
     PX::AUTH::UserProfileInfo cmUserInformation();
-
+    bool jdenticonProviderisAvailable();
+    
 private slots:
     void initiateFinishedCB();
     void newSyncCb(const mtx::responses::Sync &sync);

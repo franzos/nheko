@@ -1,8 +1,8 @@
 #include "MatrixQmlApplicationEngine.h"
 #include <QQuickItem>
+#include "MxcImageProvider.h"
 #include "ColorImageProvider.h"
-#include <matrix-client-library/MxcImageProvider.h>
-#include <matrix-client-library/JdenticonProvider.h>
+#include "JdenticonProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -17,7 +17,7 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());    
     auto imgProvider = new MxcImageProvider();
     addImageProvider(QStringLiteral("MxcImage"), imgProvider);
-    if (JdenticonProvider::isAvailable())
+    if (jdenticonProviderisAvailable())
         addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 }
 

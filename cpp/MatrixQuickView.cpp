@@ -1,7 +1,7 @@
 #include "MatrixQuickView.h"
 #include "ColorImageProvider.h"
-#include <matrix-client-library/MxcImageProvider.h>
-#include <matrix-client-library/JdenticonProvider.h>
+#include "MxcImageProvider.h"
+#include "JdenticonProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -16,7 +16,7 @@ MatrixQuickView::MatrixQuickView(QWindow *parent):
         engine()->addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
         auto imgProvider = new MxcImageProvider();
         engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
-        if (JdenticonProvider::isAvailable())
+        if (jdenticonProviderisAvailable())
             engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 
 }

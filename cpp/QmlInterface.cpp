@@ -18,6 +18,7 @@
 #include "ui/emoji/EmojiModel.h"
 #include "Clipboard.h"
 #include "AvatarProvider.h"
+#include "JdenticonProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -301,4 +302,8 @@ void QmlInterface::login(QmlInterface::LOGIN_TYPE type, const QString &accessTok
     emit loginProgramatically(type, accessToken);
 }
 
+bool QmlInterface::jdenticonProviderisAvailable(){
+    return JdenticonProvider::isAvailable();
+}
+    
 }
