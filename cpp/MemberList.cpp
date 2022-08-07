@@ -39,10 +39,9 @@ MemberList::addUsers(const std::vector<RoomMember> &members)
 
     for (const auto &member : members)
         m_memberList.push_back(
-          {member, ""});
-
-        //    ChatPage::instance()->timelineManager()->rooms()->currentRoom()->avatarUrl(
-        //      member.user_id)
+          {member,
+            Client::instance()->timeline(room_id_)->avatarUrl(
+             member.user_id)});
             
     endInsertRows();
 }

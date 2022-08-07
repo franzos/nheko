@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Changed
 
 * Fixing an issue in shortkey assignment.
+* Fixing an issue in showing the avatar in member list.
 
 
 ## [0.1.12]
