@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.13] - NOT RELEASED YET
+## [0.1.13]
 ### Fixed and Changed
 
 * Click and see the user profile in member list dialog.
