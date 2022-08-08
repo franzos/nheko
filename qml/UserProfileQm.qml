@@ -262,7 +262,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Kick the user.")
                     onClicked: profile.kickUser()
-                    visible: !profile.isGlobalUserProfile && room.permissions().canKick()
+                    visible: !profile.isGlobalUserProfile && room.permissions.canKick()
                 }
 
                 ImageButton {
@@ -271,7 +271,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Ban the user.")
                     onClicked: profile.banUser()
-                    visible: !profile.isGlobalUserProfile && room.permissions().canBan()
+                    visible: !profile.isGlobalUserProfile && room.permissions.canBan()
                 }
 
                 ImageButton {
