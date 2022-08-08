@@ -235,7 +235,8 @@ Room {
 
     function onOpenProfile(profile) {
         var userProfile = userProfileComponent.createObject(timeline, {
-            "profile": profile
+            "profile": profile,
+            "room": timelineModel
         });
         userProfile.show();
         destroyOnClose(userProfile);

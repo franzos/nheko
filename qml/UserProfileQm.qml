@@ -14,11 +14,13 @@ import UserProfile 1.0
 import Permissions 1.0
 import VerificationStatus 1.0
 import Crypto 1.0
+import TimelineModel 1.0
 
 ApplicationWindow {
     id: userProfileDialog
 
     property var profile
+    property TimelineModel room
 
     height: 650
     width: 420
@@ -188,7 +190,6 @@ ApplicationWindow {
                     id: displayRoomname
 
                     text: "Room: " + timelineModel.roomName
-                    // text: qsTr("Room: %1").arg(profile.room ? timelineModel.roomName : "")
                     ToolTip.text: qsTr("This is a room-specific profile. The user's name and avatar may be different from their global versions.")
                     ToolTip.visible: ma.hovered
                     Layout.maximumWidth: parent.parent.width - (parent.spacing * 3) - 16
@@ -261,7 +262,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Kick the user.")
                     onClicked: profile.kickUser()
-                    visible: !profile.isGlobalUserProfile && profile.room.permissions().canKick()
+                    visible: !profile.isGlobalUserProfile && room.permissions().canKick()
                 }
 
                 ImageButton {
@@ -270,7 +271,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Ban the user.")
                     onClicked: profile.banUser()
-                    visible: !profile.isGlobalUserProfile && profile.room.permissions().canBan()
+                    visible: !profile.isGlobalUserProfile && room.permissions().canBan()
                 }
 
                 ImageButton {
