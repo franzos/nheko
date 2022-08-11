@@ -30,7 +30,6 @@
         <file>StatusIndicator.qml</file>
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
-        <file>TimelineDelegate.qml</file>
         <file>TimelineRow.qml</file>
         <file>UIA.qml</file>
         <file>UserInfo.qml</file>

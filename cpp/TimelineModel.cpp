@@ -555,7 +555,7 @@ TimelineModel::sync(const mtx::responses::JoinedRoom &room)
 {
     this->syncState(room.state);
     this->addEvents(room.timeline);
-
+    // TODO dupplication: Timeline.cpp - Timeline::sync()
     if (room.unread_notifications.highlight_count != highlight_count ||
         room.unread_notifications.notification_count != notification_count) {
         notification_count = room.unread_notifications.notification_count;
@@ -581,7 +581,7 @@ TimelineModel::syncState(const mtx::responses::State &s)
         else if (std::holds_alternative<StateEvent<state::Widget>>(e))
             emit widgetLinksChanged();
         else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
-            _timeline->permissions()->invalidate();
+            permissions()->invalidate();
             emit permissionsChanged();
         } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
             emit roomAvatarUrlChanged();
@@ -618,17 +618,17 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                 e = result.event.value();
         }
 
-        if (std::holds_alternative<RoomEvent<msg::CallCandidates>>(e) ||
-            std::holds_alternative<RoomEvent<msg::CallInvite>>(e) ||
-            std::holds_alternative<RoomEvent<msg::CallAnswer>>(e) ||
-            std::holds_alternative<RoomEvent<msg::CallHangUp>>(e))
+        if (std::holds_alternative<RoomEvent<voip::CallCandidates>>(e) ||
+            std::holds_alternative<RoomEvent<voip::CallInvite>>(e) ||
+            std::holds_alternative<RoomEvent<voip::CallAnswer>>(e) ||
+            std::holds_alternative<RoomEvent<voip::CallHangUp>>(e))
             std::visit(
               [this](auto &event) {
                   event.room_id = room_id_.toStdString();
                   if constexpr (std::is_same_v<std::decay_t<decltype(event)>,
-                                               RoomEvent<msg::CallAnswer>> ||
+                                               RoomEvent<voip::CallAnswer>> ||
                                 std::is_same_v<std::decay_t<decltype(event)>,
-                                               RoomEvent<msg::CallHangUp>>)
+                                               RoomEvent<voip::CallHangUp>>)
                       emit newCallEvent(event);
                   else {
                       if (event.sender != http::client()->user_id().to_string())
@@ -647,7 +647,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         else if (std::holds_alternative<StateEvent<state::Widget>>(e))
             emit widgetLinksChanged();
         else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
-            _timeline->permissions()->invalidate();
+            permissions()->invalidate();
             emit permissionsChanged();
         } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
             emit roomAvatarUrlChanged();
@@ -684,18 +684,18 @@ isMessage(const mtx::events::EncryptedEvent<T> &)
 }
 
 auto
-isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &)
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallInvite> &)
 {
     return true;
 }
 
 auto
-isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &)
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
 {
     return true;
 }
 auto
-isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &)
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 {
     return true;
 }

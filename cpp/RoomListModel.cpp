@@ -119,10 +119,6 @@ void RoomListModel::add(RoomListItem &item){
                     qDebug() << "New event recieved from in " << roomID;
                     QString body = e.body;
                     body.remove(QRegExp("[\\n\\t\\r]"));
-                    if(e.isLocal)
-                        body = "You: " + body;
-                    else 
-                        body = timeline->displayName(e.userid) + ": " + body;
                     
                     this->setData(this->index(idx), body, lastmessageRole);
                 }

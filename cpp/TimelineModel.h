@@ -19,6 +19,7 @@
 #include <matrix-client-library/CacheStructs.h>
 #include <matrix-client-library/timeline/EventStore.h>
 #include <matrix-client-library/timeline/Timeline.h>
+#include <matrix-client-library/timeline/Permissions.h>
 #include <matrix-client-library/UserProfile.h>
 
 #include "ReadReceiptsModel.h"
@@ -35,29 +36,6 @@ struct Messages;
 struct ClaimKeys;
 }
 struct RelatedInfo;
-
-class StateKeeper
-{
-public:
-    StateKeeper(std::function<void()> &&fn)
-      : fn_(std::move(fn))
-    {}
-
-    ~StateKeeper() { fn_(); }
-
-private:
-    std::function<void()> fn_;
-};
-
-struct DecryptionResult
-{
-    //! The decrypted content as a normal plaintext event.
-    mtx::events::collections::TimelineEvents event;
-    //! Whether or not the decryption was successful.
-    bool isDecrypted = false;
-};
-
-// class TimelineViewManager;
 
 class TimelineModel : public QAbstractListModel
 {
@@ -355,7 +333,7 @@ private:
 
     // friend struct SendMessageVisitor;
 
-    int notification_count = 0, highlight_count = 0;
+    uint64_t notification_count = 0, highlight_count = 0;
 
     unsigned int relatedEventCacheBuster = 0;
 

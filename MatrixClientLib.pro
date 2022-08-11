@@ -18,7 +18,6 @@ headers.files = cpp/Application.h \
                 cpp/MemberList.h \
                 cpp/Reaction.h \ 
                 cpp/RoomListModel.h \
-                cpp/TimelineItem.h \
                 cpp/Clipboard.h \ 
                 cpp/CompletionProxyModel.h \
                 cpp/MatrixQmlApplicationEngine.h \
