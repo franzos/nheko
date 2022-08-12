@@ -22,6 +22,7 @@ SOURCES += \
     $$PWD/RoomsModel.cpp \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
+    $$PWD/UsersModel.cpp \
     \
     $$PWD/notifications/Manager.cpp \
     $$PWD/notifications/ManagerLinux.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     $$PWD/RoomsModel.h \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
+    $$PWD/UsersModel.h \
     \
     $$PWD/notifications/Manager.h \
     \

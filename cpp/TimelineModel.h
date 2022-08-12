@@ -122,6 +122,8 @@ public:
     bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
+    Q_INVOKABLE QString getBareRoomLink(const QString & );
+    Q_INVOKABLE QString getRoomVias(const QString & );
     Q_INVOKABLE QString displayName(const QString &id) const;
     Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
@@ -133,6 +135,8 @@ public:
     Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
     Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
     Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
+    Q_INVOKABLE QString formatImagePackEvent(const QString &id);
+    Q_INVOKABLE QString formatPolicyRule(const QString &id);
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
     Q_INVOKABLE void viewRawMessage(const QString &id);
@@ -145,13 +149,14 @@ public:
     Q_INVOKABLE void pin(const QString &id);
     Q_INVOKABLE void showReadReceipts(QString id);
     Q_INVOKABLE void redactEvent(const QString &id, const QString &reason = "");
+    Q_INVOKABLE void redactAllFromUser(const QString &userid, const QString &reason = "");
     Q_INVOKABLE int idToIndex(const QString &id) const;
     Q_INVOKABLE QString indexToId(int index) const;
     Q_INVOKABLE void openMedia(const QString &eventId);
     Q_INVOKABLE void cacheMedia(const QString &eventId);
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
-    Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
+    Q_INVOKABLE void copyLinkToEvent(const QString &eventId);
     Q_INVOKABLE QColor userColor(QString id, QColor background);
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
@@ -286,7 +291,7 @@ signals:
     void lastMessageChanged();
     void notificationsChanged();
 
-    // void newState(mtx::responses::StateEvents events);
+    void newState(mtx::responses::StateEvents events);
 
     void newMessageToSend(mtx::events::collections::TimelineEvents event);
     void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);

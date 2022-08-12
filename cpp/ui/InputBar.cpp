@@ -34,7 +34,7 @@
 // #include "UserSettingsPage.h"
 // #include "Utils.h"
 
-// #include "blurhash.hpp"
+#include "blurhash.hpp"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 10;
 
@@ -101,8 +101,8 @@ static constexpr size_t INPUT_HISTORY_SIZE = 10;
 //     }
 // }
 
-void
-InputBar::paste(bool fromMouse)
+bool
+InputBar::tryPasteAttachment(bool fromMouse)
 {
     const QMimeData *md = nullptr;
 
@@ -113,14 +113,16 @@ InputBar::paste(bool fromMouse)
     }
 
     if (md)
-        insertMimeData(md);
+        return insertMimeData(md);
+
+    return false;
 }
 
-void
+bool
 InputBar::insertMimeData(const QMimeData *md)
 {
     if (!md)
-        return;
+        return false;
 
     nhlog::ui()->debug("Got mime formats: {}",
                        md->formats().join(QStringLiteral(", ")).toStdString());
@@ -171,7 +173,7 @@ InputBar::insertMimeData(const QMimeData *md)
         auto data = md->data(QStringLiteral("x-special/gnome-copied-files")).split('\n');
         if (data.size() < 2) {
             nhlog::ui()->warn("MIME format is malformed, cannot perform paste.");
-            return;
+            return false;
         }
 
         for (int i = 1; i < data.size(); ++i) {
@@ -181,10 +183,13 @@ InputBar::insertMimeData(const QMimeData *md)
             }
         }
     } else if (md->hasText()) {
-        emit insertText(md->text());
+        return false;
     } else {
         nhlog::ui()->debug("formats: {}", md->formats().join(QStringLiteral(", ")).toStdString());
+        return false;
     }
+
+    return true;
 }
 
 void
@@ -249,6 +254,8 @@ InputBar::updateState(int selectionStart_,
         history_index_ = 0;
 
         updateAtRoom(text_);
+        // disabled, as it moves the cursor to the end
+        // emit textChanged(text_);
     }
 
     selectionStart = selectionStart_;
@@ -294,12 +301,15 @@ InputBar::send()
 {
     QInputMethod *im = QGuiApplication::inputMethod();
     im->commit();
-    if (text().trimmed().isEmpty())
+    if (text().trimmed().isEmpty()) {
+        // acceptUploads();
         return;
+    }
 
     nhlog::ui()->debug("Send: {}", text().toStdString());
 
     auto wasEdit = !room->edit().isEmpty();
+
     if (text().startsWith('/')) {
         int command_end = text().indexOf(QRegularExpression(QStringLiteral("\\s")));
         if (command_end == -1)
@@ -336,6 +346,47 @@ InputBar::send()
 //     startUploadFromPath(fileName);
 // }
 
+QString
+replaceMatrixToMarkdownLink(QString input)
+{
+    bool replaced = false;
+    do {
+        replaced = false;
+
+        int endOfName = input.indexOf("](https://matrix.to/#/");
+        int startOfName;
+        int nestingCount = 0;
+        for (startOfName = endOfName - 1; startOfName > 0; startOfName--) {
+            // skip escaped chars
+            if (startOfName > 0 && input[startOfName - 1] == '\\')
+                continue;
+
+            if (input[startOfName] == '[') {
+                if (nestingCount <= 0)
+                    break;
+                else
+                    nestingCount--;
+            }
+            if (input[startOfName] == ']')
+                nestingCount++;
+        }
+        if (startOfName < 0 || nestingCount > 0)
+            break;
+
+        int endOfLink = input.indexOf(')', endOfName);
+        int newline   = input.indexOf('\n', endOfName);
+        if (endOfLink > endOfName && (newline == -1 || endOfLink < newline)) {
+            auto name = input.mid(startOfName + 1, endOfName - startOfName - 1);
+            name.replace("\\[", "[");
+            name.replace("\\]", "]");
+            input.replace(startOfName, endOfLink - startOfName + 1, name);
+            replaced = true;
+        }
+    } while (replaced);
+
+    return input;
+}
+
 void
 InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
@@ -347,7 +398,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         useMarkdown == MarkdownOverride::ON) {
         text.formatted_body = utils::markdownToHtml(msg, rainbowify).toStdString();
         // Remove markdown links by completer
-        text.body = msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        text.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
 
         // Don't send formatted_body, when we don't need to
         if (text.formatted_body.find('<') == std::string::npos)
@@ -368,6 +419,11 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
     } else if (!room->reply().isEmpty()) {
         auto related = room->relatedInfo(room->reply());
 
+        // Skip reply fallbacks to users who would cause a room ping with the fallback.
+        // This should be fine, since in some cases the reply fallback can be omitted now and the
+        // alternative is worse! On Element Android this applies to any substring, but that is their
+        // bug to fix.
+        if (!related.quoted_user.startsWith("@room:")) {
         QString body;
         bool firstLine = true;
         auto lines     = related.quoted_body.splitRef(u'\n');
@@ -380,7 +436,8 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
             }
         }
 
-        text.body = QStringLiteral("%1\n%2").arg(body, msg).toStdString();
+            text.body =
+              QStringLiteral("%1\n%2").arg(body, QString::fromStdString(text.body)).toStdString();
 
         // NOTE(Nico): rich replies always need a formatted_body!
         text.format = "org.matrix.custom.html";
@@ -393,6 +450,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         else
             text.formatted_body =
               utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
+        }
 
         text.relations.relations.push_back(
           {mtx::common::RelationType::InReplyTo, related.related_event});
@@ -413,8 +471,7 @@ InputBar::emote(const QString &msg, bool rainbowify)
         emote.formatted_body = html.toStdString();
         emote.format         = "org.matrix.custom.html";
         // Remove markdown links by completer
-        emote.body =
-          msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        emote.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
     if (!room->reply().isEmpty()) {
@@ -441,8 +498,7 @@ InputBar::notice(const QString &msg, bool rainbowify)
         notice.formatted_body = html.toStdString();
         notice.format         = "org.matrix.custom.html";
         // Remove markdown links by completer
-        notice.body =
-          msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        notice.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
     if (!room->reply().isEmpty()) {
@@ -668,17 +724,29 @@ InputBar::command(const QString &command, QString args)
     //     if (!eventId.isEmpty())
     //         reaction(eventId, args.trimmed());
     // } else if (command == QLatin1String("join")) {
-    //     ChatPage::instance()->joinRoom(args);
+    //     ChatPage::instance()->joinRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    // } else if (command == QLatin1String("knock")) {
+    //     ChatPage::instance()->knockRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
     // } else if (command == QLatin1String("part") || command == QLatin1String("leave")) {
-    //     ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId());
+    //     ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId(), args);
     // } else if (command == QLatin1String("invite")) {
-    //     ChatPage::instance()->inviteUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    //     ChatPage::instance()->inviteUser(
+    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     // } else if (command == QLatin1String("kick")) {
-    //     ChatPage::instance()->kickUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    //     ChatPage::instance()->kickUser(
+    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     // } else if (command == QLatin1String("ban")) {
-    //     ChatPage::instance()->banUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    //     ChatPage::instance()->banUser(
+    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     // } else if (command == QLatin1String("unban")) {
-    //     ChatPage::instance()->unbanUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    //     ChatPage::instance()->unbanUser(
+    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+    // } else if (command == QLatin1String("redact")) {
+    //     if (args.startsWith('@')) {
+    //         room->redactAllFromUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    //     } else if (args.startsWith('$')) {
+    //         room->redactEvent(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    //     }
     // } else if (command == QLatin1String("roomnick")) {
     //     mtx::events::state::Member member;
     //     member.display_name = args.toStdString();
@@ -1072,6 +1140,11 @@ InputBar::command(const QString &command, QString args)
 //     auto upload =
 //       UploadHandle(new MediaUpload(std::move(dev), format, orgPath, room->isEncrypted(), this));
 //     connect(upload.get(), &MediaUpload::uploadComplete, this, &InputBar::finalizeUpload);
+//     // TODO(Nico): Show a retry option
+//     connect(upload.get(), &MediaUpload::uploadFailed, this, [this](MediaUpload *up) {
+//         ChatPage::instance()->showNotification(tr("Upload of '%1' failed").arg(up->filename()));
+//         removeRunUpload(up);
+//     });
 
 //     unconfirmedUploads.push_back(std::move(upload));
 
@@ -1179,9 +1252,9 @@ InputBar::reaction(const QString &reactedEvent, const QString &reactionKey)
 
         // auto recents = UserSettings::instance()->recentReactions();
         // if (recents.contains(reactionKey))
-            // recents.removeOne(reactionKey);
+        //     recents.removeOne(reactionKey);
         // else if (recents.size() >= 6)
-            // recents.removeLast();
+        //     recents.removeLast();
         // recents.push_front(reactionKey);
         // UserSettings::instance()->setRecentReactions(recents);
         // Otherwise, we have previously reacted and the reaction should be redacted

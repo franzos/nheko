@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -95,7 +100,6 @@ Rectangle {
                 bottomPadding: 8
                 leftPadding: 8//inputBar.showAllButtons? 0 : 8
                 focus: true
-                // textFormat: TextEdit.RichText
                 property string lastChar
                 onTextChanged: {
                     if (room)
@@ -106,13 +110,13 @@ Rectangle {
                     else
                         lastChar = ''
                     if (lastChar == '@') {
-                        // messageInput.openCompleter(selectionStart-1, "user");
+                        messageInput.openCompleter(selectionStart-1, "user");
                     } else if (lastChar == ':') {
-                        // messageInput.openCompleter(selectionStart-1, "emoji");
+                        messageInput.openCompleter(selectionStart-1, "emoji");
                     } else if (lastChar == '#') {
-                        // messageInput.openCompleter(selectionStart-1, "roomAliases");
+                        messageInput.openCompleter(selectionStart-1, "roomAliases");
                     } else if (lastChar == "~") {
-                        // messageInput.openCompleter(selectionStart-1, "customEmoji");
+                        messageInput.openCompleter(selectionStart-1, "customEmoji");
                     }
                 }
                 onCursorPositionChanged: {
@@ -137,8 +141,7 @@ Rectangle {
                 Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
-                        room.input.paste(false);
-                        event.accepted = true;
+                        event.accepted = room.input.tryPasteAttachment(false);
                     } else if (event.key == Qt.Key_Space) {
                         // close popup if user enters space after colon
                         if (cursorPosition == completerTriggeredAt + 1)
@@ -227,7 +230,7 @@ Rectangle {
                                 }
                                 idx++;
                             }
-                        } else if (positionAt(0, cursorRectangle.y) === 0) {
+                        } else if (positionAt(0, cursorRectangle.y + cursorRectangle.height / 2) === 0) {
                             event.accepted = true;
                             positionCursorAtStart();
                         }
@@ -244,7 +247,7 @@ Rectangle {
                                 }
                                 idx--;
                             }
-                        } else if (positionAt(width, cursorRectangle.y + 2) === messageInput.length) {
+                        } else if (positionAt(width, cursorRectangle.y + cursorRectangle.height / 2) === messageInput.length) {
                             event.accepted = true;
                             positionCursorAtEnd();
                         }
@@ -310,11 +313,6 @@ Rectangle {
                 }
 
                 Connections {
-                    function onInsertText(text) {
-                        messageInput.remove(messageInput.selectionStart, messageInput.selectionEnd);
-                        messageInput.insert(messageInput.cursorPosition, text);
-                    }
-
                     function onTextChanged(newText) {
                         messageInput.text = newText;
                         messageInput.cursorPosition = newText.length;
@@ -350,7 +348,7 @@ Rectangle {
                     anchors.fill: parent
                     acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
-                    onClicked: room.input.paste(true)
+                    onPressed: (mouse) => mouse.accepted = room.input.tryPasteAttachment(true)
                 }
 
             }
@@ -366,7 +364,7 @@ Rectangle {
         //     hoverEnabled: true
         //     width: 22
         //     height: 22
-        //     image: ":/images/sticky-note-solid.svg"
+        //     image: ":/icons/icons/ui/sticky-note-solid.svg"
         //     ToolTip.visible: hovered
         //     ToolTip.text: qsTr("Stickers")
         //     onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function(row) {
@@ -377,37 +375,11 @@ Rectangle {
         //     StickerPicker {
         //         id: stickerPopup
 
-        //         colors: GlobalObject.colors
+        //         colors: Nheko.colors
         //     }
 
         // }
 
-        // EmojiModel {
-        //     id: emojiModel
-        //     iconsPath: 'qrc:/emoji/emojiSvgs/'
-        //     iconsType: '.svg'
-        // }
-        
-        // Menu {
-        //     id: contextMenu
-        //     width: 400
-        //     Rectangle {
-        //         id: body
-        //         width: parent.width
-        //         height: 420
-        //         radius: 10
-        //         anchors.top: parent.top
-        //         anchors.topMargin: 40
-        //         anchors.horizontalCenter: parent.horizontalCenter
-        //         EmojiPicker {
-        //             id: emojiPicker
-        //             model: emojiModel
-        //             editor: messageInput
-        //             anchors.fill: parent
-        //         }
-        //     }
-        // }
-        
         ImageButton {
             id: emojiButton
 
@@ -419,7 +391,6 @@ Rectangle {
             image: ":/images/smile.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            // onClicked: {contextMenu.popup()}
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
                 room.focusMessageInput();

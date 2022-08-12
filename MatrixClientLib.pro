@@ -25,6 +25,7 @@ headers.files = cpp/Application.h \
                 cpp/ReadReceiptsModel.h \
                 cpp/RoomsModel.h \
                 cpp/TimelineModel.h \
+                cpp/UsersModel.h \
                 cpp/ColorImageProvider.h \
                 cpp/Configuration.h \
                 cpp/MatrixQuickView.h \
