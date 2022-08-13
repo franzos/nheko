@@ -1,6 +1,12 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
+import GlobalObject 1.0
 
 Pane {
     property string title: qsTr("Verification Code")
@@ -14,6 +20,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following digits. You should see the same numbers on both sides. If they differ, please press 'They do not match!' to abort verification!")
+            color: GlobalObject.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -23,16 +30,19 @@ Pane {
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[0]
+                color: GlobalObject.colors.text
             }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[1]
+                color: GlobalObject.colors.text
             }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[2]
+                color: GlobalObject.colors.text
             }
 
         }
