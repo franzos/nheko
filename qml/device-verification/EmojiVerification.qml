@@ -374,13 +374,13 @@ ColumnLayout {
                         text: col.emoji.emoji
                         font.pixelSize: Qt.application.font.pixelSize * 2
                         font.family: Settings.emojiFont
-                        color: Nheko.colors.text
+                        color: GlobalObject.colors.text
                     }
 
                     Label {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                         text: col.emoji.description
-                        color: Nheko.colors.text
+                        color: GlobalObject.colors.text
                     }
 
                 }

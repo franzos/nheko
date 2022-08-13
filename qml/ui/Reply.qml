@@ -63,7 +63,7 @@ AbstractButton {
     onClicked: {
         let link = reply.child.linkAt != undefined && reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight);
         if (link) {
-            // Nheko.openLink(link)
+            GlobalObject.openLink(link)
         } else {
             room.showEvent(r.eventId)
         }

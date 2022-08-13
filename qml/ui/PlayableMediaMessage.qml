@@ -9,7 +9,7 @@ import QtMultimedia 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import GlobalObject 1.0
 
 Item {
     id: content
@@ -48,7 +48,7 @@ Item {
     Rectangle {
         id: videoContainer
 
-        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        color: type == MtxEvent.VideoMessage ? GlobalObject.colors.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
@@ -102,10 +102,10 @@ Item {
         text: body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
-        color: Nheko.colors.text
+        color: GlobalObject.colors.text
 
         background: Rectangle {
-            color: Nheko.colors.base
+            color: GlobalObject.colors.base
         }
 
     }
