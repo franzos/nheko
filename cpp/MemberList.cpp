@@ -54,6 +54,7 @@ MemberListBackend::roleNames() const
       {DisplayName, "displayName"},
       {AvatarUrl, "avatarUrl"},
       {Trustlevel, "trustlevel"},
+      {Powerlevel, "powerlevel"},
     };
 }
 
@@ -81,9 +82,9 @@ MemberListBackend::data(const QModelIndex &index, int role) const
     //     else
     //         return stat->user_verified;
     // }
-    // case Powerlevel:
-    //     return static_cast<qlonglong>(
-    //       powerLevels_.user_level(m_memberList[index.row()].first.user_id.toStdString()));
+    case Powerlevel:
+        return static_cast<qlonglong>(
+          Client::instance()->timeline(room_id_)->powerLevels().user_level(m_memberList[index.row()].first.user_id.toStdString()));
     default:
         return {};
     }
@@ -151,7 +152,7 @@ MemberList::sortBy(const MemberSortRoles role)
 {
     setSortRole(role);
     // Unfortunately, Qt doesn't provide a "setSortOrder" function.
-    // sort(0, role == MemberSortRoles::Powerlevel ? Qt::DescendingOrder : Qt::AscendingOrder);
+    sort(0, role == MemberSortRoles::Powerlevel ? Qt::DescendingOrder : Qt::AscendingOrder);
 }
 
 bool

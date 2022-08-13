@@ -9,8 +9,6 @@
 #include <QSortFilterProxyModel>
 #include "matrix-client-library/CacheStructs.h"
 
-// #include "CacheStructs.h"
-
 class MemberListBackend : public QAbstractListModel
 {
     Q_OBJECT
@@ -29,6 +27,7 @@ public:
         DisplayName,
         AvatarUrl,
         Trustlevel,
+        Powerlevel,
     };
 
     MemberListBackend(const QString &room_id, QObject *parent = nullptr);
@@ -89,6 +88,7 @@ public:
     {
         Mxid        = MemberListBackend::Roles::Mxid,
         DisplayName = MemberListBackend::Roles::DisplayName,
+        Powerlevel  = MemberListBackend::Roles::Powerlevel,
     };
     Q_ENUM(MemberSortRoles)
 

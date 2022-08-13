@@ -4,7 +4,8 @@ include(ios/ios.pri)
 linux:!android {
     # Configurations only required for desktop linux (not android)
     LIBS += -lpx-auth-lib-cpp \
-            -lmatrix-client-library
+            -lmatrix-client-library \
+            -llmdb
     QT += dbus
 
     target.path = /usr/bin/

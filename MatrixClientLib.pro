@@ -5,7 +5,7 @@ TARGET = matrix-client-gui-library
 
 LIBS += -lmatrix-client-library \
         -lpx-auth-lib-cpp \
-        -lspdlog -lcurl -lcoeurl \
+        -lspdlog -lcurl -lcoeurl -llmdb \
         -lmatrix_client
         
 include(cpp/cpp.pri)
