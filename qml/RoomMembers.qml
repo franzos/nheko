@@ -89,7 +89,7 @@ ApplicationWindow {
                 model: ListModel {
                     ListElement { data: MemberList.Mxid; text: qsTr("User ID") }
                     ListElement { data: MemberList.DisplayName; text: qsTr("Display name") }
-                    ListElement { data: MemberList.Powerlevel; text: qsTr("Power level") }
+                    // ListElement { data: MemberList.Powerlevel; text: qsTr("Power level") }
                 }
                 textRole: "text"
                 valueRole: "data"
