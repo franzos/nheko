@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -40,6 +45,7 @@ Rectangle {
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
             displayName: CallManager.callPartyDisplayName
+            // onClicked: TimelineManager.openImageOverlay(room, room.avatarUrl(userid), room.data.eventId)
         }
 
         Label {
@@ -79,6 +85,7 @@ Rectangle {
             onClicked: {
                 var dialog = devicesDialog.createObject(callInvBar);
                 dialog.open();
+                // timelineRoot.destroyOnClose(dialog);
             }
         }
 
@@ -94,6 +101,7 @@ Rectangle {
                         "image": ":/images/place-call.svg"
                     });
                     dialog.open();
+                    // timelineRoot.destroyOnClose(dialog);
                     return ;
                 } else if (!CallManager.mics.includes(Settings.microphone)) {
                     var dialog = deviceError.createObject(callInvBar, {
@@ -101,6 +109,7 @@ Rectangle {
                         "image": ":/images/place-call.svg"
                     });
                     dialog.open();
+                    // timelineRoot.destroyOnClose(dialog);
                     return ;
                 }
                 if (CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
@@ -109,6 +118,7 @@ Rectangle {
                         "image": ":/images/video.svg"
                     });
                     dialog.open();
+                    // timelineRoot.destroyOnClose(dialog);
                     return ;
                 }
                 CallManager.acceptInvite();

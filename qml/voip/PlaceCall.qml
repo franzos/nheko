@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -20,14 +25,6 @@ Popup {
         id: deviceError
 
         DeviceError {
-        }
-
-    }
-
-    Component {
-        id: screenShareDialog
-
-        ScreenShare {
         }
 
     }
@@ -62,6 +59,7 @@ Popup {
                         "image": ":/images/place-call.svg"
                     });
                     dialog.open();
+                    // timelineRoot.destroyOnClose(dialog);
                     return false;
                 }
                 return true;
@@ -77,6 +75,7 @@ Popup {
                 url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: room.roomName
                 roomid: room.roomid
+                // onClicked: TimelineManager.openImageOverlay(room, room.avatarUrl(userid), room.data.eventId)
             }
 
             Button {
@@ -110,9 +109,15 @@ Popup {
                 text: qsTr("Screen")
                 icon.source: "qrc:/images/screen-share.svg"
                 onClicked: {
-                    var dialog = screenShareDialog.createObject(placeCall);
+                    if (buttonLayout.validateMic()) {
+                        Settings.microphone = micCombo.currentText;
+                        Settings.camera = cameraCombo.currentText;
+
+                        var dialog = screenShareDialog.createObject(timelineRoot);
                     dialog.open();
+                        timelineRoot.destroyOnClose(dialog);
                     close();
+                    }
                 }
             }
 
