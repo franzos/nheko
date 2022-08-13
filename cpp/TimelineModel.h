@@ -41,8 +41,6 @@ class TimelineModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
-    Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
-                 typingUsersChanged)
     Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
     Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
@@ -127,7 +125,7 @@ public:
     Q_INVOKABLE QString displayName(const QString &id) const;
     Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
-    Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
+    Q_INVOKABLE QString formatTypingUsers(const QStringList &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
     Q_INVOKABLE QString formatMemberEvent(const QString &id);
@@ -214,14 +212,11 @@ public slots:
     void eventShown();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     Timeline *timeline() { return _timeline; };
-    void updateTypingUsers(const std::vector<QString> &users)
+    void updateTypingUsers(const QStringList &users)
     {
-        if (this->typingUsers_ != users) {
-            this->typingUsers_ = users;
-            emit typingUsersChanged(typingUsers_);
-        }
+        emit typingUsersChanged(users);
     }
-    std::vector<QString> typingUsers() const { return typingUsers_; }
+    QStringList typingUsers() const { return _timeline->typingUsers(); }
     bool paginationInProgress() const { return m_paginationInProgress; }
     QString reply() const { return reply_; }
     void setReply(const QString &newReply)
@@ -276,7 +271,7 @@ signals:
     void redactionFailed(QString id);
     void mediaCached(QString mxcUrl, QString cacheUrl);
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
-    void typingUsersChanged(std::vector<QString> users);
+    void typingUsersChanged(const QStringList &users);
     void replyChanged(QString reply);
     void editChanged(QString reply);
     void openReadReceiptsDialog(ReadReceiptsProxy *rr);
@@ -326,7 +321,6 @@ private:
     QString currentId, currentReadId;
     QString reply_, edit_;
     QString textBeforeEdit, replyBeforeEdit;
-    std::vector<QString> typingUsers_;
 
     InputBar input_{this};
 

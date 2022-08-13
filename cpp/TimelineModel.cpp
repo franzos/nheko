@@ -146,7 +146,7 @@ TimelineModel::TimelineModel(
     connect(this, &TimelineModel::roomMemberCountChanged, this, &TimelineModel::trustlevelChanged);
     // connect(
     //   cache::client(), &Cache::verificationStatusChanged, this, &TimelineModel::trustlevelChanged);
-
+    connect(_timeline, &Timeline::typingUsersChanged, this, &TimelineModel::updateTypingUsers);
     showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 
     // connect(this, &TimelineModel::newState, this, [this](mtx::responses::StateEvents events_) {
@@ -1209,15 +1209,9 @@ TimelineModel::copyLinkToEvent(const QString &eventId)
 }
 
 QString
-TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor &bg)
+TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
 {
-    QString temp =
-      tr("%1 and %2 are typing.",
-         "Multiple users are typing. First argument is a comma separated list of potentially "
-         "multiple users. Second argument is the last user of that list. (If only one user is "
-         "typing, %1 is empty. You should still use it in your string though to silence Qt "
-         "warnings.)",
-         (int)users.size());
+    QString temp = (users.size() > 1)?"%1 and %2 are typing.":"%1%2 is typing.";
 
     if (users.empty()) {
         return {};
@@ -1259,7 +1253,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
     for (size_t i = 0; i + 1 < users.size(); i++) {
         uidWithoutLast.append(formatUser(users[i]));
     }
-
+    
     return temp.arg(uidWithoutLast.join(QStringLiteral(", ")), formatUser(users.back()));
 }
 

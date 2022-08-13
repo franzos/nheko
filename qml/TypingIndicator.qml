@@ -16,7 +16,6 @@ Item {
     Rectangle {
         id: typingRect
 
-        visible: (room && room.typingUsers.length > 0)
         color: GlobalObject.colors.base
         anchors.fill: parent
         z: 3
@@ -29,13 +28,12 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.bottom: parent.bottom
-            color: "gray"
             textFormat: Text.RichText
         }
 
     }
     
-    function setTypingDisplayText(text){
-        typingDisplay.text = text
+    function setTypingDisplayText(users){
+        typingDisplay.text = timelineModel.formatTypingUsers(users, GlobalObject.colors.base)
     }
 }
