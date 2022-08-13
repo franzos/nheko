@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import ".."
 import QtQuick.Controls 2.3
 import GlobalObject 1.0
@@ -7,6 +12,7 @@ MatrixText {
     required property string body
     required property bool isOnlyEmoji
     required property bool isReply
+    required property bool keepFullText
     required property string formatted
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
     property int metadataWidth
@@ -32,9 +38,10 @@ MatrixText {
     </style>
     " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + GlobalObject.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     width: parent.width
-    height: isReply ? Math.round(Math.min(timeline.height / 8, implicitHeight)) : implicitHeight
-    clip: isReply
+    height: !keepFullText ? Math.round(Math.min(timeline.height / 8, implicitHeight)) : implicitHeight
+    clip: !keepFullText
     selectByMouse: !isReply//!Settings.mobileMode && !isReply
+    // enabled: !Settings.mobileMode
     // font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     CursorShape {

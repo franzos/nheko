@@ -12,6 +12,7 @@ import TimelineModel 1.0
 import Presence 1.0
 import Clipboard 1.0
 import "./ui"
+import "./ui/dialogs"
 
 Item {
     id: chatRoot

@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+import "./ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import GlobalObject 1.0
@@ -23,6 +29,8 @@ AbstractButton {
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
         source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
+        sourceSize.height: button.height
+        sourceSize.width: button.width
         fillMode: Image.PreserveAspectFit
     }
 

@@ -12,6 +12,8 @@ import TimelineModel 1.0
 TextEdit {
     id: r
 
+    property alias cursorShape: cs.cursorShape
+
     textFormat: TextEdit.RichText
     readOnly: true
     focus: false
@@ -30,6 +32,8 @@ TextEdit {
     }
 
     CursorShape {
+        id: cs
+
         anchors.fill: parent
         cursorShape: hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
     }
