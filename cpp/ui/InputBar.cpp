@@ -26,15 +26,7 @@
 #include <matrix-client-library/Client.h>
 #include "CombinedImagePackModel.h"
 #include <matrix-client-library/Config.h>
-// #include "Logging.h"
-// #include "MainWindow.h"
-// #include "MatrixClient.h"
 #include "../TimelineModel.h"
-// #include "TimelineViewManager.h"
-// #include "UserSettingsPage.h"
-// #include "Utils.h"
-
-#include "blurhash.hpp"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 10;
 
