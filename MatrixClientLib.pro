@@ -15,6 +15,7 @@ headers.path  = /usr/include/matrix-client-gui-library
 headers.files = cpp/Application.h \
                 cpp/CompletionModelRoles.h \
                 cpp/GlobalObject.h \
+                cpp/InviteesModel.h \
                 cpp/MemberList.h \
                 cpp/Reaction.h \ 
                 cpp/RoomListModel.h \

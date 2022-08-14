@@ -2276,3 +2276,16 @@ TimelineModel::openRoomMembers( )
     QQmlEngine::setObjectOwnership(memberList, QQmlEngine::JavaScriptOwnership);
     emit openRoomMembersDialog(memberList);
 }
+
+void
+TimelineModel::openInviteUsers()
+{
+    InviteesModel *model = new InviteesModel{};
+    connect(model, &InviteesModel::accept, this, [this, model]() {
+        for(auto const& u: model->mxids()){
+            Client::instance()->inviteUser(this->room_id_,u,"Send invitation");
+        }
+    });
+    QQmlEngine::setObjectOwnership(model, QQmlEngine::JavaScriptOwnership);
+    emit openInviteUsersDialog(model);
+}

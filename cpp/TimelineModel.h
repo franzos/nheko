@@ -25,6 +25,7 @@
 #include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
 #include "MemberList.h"
+#include "InviteesModel.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -162,6 +163,7 @@ public:
     Q_INVOKABLE void markEventsAsRead(const QString &event_id);
     Q_INVOKABLE void focusMessageInput();
     Q_INVOKABLE void openRoomMembers();
+    Q_INVOKABLE void openInviteUsers();
 
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
@@ -282,6 +284,7 @@ signals:
     void focusInput();
     void openRoomMembersDialog(MemberList *members);
     void openProfile(UserProfile *profile);
+    void openInviteUsersDialog(InviteesModel *invitees);
 
     void lastMessageChanged();
     void notificationsChanged();

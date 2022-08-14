@@ -7,6 +7,7 @@ SOURCES += \
     $$PWD/ColorImageProvider.cpp \
     $$PWD/CompletionProxyModel.cpp \
     $$PWD/GlobalObject.cpp \
+    $$PWD/InviteesModel.cpp \
     $$PWD/JdenticonProvider.cpp \
     $$PWD/QmlInterface.cpp \
     $$PWD/MatrixQmlApplicationEngine.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     $$PWD/CompletionModelRoles.h \
     $$PWD/CompletionProxyModel.h \
     $$PWD/GlobalObject.h \
+    $$PWD/InviteesModel.h \
     $$PWD/jdenticoninterface.h \
     $$PWD/JdenticonProvider.h \
     $$PWD/QmlInterface.h \

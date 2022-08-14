@@ -65,7 +65,7 @@ ApplicationWindow {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
-            onClicked: timeline.openUserInvitationDialog()
+            onClicked: room.openInviteUsers()
         }
 
         MatrixTextField {

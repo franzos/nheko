@@ -10,6 +10,7 @@ import Rooms 1.0
 import CallType 1.0
 import UserProfile 1.0
 import "ui"
+import "ui/dialogs"
 
 Room {
     id: timeline
@@ -170,21 +171,7 @@ Room {
         y: (qmlLibRoot.height - height) / 2
         onAccepted: goToPrevPage()
     }
-
-    AddUserDialog {
-        id: inviteuserDialog
-        title: "Invite user"
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
-        onUserAdded:{
-            MatrixClient.inviteUser(roomid,userid,"Send invitation")
-        }
-    }
     
-    function openUserInvitationDialog() {
-        inviteuserDialog.open()
-    }
-
     Menu {
         id: contextMenu
         margins: 10
@@ -192,7 +179,7 @@ Room {
             id: inviteUserAction
             text: qsTr("Invite User")
             icon.source: "qrc:/images/add-square-button.svg"
-            onTriggered: openUserInvitationDialog()
+            onTriggered: timelineModel.openInviteUsers()
         }
         
         Action {
@@ -237,6 +224,15 @@ Room {
 
     }
 
+
+    Component {
+        id: inviteDialog
+
+        InviteDialog {
+        }
+
+    }
+
     function onOpenProfile(profile) {
         var userProfile = userProfileComponent.createObject(timeline, {
             "profile": profile,
@@ -256,7 +252,17 @@ Room {
             membersDialog.show();
             destroyOnClose(membersDialog);
         }
-         
+
+        function onOpenInviteUsersDialog(invitees) {
+            var dialog = inviteDialog.createObject(timeline, {
+                "roomId": roomid,
+                "plainRoomName": name,
+                "invitees": invitees
+            });
+            dialog.show();
+            destroyOnClose(dialog);
+        }
+
         target: timelineModel
     }
 }

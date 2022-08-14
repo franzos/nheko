@@ -19,6 +19,7 @@
 #include "Clipboard.h"
 #include "AvatarProvider.h"
 #include "JdenticonProvider.h"
+#include "InviteesModel.h"
 
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
@@ -187,6 +188,7 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterSingletonType<Clipboard>("Clipboard", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new Clipboard();
         });
+        qmlRegisterUncreatableType<InviteesModel>("InviteesModel", 1, 0, "InviteesModel", QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
         qmlRegisterUncreatableType<MemberList>("MemberList", 1, 0, "MemberList", QStringLiteral("MemberList needs to be instantiated on the C++ side"));
         qmlRegisterUncreatableType<ReadReceiptsProxy>( "ReadReceiptsProxy", 1, 0,"ReadReceiptsProxy", QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
         qmlRegisterUncreatableMetaObject(olm::staticMetaObject, "Olm", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));

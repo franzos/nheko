@@ -75,6 +75,7 @@
         <file>ui/animations/BlinkAnimation.qml</file>
 
         <file>ui/dialogs/InputDialog.qml</file>
+        <file>ui/dialogs/InviteDialog.qml</file>
         <file>ui/dialogs/RawMessageDialog.qml</file>
         <file>ui/dialogs/ReadReceipts.qml</file>
 
