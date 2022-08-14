@@ -41,7 +41,7 @@ ColumnLayout {
         input.clear();
     }
 
-    ToolTip.delay: GlobalObject.tooltipDelay
+    // ToolTip.delay: GlobalObject.tooltipDelay
     ToolTip.visible: hover.hovered
 
     spacing: 0

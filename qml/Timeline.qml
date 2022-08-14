@@ -180,6 +180,10 @@ Room {
             MatrixClient.inviteUser(roomid,userid,"Send invitation")
         }
     }
+    
+    function openUserInvitationDialog() {
+        inviteuserDialog.open()
+    }
 
     Menu {
         id: contextMenu
@@ -188,7 +192,7 @@ Room {
             id: inviteUserAction
             text: qsTr("Invite User")
             icon.source: "qrc:/images/add-square-button.svg"
-            onTriggered: inviteuserDialog.open()
+            onTriggered: openUserInvitationDialog()
         }
         
         Action {
@@ -246,7 +250,8 @@ Room {
         function onOpenRoomMembersDialog(members) {
             var membersDialog = roomMembersComponent.createObject(timeline, {
                 "members": members,
-                "room": timelineModel
+                "room": timelineModel,
+                "timeline" : timeline
             });
             membersDialog.show();
             destroyOnClose(membersDialog);

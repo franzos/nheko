@@ -14,6 +14,7 @@ import GlobalObject 1.0
 import TimelineModel 1.0
 import CursorShape 1.0
 import Crypto 1.0
+import MtxEvent 1.0
 
 ApplicationWindow {
     id: roomMembersRoot
@@ -48,7 +49,7 @@ ApplicationWindow {
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")
-            onClicked: TimelineManager.openRoomSettings(members.roomId)
+            // onClicked: TimelineManager.openRoomSettings(members.roomId)
         }
 
         ElidedLabel {
@@ -64,7 +65,7 @@ ApplicationWindow {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
-            onClicked: TimelineManager.openInviteUsers(members.roomId)
+            onClicked: timeline.openUserInvitationDialog()
         }
 
         MatrixTextField {
@@ -179,11 +180,11 @@ ApplicationWindow {
 
                             property string sourceUrl: {
                                 if (isAdmin)
-                                return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?";
+                                return "image://colorimage/:/images/ribbon_star.svg?";
                                 else if (isModerator)
-                                return "image://colorimage/:/icons/icons/ui/ribbon.svg?";
+                                return "image://colorimage/:/images/ribbon.svg?";
                                 else
-                                return "image://colorimage/:/icons/icons/ui/person.svg?";
+                                return "image://colorimage/:/images/person.svg?";
                             }
 
                             Layout.preferredWidth: 16
