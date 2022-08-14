@@ -226,14 +226,16 @@ QmlInterface::QmlInterface(QObject *parent):
         QList<RoomListItem> roomList;
         for(auto const &r: rooms.join){
             RoomListItem room(  QString::fromStdString(r.first),
+                                Client::instance()->roomInfo(QString::fromStdString(r.first)),
                                 r.second.unread_notifications.notification_count);
             roomList << room;
         }
         for(auto const &r: rooms.invite){
+            auto invite = cache::client()->invite(r.first);
+            if (!invite)
+                continue;
             RoomListItem room(  QString::fromStdString(r.first),
-                                QString::fromStdString(r.second.name()),
-                                QString::fromStdString(r.second.avatar()),
-                                true);
+                                *invite);
             roomList << room;
             if(_callAutoAccept){
                 _client->joinRoom(QString::fromStdString(r.first));
@@ -253,12 +255,12 @@ QmlInterface::QmlInterface(QObject *parent):
         auto inviteRooms = _client->inviteRoomList();
         QList<RoomListItem> roomList;
         for(auto const &r: joinedRooms.toStdMap()){
-            RoomListItem room(  r.first);
+            RoomListItem room(r.first, r.second);
             roomList << room;
         }
 
         for(auto const &r: inviteRooms.toStdMap()){
-            RoomListItem room(  r.first);
+            RoomListItem room(r.first, r.second);
             roomList << room;
             if(_callAutoAccept){
                 _client->joinRoom(r.first);

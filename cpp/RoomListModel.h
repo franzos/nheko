@@ -23,7 +23,8 @@ public:
         memberCountRole,
         topicRole,
         versionRole,
-        guestAccessRole
+        guestAccessRole,
+        updateallRole
     };
 
     RoomListModel(QObject *parent = nullptr);

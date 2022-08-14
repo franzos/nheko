@@ -73,6 +73,7 @@ QHash<int, QByteArray> RoomListModel::roleNames() const {
     roles[topicRole] = "topic";
     roles[versionRole] = "version";
     roles[guestAccessRole] = "guestaccess";
+    roles[updateallRole] = "updateall";
     return roles;
 }
 
@@ -102,11 +103,8 @@ void RoomListModel::add(RoomListItem &item){
         if(idx == -1){
             return;
         }
-        if(_roomListItems.at(idx).invite() && !item.invite()){
-            setData(index(idx), false, inviteRole);
-        } else {
-            setData(index(idx), item.name(), nameRole);
-        }
+
+        setData(index(idx), "", updateallRole);
     } else if(!_roomIds.contains(item.id())) {
         // add new room [room events]
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -144,37 +142,20 @@ bool RoomListModel::setData(const QModelIndex &index, const QVariant &value, int
 {
     if (data(index, role) != value && index.isValid()) {
         RoomListItem item = _roomListItems.at(index.row());
-
+        QVector<int> roles;
         switch (role) {
-        case idRole:
-            item.setId(value.toString());
-            break;
-        case nameRole:
-            item.setName(value.toString());
-            break;
-        case avatarRole:
-            item.setAvatar(value.toString());
-            break;
         case lastmessageRole:
             item.setLastMessage(value.toString());
-            break;
-        case inviteRole:
-            item.setInvite(value.toBool());
+            roles << role;
             break;
         case unreadcountRole:
             item.setUnreadCount(value.toInt());
+            roles << role;
             break;
-        case memberCountRole:
-            item.setMemberCount(value.toInt());
-            break;
-        case topicRole:
-            item.setTopic(value.toString());
-            break;
-        case versionRole:
-            item.setVersion(value.toString());
-            break;
-        case guestAccessRole:
-            item.setGuestAccess(value.toBool());
+        case updateallRole:
+            item.roomInformation()->update();
+            roles << nameRole << avatarRole << inviteRole << lastmessageRole << unreadcountRole \
+             << memberCountRole << topicRole << versionRole << guestAccessRole;
             break;
         default:
             return false;
@@ -182,7 +163,7 @@ bool RoomListModel::setData(const QModelIndex &index, const QVariant &value, int
 
         _roomListItems.replace(index.row(), item);
 
-        emit dataChanged(index, index, QVector<int>() << role);
+        emit dataChanged(index, index, roles);
         return true;
     }
     return false;
