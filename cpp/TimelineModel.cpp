@@ -1250,7 +1250,7 @@ TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
     };
 
     uidWithoutLast.reserve(static_cast<int>(users.size()));
-    for (size_t i = 0; i + 1 < users.size(); i++) {
+    for (size_t i = 0; i + 1 < (unsigned int)users.size(); i++) {
         uidWithoutLast.append(formatUser(users[i]));
     }
     

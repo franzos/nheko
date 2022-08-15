@@ -27,6 +27,7 @@
 #include "CombinedImagePackModel.h"
 #include <matrix-client-library/Config.h>
 #include "../TimelineModel.h"
+#include "../GlobalObject.h"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 10;
 
@@ -709,103 +710,101 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
 void
 InputBar::command(const QString &command, QString args)
 {
-    // if (command == QLatin1String("me")) {
-    //     emote(args, false);
-    // } else if (command == QLatin1String("react")) {
-    //     auto eventId = room->reply();
-    //     if (!eventId.isEmpty())
-    //         reaction(eventId, args.trimmed());
-    // } else if (command == QLatin1String("join")) {
-    //     ChatPage::instance()->joinRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    if (command == QLatin1String("me")) {
+        emote(args, false);
+    } else if (command == QLatin1String("react")) {
+        auto eventId = room->reply();
+        if (!eventId.isEmpty())
+            reaction(eventId, args.trimmed());
+    } else if (command == QLatin1String("join")) {
+        Client::instance()->joinRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
     // } else if (command == QLatin1String("knock")) {
     //     ChatPage::instance()->knockRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
     // } else if (command == QLatin1String("part") || command == QLatin1String("leave")) {
     //     ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId(), args);
-    // } else if (command == QLatin1String("invite")) {
-    //     ChatPage::instance()->inviteUser(
-    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
-    // } else if (command == QLatin1String("kick")) {
-    //     ChatPage::instance()->kickUser(
-    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
-    // } else if (command == QLatin1String("ban")) {
-    //     ChatPage::instance()->banUser(
-    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
-    // } else if (command == QLatin1String("unban")) {
-    //     ChatPage::instance()->unbanUser(
-    //       room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
-    // } else if (command == QLatin1String("redact")) {
-    //     if (args.startsWith('@')) {
-    //         room->redactAllFromUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
-    //     } else if (args.startsWith('$')) {
-    //         room->redactEvent(args.section(' ', 0, 0), args.section(' ', 1, -1));
-    //     }
-    // } else if (command == QLatin1String("roomnick")) {
-    //     mtx::events::state::Member member;
-    //     member.display_name = args.toStdString();
-    //     member.avatar_url =
-    //       cache::avatarUrl(room->roomId(),
-    //                        QString::fromStdString(http::client()->user_id().to_string()))
-    //         .toStdString();
-    //     member.membership = mtx::events::state::Membership::Join;
+    } else if (command == QLatin1String("invite")) {
+        Client::instance()->inviteUser(
+          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+    } else if (command == QLatin1String("kick")) {
+        room->timeline()->kickUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    } else if (command == QLatin1String("ban")) {
+        room->timeline()->banUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    } else if (command == QLatin1String("unban")) {
+        room->timeline()->unbanUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    } else if (command == QLatin1String("redact")) {
+        if (args.startsWith('@')) {
+            room->redactAllFromUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (args.startsWith('$')) {
+            room->redactEvent(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        }
+    } else if (command == QLatin1String("roomnick")) {
+        mtx::events::state::Member member;
+        member.display_name = args.toStdString();
+        member.avatar_url =
+          cache::avatarUrl(room->roomId(),
+                           QString::fromStdString(http::client()->user_id().to_string()))
+            .toStdString();
+        member.membership = mtx::events::state::Membership::Join;
 
-    //     http::client()->send_state_event(
-    //       room->roomId().toStdString(),
-    //       http::client()->user_id().to_string(),
-    //       member,
-    //       [](const mtx::responses::EventId &, mtx::http::RequestErr err) {
-    //           if (err)
-    //               nhlog::net()->error("Failed to set room displayname: {}",
-    //                                   err->matrix_error.error);
-    //       });
-    // } else if (command == QLatin1String("shrug")) {
-    //     message("¯\\_(ツ)_/¯" + (args.isEmpty() ? QLatin1String("") : " " + args));
-    // } else if (command == QLatin1String("fliptable")) {
-    //     message(QStringLiteral("(╯°□°)╯︵ ┻━┻"));
-    // } else if (command == QLatin1String("unfliptable")) {
-    //     message(QStringLiteral(" ┯━┯╭( º _ º╭)"));
-    // } else if (command == QLatin1String("sovietflip")) {
-    //     message(QStringLiteral("ノ┬─┬ノ ︵ ( \\o°o)\\"));
-    // } else if (command == QLatin1String("clear-timeline")) {
-    //     room->clearTimeline();
-    // } else if (command == QLatin1String("reset-state")) {
-    //     room->resetState();
-    // } else if (command == QLatin1String("rotate-megolm-session")) {
-    //     cache::dropOutboundMegolmSession(room->roomId().toStdString());
-    // } else if (command == QLatin1String("md")) {
-    //     message(args, MarkdownOverride::ON);
-    // } else if (command == QLatin1String("plain")) {
-    //     message(args, MarkdownOverride::OFF);
-    // } else if (command == QLatin1String("rainbow")) {
-    //     message(args, MarkdownOverride::ON, true);
-    // } else if (command == QLatin1String("rainbowme")) {
-    //     emote(args, true);
-    // } else if (command == QLatin1String("notice")) {
-    //     notice(args, false);
-    // } else if (command == QLatin1String("rainbownotice")) {
-    //     notice(args, true);
-    // } else if (command == QLatin1String("goto")) {
-    //     // Goto has three different modes:
-    //     // 1 - Going directly to a given event ID
-    //     if (args[0] == '$') {
-    //         room->showEvent(args);
-    //         return;
-    //     }
-    //     // 2 - Going directly to a given message index
-    //     if (args[0] >= '0' && args[0] <= '9') {
-    //         room->showEvent(args);
-    //         return;
-    //     }
-    //     // 3 - Matrix URI handler, as if you clicked the URI
-    //     if (ChatPage::instance()->handleMatrixUri(args)) {
-    //         return;
-    //     }
-    //     nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
-    // } else if (command == QLatin1String("converttodm")) {
-    //     utils::markRoomAsDirect(this->room->roomId(),
-    //                             cache::getMembers(this->room->roomId().toStdString(), 0, -1));
-    // } else if (command == QLatin1String("converttoroom")) {
-    //     utils::removeDirectFromRoom(this->room->roomId());
-    // }
+        http::client()->send_state_event(
+          room->roomId().toStdString(),
+          http::client()->user_id().to_string(),
+          member,
+          [](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+              if (err)
+                  nhlog::net()->error("Failed to set room displayname: {}",
+                                      err->matrix_error.error);
+          });
+    } else if (command == QLatin1String("shrug")) {
+        message("¯\\_(ツ)_/¯" + (args.isEmpty() ? QLatin1String("") : " " + args));
+    } else if (command == QLatin1String("fliptable")) {
+        message(QStringLiteral("(╯°□°)╯︵ ┻━┻"));
+    } else if (command == QLatin1String("unfliptable")) {
+        message(QStringLiteral(" ┯━┯╭( º _ º╭)"));
+    } else if (command == QLatin1String("sovietflip")) {
+        message(QStringLiteral("ノ┬─┬ノ ︵ ( \\o°o)\\"));
+    } else if (command == QLatin1String("clear-timeline")) {
+        room->clearTimeline();
+    } else if (command == QLatin1String("reset-state")) {
+        room->resetState();
+    } else if (command == QLatin1String("rotate-megolm-session")) {
+        cache::dropOutboundMegolmSession(room->roomId().toStdString());
+    } else if (command == QLatin1String("md")) {
+        message(args, MarkdownOverride::ON);
+    } else if (command == QLatin1String("plain")) {
+        message(args, MarkdownOverride::OFF);
+    } else if (command == QLatin1String("rainbow")) {
+        message(args, MarkdownOverride::ON, true);
+    } else if (command == QLatin1String("rainbowme")) {
+        emote(args, true);
+    } else if (command == QLatin1String("notice")) {
+        notice(args, false);
+    } else if (command == QLatin1String("rainbownotice")) {
+        notice(args, true);
+    } else if (command == QLatin1String("goto")) {
+        // Goto has three different modes:
+        // 1 - Going directly to a given event ID
+        if (args[0] == '$') {
+            room->showEvent(args);
+            return;
+        }
+        // 2 - Going directly to a given message index
+        if (args[0] >= '0' && args[0] <= '9') {
+            room->showEvent(args);
+            return;
+        }
+        // 3 - Matrix URI handler, as if you clicked the URI
+        GlobalObject globalObject;
+        if (globalObject.handleMatrixUri(args)) {
+            return;
+        }
+        nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
+    } else if (command == QLatin1String("converttodm")) {
+        utils::markRoomAsDirect(this->room->roomId(),
+                                cache::getMembers(this->room->roomId().toStdString(), 0, -1));
+    } else if (command == QLatin1String("converttoroom")) {
+        utils::removeDirectFromRoom(this->room->roomId());
+    }
 }
 
 // MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
