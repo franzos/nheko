@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.15] - NOT RELEASED YET
+## [0.1.15]
 ### Updated
 
 * Send commands.
-
+* Fixing crash issue 
 
 ## [0.1.14]
 ### Updated

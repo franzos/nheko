@@ -23,8 +23,7 @@ ReadReceiptsModel::ReadReceiptsModel(QString event_id, QString room_id, QObject 
 
         return;
     }
-
-    connect(Client::instance()->timeline(room_id_), &Timeline::newReadReceipts, this, &ReadReceiptsModel::update);
+    connect(cache::client(), &Cache::newReadReceipts, this, &ReadReceiptsModel::update);
 }
 
 void
