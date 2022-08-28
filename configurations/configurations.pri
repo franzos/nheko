@@ -7,7 +7,8 @@ linux:!android {
             -lmatrix-client-library \
             -llmdb
     QT += dbus
-
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glib-2.0
     target.path = /usr/bin/
     target.files = matrix-client
 

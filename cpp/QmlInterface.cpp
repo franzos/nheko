@@ -9,6 +9,7 @@
 #include <QDir>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
+#include <matrix-client-library/voip/AudioInputControl.h>
 #include "TimelineModel.h"
 #include "GlobalObject.h"
 #include "mydevice.h"
@@ -166,6 +167,10 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new GlobalObject();
         });
+        auto audioInputContol = new AudioInputControl();
+        qmlRegisterSingletonType<AudioInputControl>("AudioInputControl", 1, 0, "AudioInputControl", [audioInputContol](QQmlEngine *, QJSEngine *) -> QObject * {
+            return audioInputContol;
+        });
         qRegisterMetaType<std::vector<DeviceInfo>>();
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
@@ -196,6 +201,8 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));
         qRegisterMetaType<AndroidMaterialTheme>();
         qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
+        qRegisterMetaType<InputDeviceInfo>();
+        qmlRegisterUncreatableMetaObject(InputDeviceInfo::staticMetaObject, "InputDeviceInfo", 1, 0, "InputDeviceInfo", QStringLiteral("Can't instantiate InputDeviceInfo"));    
         qRegisterMetaType<UserInformation>();
         qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
         qRegisterMetaType<PX::AUTH::UserProfileInfo>();

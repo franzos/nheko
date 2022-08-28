@@ -2,57 +2,102 @@ import QtQuick 2.2
 import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.12
 import Settings 1.0
 import CallManager 1.0
+import GlobalObject 1.0
+import InputDeviceInfo 1.0
+import AudioInputControl 1.0
 
 Dialog {
     id: callSettings
     title: "Audio/Video Settings"
     standardButtons: StandardButton.Ok | StandardButton.Cancel
-
-    Column {
-        ButtonGroup { id: audioGroup }
-        ButtonGroup { id: videoGroup }
-        spacing: 10
-        Column {
-            id: audioInputColumn
-            Label {
-                text: qsTr("Audio Input:")
-            }
-        }
-        
-        Column {
-            id: videoInputColumn
-            Label {
-                text: qsTr("Video Input:")
-            }
+    onVisibilityChanged: {
+        if (!this.visible){
+            disconnectSignals()
         }
     }
 
-    Component {
-        id: radioButtonFactory
-        RadioButton {}
+    Column {
+        width: parent.width
+        spacing: 20
+
+        Column {
+            width: parent.width
+            spacing: 5
+            Label {
+                text: qsTr("Audio Input:")
+            }
+            ComboBox {
+                id: audioCombo
+                editable: false
+                flat: true  
+                width: parent.width
+                
+                Layout.leftMargin: 50
+                Layout.rightMargin: 50
+                background:Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 40
+                    color: GlobalObject.colors.window
+                    border.color: GlobalObject.colors.windowText
+                } 
+                model: ListModel {}
+                onActivated: {
+                    updateVolumeAndLevelMeter(audioCombo.currentText)
+                }
+            }
+            Slider {
+                id: volumeSlider
+                width: parent.width
+                onMoved: {
+                    AudioInputControl.setVolume(audioCombo.currentText, volumeSlider.value)
+                }
+            }
+            LinearGradient {
+                id: levelGradient
+                width: parent.width
+                height: 5
+                start: Qt.point(0, 0)
+                end: Qt.point(parent.width, 0)
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "blue" }
+                    GradientStop { position: 1.0; color: "black" }
+                }
+            }
+        }
+
+        Column {
+            width: parent.width
+            spacing: 5
+            Label {
+                text: qsTr("Video Input:")
+            }
+            ComboBox {
+                id: videoCombo
+                editable: false
+                flat: true  
+                width: parent.width
+                Layout.leftMargin: 50
+                Layout.rightMargin: 50
+                background:Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 40
+                    color: GlobalObject.colors.window
+                    border.color: GlobalObject.colors.windowText
+                } 
+                model: ListModel {}   
+            }
+        }
     }
 
     onButtonClicked: {
         if (clickedButton==StandardButton.Ok) {
-            var audioButtons = audioGroup.buttons
-            for(var i=0; i<audioButtons.length; i++){
-                if(audioButtons[i].checked){
-                    Settings.microphone = audioButtons[i].text
-                    console.log("   - [default mic]: " + audioButtons[i].text)
-                    break
-                }
-            }
-
-            var videoButtons = videoGroup.buttons
-            for(var i=0; i<videoButtons.length; i++){
-                if(videoButtons[i].checked){
-                    Settings.camera = videoButtons[i].text
-                    console.log("   - [default cam]: " + videoButtons[i].text)
-                    break
-                }
-            }
+            Settings.microphone = audioCombo.currentText
+            Settings.camera = videoCombo.currentText
+            console.log("   - [default mic]: " + audioCombo.currentText)
+            console.log("   - [default cam]: " + videoCombo.currentText)
         }
     }
 
@@ -65,41 +110,59 @@ Dialog {
         return sortedList  
     }
 
+    function updateVolumeAndLevelMeter(device){
+        AudioInputControl.deviceChanged(device)
+        volumeSlider.value = AudioInputControl.getVolume(device)
+    }
+
+    function onLevelChangedCallback(level) {
+        levelGradient.end = Qt.point(parent.width * (level + 0.0001), 0)
+        console.log(level)
+    }
+
+    function onNewDeviceStatusCallback(index){
+        var info = AudioInputControl.deviceInfo(index)
+        if(info.desc == audioCombo.currentText){
+            volumeSlider.value = AudioInputControl.getVolume(audioCombo.currentText)
+        }
+        console.log(index)
+    }
+    
+    function disconnectSignals() {
+        AudioInputControl.onLevelChanged.disconnect(onLevelChangedCallback)
+        AudioInputControl.onNewDeviceStatus.disconnect(onNewDeviceStatusCallback)
+    }
+
+    Component.onDestruction: {
+        disconnectSignals()
+    }
+
     Component.onCompleted: {
         var defaultMicrophone = Settings.microphone
         var defaultCamera = Settings.camera
         var mics = sortDevices(CallManager.mics)
         var cams = sortDevices(CallManager.cameras)
+        audioCombo.model.clear()
+        videoCombo.model.clear()
         if(mics.length){
             for (var m = 0; m < mics.length; m++) {
-                var rButton = radioButtonFactory.createObject(audioInputColumn, {
-                                                                                "text": mics[m], 
-                                                                                "ButtonGroup.group": audioGroup,
-                                                                                "checked": (mics[m] == defaultMicrophone)
-                                                                                })
+                audioCombo.model.append({text: mics[m]})
             }
+            audioCombo.currentIndex = audioCombo.indexOfValue(defaultMicrophone)
+            updateVolumeAndLevelMeter(defaultMicrophone)
         } else {
-            var button = radioButtonFactory.createObject(audioInputColumn, {
-                                                                                "text": "Not connected!", 
-                                                                                "ButtonGroup.group": audioGroup,
-                                                                                "checkable": false
-                                                                                })
+            audioCombo.displayText="Not connected!"
         }
 
         if(cams.length){
             for (var c = 0; c < cams.length; c++) {
-                var rButton = radioButtonFactory.createObject(videoInputColumn, {
-                                                                                "text": cams[c], 
-                                                                                "ButtonGroup.group": videoGroup,
-                                                                                "checked": (cams[c] == defaultCamera)
-                                                                                })
+                videoCombo.model.append({text: cams[c]})
             }
+            videoCombo.currentIndex = videoCombo.indexOfValue(defaultCamera)
         } else {
-            var button = radioButtonFactory.createObject(videoInputColumn, {
-                                                                                "text": "Not connected!", 
-                                                                                "ButtonGroup.group": videoGroup,
-                                                                                "checkable": false
-                                                                                })
+            videoCombo.displayText = "Not connected!"
         }
+        AudioInputControl.onLevelChanged.connect(onLevelChangedCallback)
+        AudioInputControl.onNewDeviceStatus.connect(onNewDeviceStatusCallback)
     }
 }
