@@ -6,7 +6,7 @@ linux:!android {
     LIBS += -lpx-auth-lib-cpp \
             -lmatrix-client-library \
             -llmdb
-    QT += dbus
+    QT += dbus multimedia
     CONFIG += link_pkgconfig
     PKGCONFIG += glib-2.0
     target.path = /usr/bin/

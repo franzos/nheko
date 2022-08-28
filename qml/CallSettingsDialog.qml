@@ -51,13 +51,16 @@ Dialog {
             Slider {
                 id: volumeSlider
                 width: parent.width
+                visible: Qt.platform.os != "android"
                 onMoved: {
-                    AudioInputControl.setVolume(audioCombo.currentText, volumeSlider.value)
+                    if (Qt.platform.os != "android")
+                        AudioInputControl.setVolume(audioCombo.currentText, volumeSlider.value)
                 }
             }
             LinearGradient {
                 id: levelGradient
                 width: parent.width
+                visible: Qt.platform.os != "android"
                 height: 5
                 start: Qt.point(0, 0)
                 end: Qt.point(parent.width, 0)
@@ -111,13 +114,14 @@ Dialog {
     }
 
     function updateVolumeAndLevelMeter(device){
-        AudioInputControl.deviceChanged(device)
-        volumeSlider.value = AudioInputControl.getVolume(device)
+        if (Qt.platform.os != "android") {
+            AudioInputControl.deviceChanged(device)
+            volumeSlider.value = AudioInputControl.getVolume(device)
+        }
     }
 
     function onLevelChangedCallback(level) {
         levelGradient.end = Qt.point(parent.width * (level + 0.0001), 0)
-        console.log(level)
     }
 
     function onNewDeviceStatusCallback(index){
@@ -125,12 +129,13 @@ Dialog {
         if(info.desc == audioCombo.currentText){
             volumeSlider.value = AudioInputControl.getVolume(audioCombo.currentText)
         }
-        console.log(index)
     }
     
     function disconnectSignals() {
-        AudioInputControl.onLevelChanged.disconnect(onLevelChangedCallback)
-        AudioInputControl.onNewDeviceStatus.disconnect(onNewDeviceStatusCallback)
+        if (Qt.platform.os != "android") {
+            AudioInputControl.onLevelChanged.disconnect(onLevelChangedCallback)
+            AudioInputControl.onNewDeviceStatus.disconnect(onNewDeviceStatusCallback)
+        }
     }
 
     Component.onDestruction: {
@@ -162,7 +167,9 @@ Dialog {
         } else {
             videoCombo.displayText = "Not connected!"
         }
-        AudioInputControl.onLevelChanged.connect(onLevelChangedCallback)
-        AudioInputControl.onNewDeviceStatus.connect(onNewDeviceStatusCallback)
+        if (Qt.platform.os != "android") {
+            AudioInputControl.onLevelChanged.connect(onLevelChangedCallback)
+            AudioInputControl.onNewDeviceStatus.connect(onNewDeviceStatusCallback)
+        }
     }
 }

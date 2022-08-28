@@ -1,4 +1,5 @@
 #include "QmlInterface.h"
+#include <QtGlobal>
 #include <QCoreApplication>
 #include <QApplication>
 #include <QQuickStyle>
@@ -167,6 +168,7 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new GlobalObject();
         });
+
         auto audioInputContol = new AudioInputControl();
         qmlRegisterSingletonType<AudioInputControl>("AudioInputControl", 1, 0, "AudioInputControl", [audioInputContol](QQmlEngine *, QJSEngine *) -> QObject * {
             return audioInputContol;
