@@ -1,4 +1,9 @@
-QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus
+QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus 
+linux:!android {
+    QT += multimedia
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glib-2.0
+}
 CONFIG += c++17
 
 SOURCES += \
