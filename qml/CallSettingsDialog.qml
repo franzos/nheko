@@ -66,7 +66,7 @@ Dialog {
                 end: Qt.point(parent.width, 0)
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "blue" }
-                    GradientStop { position: 1.0; color: "black" }
+                    GradientStop { position: 1.0; color: GlobalObject.colors.base } 
                 }
             }
         }
