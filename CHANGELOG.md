@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.18]
+### Updated
+
+* Speaker volume control added.
+
+
+
 ## [0.1.17]
 ### Updated
 
