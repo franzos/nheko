@@ -6,8 +6,8 @@ import QtGraphicalEffects 1.12
 import Settings 1.0
 import CallManager 1.0
 import GlobalObject 1.0
-import InputDeviceInfo 1.0
-import AudioInputControl 1.0
+import AudioDeviceInfo 1.0
+import AudioDeviceControl 1.0
 
 Dialog {
     id: callSettings
@@ -45,16 +45,16 @@ Dialog {
                 } 
                 model: ListModel {}
                 onActivated: {
-                    updateVolumeAndLevelMeter(audioCombo.currentText)
+                    updateMicVolumeAndLevelMeter(audioCombo.currentText)
                 }
             }
             Slider {
-                id: volumeSlider
+                id: micVolumeSlider
                 width: parent.width
                 visible: Qt.platform.os != "android"
                 onMoved: {
                     if (Qt.platform.os != "android")
-                        AudioInputControl.setVolume(audioCombo.currentText, volumeSlider.value)
+                        AudioDeviceControl.setMicrophoneVolume(audioCombo.currentText, micVolumeSlider.value)
                 }
             }
             LinearGradient {
@@ -70,7 +70,22 @@ Dialog {
                 }
             }
         }
-
+        Column {
+            width: parent.width
+            spacing: 5
+            Label {
+                text: qsTr("Output Volume:")
+            }
+            Slider {
+                id: spkVolumeSlider
+                width: parent.width
+                visible: Qt.platform.os != "android"
+                onMoved: {
+                    if (Qt.platform.os != "android")
+                        AudioDeviceControl.setSpeakerVolume(spkVolumeSlider.value)
+                }
+            }
+        }
         Column {
             width: parent.width
             spacing: 5
@@ -113,10 +128,16 @@ Dialog {
         return sortedList  
     }
 
-    function updateVolumeAndLevelMeter(device){
+    function updateMicVolumeAndLevelMeter(device){
         if (Qt.platform.os != "android") {
-            AudioInputControl.deviceChanged(device)
-            volumeSlider.value = AudioInputControl.getVolume(device)
+            AudioDeviceControl.deviceChanged(device)
+            micVolumeSlider.value = AudioDeviceControl.getMicrophoneVolume(device)
+        }
+    }
+
+    function updateSpkVolumeAndLevelMeter(device){
+        if (Qt.platform.os != "android") {
+            spkVolumeSlider.value = AudioDeviceControl.getSpeakerVolume(device)
         }
     }
 
@@ -124,17 +145,23 @@ Dialog {
         levelGradient.end = Qt.point(parent.width * (level + 0.0001), 0)
     }
 
-    function onNewDeviceStatusCallback(index){
-        var info = AudioInputControl.deviceInfo(index)
+    
+    function onNewInputDeviceStatusCallback(index){
+        var info = AudioDeviceControl.deviceInfo(index)
         if(info.desc == audioCombo.currentText){
-            volumeSlider.value = AudioInputControl.getVolume(audioCombo.currentText)
+            micVolumeSlider.value = AudioDeviceControl.getMicrophoneVolume(audioCombo.currentText)
         }
+    }
+
+    function onNewOutputDeviceStatusCallback(index){
+        spkVolumeSlider.value = AudioDeviceControl.getSpeakerVolume()
     }
     
     function disconnectSignals() {
         if (Qt.platform.os != "android") {
-            AudioInputControl.onLevelChanged.disconnect(onLevelChangedCallback)
-            AudioInputControl.onNewDeviceStatus.disconnect(onNewDeviceStatusCallback)
+            AudioDeviceControl.onLevelChanged.disconnect(onLevelChangedCallback)
+            AudioDeviceControl.onNewInputDeviceStatus.disconnect(onNewInputDeviceStatusCallback)
+            AudioDeviceControl.onNewOutputDeviceStatus.disconnect(onNewOutputDeviceStatusCallback)
         }
     }
 
@@ -154,11 +181,11 @@ Dialog {
                 audioCombo.model.append({text: mics[m]})
             }
             audioCombo.currentIndex = audioCombo.indexOfValue(defaultMicrophone)
-            updateVolumeAndLevelMeter(defaultMicrophone)
+            updateMicVolumeAndLevelMeter(defaultMicrophone)
         } else {
             audioCombo.displayText="Not connected!"
         }
-
+        updateSpkVolumeAndLevelMeter()
         if(cams.length){
             for (var c = 0; c < cams.length; c++) {
                 videoCombo.model.append({text: cams[c]})
@@ -168,8 +195,9 @@ Dialog {
             videoCombo.displayText = "Not connected!"
         }
         if (Qt.platform.os != "android") {
-            AudioInputControl.onLevelChanged.connect(onLevelChangedCallback)
-            AudioInputControl.onNewDeviceStatus.connect(onNewDeviceStatusCallback)
+            AudioDeviceControl.onLevelChanged.connect(onLevelChangedCallback)
+            AudioDeviceControl.onNewInputDeviceStatus.connect(onNewInputDeviceStatusCallback)
+            AudioDeviceControl.onNewOutputDeviceStatus.connect(onNewOutputDeviceStatusCallback)
         }
     }
 }

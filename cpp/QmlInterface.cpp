@@ -10,7 +10,7 @@
 #include <QDir>
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
-#include <matrix-client-library/voip/AudioInputControl.h>
+#include <matrix-client-library/voip/AudioDeviceControl.h>
 #include "TimelineModel.h"
 #include "GlobalObject.h"
 #include "mydevice.h"
@@ -169,9 +169,9 @@ QmlInterface::QmlInterface(QObject *parent):
             return new GlobalObject();
         });
 
-        auto audioInputContol = new AudioInputControl();
-        qmlRegisterSingletonType<AudioInputControl>("AudioInputControl", 1, 0, "AudioInputControl", [audioInputContol](QQmlEngine *, QJSEngine *) -> QObject * {
-            return audioInputContol;
+        auto audioContol = new AudioDeviceControl();
+        qmlRegisterSingletonType<AudioDeviceControl>("AudioDeviceControl", 1, 0, "AudioDeviceControl", [audioContol](QQmlEngine *, QJSEngine *) -> QObject * {
+            return audioContol;
         });
         qRegisterMetaType<std::vector<DeviceInfo>>();
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
@@ -203,8 +203,8 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));
         qRegisterMetaType<AndroidMaterialTheme>();
         qmlRegisterUncreatableMetaObject(AndroidMaterialTheme::staticMetaObject, "AndroidMaterialTheme", 1, 0, "AndroidMaterialTheme", QStringLiteral("Can't instantiate AndroidMaterialTheme"));   
-        qRegisterMetaType<InputDeviceInfo>();
-        qmlRegisterUncreatableMetaObject(InputDeviceInfo::staticMetaObject, "InputDeviceInfo", 1, 0, "InputDeviceInfo", QStringLiteral("Can't instantiate InputDeviceInfo"));    
+        qRegisterMetaType<AudioDeviceInfo>();
+        qmlRegisterUncreatableMetaObject(AudioDeviceInfo::staticMetaObject, "AudioDeviceInfo", 1, 0, "AudioDeviceInfo", QStringLiteral("Can't instantiate AudioDeviceInfo"));    
         qRegisterMetaType<UserInformation>();
         qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
         qRegisterMetaType<PX::AUTH::UserProfileInfo>();
