@@ -10,7 +10,7 @@ import QtQuick.Layouts 1.12
 import GlobalObject 1.0
 import InviteesModel 1.0
 import CursorShape 1.0
-
+import MatrixClient 1.0
 ApplicationWindow {
     id: inviteDialogRoot
 
@@ -75,7 +75,19 @@ ApplicationWindow {
                 onAccepted: {
                     if (isValidMxid)
                         addInvite();
-
+                }
+                onTextChanged:{
+                    memberList.model.clear()
+                    if(text){
+                        var list = MatrixClient.knownUsers(text)
+                        for(var i = 0; i < list.length; i++){
+                            memberList.model.append({
+                                userId     : list[i].userId,
+                                displayName: list[i].displayName,
+                                avatarUrl  : list[i].avatarUrl
+                            })
+                        }
+                    }
                 }
                 Component.onCompleted: forceActiveFocus()
                 Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
@@ -95,12 +107,79 @@ ApplicationWindow {
         }
 
         ListView {
+            id: memberList
+            width: parent.width
+            height: 100
+            model: ListModel {}
+            visible: (model.count?true:false)
+            ScrollBar.vertical: ScrollBar {}
+            
+            delegate: ItemDelegate {
+                id: del
+                onClicked: {
+                    inviteeEntry.text = model.userId
+                    memberList.model.clear()
+                }
+                background: Rectangle {
+                    color: del.hovered ? GlobalObject.colors.dark : inviteDialogRoot.color
+                }
+                padding: 8 //Nheko.paddingMedium
+                width: ListView.view.width
+                height: memberLayout.implicitHeight + 4 * 2 //Nheko.paddingSmall
+                hoverEnabled: true
+
+                RowLayout {
+                    id: memberLayout
+
+                    spacing: 8 //Nheko.paddingMedium
+                    anchors.centerIn: parent
+                    width: parent.width - 4 * 2 //Nheko.paddingSmall
+
+                    Avatar {
+                        id: avatar
+
+                        width: GlobalObject.avatarSize
+                        height: GlobalObject.avatarSize
+                        userid: model.userId
+                        url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                        displayName: model.displayName
+                        enabled: false
+                    }
+
+                    ColumnLayout {
+                        spacing: 4//Nheko.paddingSmall
+
+                        ElidedLabel {
+                            fullText: model.displayName
+                            font.pixelSize: fontMetrics.font.pixelSize
+                            elideWidth: del.width - 8 * 2 -avatar.width  //Nheko.paddingMedium
+                        }
+
+                        ElidedLabel {
+                            fullText: model.userId
+                            color: del.hovered ? GlobalObject.colors.brightText : GlobalObject.colors.buttonText
+                            font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
+                            elideWidth: del.width - 8 * 2 - avatar.width //Nheko.paddingMedium
+                        }
+
+                    }
+                }
+
+                CursorShape {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                }
+
+            }
+        } 
+
+        ListView {
             id: inviteesList
 
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: invitees
-
+            visible: (memberList.model.length?false:true)
             delegate: ItemDelegate {
                 id: del
 

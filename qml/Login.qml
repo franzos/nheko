@@ -21,7 +21,6 @@ Page {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            // validator: UserIDRegex{}
             placeholderText: "User ID or CM account" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
@@ -29,7 +28,6 @@ Page {
                 if(!QmlInterface.getServerAddress()) {
                     discoveryTimer.restart()
                 }               
-                  
             }
         }
 

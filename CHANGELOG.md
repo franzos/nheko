@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+
+## [0.1.19]
+### Updated
+
+* List of users in start chat and invite to the room.
+
+
+
 ## [0.1.18]
 ### Updated
 

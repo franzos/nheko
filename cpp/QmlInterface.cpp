@@ -24,6 +24,7 @@
 #include "InviteesModel.h"
 
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+Q_DECLARE_METATYPE(QVector<UserInformation>)
 
 namespace PX::GUI::MATRIX{
 
@@ -174,6 +175,7 @@ QmlInterface::QmlInterface(QObject *parent):
             return audioContol;
         });
         qRegisterMetaType<std::vector<DeviceInfo>>();
+        qRegisterMetaType<QVector<UserInformation>>();
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
         qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
