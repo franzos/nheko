@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 
+## [0.1.20]
+### Updated
+
+* Set parent for `RoomListModel` at creation time.
+* Set Cpp as ownership for `TimelineModel` to delete properly when parent deleted.
+
+
 ## [0.1.19]
 ### Updated
 

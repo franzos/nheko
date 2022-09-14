@@ -41,7 +41,7 @@ namespace PX::GUI::MATRIX{
         auto cacheDirs = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
         if(cacheDirs.size()){
             auto cacheInfoFile = cacheDirs[0] + "/info";
-            qSettings = new QSettings(cacheInfoFile, QSettings::IniFormat);
+            qSettings = new QSettings(cacheInfoFile, QSettings::IniFormat, this);
             qInfo() << " > QML Cache dir found:" << cacheDirs[0];
             if(QFile(cacheInfoFile).exists()){
                 qInfo() << " > QML Cache info detected:" << cacheInfoFile;
@@ -72,7 +72,7 @@ namespace PX::GUI::MATRIX{
 
 QmlInterface::QmlInterface(QObject *parent): 
     QObject(parent),
-    _roomListModel(new RoomListModel({})),
+    _roomListModel(new RoomListModel(this)),
     _client(Client::instance()),
     _callMgr(_client->callManager()),
     _callDevices(&CallDevices::instance()),

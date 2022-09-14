@@ -189,7 +189,9 @@ void RoomListModel::remove(const QStringList &ids){
 }
 
 TimelineModel *RoomListModel::timelineModel(const QString &roomId){
-    return new TimelineModel(roomId);
+    auto model = new TimelineModel(roomId, this);
+    QQmlEngine::setObjectOwnership(model, QQmlEngine::CppOwnership);
+    return model;
 }
 
 RoomInformation *RoomListModel::roomInformation(const QString &roomId){ 
