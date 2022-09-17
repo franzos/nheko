@@ -37,6 +37,7 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     int  roomidToIndex(const QString &roomid);
+    void cleanup();
 
 public slots:
     void add(RoomListItem &item);
@@ -52,5 +53,6 @@ protected:
     QHash<int, QByteArray> roleNames() const;
     QList<RoomListItem> _roomListItems;
     QStringList _roomIds;
+    QList<TimelineModel *> _timelines;
 };
 #endif

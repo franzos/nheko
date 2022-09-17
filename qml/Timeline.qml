@@ -151,8 +151,8 @@ Room {
         timelineModel.onTypingUsersChanged.disconnect(onTypingUsersChanged)
         timelineModel.onOpenReadReceiptsDialog.disconnect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.disconnect(onShowRawMessageDialog)
-         timelineModel.onOpenProfile.disconnect(onOpenProfile)
-        timelineModel.destroy()
+        timelineModel.onOpenProfile.disconnect(onOpenProfile)
+        // timelineModel.destroy()
     }
 
     function onTypingUsersChanged(text) {

@@ -85,6 +85,13 @@ int RoomListModel::roomidToIndex(const QString &roomid){
     return -1;
 }
 
+void RoomListModel::cleanup(){
+    for(auto const &t: _timelines){
+        t->deleteLater();
+    }
+    _timelines.clear();
+}
+
 bool RoomListModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
     (void)parent;
@@ -190,6 +197,7 @@ void RoomListModel::remove(const QStringList &ids){
 
 TimelineModel *RoomListModel::timelineModel(const QString &roomId){
     auto model = new TimelineModel(roomId, this);
+    _timelines << model;
     QQmlEngine::setObjectOwnership(model, QQmlEngine::CppOwnership);
     return model;
 }

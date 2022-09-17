@@ -175,7 +175,12 @@ Page {
         }
 
         function onLogoutOk(){
-            stack.pop(null)
+            for(var i=0; i<stack.depth-1; i++){
+                var p  = stack.pop()
+                if (p) {
+                    p.destroy()
+                }
+            }
             loginPage.reload()
             stack.replace(loginPage)
         }

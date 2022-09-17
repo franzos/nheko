@@ -326,4 +326,8 @@ QmlInterface::QmlInterface(QObject *parent):
         return JdenticonProvider::isAvailable();
     }
     
+    void QmlInterface::logout(){
+        _roomListModel->cleanup();
+        _client->logout();
+    }
 }

@@ -40,7 +40,7 @@ public:
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
     void login(LOGIN_TYPE type, const QString &accessToken = "");
-    bool dbusAvailable() const { return _dbusAvailable; }
+    void logout();
 
 signals:
     void userIdChanged(const QString &userId);
@@ -78,7 +78,6 @@ private:
 #if defined(NOTIFICATION_DBUS_SYS)
     NotificationsManager _notificationsManager;
 #endif
-    bool _dbusAvailable;
     PX::AUTH::UserProfileInfo _cmUserInformation;
 };
 }
