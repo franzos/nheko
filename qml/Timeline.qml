@@ -57,9 +57,14 @@ Room {
         TypingIndicator {
             id: typingIndicator
         }
+
+        UploadBox{
+
+        }
         
         ReplyPopup {
         }
+        
         MessageInput {
             id: messageInput
             width: parent.width //- sendButton.width            
@@ -221,7 +226,6 @@ Room {
 
         UserProfileQm {
         }
-
     }
 
 
@@ -230,7 +234,13 @@ Room {
 
         InviteDialog {
         }
+    }
 
+    Component {
+        id: imageOverlay
+
+        ImageOverlay {
+        }
     }
 
     function onOpenProfile(profile) {
@@ -260,6 +270,19 @@ Room {
                 "invitees": invitees
             });
             dialog.show();
+            destroyOnClose(dialog);
+        }
+
+        function onShowImageOverlay(eventId, url, originalWidth, proportionalHeight) {
+            var dialog = imageOverlay.createObject(timeline, {
+                "room": timelineModel,
+                "eventId": eventId,
+                "url": url,
+                "originalWidth": originalWidth ?? 0,
+                "proportionalHeight": proportionalHeight ?? 0
+            });
+
+            dialog.showFullScreen();
             destroyOnClose(dialog);
         }
 

@@ -8,6 +8,7 @@ CONFIG += c++17
 
 SOURCES += \
     $$PWD/AvatarProvider.cpp \
+    $$PWD/BlurhashProvider.cpp \
     $$PWD/Clipboard.cpp \
     $$PWD/ColorImageProvider.cpp \
     $$PWD/CompletionProxyModel.cpp \
@@ -37,6 +38,8 @@ SOURCES += \
     $$PWD/ui/emoji/Provider.cpp \
     $$PWD/ui/CombinedImagePackModel.cpp \
     $$PWD/ui/DelegateChooser.cpp \
+    $$PWD/ui/MxcAnimatedImage.cpp \
+    $$PWD/ui/MxcMediaProxy.cpp \
     $$PWD/ui/InputBar.cpp \
     $$PWD/ui/NhekoCursorShape.cpp 
     
@@ -44,6 +47,7 @@ SOURCES += \
 HEADERS += \
     $$PWD/Application.h\
     $$PWD/AvatarProvider.h \
+    $$PWD/BlurhashProvider.h \
     $$PWD/Clipboard.h\
     $$PWD/ColorImageProvider.h \
     $$PWD/CompletionModelRoles.h \
@@ -73,5 +77,7 @@ HEADERS += \
     $$PWD/ui/emoji/Provider.h \
     $$PWD/ui/CombinedImagePackModel.h \
     $$PWD/ui/DelegateChooser.h \
+	$$PWD/ui/MxcAnimatedImage.h \
+    $$PWD/ui/MxcMediaProxy.h \
     $$PWD/ui/InputBar.h \
     $$PWD/ui/NhekoCursorShape.h

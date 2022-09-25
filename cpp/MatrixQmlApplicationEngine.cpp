@@ -3,6 +3,7 @@
 #include "MxcImageProvider.h"
 #include "ColorImageProvider.h"
 #include "JdenticonProvider.h"
+#include "BlurhashProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -15,6 +16,7 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     //     }
     // }, Qt::QueuedConnection);
     addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());    
+    addImageProvider(QStringLiteral("blurhash"), new BlurhashProvider());
     auto imgProvider = new MxcImageProvider();
     addImageProvider(QStringLiteral("MxcImage"), imgProvider);
     if (jdenticonProviderisAvailable())

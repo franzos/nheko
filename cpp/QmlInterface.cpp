@@ -16,6 +16,8 @@
 #include "mydevice.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/DelegateChooser.h"
+#include "ui/MxcAnimatedImage.h"
+#include "ui/MxcMediaProxy.h"
 #include "Configuration.h"
 #include "ui/emoji/EmojiModel.h"
 #include "Clipboard.h"
@@ -178,9 +180,12 @@ QmlInterface::QmlInterface(QObject *parent):
         qRegisterMetaType<QVector<UserInformation>>();
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
+        qmlRegisterUncreatableType<MediaUpload>("MediaUpload", 1, 0, "MediaUpload", QStringLiteral("MediaUploads can not be created in Qml"));
         qmlRegisterType<NhekoCursorShape>("CursorShape", 1, 0, "CursorShape");
         qmlRegisterType<DelegateChoice>("DelegateChoice", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("DelegateChooser", 1, 0, "DelegateChooser");
+        qmlRegisterType<MxcAnimatedImage>("MxcAnimatedImage", 1, 0, "MxcAnimatedImage");
+        qmlRegisterType<MxcMediaProxy>("MxcMedia", 1, 0, "MxcMedia");
         qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
         qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
         qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);

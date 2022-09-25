@@ -2289,3 +2289,17 @@ TimelineModel::openInviteUsers()
     QQmlEngine::setObjectOwnership(model, QQmlEngine::JavaScriptOwnership);
     emit openInviteUsersDialog(model);
 }
+
+
+void
+TimelineModel::openImageOverlay(QString mxcUrl,
+                                QString eventId,
+                                double originalWidth,
+                                double proportionalHeight)
+{
+    if (mxcUrl.isEmpty()) {
+        return;
+    }
+
+    emit showImageOverlay(eventId, mxcUrl, originalWidth, proportionalHeight);
+}

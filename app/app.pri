@@ -3,6 +3,7 @@ CONFIG += c++17
 
 SOURCES += \
     $$PWD/../cpp/AvatarProvider.cpp \
+    $$PWD/../cpp/BlurhashProvider.cpp \
     $$PWD/../cpp/Clipboard.cpp \
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/CompletionProxyModel.cpp \
@@ -32,6 +33,8 @@ SOURCES += \
     $$PWD/../cpp/ui/emoji/Provider.cpp \
     $$PWD/../cpp/ui/CombinedImagePackModel.cpp \
     $$PWD/../cpp/ui/DelegateChooser.cpp \
+    $$PWD/../cpp/ui/MxcAnimatedImage.cpp \
+    $$PWD/../cpp/ui/MxcMediaProxy.cpp \
     $$PWD/../cpp/ui/InputBar.cpp \
     $$PWD/../cpp/ui/NhekoCursorShape.cpp \
     $$PWD/main.cpp
@@ -39,6 +42,7 @@ SOURCES += \
 HEADERS += \
     $$PWD/../cpp/Application.h\
     $$PWD/../cpp/AvatarProvider.h \
+    $$PWD/../cpp/BlurhashProvider.h \
     $$PWD/../cpp/Clipboard.h \
     $$PWD/../cpp/ColorImageProvider.cpp \
     $$PWD/../cpp/Configuration.h \
@@ -69,5 +73,7 @@ HEADERS += \
     $$PWD/../cpp/ui/emoji/Provider.h \
     $$PWD/../cpp/ui/CombinedImagePackModel.h \
     $$PWD/../cpp/ui/DelegateChooser.h \
+    $$PWD/../cpp/ui/MxcAnimatedImage.h \
     $$PWD/../cpp/ui/InputBar.h \
+    $$PWD/../cpp/ui/MxcMediaProxy.h \
     $$PWD/../cpp/ui/NhekoCursorShape.h 

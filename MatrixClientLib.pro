@@ -6,7 +6,7 @@ TARGET = matrix-client-gui-library
 LIBS += -lmatrix-client-library \
         -lpx-auth-lib-cpp \
         -lspdlog -lcurl -lcoeurl -llmdb \
-        -lmatrix_client
+        -lmatrix_client -lblurhash
         
 include(cpp/cpp.pri)
 include(qml/qml.pri)

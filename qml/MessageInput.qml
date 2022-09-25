@@ -61,7 +61,6 @@ Rectangle {
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
             contentWidth: availableWidth
-
             TextArea {
                 id: messageInput
 
@@ -379,6 +378,30 @@ Rectangle {
         //     }
 
         // }
+        ImageButton {
+            // visible: showAllButtons
+            Layout.alignment: Qt.AlignBottom
+            hoverEnabled: true
+            width: 22
+            height: 22
+            image: ":/images/attach.svg"
+            Layout.margins: 8
+            onClicked: room.input.openFileSelection()
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Send a file")
+
+            // Rectangle {
+            //     anchors.fill: parent
+            //     color: GlobalObject.colors.window
+            //     visible: room && room.input.uploading
+
+            //     // NhekoBusyIndicator {
+            //     //     anchors.fill: parent
+            //     //     running: parent.visible
+            //     // }
+
+            // }
+        }
 
         ImageButton {
             id: emojiButton

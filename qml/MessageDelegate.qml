@@ -111,89 +111,88 @@ Item {
 
         }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.ImageMessage
+        DelegateChoice {
+            roleValue: MtxEvent.ImageMessage
 
-        //     ImageMessage {
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         proportionalHeight: d.proportionalHeight
-        //         url: d.url
-        //         blurhash: d.blurhash
-        //         body: d.body
-        //         filename: d.filename
-        //         isReply: d.isReply
-        //         eventId: d.eventId
-        //         metadataWidth: d.metadataWidth
-        //     }
+            ImageMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                url: d.url
+                blurhash: d.blurhash
+                body: d.body
+                filename: d.filename
+                isReply: d.isReply
+                eventId: d.eventId
+                metadataWidth: d.metadataWidth
+            }
 
-        // }
+        }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.Sticker
+        DelegateChoice {
+            roleValue: MtxEvent.Sticker
 
-        //     ImageMessage {
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         proportionalHeight: d.proportionalHeight
-        //         url: d.url
-        //         blurhash: d.blurhash
-        //         body: d.body
-        //         filename: d.filename
-        //         isReply: d.isReply
-        //         eventId: d.eventId
-        //         metadataWidth: d.metadataWidth
-        //     }
+            ImageMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                url: d.url
+                blurhash: d.blurhash
+                body: d.body
+                filename: d.filename
+                isReply: d.isReply
+                eventId: d.eventId
+                metadataWidth: d.metadataWidth
+            }
 
-        // }
+        }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.FileMessage
+        DelegateChoice {
+            roleValue: MtxEvent.FileMessage
 
-        //     FileMessage {
-        //         eventId: d.eventId
-        //         filename: d.filename
-        //         filesize: d.filesize
-        //         metadataWidth: d.metadataWidth
-        //     }
+            FileMessage {
+                eventId: d.eventId
+                filename: d.filename
+                filesize: d.filesize
+                metadataWidth: d.metadataWidth
+            }
+        }
 
-        // }
+        DelegateChoice {
+            roleValue: MtxEvent.VideoMessage
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.VideoMessage
+            PlayableMediaMessage {
+                proportionalHeight: d.proportionalHeight
+                type: d.type
+                originalWidth: d.originalWidth
+                thumbnailUrl: d.thumbnailUrl
+                eventId: d.eventId
+                url: d.url
+                body: d.body
+                filesize: d.filesize
+                duration: d.duration
+                metadataWidth: d.metadataWidth
+            }
 
-        //     PlayableMediaMessage {
-        //         proportionalHeight: d.proportionalHeight
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         thumbnailUrl: d.thumbnailUrl
-        //         eventId: d.eventId
-        //         url: d.url
-        //         body: d.body
-        //         filesize: d.filesize
-        //         duration: d.duration
-        //         metadataWidth: d.metadataWidth
-        //     }
+        }
 
-        // }
+        DelegateChoice {
+            roleValue: MtxEvent.AudioMessage
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.AudioMessage
+            PlayableMediaMessage {
+                proportionalHeight: d.proportionalHeight
+                type: d.type
+                originalWidth: d.originalWidth
+                thumbnailUrl: d.thumbnailUrl
+                eventId: d.eventId
+                url: d.url
+                body: d.body
+                filesize: d.filesize
+                duration: d.duration
+                metadataWidth: d.metadataWidth
+            }
 
-        //     PlayableMediaMessage {
-        //         proportionalHeight: d.proportionalHeight
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         thumbnailUrl: d.thumbnailUrl
-        //         eventId: d.eventId
-        //         url: d.url
-        //         body: d.body
-        //         filesize: d.filesize
-        //         duration: d.duration
-        //         metadataWidth: d.metadataWidth
-        //     }
-
-        // }
+        }
 
         DelegateChoice {
             roleValue: MtxEvent.Redacted

@@ -164,6 +164,10 @@ public:
     Q_INVOKABLE void focusMessageInput();
     Q_INVOKABLE void openRoomMembers();
     Q_INVOKABLE void openInviteUsers();
+    Q_INVOKABLE void openImageOverlay(QString mxcUrl,
+                                      QString eventId,
+                                      double originalWidth,
+                                      double proportionalHeight);
 
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
@@ -285,7 +289,11 @@ signals:
     void openRoomMembersDialog(MemberList *members);
     void openProfile(UserProfile *profile);
     void openInviteUsersDialog(InviteesModel *invitees);
-
+    void showImageOverlay(QString eventId,
+                          QString url,
+                          double originalWidth,
+                          double proportionalHeight);
+                          
     void lastMessageChanged();
     void notificationsChanged();
 

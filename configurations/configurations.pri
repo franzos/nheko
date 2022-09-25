@@ -22,4 +22,4 @@ linux:!android {
 }
 
 LIBS += -lspdlog -lcurl -lcoeurl \
-        -lmatrix_client
+        -lmatrix_client -lblurhash

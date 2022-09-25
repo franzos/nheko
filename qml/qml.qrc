@@ -14,10 +14,13 @@
         <file>main.qml</file>
         <file>MainLib.qml</file>
         <file>MainMenu.qml</file>
+        <file>FileMessage.qml</file>
         <file>MessageDelegate.qml</file>
+        <file>ImageMessage.qml</file>
         <file>MessageInput.qml</file>
         <file>MessageView.qml</file>
         <file>NoticeMessage.qml</file>
+        <file>PlayableMediaMessage.qml</file>
         <file>Reactions.qml</file>
         <file>ReplyPopup.qml</file>
         <file>Room.qml</file>
@@ -31,6 +34,7 @@
         <file>TypingIndicator.qml</file>
         <file>TimelineRow.qml</file>
         <file>UIA.qml</file>
+        <file>UploadBox.qml</file>
         <file>UserInfo.qml</file>
         <file>UserProfileQm.qml</file>
         <file>device-verification/AwaitingVerificationConfirmation.qml</file>
@@ -47,7 +51,9 @@
         <file>device-verification/UnverifiedMasterKeyMessage.qml</file>
         <file>device-verification/VerifyWithPassphraseMessage.qml</file>
         <file>device-verification/Waiting.qml</file>
-        
+
+        <file>media/MediaControls.qml</file>
+
         <file>regex/MatrixServerRegex.qml</file>
         <file>regex/UserIDRegex.qml</file>
 
@@ -59,10 +65,10 @@
         <file>ui/LoadingButton.qml</file>
         <file>ui/MatrixText.qml</file>
         <file>ui/MatrixTextField.qml</file>
+        <file>ui/NhekoSlider.qml</file>
         <file>ui/PasswordField.qml</file>
         <file>ui/Placeholder.qml</file>
         <file>ui/Pill.qml</file>
-        <file>ui/PlayableMediaMessage.qml</file>
         <file>ui/Redacted.qml</file>
         <file>ui/Reply.qml</file>
         <file>ui/Ripple.qml</file>
@@ -74,6 +80,7 @@
 
         <file>ui/animations/BlinkAnimation.qml</file>
 
+        <file>ui/dialogs/ImageOverlay.qml</file>
         <file>ui/dialogs/InputDialog.qml</file>
         <file>ui/dialogs/InviteDialog.qml</file>
         <file>ui/dialogs/RawMessageDialog.qml</file>
