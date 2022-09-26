@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Send attachments (Video/Audio/Text File and ...).
 * Download attachments.
+* Fixing some minor warnings in qml codes.
 
 
 ## [0.1.22]
