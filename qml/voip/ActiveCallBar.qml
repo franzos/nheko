@@ -15,7 +15,7 @@ import WebRTCState 1.0
 
 Rectangle {
     visible: CallManager.isOnCall
-    color: callInviteBar.color
+    color: "#2ECC71"
     implicitHeight: visible ? rowLayout.height + 8 : 0
 
     MouseArea {
