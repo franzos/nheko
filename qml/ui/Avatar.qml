@@ -80,14 +80,18 @@ AbstractButton {
         color: updatePresence()
 
         function updatePresence() {
-            switch (MatrixClient.presenceEmitter().userPresence(userid)) {
-            case "online":
-                return "#00cc66";
-            case "unavailable":
-                return "#ff9933";
-            case "offline":
-            default:
-                // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
+            if(MatrixClient.presenceEmitter()){
+                switch (MatrixClient.presenceEmitter().userPresence(userid)) {
+                case "online":
+                    return "#00cc66";
+                case "unavailable":
+                    return "#ff9933";
+                case "offline":
+                default:
+                    // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
+                    return "transparent";
+                }
+            } else {
                 return "transparent";
             }
         }
