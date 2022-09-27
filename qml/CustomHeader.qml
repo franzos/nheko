@@ -188,7 +188,7 @@ Column {
     }
 
     function setRoomInfo(title, roomid, avatarUrl){
-        setTitle(title)
+        titleLabel.text = title
         avatar.url= avatarUrl.replace("mxc://", "image://MxcImage/")
         avatar.roomid= roomid
         avatar.userid= roomid
@@ -196,16 +196,6 @@ Column {
         avatar.visible=true
     }
 
-    function setTitle(title){
-        if(title)
-            titleLabel.text = title
-        avatar.visible=false
-    }
-
-    function title(){
-        return titleLabel.text
-    }
-    
     function setVerified(flag){
         // if(flag){
         //     verifyRect.visible = false

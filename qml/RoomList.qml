@@ -14,6 +14,7 @@ Page {
     width: parent.width
     // property string displayName;
     title: "..."
+    property var avatar: ""
     ListView {
         id: roomListView
         anchors.fill: parent
@@ -88,12 +89,13 @@ Page {
 
         function onUserDisplayNameReady(name){
             title = name
-            mainHeader.setTitle(name)
+            mainHeader.setRoomInfo(title, "", avatar)
             onVerificationStatusChanged()
         }
         
         function onUserAvatarReady(avatarUrl){
-            mainHeader.setRoomInfo(title, "", avatarUrl)
+            avatar = avatarUrl
+            mainHeader.setRoomInfo(title, "", avatar)
         }
 
         function onRoomCreated(id){

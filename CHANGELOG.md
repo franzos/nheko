@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.24]
+### Updated
+
+* Improvement and fixing minor issue in showing title and avatar in the header.
+
+
 ## [0.1.23]
 ### Updated
 

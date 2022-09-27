@@ -27,17 +27,23 @@ Page {
         anchors.fill: parent
         onCurrentItemChanged:{
             // TODO these params should be retireved from a general Page class and load to the Header
-            mainHeader.setTitle(currentItem.title)
             mainHeader.state = "none"
             if(currentItem instanceof Timeline || currentItem == videoItem) {
                 mainHeader.onNewCallState() 
             }
+            
+            if(currentItem instanceof RoomList){
+                mainHeader.setRoomInfo(currentItem.title, "", currentItem.avatar)
+            } else if(currentItem instanceof Timeline){
+                mainHeader.setRoomInfo(currentItem.title, currentItem.roomid, currentItem.avatar)
+            }
+
             if(currentItem instanceof Timeline){
                 mainHeader.setOptionButtonsVisible(true)
-                mainHeader.setRoomInfo(currentItem.title, currentItem.roomid, currentItem.avatar)
             } else {
                 mainHeader.setOptionButtonsVisible(false)
             }
+            
             if(currentItem instanceof Login){
                 mainHeader.visible= false
             } else {
