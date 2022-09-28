@@ -24,13 +24,12 @@
 #include <matrix-client-library/Config.h>
 #include <matrix-client-library/EventAccessors.h>
 
-
+#include "ui/emoji/EmojiModel.h"
+#include "ui/CombinedImagePackModel.h"
 #include "CompletionProxyModel.h"
 #include "RoomsModel.h"
-#include "ui/emoji/EmojiModel.h"
 #include "MemberList.h"
 #include "UsersModel.h"
-#include "ui/CombinedImagePackModel.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -2275,6 +2274,18 @@ TimelineModel::openRoomMembers( )
     MemberList *memberList = new MemberList(_timeline->id());
     QQmlEngine::setObjectOwnership(memberList, QQmlEngine::JavaScriptOwnership);
     emit openRoomMembersDialog(memberList);
+}
+
+void
+TimelineModel::openRoomSettings()
+{
+    RoomSettings *settings = new RoomSettings(room_id_);
+    connect(this,
+            &TimelineModel::roomAvatarUrlChanged,
+            settings,
+            &RoomSettings::avatarChanged);
+    QQmlEngine::setObjectOwnership(settings, QQmlEngine::JavaScriptOwnership);
+    emit openRoomSettingsDialog(settings);
 }
 
 void

@@ -22,8 +22,9 @@
 #include <matrix-client-library/timeline/Permissions.h>
 #include <matrix-client-library/UserProfile.h>
 
-#include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
+#include "ui/RoomSettings.h"
+#include "ReadReceiptsModel.h"
 #include "MemberList.h"
 #include "InviteesModel.h"
 
@@ -163,6 +164,7 @@ public:
     Q_INVOKABLE void markEventsAsRead(const QString &event_id);
     Q_INVOKABLE void focusMessageInput();
     Q_INVOKABLE void openRoomMembers();
+    Q_INVOKABLE void openRoomSettings();
     Q_INVOKABLE void openInviteUsers();
     Q_INVOKABLE void openImageOverlay(QString mxcUrl,
                                       QString eventId,
@@ -287,6 +289,7 @@ signals:
     void scrollToIndex(int index);
     void focusInput();
     void openRoomMembersDialog(MemberList *members);
+    void openRoomSettingsDialog(RoomSettings *settings);
     void openProfile(UserProfile *profile);
     void openInviteUsersDialog(InviteesModel *invitees);
     void showImageOverlay(QString eventId,

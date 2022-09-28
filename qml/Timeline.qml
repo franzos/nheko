@@ -205,20 +205,15 @@ Room {
             id: settingAction
             text: qsTr("Setting")
             icon.source: "qrc:/images/settings.svg"
-            onTriggered: roomSettingsDialog.open()
+            onTriggered: timelineModel.openRoomSettings()
         }  
     }
 
-    Dialog {
-        id: roomSettingsDialog
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
-        title: "Room Settings"
-        standardButtons: Dialog.Ok
-        Label {            
-            text: "Coming Soon"
+    Component {
+        id: roomSettingsComponent
+
+        RoomSettings {
         }
-        onAccepted: { }
     }
 
     Component {
@@ -253,6 +248,14 @@ Room {
     }
 
     Connections{
+        function onOpenRoomSettingsDialog(settings) {
+            var roomSettings = roomSettingsComponent.createObject(timeline, {
+                "roomSettings": settings
+            });
+            roomSettings.show();
+            destroyOnClose(roomSettings);
+        }
+
         function onOpenRoomMembersDialog(members) {
             var membersDialog = roomMembersComponent.createObject(timeline, {
                 "members": members,

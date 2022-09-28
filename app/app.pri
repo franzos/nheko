@@ -33,10 +33,12 @@ SOURCES += \
     $$PWD/../cpp/ui/emoji/Provider.cpp \
     $$PWD/../cpp/ui/CombinedImagePackModel.cpp \
     $$PWD/../cpp/ui/DelegateChooser.cpp \
+    $$PWD/../cpp/ui/HiddenEvents.cpp \
     $$PWD/../cpp/ui/MxcAnimatedImage.cpp \
     $$PWD/../cpp/ui/MxcMediaProxy.cpp \
     $$PWD/../cpp/ui/InputBar.cpp \
     $$PWD/../cpp/ui/NhekoCursorShape.cpp \
+    $$PWD/../cpp/ui/RoomSettings.cpp \
     $$PWD/main.cpp
 
 HEADERS += \
@@ -73,7 +75,9 @@ HEADERS += \
     $$PWD/../cpp/ui/emoji/Provider.h \
     $$PWD/../cpp/ui/CombinedImagePackModel.h \
     $$PWD/../cpp/ui/DelegateChooser.h \
+    $$PWD/../cpp/ui/HiddenEvents.h \
     $$PWD/../cpp/ui/MxcAnimatedImage.h \
     $$PWD/../cpp/ui/InputBar.h \
     $$PWD/../cpp/ui/MxcMediaProxy.h \
-    $$PWD/../cpp/ui/NhekoCursorShape.h 
+    $$PWD/../cpp/ui/NhekoCursorShape.h \
+    $$PWD/../cpp/ui/RoomSettings.h

@@ -39,6 +39,7 @@ ui_headers.files =  cpp/ui/NhekoCursorShape.h \
                     cpp/ui/CombinedImagePackModel.h \
                     cpp/ui/DelegateChooser.h \
                     cpp/ui/InputBar.h \
+                    cpp/ui/RoomSettings.h \
                     cpp/ui/NhekoCursorShape.h
 
 notification_headers.path  = /usr/include/matrix-client-gui-library/notifications

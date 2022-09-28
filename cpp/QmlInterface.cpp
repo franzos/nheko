@@ -18,8 +18,10 @@
 #include "ui/DelegateChooser.h"
 #include "ui/MxcAnimatedImage.h"
 #include "ui/MxcMediaProxy.h"
-#include "Configuration.h"
 #include "ui/emoji/EmojiModel.h"
+#include "ui/HiddenEvents.h"
+#include "ui/RoomSettings.h"
+#include "Configuration.h"
 #include "Clipboard.h"
 #include "AvatarProvider.h"
 #include "JdenticonProvider.h"
@@ -178,6 +180,7 @@ QmlInterface::QmlInterface(QObject *parent):
         });
         qRegisterMetaType<std::vector<DeviceInfo>>();
         qRegisterMetaType<QVector<UserInformation>>();
+        qmlRegisterType<HiddenEvents>("HiddenEvents", 1, 0, "HiddenEvents");
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
         qmlRegisterUncreatableType<emoji::Emoji>("Emoji", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
         qmlRegisterUncreatableType<MediaUpload>("MediaUpload", 1, 0, "MediaUpload", QStringLiteral("MediaUploads can not be created in Qml"));
@@ -204,7 +207,8 @@ QmlInterface::QmlInterface(QObject *parent):
         });
         qmlRegisterUncreatableType<InviteesModel>("InviteesModel", 1, 0, "InviteesModel", QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
         qmlRegisterUncreatableType<MemberList>("MemberList", 1, 0, "MemberList", QStringLiteral("MemberList needs to be instantiated on the C++ side"));
-        qmlRegisterUncreatableType<ReadReceiptsProxy>( "ReadReceiptsProxy", 1, 0,"ReadReceiptsProxy", QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
+        qmlRegisterUncreatableType<ReadReceiptsProxy>("ReadReceiptsProxy", 1, 0,"ReadReceiptsProxy", QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
+        qmlRegisterUncreatableType<RoomSettings>("RoomSettingsModel", 1, 0, "RoomSettingsModel", QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
         qmlRegisterUncreatableMetaObject(olm::staticMetaObject, "Olm", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
         qmlRegisterUncreatableMetaObject(crypto::staticMetaObject, "Crypto", 1, 0, "Crypto", QStringLiteral("Can't instantiate enum!"));
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject, "MtxEvent",   1,  0,  "MtxEvent", QStringLiteral("Can't instantiate enum!"));

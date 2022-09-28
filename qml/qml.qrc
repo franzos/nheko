@@ -29,10 +29,12 @@
         <file>RoomDelegate.qml</file>
         <file>RoomTopBar.qml</file>
         <file>RoomMembers.qml</file>
+        <file>RoomSettings.qml</file>
         <file>StatusIndicator.qml</file>
         <file>Timeline.qml</file>
         <file>TypingIndicator.qml</file>
         <file>TimelineRow.qml</file>
+        <file>ToggleButton.qml</file>
         <file>UIA.qml</file>
         <file>UploadBox.qml</file>
         <file>UserInfo.qml</file>
@@ -83,6 +85,7 @@
         <file>ui/dialogs/ImageOverlay.qml</file>
         <file>ui/dialogs/InputDialog.qml</file>
         <file>ui/dialogs/InviteDialog.qml</file>
+        <file>ui/dialogs/HiddenEventsDialog.qml</file>
         <file>ui/dialogs/RawMessageDialog.qml</file>
         <file>ui/dialogs/ReadReceipts.qml</file>
 
