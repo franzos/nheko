@@ -342,41 +342,41 @@ ApplicationWindow {
                     buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
                 }
 
-                Label {
-                    text: qsTr("Permission")
-                    color: GlobalObject.colors.text
-                }
+                // Label {
+                //     text: qsTr("Permission")
+                //     color: GlobalObject.colors.text
+                // }
 
-                Button {
-                    text: qsTr("Configure")
-                    ToolTip.text: qsTr("View and change the permissions in this room")
-                    onClicked: timelineRoot.showPLEditor(roomSettings)
-                    Layout.alignment: Qt.AlignRight
-                }
+                // Button {
+                //     text: qsTr("Configure")
+                //     ToolTip.text: qsTr("View and change the permissions in this room")
+                //     onClicked: timelineRoot.showPLEditor(roomSettings)
+                //     Layout.alignment: Qt.AlignRight
+                // }
 
-                Label {
-                    text: qsTr("Aliases")
-                    color: GlobalObject.colors.text
-                }
+                // Label {
+                //     text: qsTr("Aliases")
+                //     color: GlobalObject.colors.text
+                // }
 
-                Button {
-                    text: qsTr("Configure")
-                    ToolTip.text: qsTr("View and change the addresses/aliases of this room")
-                    onClicked: timelineRoot.showAliasEditor(roomSettings)
-                    Layout.alignment: Qt.AlignRight
-                }
+                // Button {
+                //     text: qsTr("Configure")
+                //     ToolTip.text: qsTr("View and change the addresses/aliases of this room")
+                //     onClicked: timelineRoot.showAliasEditor(roomSettings)
+                //     Layout.alignment: Qt.AlignRight
+                // }
 
-                Label {
-                    text: qsTr("Sticker & Emote Settings")
-                    color: GlobalObject.colors.text
-                }
+                // Label {
+                //     text: qsTr("Sticker & Emote Settings")
+                //     color: GlobalObject.colors.text
+                // }
 
-                Button {
-                    text: qsTr("Change")
-                    ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
-                    onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
-                    Layout.alignment: Qt.AlignRight
-                }
+                // Button {
+                //     text: qsTr("Change")
+                //     ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
+                //     onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
+                //     Layout.alignment: Qt.AlignRight
+                // }
 
                 Label {
                     text: qsTr("Hidden events")

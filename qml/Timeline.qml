@@ -139,6 +139,18 @@ Room {
         destroyOnClose(dialog);
     }
     
+    function onRoomNameChanged(){
+        mainHeader.setRoomInfo(timelineModel.roomName, roomid, timelineModel.roomAvatarUrl)
+    }
+
+    function onRoomTopicChanged(){
+        // TODO
+    }
+
+    function onRoomAvatarUrlChanged(){
+        mainHeader.setRoomInfo(timelineModel.roomName, roomid, timelineModel.roomAvatarUrl)
+    }
+
     Component.onCompleted: {
         mainHeader.optionClicked.connect(onOptionClicked)
         mainHeader.voiceCallClicked.connect(startVoiceCall)
@@ -147,6 +159,9 @@ Room {
         timelineModel.onOpenReadReceiptsDialog.connect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.connect(onShowRawMessageDialog)
         timelineModel.onOpenProfile.connect(onOpenProfile)
+        timelineModel.onRoomNameChanged.connect(onRoomNameChanged)
+        timelineModel.onRoomTopicChanged.connect(onRoomTopicChanged)
+        timelineModel.onRoomAvatarUrlChanged.connect(onRoomAvatarUrlChanged)
     }
 
     Component.onDestruction: {
@@ -157,6 +172,9 @@ Room {
         timelineModel.onOpenReadReceiptsDialog.disconnect(onOpenReadReceiptsDialog)
         timelineModel.onShowRawMessageDialog.disconnect(onShowRawMessageDialog)
         timelineModel.onOpenProfile.disconnect(onOpenProfile)
+        timelineModel.onRoomNameChanged.disconnect(onRoomNameChanged)
+        timelineModel.onRoomTopicChanged.disconnect(onRoomTopicChanged)
+        timelineModel.onRoomAvatarUrlChanged.disconnect(onRoomAvatarUrlChanged)
         // timelineModel.destroy()
     }
 
@@ -203,7 +221,7 @@ Room {
 
         Action {
             id: settingAction
-            text: qsTr("Setting")
+            text: qsTr("Settings")
             icon.source: "qrc:/images/settings.svg"
             onTriggered: timelineModel.openRoomSettings()
         }  

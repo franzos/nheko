@@ -57,7 +57,9 @@ TimelineModel::TimelineModel(
 
     // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
     // needs to be
-    connect(this, &TimelineModel::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
+    connect(_timeline, &Timeline::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
+    connect(_timeline, &Timeline::roomNameChanged, this, &TimelineModel::roomNameChanged);
+    connect(_timeline, &Timeline::roomTopicChanged, this, &TimelineModel::roomTopicChanged);
 
     // connect(
     //   this,

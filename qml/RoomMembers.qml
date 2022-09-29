@@ -49,7 +49,7 @@ ApplicationWindow {
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")
-            // onClicked: TimelineManager.openRoomSettings(members.roomId)
+            // onClicked: room.openRoomSettings() // TODO TimelineManager.openRoomSettings(members.roomId)
         }
 
         ElidedLabel {
