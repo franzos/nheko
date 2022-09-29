@@ -192,9 +192,6 @@ public:
     }
 
     void updateLastMessage();
-    void sync(const mtx::responses::JoinedRoom &room);
-    void addEvents(const mtx::responses::Timeline &events);
-    void syncState(const mtx::responses::State &state);
     RelatedInfo relatedInfo(const QString &id);
 
     DescInfo lastMessage() const { return lastMessage_; }
