@@ -39,6 +39,7 @@
         <file>UploadBox.qml</file>
         <file>UserInfo.qml</file>
         <file>UserProfileQm.qml</file>
+        <file>UserSettingsPage.qml</file>
         <file>device-verification/AwaitingVerificationConfirmation.qml</file>
         <file>device-verification/DeviceVerification.qml</file>
         <file>device-verification/DigitVerification.qml</file>

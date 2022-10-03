@@ -11,6 +11,7 @@
 #include <matrix-client-library/encryption/DeviceVerificationFlow.h>
 #include <matrix-client-library/UIA.h>
 #include <matrix-client-library/voip/AudioDeviceControl.h>
+#include <matrix-client-library/UserSettings.h>
 #include "TimelineModel.h"
 #include "GlobalObject.h"
 #include "mydevice.h"
@@ -21,6 +22,7 @@
 #include "ui/emoji/EmojiModel.h"
 #include "ui/HiddenEvents.h"
 #include "ui/RoomSettings.h"
+#include "ui/UserSettingsModel.h"
 #include "Configuration.h"
 #include "Clipboard.h"
 #include "AvatarProvider.h"
@@ -173,7 +175,10 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new GlobalObject();
         });
-
+        qmlRegisterSingletonType<UserSettingsModel>("UserSettingsModel", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
+            return new UserSettingsModel();
+        });
+        qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _client->userSettings().data());
         auto audioContol = new AudioDeviceControl();
         qmlRegisterSingletonType<AudioDeviceControl>("AudioDeviceControl", 1, 0, "AudioDeviceControl", [audioContol](QQmlEngine *, QJSEngine *) -> QObject * {
             return audioContol;

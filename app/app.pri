@@ -39,6 +39,7 @@ SOURCES += \
     $$PWD/../cpp/ui/InputBar.cpp \
     $$PWD/../cpp/ui/NhekoCursorShape.cpp \
     $$PWD/../cpp/ui/RoomSettings.cpp \
+    $$PWD/../cpp/ui/UserSettingsModel.cpp \
     $$PWD/main.cpp
 
 HEADERS += \
@@ -80,4 +81,5 @@ HEADERS += \
     $$PWD/../cpp/ui/InputBar.h \
     $$PWD/../cpp/ui/MxcMediaProxy.h \
     $$PWD/../cpp/ui/NhekoCursorShape.h \
-    $$PWD/../cpp/ui/RoomSettings.h
+    $$PWD/../cpp/ui/RoomSettings.h \
+    $$PWD/../cpp/ui/UserSettingsModel.h
