@@ -24,10 +24,10 @@ Rectangle {
     color: GlobalObject.colors.window
 
     VerifyWithPassphraseMessage {
-        id: verifyWithPassphraseMessage
+        id: downloadCrossSigningDialog
         width: parent.width
         onPassphraseEntered:{
-            UserSettingsModel.requestCrossSigningSecrets(passphrase)
+            UserSettingsModel.downloadCrossSigningSecrets(passphrase)
         }
     }
 
@@ -220,11 +220,11 @@ Rectangle {
                             RowLayout {
                                 Button {
                                     text: qsTr("DOWNLOAD")
-                                    onClicked: UserSettingsModel.downloadCrossSigningSecrets()
+                                    onClicked: downloadCrossSigningDialog.open()
                                 }
                                 Button {
                                     text: qsTr("REQUEST")
-                                    onClicked: verifyWithPassphraseMessage.open()
+                                    onClicked: UserSettingsModel.requestCrossSigningSecrets()
                                 }
                             }
                         }
