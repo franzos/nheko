@@ -80,14 +80,6 @@ TimelineModel::TimelineModel(
             nhlog::ui()->debug("id not found {}", id.toStdString());
         }
     });
-
-    // connect(this,
-    //         &TimelineModel::newMessageToSend,
-    //         this,
-    //         &TimelineModel::addPendingMessage,
-    //         Qt::QueuedConnection);
-    connect(this, &TimelineModel::addPendingMessageToStore, events, &EventStore::addPending);
-
     connect(events, &EventStore::dataChanged, this, [this](int from, int to) {
         relatedEventCacheBuster++;
         nhlog::ui()->debug(
@@ -119,9 +111,6 @@ TimelineModel::TimelineModel(
     //         [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg) {
     //             ChatPage::instance()->receivedRoomDeviceVerificationRequest(msg, this);
     //         });
-    connect(events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
-        this->updateFlowEventId(std::move(event_id));
-    });
     // When a message is sent, check if the current edit/reply relates to that message,
     // and update the event_id so that it points to the sent message and not the pending one.
     connect(
@@ -139,9 +128,6 @@ TimelineModel::TimelineModel(
           }
       },
       Qt::QueuedConnection);
-
-    // connect(
-    //   manager_, &TimelineViewManager::initialSyncChanged, events, &EventStore::enableKeyRequests);
 
     connect(this, &TimelineModel::encryptionChanged, this, &TimelineModel::trustlevelChanged);
     connect(this, &TimelineModel::roomMemberCountChanged, this, &TimelineModel::trustlevelChanged);

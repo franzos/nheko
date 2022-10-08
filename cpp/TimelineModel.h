@@ -246,10 +246,6 @@ public slots:
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
     void clearTimeline() { events->clearTimeline(); }
     void resetState();
-    void receivedSessionKey(const std::string &session_key)
-    {
-        events->receivedSessionKey(session_key);
-    }
 
     QString roomName() const;
     QString plainRoomName() const;
@@ -301,7 +297,6 @@ signals:
 
     void newMessageToSend(mtx::events::collections::TimelineEvents event);
     void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
-    void updateFlowEventId(std::string event_id);
 
     void encryptionChanged();
     void trustlevelChanged();

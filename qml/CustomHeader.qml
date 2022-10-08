@@ -62,16 +62,16 @@ Column {
                 }
             }
 
-            // ToolButton {
-            //     id: verifyRect
-            //     icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
-            //     icon.color:"#C70039"
-            //     width: parent.height
-            //     height: parent.height
-            //     onClicked: {
-            //         selfVerificationCheck.verify()
-            //     }
-            // }
+            ToolButton {
+                id: verifyRect
+                icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+                icon.color:"#C70039"
+                width: parent.height
+                height: parent.height
+                onClicked: {
+                    selfVerificationCheck.verify()
+                }
+            }
 
             ToolButton {
                 id: callSettingsItem
@@ -197,11 +197,11 @@ Column {
     }
 
     function setVerified(flag){
-        // if(flag){
-        //     verifyRect.visible = false
-        // } else {
-        //     verifyRect.visible = true
-        // }
+        if(flag){
+            verifyRect.visible = false
+        } else {
+            verifyRect.visible = true
+        }
     }
 
     SelfVerificationCheck{
