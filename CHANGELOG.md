@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.28] - NOT RELEASED YET
+### Updated
+
+* Mention others in the chat.
+
+
 ## [0.1.27]
 ### Updated
 

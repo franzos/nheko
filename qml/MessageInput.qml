@@ -64,20 +64,20 @@ Rectangle {
             TextArea {
                 id: messageInput
 
-                // property int completerTriggeredAt: 0
+                property int completerTriggeredAt: 0
 
-                // function insertCompletion(completion) {
-                //     messageInput.remove(completerTriggeredAt, cursorPosition);
-                //     messageInput.insert(cursorPosition, completion);
-                // }
+                function insertCompletion(completion) {
+                    messageInput.remove(completerTriggeredAt, cursorPosition);
+                    messageInput.insert(cursorPosition, completion);
+                }
 
-                // function openCompleter(pos, type) {
-                //     if (popup.opened) return;
-                //     completerTriggeredAt = pos;
-                //     completer.completerName = type;
-                //     popup.open();
-                //     completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
-                // }
+                function openCompleter(pos, type) {
+                    if (popup.opened) return;
+                    completerTriggeredAt = pos;
+                    completer.completerName = type;
+                    popup.open();
+                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
+                }
 
                 function positionCursorAtEnd() {
                     cursorPosition = messageInput.length;
@@ -267,13 +267,13 @@ Rectangle {
                 //     target: timelineView
                 // }
 
-                // Connections {
-                //     function onCompletionClicked(completion) {
-                //         messageInput.insertCompletion(completion);
-                //     }
+                Connections {
+                    function onCompletionClicked(completion) {
+                        messageInput.insertCompletion(completion);
+                    }
 
-                //     target: completer
-                // }
+                    target: completer
+                }
 
                 Popup {
                     id: popup
@@ -284,12 +284,12 @@ Rectangle {
                     background: null
                     padding: 0
 
-                    // Completer {
-                    //     anchors.fill: parent
-                    //     id: completer
-                    //     rowMargin: 2
-                    //     rowSpacing: 0
-                    // }
+                    Completer {
+                        anchors.fill: parent
+                        id: completer
+                        rowMargin: 2
+                        rowSpacing: 0
+                    }
 
                     enter: Transition {
                         NumberAnimation {
