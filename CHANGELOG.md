@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.29]
+### Updated
+
+* Sorting the room list based on the last message time.
+
+
 ## [0.1.28]
 ### Updated
 

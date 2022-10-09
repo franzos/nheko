@@ -175,7 +175,7 @@ ApplicationWindow {
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("View members of %1").arg(roomSettings.roomName)
-                    onClicked: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
+                    onClicked: timelineModel.openRoomMembers()
                 }
 
             }

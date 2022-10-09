@@ -203,7 +203,19 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterSingletonInstance<UIA>("UIA", 1, 0, "UIA", UIA::instance());
         qmlRegisterSingletonInstance<VerificationManager>("VerificationManager", 1, 0, "VerificationManager", _verificationManager);
         qmlRegisterSingletonInstance<SelfVerificationStatus>("SelfVerificationStatus", 1, 0, "SelfVerificationStatus", _verificationManager->selfVerificationStatus());
-        qmlRegisterSingletonInstance<RoomListModel>("Rooms", 1, 0, "Rooms", _roomListModel);
+        qmlRegisterSingletonType<FilteredRoomlistModel>("Rooms", 1, 0, "Rooms", [&](QQmlEngine *, QJSEngine *) -> QObject * {
+            auto ptr = new FilteredRoomlistModel(_roomListModel);
+
+            // connect(self->communities_,
+            //         &CommunitiesModel::currentTagIdChanged,
+            //         ptr,
+            //         &FilteredRoomlistModel::updateFilterTag);
+            // connect(self->communities_,
+            //         &CommunitiesModel::hiddenTagsChanged,
+            //         ptr,
+            //         &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
+            return ptr;
+        });
         qmlRegisterSingletonInstance("Settings", 1, 0, "Settings", _userSettings.data());
         qmlRegisterUncreatableType<DeviceVerificationFlow>("DeviceVerificationFlow", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
         qmlRegisterUncreatableType<TimelineModel>("TimelineModel", 1, 0, "TimelineModel", QStringLiteral("Room needs to be instantiated on the C++ side"));

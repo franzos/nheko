@@ -56,6 +56,14 @@ bool RoomListItem::guestAccess() const{
     return _roomInformation->guestAccess();
 }
 
+uint64_t RoomListItem::timestamp() const{
+    return _roomInformation->timestamp();
+}
+
+void RoomListItem::setTimestamp(uint64_t ts) const{
+    _roomInformation->setTimestamp(ts);
+}
+
 RoomInformation *RoomListItem::roomInformation() const{
     return _roomInformation;
 }
