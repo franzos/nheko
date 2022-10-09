@@ -200,7 +200,7 @@ function BUILD_MTXCLIENT {
     # version="0.6.1"
     # download_url="https://github.com/Nheko-Reborn/mtxclient/archive/refs/tags/v$version.tar.gz"
     # DOWNLOAD_EXTRACT $name $version $download_url
-    tag="v0.7.0"
+    tag="v0.8.0"
     download_url="https://github.com/Nheko-Reborn/mtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
     APPLY_PATCH $src_path \
@@ -254,7 +254,7 @@ function BUILD_CMARK {
 function BUILD_PX_AUTH_LIB_CPP {
     target="$1"
     name="px-auth-lib-cpp"
-    tag="0.0.18"
+    tag="0.0.23"
     repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $tag $repo
 
@@ -265,7 +265,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
-    tag="0.1.3"
+    tag="0.1.24"
     repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 
