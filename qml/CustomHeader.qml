@@ -65,7 +65,6 @@ Column {
             ToolButton {
                 id: verifyRect
                 icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
-                icon.color:"#C70039"
                 width: parent.height
                 height: parent.height
                 onClicked: {
@@ -198,9 +197,9 @@ Column {
 
     function setVerified(flag){
         if(flag){
-            verifyRect.visible = false
+            verifyRect.icon.color = "green"
         } else {
-            verifyRect.visible = true
+            verifyRect.icon.color = "#C70039"
         }
     }
 

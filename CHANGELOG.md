@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Updated
 
 * Mention others in the chat.
+* Show the device verification status forever on the header.
 
 
 ## [0.1.27]
