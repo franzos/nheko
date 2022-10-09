@@ -18,6 +18,7 @@ public:
     Q_INVOKABLE QString     avatar() {return _roominfo.avatar_url;};
     Q_INVOKABLE bool        invite() {return _roominfo.is_invite;};
     Q_INVOKABLE QString     lastmessage() {return _lastmessage;};
+    Q_INVOKABLE QString     lastmessageTime() {return _lastmessageTime;};
     Q_INVOKABLE int         memberCount() {return _roominfo.member_count;};
     Q_INVOKABLE QString     topic() {return _roominfo.topic;};
     Q_INVOKABLE QString     version() {return _roominfo.version;};
@@ -25,7 +26,9 @@ public:
     Q_INVOKABLE int         unreadCount() {return _unreadCount;};
     Q_INVOKABLE uint64_t    timestamp() {return _timestamp;};
 
-    void setLastMessage(const QString &lastmessage) {_lastmessage = lastmessage;};
+    void setLastMessage(const QString &lastmessage) { _lastmessage = lastmessage; };
+    void setLastMessageTime(const QString &time) { _lastmessageTime = time; };
+    
     void setUnreadCount(const int &unreadCount) {_unreadCount = unreadCount;};
     void setTimestamp  (const uint64_t ts) {_timestamp = ts;};
     void update() {
@@ -41,8 +44,9 @@ public:
 private:
     QString     _id             = "";
     QString     _lastmessage    = "";
+    QString     _lastmessageTime= "";
     int         _unreadCount    = 0;
-    uint64_t    _timestamp     = 0;
+    uint64_t    _timestamp      = 0;
     RoomInfo    _roominfo;
 };
 
@@ -54,7 +58,9 @@ public:
     QString name() const;
     QString avatar() const;
     QString lastMessage() const;
+    QString lastMessageTime() const;
     void setLastMessage(const QString &message);
+    void setLastMessageTime(const QString &time);
     bool invite() const;    
     int  unreadCount() const;
     void setUnreadCount(int unreadCount);

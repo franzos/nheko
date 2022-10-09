@@ -20,6 +20,7 @@ public:
         avatarRole,
         inviteRole,
         lastmessageRole,
+        lastmessageTimeRole,
         timestampRole,
         unreadcountRole,
         memberCountRole,

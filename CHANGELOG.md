@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Updated
 
 * Sorting the room list based on the last message time.
+* Show the last message time for each room in room list page.
 
 
 ## [0.1.28]

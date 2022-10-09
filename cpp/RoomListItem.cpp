@@ -20,8 +20,16 @@ QString RoomListItem::lastMessage() const {
     return _roomInformation->lastmessage();
 }
 
+QString RoomListItem::lastMessageTime() const {
+    return _roomInformation->lastmessageTime();
+}
+
 void RoomListItem::setLastMessage(const QString &message){
     _roomInformation->setLastMessage(message);
+}
+
+void RoomListItem::setLastMessageTime(const QString &time){
+    _roomInformation->setLastMessageTime(time);
 }
 
 bool    RoomListItem::invite() const{

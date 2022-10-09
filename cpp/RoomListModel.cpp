@@ -28,6 +28,8 @@ QVariant RoomListModel::data(const QModelIndex &index, int role) const
         return room.invite();
     else if (role == lastmessageRole)
         return room.lastMessage();
+    else if (role == lastmessageTimeRole)
+        return room.lastMessageTime();
     else if (role == timestampRole)
         return QVariant{static_cast<quint64>(room.timestamp())};
     else if (role == unreadcountRole)
@@ -70,6 +72,8 @@ QHash<int, QByteArray> RoomListModel::roleNames() const {
     roles[avatarRole] = "avatar";
     roles[inviteRole] = "invite";
     roles[lastmessageRole] = "lastmessage";
+    roles[lastmessageTimeRole] = "lastmessageTime";
+    roles[timestampRole] = "timestamp";
     roles[unreadcountRole] = "unreadcount";
     roles[memberCountRole] = "memberCount";
     roles[topicRole] = "topic";
@@ -128,6 +132,7 @@ void RoomListModel::add(RoomListItem &item){
                     body.remove(QRegExp("[\\n\\t\\r]"));
                     
                     this->setData(this->index(idx), body, lastmessageRole);
+                    this->setData(this->index(idx), e.descriptiveTime, lastmessageTimeRole);
                     this->setData(this->index(idx), static_cast<quint64>(e.timestamp), timestampRole);
                 }
             });
@@ -158,13 +163,17 @@ bool RoomListModel::setData(const QModelIndex &index, const QVariant &value, int
             item.setLastMessage(value.toString());
             roles << role;
             break;
+        case lastmessageTimeRole:
+            item.setLastMessageTime(value.toString());
+            roles << role;
+            break;
         case unreadcountRole:
             item.setUnreadCount(value.toInt());
             roles << role;
             break;
         case updateallRole:
             item.roomInformation()->update();
-            roles << nameRole << avatarRole << inviteRole << lastmessageRole << unreadcountRole \
+            roles << nameRole << avatarRole << inviteRole << lastmessageRole << lastmessageTimeRole << unreadcountRole \
              << memberCountRole << topicRole << versionRole << guestAccessRole;
             break;
         case timestampRole:
