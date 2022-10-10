@@ -2,35 +2,34 @@ android {
     !exists($$(ANDROID_HOME)/android_openssl/openssl.pri):error("OpenSSL not found!")
     include($$(ANDROID_HOME)/android_openssl/openssl.pri)
 
-    DIST_DIR=$$PWD/../../vendor/_dist/armeabi-v7a
-    !exists($$DIST_DIR):error("vendor packages has not been setup yet! (run vendor/build-android.sh)")
+    DIST_DIR=$$PWD/../../vendor/_dist
+    for (abi, ANDROID_ABIS): !exists($$DIST_DIR/$${abi}):error("vendor packages has not been setup yet! (run vendor/build-android.sh)")
 
     ANDROID_TARGET_SDK_VERSION = 30
+    ANDROID_MIN_SDK_VERSION = 23
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD
 
     DEFINES += SPDLOG_FMT_EXTERNAL=ON
-    ANDROID_EXTRA_LIBS += \
-        $$DIST_DIR/lib/libfmt.so \
-        $$DIST_DIR/lib/libspdlog.so \
-        $$DIST_DIR/lib/libcurl.so \
-        $$DIST_DIR/lib/libevent-2.1.so \
-        $$DIST_DIR/lib/libevent_core-2.1.so \
-        $$DIST_DIR/lib/libevent_extra-2.1.so \
-        $$DIST_DIR/lib/libevent_openssl-2.1.so \
-        $$DIST_DIR/lib/libevent_pthreads-2.1.so \
-        $$DIST_DIR/lib/libpx-auth-lib-cpp_armeabi-v7a.so \
-        $$DIST_DIR/lib/libmatrix-client-library_armeabi-v7a.so \
-        $$DIST_DIR/lib/libmatrix_client.so \
-        $$DIST_DIR/lib/libcmark.so \
-        $$DIST_DIR/lib/libolm.so
+
+    # https://stackoverflow.com/a/69466519/4380582
+    for (abi, ANDROID_ABIS): ANDROID_EXTRA_LIBS += \
+            $$DIST_DIR/$${abi}/lib/libfmt.so \
+            $$DIST_DIR/$${abi}/lib/libspdlog.so \
+            $$DIST_DIR/$${abi}/lib/libpx-auth-lib-cpp_$${abi}.so \
+            $$DIST_DIR/$${abi}/lib/libmatrix-client-library_$${abi}.so \
+            $$DIST_DIR/$${abi}/lib/libmatrix_client_$${abi}.so \
+            $$DIST_DIR/$${abi}/lib/libcmark.so \
+            $$DIST_DIR/$${abi}/lib/libolm.so
+
 
     QT += androidextras concurrent
-    INCLUDEPATH += $$DIST_DIR/include
-    LIBS += -L$$DIST_DIR/lib
-    LIBS += -lfmt -levent -levent_core -levent_extra -levent_pthreads \
-            -lpx-auth-lib-cpp_armeabi-v7a \
-            -lmatrix-client-library_armeabi-v7a
+    for (abi, ANDROID_ABIS): INCLUDEPATH += $$DIST_DIR/$${abi}/include
+    for (abi, ANDROID_ABIS): LIBS += -L$$DIST_DIR/$${abi}/lib
+    for (abi, ANDROID_ABIS): LIBS += -lfmt -lspdlog \
+            -lmatrix_client_$${abi} \
+            -lpx-auth-lib-cpp_$${abi} \
+            -lmatrix-client-library_$${abi}
 }
 
 DISTFILES += \

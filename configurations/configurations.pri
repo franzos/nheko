@@ -19,7 +19,8 @@ linux:!android {
     app_icon.files = resources/images/matrix-client-icon_bright.svg
 
     INSTALLS += target app_icon desktop_file
+
+    LIBS += -lspdlog -lcurl -lcoeurl \
+            -lmatrix_client
 }
 
-LIBS += -lspdlog -lcurl -lcoeurl \
-        -lmatrix_client -lblurhash
