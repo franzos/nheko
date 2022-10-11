@@ -118,11 +118,13 @@ void RoomListModel::add(RoomListItem &item){
         }
 
         setData(index(idx), "", updateallRole);
-    } else if(!_roomIds.contains(item.id())) {
+    } else {
         // add new room [room events]
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         auto timeline = Client::instance()->timeline(item.id());
         if(timeline){
+            // to set the unread counts
+            item.setUnreadCount(timeline->notificationCount());
             QString roomID = item.id();
             connect(timeline, &Timeline::lastMessageChanged,[this,roomID, timeline](const DescInfo &e){
                 auto idx = this->roomidToIndex(roomID);
@@ -177,7 +179,7 @@ bool RoomListModel::setData(const QModelIndex &index, const QVariant &value, int
              << memberCountRole << topicRole << versionRole << guestAccessRole;
             break;
         case timestampRole:
-            item.setTimestamp(value.toInt());
+            item.setTimestamp(value.toULongLong());
             roles << role;
             break;
         default:
@@ -228,6 +230,53 @@ RoomInformation *RoomListModel::roomInformation(const QString &roomId){
     return nullptr;
 }
 
+
+namespace {
+enum NotificationImportance : short
+{
+    ImportanceDisabled = -3,
+    NoPreview          = -2,
+    Preview            = -1,
+    AllEventsRead      = 0,
+    NewMessage         = 1,
+    NewMentions        = 2,
+    Invite             = 3,
+    SubSpace           = 4,
+    CurrentSpace       = 5,
+};
+}
+
+short int
+FilteredRoomlistModel::calculateImportance(const QModelIndex &idx) const
+{
+    // Returns the degree of importance of the unread messages in the room.
+    // If sorting by importance is disabled in settings, this only ever
+    // returns ImportanceDisabled or Invite
+    // if (sourceModel()->data(idx, RoomListModel::IsSpace).toBool()) {
+    //     if (filterType == FilterBy::Space &&
+    //         filterStr == sourceModel()->data(idx, RoomListModel::RoomId).toString())
+    //         return CurrentSpace;
+    //     else
+    //         return SubSpace;
+    // } else if (sourceModel()->data(idx, RoomListModel::IsPreview).toBool()) {
+    //     if (sourceModel()->data(idx, RoomListModel::IsPreviewFetched).toBool())
+    //         return Preview;
+    //     else
+    //         return NoPreview;
+    // } else 
+    if (sourceModel()->data(idx, RoomListModel::RoomListItemRoles::inviteRole).toBool()) {
+        return Invite;
+    } else if (!this->sortByImportance) {
+        return ImportanceDisabled;
+    // } else if (sourceModel()->data(idx, RoomListModel::HasLoudNotification).toBool()) {
+    //     return NewMentions;
+    // } else if (sourceModel()->data(idx, RoomListModel::NotificationCount).toInt() > 0) {
+    //     return NewMessage;
+    } else {
+        return AllEventsRead;
+    }
+}
+
 bool FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     QModelIndex const left_idx = sourceModel()->index(left.row(), 0, QModelIndex());
@@ -238,11 +287,11 @@ bool FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex 
     // by recency.
 
     // Checking importance first
-    // const auto a_importance = calculateImportance(left_idx);
-    // const auto b_importance = calculateImportance(right_idx);
-    // if (a_importance != b_importance) {
-    //     return a_importance > b_importance;
-    // }
+    const auto a_importance = calculateImportance(left_idx);
+    const auto b_importance = calculateImportance(right_idx);
+    if (a_importance != b_importance) {
+        return a_importance > b_importance;
+    }
 
     // Now sort by recency
     // Zero if empty, otherwise the time that the event occured
@@ -257,17 +306,17 @@ bool FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex 
 FilteredRoomlistModel::FilteredRoomlistModel(RoomListModel *model, QObject *parent)
     : QSortFilterProxyModel(parent), roomlistmodel(model)
 {
-    // this->sortByImportance = UserSettings::instance()->sortByImportance();
+    this->sortByImportance = UserSettings::instance()->sortByImportance();
     setSourceModel(model);
     setDynamicSortFilter(true);
 
-    // QObject::connect(UserSettings::instance().get(),
-    //                  &UserSettings::roomSortingChanged,
-    //                  this,
-    //                  [this](bool sortByImportance_) {
-    //                      this->sortByImportance = sortByImportance_;
-    //                      invalidate();
-    //                  });
+    QObject::connect(UserSettings::instance().get(),
+                     &UserSettings::roomSortingChanged,
+                     this,
+                     [this](bool sortByImportance_) {
+                         this->sortByImportance = sortByImportance_;
+                         invalidate();
+                     });
 
     // connect(roomlistmodel,
     //         &RoomListModel::currentRoomChanged,

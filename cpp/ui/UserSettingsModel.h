@@ -44,9 +44,9 @@ class UserSettingsModel : public QAbstractListModel
         // Markdown,
         // Bubbles,
         // SmallAvatars,
-        // SidebarSection,
+        SidebarSection,
         // GroupView,
-        // SortByImportance,
+        SortByImportance,
         // DecryptSidebar,
         // SpaceNotifications,
 

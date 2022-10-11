@@ -130,9 +130,9 @@ public slots:
 //     void currentRoomChanged();
 
 private:
-//     short int calculateImportance(const QModelIndex &idx) const;
+    short int calculateImportance(const QModelIndex &idx) const;
     RoomListModel *roomlistmodel;
-//     bool sortByImportance = true;
+    bool sortByImportance = true;
 
 //     enum class FilterBy
 //     {
