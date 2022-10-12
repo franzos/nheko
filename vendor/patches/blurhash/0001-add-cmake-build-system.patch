@@ -1,0 +1,31 @@
+From 72bd4d2bfedac860b24bd1cb114e92087dc8a6b4 Mon Sep 17 00:00:00 2001
+From: Reza Alizadeh Majd <r.majd@pantherx.org>
+Date: Wed, 12 Oct 2022 14:39:53 +0330
+Subject: [PATCH] add cmake build system
+
+---
+ CMakeLists.txt | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+ create mode 100644 CMakeLists.txt
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..e4606b5
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,12 @@
++cmake_minimum_required(VERSION 3.0)
++project(blurhash VERSION 0.1 LANGUAGES CXX)
++
++set(CMAKE_CXX_STANDARD 17)
++
++add_library(${PROJECT_NAME} SHARED
++    blurhash.cpp)
++set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "blurhash.hpp")
++
++install(TARGETS ${PROJECT_NAME}
++    LIBRARY DESTINATION lib
++    PUBLIC_HEADER DESTINATION include)
+-- 
+2.37.3
+

@@ -226,6 +226,15 @@ function BUILD_MATRIX_CLIENT_LIBRARY {
         -DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android
 }
 
+function BUILD_BLURHASH {
+    target="$1"
+    name="blurhash"
+    tag="v0.0.1"
+    repo="https://github.com/Nheko-Reborn/blurhash.git"
+    FETCH_REPOSITORY $name $tag $repo
+    APPLY_PATCH $repo "${PATCH_DIR}/blurhash/0001-add-cmake-build-system.patch"
+    BUILD_LIB "$src_path" "$build_path" "$target"
+}
 
 function BUILD_ALL {
     target="$1"
@@ -239,6 +248,7 @@ function BUILD_ALL {
         BUILD_CMARK "$target" && \
         BUILD_PX_AUTH_LIB_CPP "$target" && \
         BUILD_MATRIX_CLIENT_LIBRARY "$target" && \
+        BUILD_BLURHASH "$target" && \
         echo "DONE"
 }
 
