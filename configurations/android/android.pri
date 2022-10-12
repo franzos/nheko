@@ -20,7 +20,8 @@ android {
             $$DIST_DIR/$${abi}/lib/libmatrix-client-library_$${abi}.so \
             $$DIST_DIR/$${abi}/lib/libmatrix_client_$${abi}.so \
             $$DIST_DIR/$${abi}/lib/libcmark.so \
-            $$DIST_DIR/$${abi}/lib/libolm.so
+            $$DIST_DIR/$${abi}/lib/libolm.so \
+            $$DIST_DIR/$${abi}/lib/libblurhash.so
 
 
     QT += androidextras concurrent
@@ -29,7 +30,8 @@ android {
     for (abi, ANDROID_ABIS): LIBS += -lfmt -lspdlog \
             -lmatrix_client_$${abi} \
             -lpx-auth-lib-cpp_$${abi} \
-            -lmatrix-client-library_$${abi}
+            -lmatrix-client-library_$${abi} \
+            -lblurhash
 }
 
 DISTFILES += \
