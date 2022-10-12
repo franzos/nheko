@@ -144,11 +144,11 @@ function BUILD_OLM {
 function BUILD_MTXCLIENT {
     target="$1"
     name="qmtxclient"
-    tag="v0.7.0-2"
+    tag="v0.8.2-2"
     download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
 
-    BUILD_LIB "$src_path" "$build_path" $target \
+    BUILD_LIB $src_path $build_path $target \
         ${OPENSSL_CMAKE_DEFINITIONS[@]} \
         -DCMAKE_FIND_ROOT_PATH=/home/reza/Qt/5.15.2/android \
         -Dfmt_DIR=${DIST_DIR}/$target/lib/cmake/fmt \
@@ -196,7 +196,7 @@ function BUILD_CMARK {
 function BUILD_PX_AUTH_LIB_CPP {
     target="$1"
     name="px-auth-lib-cpp"
-    tag="0.0.18"
+    tag="0.0.24"
     repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $tag $repo
 
@@ -207,7 +207,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
-    tag="0.1.3"
+    tag="0.1.25"
     repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 
