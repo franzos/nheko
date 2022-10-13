@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -9,6 +14,7 @@ Control {
     id: popup
 
     property alias currentIndex: listView.currentIndex
+    property string roomId
     property string completerName
     property var completer
     property bool bottomToTop: true
@@ -61,10 +67,12 @@ Control {
     function finishCompletion() {
         if (popup.completerName == "room")
             popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid);
+        else if (popup.completerName == "user")
+            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.userid);
 
     }
 
-    onCompleterNameChanged: {
+    function changeCompleter() {
         if (completerName) {
             completer = room.completerFor(completerName, completerName == "room" ? "" : room.roomId);
             completer.setSearchString("");
@@ -73,6 +81,8 @@ Control {
         }
         currentIndex = -1
     }
+    onCompleterNameChanged: changeCompleter()
+    onRoomIdChanged: changeCompleter()
 
     bottomPadding: 1
     leftPadding: 1
@@ -127,6 +137,8 @@ Control {
                     popup.completionClicked(completer.completionAt(model.index));
                     if (popup.completerName == "room")
                         popup.completionSelected(model.roomid);
+                     else if (popup.completerName == "user")
+                         popup.completionSelected(model.userid);
                 }
             }
             Ripple {
@@ -147,7 +159,7 @@ Control {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : undefined
                         spacing: rowSpacing
 
                         Avatar {
@@ -156,7 +168,7 @@ Control {
                             displayName: model.displayName
                             userid: model.userid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            enabled: false
                         }
 
                         Label {
@@ -212,7 +224,7 @@ Control {
                             displayName: model.shortcode
                             //userid: model.shortcode
                             url: model.url.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            enabled: false
                             crop: false
                         }
 
@@ -245,10 +257,7 @@ Control {
                             displayName: model.roomName
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: {
-                                popup.completionClicked(completer.completionAt(model.index));
-                                popup.completionSelected(model.roomid);
-                            }
+                            enabled: false
                         }
 
                         Label {
@@ -277,7 +286,7 @@ Control {
                             displayName: model.roomName
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            enabled: false
                         }
 
                         Label {

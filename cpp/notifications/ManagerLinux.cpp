@@ -25,7 +25,7 @@
 
 #include <matrix-client-library/Client.h>
 #include <matrix-client-library/EventAccessors.h>
-#include <matrix-client-library/MxcImageProvider.h>
+#include "../MxcImageProvider.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)

@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -32,7 +37,11 @@ ColumnLayout {
         input.forceActiveFocus();
     }
 
-    // ToolTip.delay: Nheko.tooltipDelay
+    function clear() {
+        input.clear();
+    }
+
+    // ToolTip.delay: GlobalObject.tooltipDelay
     ToolTip.visible: hover.hovered
 
     spacing: 0
@@ -108,11 +117,11 @@ ColumnLayout {
         palette: GlobalObject.colors
         color: labelC.color
         opacity: labelC.text ? 0 : 1
+        focus: true
 
         onTextEdited: c.textEdited()
         onAccepted: c.accepted()
         onEditingFinished: c.editingFinished()
-
 
         background: Rectangle {
             id: backgroundRect

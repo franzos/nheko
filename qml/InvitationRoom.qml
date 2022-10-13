@@ -36,7 +36,7 @@ Room {
                 id: declineButton
                 text: "Decline"
                 onClicked: {
-                    MatrixClient.leaveRoom(roomid)
+                    MatrixClient.leaveRoom(roomid, "The invitation declined")
                     goToPrevPage()
                 }
             }

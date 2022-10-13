@@ -9,12 +9,12 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.13
 import MemberList 1.0
-
-
 import MatrixClient 1.0
 import GlobalObject 1.0
 import TimelineModel 1.0
 import CursorShape 1.0
+import Crypto 1.0
+import MtxEvent 1.0
 
 ApplicationWindow {
     id: roomMembersRoot
@@ -49,7 +49,7 @@ ApplicationWindow {
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")
-            onClicked: TimelineManager.openRoomSettings(members.roomId)
+            // onClicked: room.openRoomSettings() // TODO TimelineManager.openRoomSettings(members.roomId)
         }
 
         ElidedLabel {
@@ -65,7 +65,38 @@ ApplicationWindow {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
-            onClicked: TimelineManager.openInviteUsers(members.roomId)
+            onClicked: room.openInviteUsers()
+        }
+
+        MatrixTextField {
+            id: searchBar
+
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search...")
+            onTextChanged: members.setFilterString(text)
+
+            Component.onCompleted: forceActiveFocus()
+        }
+
+        RowLayout {
+            spacing: 8
+
+            Label {
+                text: qsTr("Sort by: ")
+                color: GlobalObject.colors.text
+            }
+
+            ComboBox {
+                model: ListModel {
+                    ListElement { data: MemberList.Mxid; text: qsTr("User ID") }
+                    ListElement { data: MemberList.DisplayName; text: qsTr("Display name") }
+                    ListElement { data: MemberList.Powerlevel; text: qsTr("Power level") }
+                }
+                textRole: "text"
+                valueRole: "data"
+                onCurrentValueChanged: members.sortBy(currentValue)
+                Layout.fillWidth: true
+            }
         }
 
         ScrollView {
@@ -142,9 +173,46 @@ ApplicationWindow {
                             Layout.fillWidth: true
                         }
 
+                        Image {
+                            property bool isAdmin: room.permissions.changeLevel(MtxEvent.PowerLevels) <= model.powerlevel
+                            property bool isModerator: room.permissions.redactLevel() <= model.powerlevel
+                            //property bool isDefault: room.permissions.defaultLevel() <= model.powerlevel
+
+                            property string sourceUrl: {
+                                if (isAdmin)
+                                return "image://colorimage/:/images/ribbon_star.svg?";
+                                else if (isModerator)
+                                return "image://colorimage/:/images/ribbon.svg?";
+                                else
+                                return "image://colorimage/:/images/person.svg?";
+                            }
+
+                            Layout.preferredWidth: 16
+                            Layout.preferredHeight: 16
+                            sourceSize.width: width
+                            sourceSize.height: height
+                            source: sourceUrl + (ma.hovered ? GlobalObject.colors.highlight : GlobalObject.colors.buttonText)
+                            ToolTip.visible: ma.hovered
+                            ToolTip.text: {
+                                if (isAdmin)
+                                return qsTr("Administrator: %1").arg(model.powerlevel);
+                                else if (isModerator)
+                                return qsTr("Moderator: %1").arg(model.powerlevel);
+                                else
+                                return qsTr("User: %1").arg(model.powerlevel);
+                            }
+
+                            HoverHandler {
+                                id: ma
+                            }
+
+                        }
+
                         EncryptionIndicator {
                             id: encryptInd
 
+                            Layout.preferredWidth: 16
+                            Layout.preferredHeight: 16
                             Layout.alignment: Qt.AlignRight
                             visible: room.isEncrypted
                             encrypted: room.isEncrypted
@@ -177,14 +245,14 @@ ApplicationWindow {
                     width: parent.width
                     visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
                     // use the default height if it's visible, otherwise no height at all
-                    height: membersLoadingSpinner.height
+                    height: membersLoadingSpinner.implicitHeight
                     anchors.margins: 8 //Nheko.paddingMedium
 
                     Spinner {
                         id: membersLoadingSpinner
 
                         anchors.centerIn: parent
-                        height: visible ? 35 : 0
+                        implicitHeight: parent.visible ? 35 : 0
                     }
 
                 }

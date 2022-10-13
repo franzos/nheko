@@ -1,15 +1,11 @@
-// SPDX-FileCopyrightText: 2021 Nheko Contributors
-// SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
-import "../"
-import "../ui/media"
+import "./media"
 import QtMultimedia 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import GlobalObject 1.0
+import MxcMedia 1.0
+import MtxEvent 1.0
 
 Item {
     id: content
@@ -25,7 +21,7 @@ Item {
     required property string filesize
     property double divisor: isReply ? 4 : 2
     property int tempWidth: originalWidth < 1? 400: originalWidth
-    implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
+    implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timeline.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent.width, implicitWidth)
     height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
@@ -48,12 +44,12 @@ Item {
     Rectangle {
         id: videoContainer
 
-        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        color: type == MtxEvent.VideoMessage ? GlobalObject.colors.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
         TapHandler {
-            onTapped: Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
+            onTapped: room.openMedia(eventId) //Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
         }
 
         Image {
@@ -102,10 +98,10 @@ Item {
         text: body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
-        color: Nheko.colors.text
+        color: GlobalObject.colors.text
 
         background: Rectangle {
-            color: Nheko.colors.base
+            color: GlobalObject.colors.base
         }
 
     }

@@ -1,16 +1,25 @@
-QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus
+QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus 
+linux:!android {
+    QT += multimedia
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glib-2.0
+}
 CONFIG += c++17
 
 SOURCES += \
     $$PWD/AvatarProvider.cpp \
+    $$PWD/BlurhashProvider.cpp \
     $$PWD/Clipboard.cpp \
     $$PWD/ColorImageProvider.cpp \
     $$PWD/CompletionProxyModel.cpp \
     $$PWD/GlobalObject.cpp \
+    $$PWD/InviteesModel.cpp \
+    $$PWD/JdenticonProvider.cpp \
     $$PWD/QmlInterface.cpp \
     $$PWD/MatrixQmlApplicationEngine.cpp \
     $$PWD/MatrixQuickView.cpp \
     $$PWD/MemberList.cpp \
+    $$PWD/MxcImageProvider.cpp \
     $$PWD/mydevice.cpp \
     $$PWD/Reaction.cpp \
     $$PWD/ReadReceiptsModel.cpp \
@@ -20,7 +29,7 @@ SOURCES += \
     $$PWD/RoomsModel.cpp \
     $$PWD/Theme.cpp \
     $$PWD/TimelineModel.cpp \
-    $$PWD/TimelineItem.cpp \
+    $$PWD/UsersModel.cpp \
     \
     $$PWD/notifications/Manager.cpp \
     $$PWD/notifications/ManagerLinux.cpp \
@@ -29,22 +38,32 @@ SOURCES += \
     $$PWD/ui/emoji/Provider.cpp \
     $$PWD/ui/CombinedImagePackModel.cpp \
     $$PWD/ui/DelegateChooser.cpp \
+    $$PWD/ui/HiddenEvents.cpp \
+    $$PWD/ui/MxcAnimatedImage.cpp \
+    $$PWD/ui/MxcMediaProxy.cpp \
     $$PWD/ui/InputBar.cpp \
-    $$PWD/ui/NhekoCursorShape.cpp 
+    $$PWD/ui/NhekoCursorShape.cpp \
+    $$PWD/ui/RoomSettings.cpp \
+    $$PWD/ui/UserSettingsModel.cpp
     
 
 HEADERS += \
     $$PWD/Application.h\
     $$PWD/AvatarProvider.h \
+    $$PWD/BlurhashProvider.h \
     $$PWD/Clipboard.h\
     $$PWD/ColorImageProvider.h \
     $$PWD/CompletionModelRoles.h \
     $$PWD/CompletionProxyModel.h \
     $$PWD/GlobalObject.h \
+    $$PWD/InviteesModel.h \
+    $$PWD/jdenticoninterface.h \
+    $$PWD/JdenticonProvider.h \
     $$PWD/QmlInterface.h \
     $$PWD/MatrixQmlApplicationEngine.h \
     $$PWD/MatrixQuickView.h \
     $$PWD/MemberList.h \
+    $$PWD/MxcImageProvider.h \
     $$PWD/mydevice.h \
     $$PWD/Reaction.h \
     $$PWD/ReadReceiptsModel.h \
@@ -53,7 +72,7 @@ HEADERS += \
     $$PWD/RoomsModel.h \
     $$PWD/Theme.h \
     $$PWD/TimelineModel.h \
-    $$PWD/TimelineItem.h \
+    $$PWD/UsersModel.h \
     \
     $$PWD/notifications/Manager.h \
     \
@@ -61,5 +80,10 @@ HEADERS += \
     $$PWD/ui/emoji/Provider.h \
     $$PWD/ui/CombinedImagePackModel.h \
     $$PWD/ui/DelegateChooser.h \
+    $$PWD/ui/HiddenEvents.h \
+	$$PWD/ui/MxcAnimatedImage.h \
+    $$PWD/ui/MxcMediaProxy.h \
     $$PWD/ui/InputBar.h \
-    $$PWD/ui/NhekoCursorShape.h
+    $$PWD/ui/NhekoCursorShape.h \
+    $$PWD/ui/RoomSettings.h \
+    $$PWD/ui/UserSettingsModel.h

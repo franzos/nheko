@@ -1,24 +1,43 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.13
 import VerificationManager 1.0
- 
+import GlobalObject 1.0
+
 ApplicationWindow {
     id: dialog
 
     property var flow
 
     onClosing: VerificationManager.removeVerificationFlow(flow)
-    title: stack.currentItem.title
+    title: stack.currentItem ? (stack.currentItem.title_ || "") : ""
     modality: Qt.NonModal
-    // width: stack.implicitWidth
+    palette: GlobalObject.colors
+    color: GlobalObject.colors.window
+    //height: stack.currentItem.implicitHeight
+    minimumHeight: stack.currentItem.implicitHeight + 2 * GlobalObject.paddingLarge
+    height: stack.currentItem.implicitHeight + 2 * GlobalObject.paddingMedium
+    minimumWidth: 400
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+
+    background: Rectangle {
+        color: GlobalObject.colors.window
+    }
+
 
     StackView {
         id: stack
 
+        anchors.centerIn: parent
+
         initialItem: newVerificationRequest
-        anchors.fill: parent
+        implicitWidth: dialog.width - 2* GlobalObject.paddingMedium
+        implicitHeight: dialog.height - 2* GlobalObject.paddingMedium
     }
 
     Component {
@@ -76,7 +95,7 @@ ApplicationWindow {
                 name: "PromptStartVerification"
 
                 StateChangeScript {
-                    script: stack.replace(newVerificationRequest)
+                    script: stack.replace(null, newVerificationRequest)
                 }
 
             },
@@ -84,7 +103,7 @@ ApplicationWindow {
                 name: "CompareEmoji"
 
                 StateChangeScript {
-                    script: stack.replace(emojiVerification)
+                    script: stack.replace(null, emojiVerification)
                 }
 
             },
@@ -92,7 +111,7 @@ ApplicationWindow {
                 name: "CompareNumber"
 
                 StateChangeScript {
-                    script: stack.replace(digitVerification)
+                    script: stack.replace(null, digitVerification)
                 }
 
             },
@@ -100,7 +119,7 @@ ApplicationWindow {
                 name: "WaitingForKeys"
 
                 StateChangeScript {
-                    script: stack.replace(waiting)
+                    script: stack.replace(null, waiting)
                 }
 
             },
@@ -108,7 +127,7 @@ ApplicationWindow {
                 name: "WaitingForOtherToAccept"
 
                 StateChangeScript {
-                    script: stack.replace(waiting)
+                    script: stack.replace(null, waiting)
                 }
 
             },
@@ -116,7 +135,7 @@ ApplicationWindow {
                 name: "WaitingForMac"
 
                 StateChangeScript {
-                    script: stack.replace(waiting)
+                    script: stack.replace(null, waiting)
                 }
 
             },
@@ -124,7 +143,7 @@ ApplicationWindow {
                 name: "Success"
 
                 StateChangeScript {
-                    script: stack.replace(success)
+                    script: stack.replace(null, success)
                 }
 
             },
@@ -132,7 +151,7 @@ ApplicationWindow {
                 name: "Failed"
 
                 StateChangeScript {
-                    script: stack.replace(failed)
+                    script: stack.replace(null, failed)
                 }
 
             }

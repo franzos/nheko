@@ -1,4 +1,9 @@
-import QtQuick 2.12
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
@@ -46,7 +51,7 @@ AbstractButton {
 
     width: parent.width
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
-
+    // Updated to improve working in mobile mode
     MouseArea {
         anchors.fill: parent
         onPressAndHold: {
@@ -78,6 +83,13 @@ AbstractButton {
             easing.type: Easing.InOutQuad
             to: 0
             duration: 100
+        }
+    }
+
+    onClicked: {
+        let link = contentItem.child.linkAt != undefined && contentItem.child.linkAt(pressX-row.x-msg.x, pressY-row.y-msg.y-contentItem.y);
+        if (link) {
+            GlobalObject.openLink(link)
         }
     }
 

@@ -21,7 +21,6 @@ Page {
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             Layout.fillWidth: true
-            // validator: UserIDRegex{}
             placeholderText: "User ID or CM account" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
             Keys.onReturnPressed: loginButton.gotoLogin()
             Keys.onEnterPressed: loginButton.gotoLogin()
@@ -29,7 +28,6 @@ Page {
                 if(!QmlInterface.getServerAddress()) {
                     discoveryTimer.restart()
                 }               
-                  
             }
         }
 
@@ -70,7 +68,7 @@ Page {
                 serverChangTimer.restart()
             }
         }
-         Timer {
+        Timer {
             id: serverChangTimer
             interval: 1000
             onTriggered: {
@@ -116,20 +114,36 @@ Page {
                 combo.model.clear()
                 combo.displayText  = "Select Login Option"
                 passwordText.visible = false 
-                loginButton.enabled= false
+                loginButton.enabled = false
             }
         }
 
-        LoadingButton {
-            id: loginButton
-            text: "Login"
+        Row {
+            spacing: 20
             Layout.alignment: Qt.AlignHCenter
-            enabled: false
-            onClicked: {
-                if(combo.currentText == "PASSWORD")
-                    gotoLogin()
-                else if (combo.currentText == "CIBA")
-                    gotoCibaLogin("")
+            LoadingButton {
+                id: loginButton
+                text: "Login"
+                Layout.alignment: Qt.AlignHCenter
+                enabled: false
+                onClicked: {
+                    if(combo.currentText == "PASSWORD")
+                        gotoLogin()
+                    else if (combo.currentText == "CIBA"){
+                        gotoCibaLogin("")
+                    }
+                }
+            }
+
+            LoadingButton {
+                id: cancelCibaLoginButton
+                text: "Cancel"
+                Layout.alignment: Qt.AlignHCenter
+                visible: false
+                onClicked: {
+                    MatrixClient.cancelCibaLogin()
+                    enableUserInputs(true)
+                }
             }
         }
     }
@@ -151,6 +165,7 @@ Page {
     
     function enableUserInputs(enable){
         loginButton.enabled = enable
+        cancelCibaLoginButton.visible = !enable
         combo.enabled = enable
         matrixServerText.enabled = enable
         passwordText.enabled = enable 

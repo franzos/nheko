@@ -92,7 +92,9 @@ Drawer {
                             logoutDialog.open()
                             break;
                         case "Settings":
-                            settingsDialog.open()
+                            var settings = userSettingsPage.createObject(stack);
+                            stack.push(settings)
+                            menu.close()
                             break;
                         case "About":
                             aboutClicked()
@@ -142,17 +144,10 @@ Drawer {
         }
     }
 
-    Dialog {
-        id: settingsDialog
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
-        title: "Settings"
-        standardButtons: Dialog.Ok
-        Label {            
-            text: "Coming Soon"
-        }
-        onAccepted: {
-            menu.close()
+    Component {
+        id: userSettingsPage
+
+        UserSettingsPage {
         }
     }
 

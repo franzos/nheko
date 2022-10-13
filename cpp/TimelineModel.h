@@ -19,10 +19,14 @@
 #include <matrix-client-library/CacheStructs.h>
 #include <matrix-client-library/timeline/EventStore.h>
 #include <matrix-client-library/timeline/Timeline.h>
+#include <matrix-client-library/timeline/Permissions.h>
+#include <matrix-client-library/UserProfile.h>
 
-#include "ReadReceiptsModel.h"
 #include "ui/InputBar.h"
+#include "ui/RoomSettings.h"
+#include "ReadReceiptsModel.h"
 #include "MemberList.h"
+#include "InviteesModel.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -35,35 +39,10 @@ struct ClaimKeys;
 }
 struct RelatedInfo;
 
-class StateKeeper
-{
-public:
-    StateKeeper(std::function<void()> &&fn)
-      : fn_(std::move(fn))
-    {}
-
-    ~StateKeeper() { fn_(); }
-
-private:
-    std::function<void()> fn_;
-};
-
-struct DecryptionResult
-{
-    //! The decrypted content as a normal plaintext event.
-    mtx::events::collections::TimelineEvents event;
-    //! Whether or not the decryption was successful.
-    bool isDecrypted = false;
-};
-
-// class TimelineViewManager;
-
 class TimelineModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
-    Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
-                 typingUsersChanged)
     Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
     Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
@@ -143,10 +122,12 @@ public:
     bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
+    Q_INVOKABLE QString getBareRoomLink(const QString & );
+    Q_INVOKABLE QString getRoomVias(const QString & );
     Q_INVOKABLE QString displayName(const QString &id) const;
     Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
-    Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
+    Q_INVOKABLE QString formatTypingUsers(const QStringList &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
     Q_INVOKABLE QString formatMemberEvent(const QString &id);
@@ -154,6 +135,8 @@ public:
     Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
     Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
     Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
+    Q_INVOKABLE QString formatImagePackEvent(const QString &id);
+    Q_INVOKABLE QString formatPolicyRule(const QString &id);
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
     Q_INVOKABLE void viewRawMessage(const QString &id);
@@ -166,13 +149,14 @@ public:
     Q_INVOKABLE void pin(const QString &id);
     Q_INVOKABLE void showReadReceipts(QString id);
     Q_INVOKABLE void redactEvent(const QString &id, const QString &reason = "");
+    Q_INVOKABLE void redactAllFromUser(const QString &userid, const QString &reason = "");
     Q_INVOKABLE int idToIndex(const QString &id) const;
     Q_INVOKABLE QString indexToId(int index) const;
     Q_INVOKABLE void openMedia(const QString &eventId);
     Q_INVOKABLE void cacheMedia(const QString &eventId);
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
-    Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
+    Q_INVOKABLE void copyLinkToEvent(const QString &eventId);
     Q_INVOKABLE QColor userColor(QString id, QColor background);
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
@@ -180,6 +164,12 @@ public:
     Q_INVOKABLE void markEventsAsRead(const QString &event_id);
     Q_INVOKABLE void focusMessageInput();
     Q_INVOKABLE void openRoomMembers();
+    Q_INVOKABLE void openRoomSettings();
+    Q_INVOKABLE void openInviteUsers();
+    Q_INVOKABLE void openImageOverlay(QString mxcUrl,
+                                      QString eventId,
+                                      double originalWidth,
+                                      double proportionalHeight);
 
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
@@ -202,9 +192,6 @@ public:
     }
 
     void updateLastMessage();
-    void sync(const mtx::responses::JoinedRoom &room);
-    void addEvents(const mtx::responses::Timeline &events);
-    void syncState(const mtx::responses::State &state);
     RelatedInfo relatedInfo(const QString &id);
 
     DescInfo lastMessage() const { return lastMessage_; }
@@ -230,14 +217,11 @@ public slots:
     void eventShown();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     Timeline *timeline() { return _timeline; };
-    void updateTypingUsers(const std::vector<QString> &users)
+    void updateTypingUsers(const QStringList &users)
     {
-        if (this->typingUsers_ != users) {
-            this->typingUsers_ = users;
-            emit typingUsersChanged(typingUsers_);
-        }
+        emit typingUsersChanged(users);
     }
-    std::vector<QString> typingUsers() const { return typingUsers_; }
+    QStringList typingUsers() const { return _timeline->typingUsers(); }
     bool paginationInProgress() const { return m_paginationInProgress; }
     QString reply() const { return reply_; }
     void setReply(const QString &newReply)
@@ -262,10 +246,6 @@ public slots:
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
     void clearTimeline() { events->clearTimeline(); }
     void resetState();
-    void receivedSessionKey(const std::string &session_key)
-    {
-        events->receivedSessionKey(session_key);
-    }
 
     QString roomName() const;
     QString plainRoomName() const;
@@ -292,7 +272,7 @@ signals:
     void redactionFailed(QString id);
     void mediaCached(QString mxcUrl, QString cacheUrl);
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
-    void typingUsersChanged(std::vector<QString> users);
+    void typingUsersChanged(const QStringList &users);
     void replyChanged(QString reply);
     void editChanged(QString reply);
     void openReadReceiptsDialog(ReadReceiptsProxy *rr);
@@ -302,15 +282,21 @@ signals:
     void scrollToIndex(int index);
     void focusInput();
     void openRoomMembersDialog(MemberList *members);
-
+    void openRoomSettingsDialog(RoomSettings *settings);
+    void openProfile(UserProfile *profile);
+    void openInviteUsersDialog(InviteesModel *invitees);
+    void showImageOverlay(QString eventId,
+                          QString url,
+                          double originalWidth,
+                          double proportionalHeight);
+                          
     void lastMessageChanged();
     void notificationsChanged();
 
-    // void newState(mtx::responses::StateEvents events);
+    void newState(mtx::responses::StateEvents events);
 
     void newMessageToSend(mtx::events::collections::TimelineEvents event);
     void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
-    void updateFlowEventId(std::string event_id);
 
     void encryptionChanged();
     void trustlevelChanged();
@@ -341,7 +327,6 @@ private:
     QString currentId, currentReadId;
     QString reply_, edit_;
     QString textBeforeEdit, replyBeforeEdit;
-    std::vector<QString> typingUsers_;
 
     InputBar input_{this};
 
@@ -353,7 +338,7 @@ private:
 
     // friend struct SendMessageVisitor;
 
-    int notification_count = 0, highlight_count = 0;
+    uint64_t notification_count = 0, highlight_count = 0;
 
     unsigned int relatedEventCacheBuster = 0;
 

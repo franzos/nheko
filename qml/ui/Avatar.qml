@@ -10,6 +10,7 @@ import GlobalObject 1.0
 import CursorShape 1.0
 import MatrixClient 1.0
 import Presence 1.0
+import QmlInterface 1.0
 
 AbstractButton {
     id: avatar
@@ -49,8 +50,8 @@ AbstractButton {
         id: identicon
 
         anchors.fill: parent
-        visible: img.status != Image.Ready
-        source: "image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + 100
+        visible: QmlInterface.jdenticonProviderisAvailable() && img.status != Image.Ready
+        source: QmlInterface.jdenticonProviderisAvailable()?"image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + 100:""
     }
 
     Image {
@@ -79,14 +80,18 @@ AbstractButton {
         color: updatePresence()
 
         function updatePresence() {
-            switch (MatrixClient.presenceEmitter().userPresence(userid)) {
-            case "online":
-                return "#00cc66";
-            case "unavailable":
-                return "#ff9933";
-            case "offline":
-            default:
-                // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
+            if(MatrixClient.presenceEmitter()){
+                switch (MatrixClient.presenceEmitter().userPresence(userid)) {
+                case "online":
+                    return "#00cc66";
+                case "unavailable":
+                    return "#ff9933";
+                case "offline":
+                default:
+                    // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
+                    return "transparent";
+                }
+            } else {
                 return "transparent";
             }
         }

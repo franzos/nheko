@@ -1,7 +1,8 @@
 #include "MatrixQuickView.h"
 #include "ColorImageProvider.h"
-#include <matrix-client-library/MxcImageProvider.h>
-#include <matrix-client-library/JdenticonProvider.h>
+#include "MxcImageProvider.h"
+#include "JdenticonProvider.h"
+#include "BlurhashProvider.h"
 
 namespace PX::GUI::MATRIX{
 
@@ -14,9 +15,10 @@ MatrixQuickView::MatrixQuickView(QWindow *parent):
     _videoCallQuickView (new QQuickView(engine(),parent)){
         _videoCallQuickView->setSource(QUrl(QStringLiteral("qrc:/qml/voip/VideoCallEmbedPage.qml")));
         engine()->addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
+        engine()->addImageProvider(QStringLiteral("blurhash"), new BlurhashProvider());
         auto imgProvider = new MxcImageProvider();
         engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
-        if (JdenticonProvider::isAvailable())
+        if (jdenticonProviderisAvailable())
             engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 
 }

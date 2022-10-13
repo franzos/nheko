@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.12
 import QtQuick.Controls 2.3
@@ -35,6 +40,7 @@ AbstractButton {
     property int encryptionError
     property int relatedEventCacheBuster
     property int maxWidth
+    property bool keepFullText: false
 
     height: replyContainer.height
     implicitHeight: replyContainer.height
@@ -57,7 +63,7 @@ AbstractButton {
     onClicked: {
         let link = reply.child.linkAt != undefined && reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight);
         if (link) {
-            // Nheko.openLink(link)
+            GlobalObject.openLink(link)
         } else {
             room.showEvent(r.eventId)
         }
@@ -75,6 +81,7 @@ AbstractButton {
             acceptedButtons: Qt.RightButton
             onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight), r.eventId)
             gesturePolicy: TapHandler.ReleaseWithinBounds
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
         }
 
         AbstractButton {
@@ -121,6 +128,7 @@ AbstractButton {
             enabled: false
             Layout.fillWidth: true
             isReply: true
+            keepFullText: r.keepFullText
         }
 
     }

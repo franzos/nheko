@@ -1,51 +1,57 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
 import DeviceVerificationFlow 1.0
+import GlobalObject 1.0
 
-Pane {
+ColumnLayout {
     property string title: qsTr("Verification failed")
-    Column {
-        spacing: 16
-        anchors.fill: parent
-        Text {
-            id: content
-            width: parent.width
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            wrapMode: Text.Wrap
-            text: {
-                switch (flow.error) {
+    spacing: 16
+
+    Text {
+        id: content
+
+        Layout.preferredWidth: 400
+        Layout.fillWidth: true
+        wrapMode: Text.Wrap
+        text: {
+            switch (flow.error) {
                 case DeviceVerificationFlow.UnknownMethod:
-                    return qsTr("Other client does not support our verification protocol.");
+                return qsTr("Other client does not support our verification protocol.");
                 case DeviceVerificationFlow.MismatchedCommitment:
                 case DeviceVerificationFlow.MismatchedSAS:
                 case DeviceVerificationFlow.KeyMismatch:
-                    return qsTr("Key mismatch detected!");
+                return qsTr("Key mismatch detected!");
                 case DeviceVerificationFlow.Timeout:
-                    return qsTr("Device verification timed out.");
+                return qsTr("Device verification timed out.");
                 case DeviceVerificationFlow.User:
-                    return qsTr("Other party canceled the verification.");
+                return qsTr("Other party canceled the verification.");
                 case DeviceVerificationFlow.OutOfOrder:
-                    return qsTr("Verification messages received out of order!");
+                return qsTr("Verification messages received out of order!");
                 default:
-                    return qsTr("Unknown verification error.");
-                }
+                return qsTr("Unknown verification error.");
             }
-            verticalAlignment: Text.AlignVCenter
+        }
+        color: GlobalObject.colors.text
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Item { Layout.fillHeight: true; }
+
+    RowLayout {
+        Item {
+            Layout.fillWidth: true
         }
 
-        RowLayout {
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Button {
-                Layout.alignment: Qt.AlignRight
-                text: qsTr("Close")
-                onClicked: dialog.close()
-            }
-
+        Button {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Close")
+            onClicked: dialog.close()
         }
 
     }

@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.2
@@ -12,6 +17,7 @@ Item {
     id: d
 
     required property bool isReply
+    property bool keepFullText: !isReply
     property alias child: chooser.child
     implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : 0
     required property double proportionalHeight
@@ -68,6 +74,7 @@ Item {
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 metadataWidth: d.metadataWidth
             }
 
@@ -81,6 +88,7 @@ Item {
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 metadataWidth: d.metadataWidth
             }
@@ -96,95 +104,95 @@ Item {
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 metadataWidth: d.metadataWidth
             }
 
         }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.ImageMessage
+        DelegateChoice {
+            roleValue: MtxEvent.ImageMessage
 
-        //     ImageMessage {
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         proportionalHeight: d.proportionalHeight
-        //         url: d.url
-        //         blurhash: d.blurhash
-        //         body: d.body
-        //         filename: d.filename
-        //         isReply: d.isReply
-        //         eventId: d.eventId
-        //         metadataWidth: d.metadataWidth
-        //     }
+            ImageMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                url: d.url
+                blurhash: d.blurhash
+                body: d.body
+                filename: d.filename
+                isReply: d.isReply
+                eventId: d.eventId
+                metadataWidth: d.metadataWidth
+            }
 
-        // }
+        }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.Sticker
+        DelegateChoice {
+            roleValue: MtxEvent.Sticker
 
-        //     ImageMessage {
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         proportionalHeight: d.proportionalHeight
-        //         url: d.url
-        //         blurhash: d.blurhash
-        //         body: d.body
-        //         filename: d.filename
-        //         isReply: d.isReply
-        //         eventId: d.eventId
-        //         metadataWidth: d.metadataWidth
-        //     }
+            ImageMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                url: d.url
+                blurhash: d.blurhash
+                body: d.body
+                filename: d.filename
+                isReply: d.isReply
+                eventId: d.eventId
+                metadataWidth: d.metadataWidth
+            }
 
-        // }
+        }
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.FileMessage
+        DelegateChoice {
+            roleValue: MtxEvent.FileMessage
 
-        //     FileMessage {
-        //         eventId: d.eventId
-        //         filename: d.filename
-        //         filesize: d.filesize
-        //         metadataWidth: d.metadataWidth
-        //     }
+            FileMessage {
+                eventId: d.eventId
+                filename: d.filename
+                filesize: d.filesize
+                metadataWidth: d.metadataWidth
+            }
+        }
 
-        // }
+        DelegateChoice {
+            roleValue: MtxEvent.VideoMessage
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.VideoMessage
+            PlayableMediaMessage {
+                proportionalHeight: d.proportionalHeight
+                type: d.type
+                originalWidth: d.originalWidth
+                thumbnailUrl: d.thumbnailUrl
+                eventId: d.eventId
+                url: d.url
+                body: d.body
+                filesize: d.filesize
+                duration: d.duration
+                metadataWidth: d.metadataWidth
+            }
 
-        //     PlayableMediaMessage {
-        //         proportionalHeight: d.proportionalHeight
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         thumbnailUrl: d.thumbnailUrl
-        //         eventId: d.eventId
-        //         url: d.url
-        //         body: d.body
-        //         filesize: d.filesize
-        //         duration: d.duration
-        //         metadataWidth: d.metadataWidth
-        //     }
+        }
 
-        // }
+        DelegateChoice {
+            roleValue: MtxEvent.AudioMessage
 
-        // DelegateChoice {
-        //     roleValue: MtxEvent.AudioMessage
+            PlayableMediaMessage {
+                proportionalHeight: d.proportionalHeight
+                type: d.type
+                originalWidth: d.originalWidth
+                thumbnailUrl: d.thumbnailUrl
+                eventId: d.eventId
+                url: d.url
+                body: d.body
+                filesize: d.filesize
+                duration: d.duration
+                metadataWidth: d.metadataWidth
+            }
 
-        //     PlayableMediaMessage {
-        //         proportionalHeight: d.proportionalHeight
-        //         type: d.type
-        //         originalWidth: d.originalWidth
-        //         thumbnailUrl: d.thumbnailUrl
-        //         eventId: d.eventId
-        //         url: d.url
-        //         body: d.body
-        //         filesize: d.filesize
-        //         duration: d.duration
-        //         metadataWidth: d.metadataWidth
-        //     }
-
-        // }
+        }
 
         DelegateChoice {
             roleValue: MtxEvent.Redacted
@@ -231,6 +239,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: d.roomName ? qsTr("%2 changed the room name to: %1").arg(d.roomName).arg(d.userName) : qsTr("%1 removed the room name").arg(d.userName)
             }
@@ -244,6 +253,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: d.roomTopic ? qsTr("%2 changed the topic to: %1").arg(d.roomTopic).arg(d.userName): qsTr("%1 removed the topic").arg(d.userName)
             }
@@ -257,6 +267,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the room avatar").arg(d.userName)
             }
@@ -270,6 +281,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the pinned messages.").arg(d.userName)
             }
@@ -283,11 +295,13 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
-                formatted: qsTr("%1 changed the stickers and emotes in this room.").arg(d.userName)
+                formatted: d.relatedEventCacheBuster, room.formatImagePackEvent(d.eventId)
             }
 
         }
+
 
         DelegateChoice {
             roleValue: MtxEvent.CanonicalAlias
@@ -296,6 +310,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the addresses for this room.").arg(d.userName)
             }
@@ -309,6 +324,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the parent spaces for this room.").arg(d.userName)
             }
@@ -322,6 +338,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId)
             }
@@ -335,6 +352,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: {
                     switch (d.callType) {
@@ -357,6 +375,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 answered the call.").arg(d.userName)
             }
@@ -370,6 +389,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 ended the call.").arg(d.userName)
             }
@@ -383,6 +403,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 is negotiating the call...").arg(d.userName)
             }
@@ -390,15 +411,57 @@ Item {
         }
 
         DelegateChoice {
-            // TODO: make a more complex formatter for the power levels.
             roleValue: MtxEvent.PowerLevels
 
             NoticeMessage {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatPowerLevelEvent(d.eventId)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.PolicyRuleUser
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: d.relatedEventCacheBuster, room.formatPolicyRule(d.eventId)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.PolicyRuleRoom
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: d.relatedEventCacheBuster, room.formatPolicyRule(d.eventId)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.PolicyRuleServer
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: d.relatedEventCacheBuster, room.formatPolicyRule(d.eventId)
             }
 
         }
@@ -410,6 +473,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatJoinRuleEvent(d.eventId)
             }
@@ -423,6 +487,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatHistoryVisibilityEvent(d.eventId)
             }
@@ -436,6 +501,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatGuestAccessEvent(d.eventId)
             }
@@ -452,6 +518,7 @@ Item {
                     body: formatted
                     isOnlyEmoji: false
                     isReply: d.isReply
+                    keepFullText: d.keepFullText
                     isStateEvent: d.isStateEvent
                     Layout.fillWidth: true
                     formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
@@ -475,6 +542,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationRequest"
             }
@@ -488,6 +556,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationStart"
             }
@@ -501,6 +570,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationReady"
             }
@@ -514,6 +584,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationCancel"
             }
@@ -527,6 +598,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationKey"
             }
@@ -540,6 +612,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationMac"
             }
@@ -553,6 +626,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationDone"
             }
@@ -566,6 +640,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationDone"
             }
@@ -579,6 +654,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationAccept"
             }

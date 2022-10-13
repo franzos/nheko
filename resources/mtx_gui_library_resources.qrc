@@ -8,6 +8,7 @@
         <file>images/angle-arrow-left.svg</file>
         <file>images/attach.svg</file>
         <file>images/ban.svg</file>
+        <file>images/call-settings.svg</file>
         <file>images/chat.svg</file>
         <file>images/checkmark.svg</file>
         <file>images/clock.svg</file>
@@ -30,6 +31,7 @@
         <file>images/options.svg</file>
         <file>images/pause-symbol.svg</file>
         <file>images/people.svg</file>
+        <file>images/person.svg</file>
         <file>images/picture-in-picture.svg</file>
         <file>images/pin-off.svg</file>
         <file>images/pin.svg</file>
@@ -39,6 +41,8 @@
         <file>images/px-user.svg</file>
         <file>images/refresh.svg</file>
         <file>images/reply.svg</file>
+        <file>images/ribbon_star.svg</file>
+        <file>images/ribbon.svg</file>
         <file>images/round-remove-button.svg</file>
         <file>images/screen-share.svg</file>
         <file>images/search.svg</file>

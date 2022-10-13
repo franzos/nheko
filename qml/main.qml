@@ -14,11 +14,24 @@ ApplicationWindow {
     property bool callAutoAccept
 
     MainLib{
+        id: mainLibqml
         embedVideoQML: qmlApplication.embedVideoQML
         callAutoAccept: qmlApplication.callAutoAccept
     }
 
+    Component.onCompleted: {
+        MatrixClient.start()
+    }
+
     onClosing: {
+        if (Qt.platform.os === 'android') {
+            if (mainLibqml.stackDepth() > 1) {
+                close.accepted = false
+                mainLibqml.backPressed()
+                return
+            }
+        }
         MatrixClient.stop()
+        close.accepted = true
     }
 }

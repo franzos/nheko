@@ -7,6 +7,7 @@
 #include <QWindow>
 #include <QQmlEngine>
 #include <matrix-client-library/Client.h>
+#include <matrix-client-library/UserProfile.h>
 #include <matrix-client-library/voip/CallManager.h>
 #include <matrix-client-library/UserSettings.h>
 #include <matrix-client-library/voip/WebRTCSession.h>
@@ -39,7 +40,7 @@ public:
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
     void login(LOGIN_TYPE type, const QString &accessToken = "");
-    bool dbusAvailable() const { return _dbusAvailable; }
+    void logout();
 
 signals:
     void userIdChanged(const QString &userId);
@@ -55,7 +56,8 @@ public slots:
     void setServerAddress(const QString &server);
     void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
     PX::AUTH::UserProfileInfo cmUserInformation();
-
+    bool jdenticonProviderisAvailable();
+    
 private slots:
     void initiateFinishedCB();
     void newSyncCb(const mtx::responses::Sync &sync);
@@ -76,7 +78,6 @@ private:
 #if defined(NOTIFICATION_DBUS_SYS)
     NotificationsManager _notificationsManager;
 #endif
-    bool _dbusAvailable;
     PX::AUTH::UserProfileInfo _cmUserInformation;
 };
 }

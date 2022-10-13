@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "../"
 import "../ui"
 import QtQuick 2.9
@@ -10,7 +15,7 @@ import WebRTCState 1.0
 
 Rectangle {
     visible: CallManager.isOnCall
-    color: callInviteBar.color
+    color: "#2ECC71"
     implicitHeight: visible ? rowLayout.height + 8 : 0
 
     MouseArea {
@@ -18,6 +23,7 @@ Rectangle {
         onClicked: {
             if (CallManager.callType != CallType.VOICE)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
+
         }
     }
 
@@ -35,6 +41,7 @@ Rectangle {
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
             displayName: CallManager.callPartyDisplayName
+            // onClicked: TimelineManager.openImageOverlay(room, room.avatarUrl(userid), room.data.eventId)
         }
 
         Label {
@@ -222,6 +229,7 @@ Rectangle {
             ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
             onClicked: CallManager.toggleMicMute()
         }
+
     }
 
 }

@@ -33,6 +33,7 @@ Popup {
         function onNewInviteState() {
             if (!CallManager.haveCallInvite)
                 close();
+
         }
 
         target: CallManager

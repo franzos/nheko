@@ -10,12 +10,8 @@
 #include <memory>
 #include <unordered_map>
 #include <matrix-client-library/Client.h>
-#include <matrix-client-library/MxcImageProvider.h>
+#include "MxcImageProvider.h"
 #include "AvatarProvider.h"
-// #include "Cache.h"
-// #include "Logging.h"
-// #include "MatrixClient.h"
-// #include "Utils.h"
 
 static QPixmapCache avatar_cache;
 

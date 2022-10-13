@@ -8,11 +8,20 @@ Dialog {
     standardButtons: Dialog.Cancel | Dialog.Ok
     property var roomName : ""
     property var roomId : ""
-    Label {
-        text: "Are you sure you want to leave " + roomName + " ?"
+    Column {
+        width:parent.width
+        spacing: 10
+        Label {
+            text: "Are you sure you want to leave " + roomName + " ?"
+        }
+        TextField {
+            id: reasonTextField
+            width:parent.width
+            placeholderText: "Reason to leave ..."
+        }
     }
     onAccepted: {
-        MatrixClient.leaveRoom(roomId)
+        MatrixClient.leaveRoom(roomId, reasonTextField.text)
     }
     onRejected: {}
 }

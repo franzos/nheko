@@ -4,6 +4,119 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.28]
+### Updated
+
+* Mention others in the chat.
+* Show the device verification status forever on the header.
+
+
+## [0.1.27]
+### Updated
+
+* Enable Device verification.
+
+
+## [0.1.26]
+### Updated
+
+* Settings Screen.
+
+
+## [0.1.25]
+### Updated
+
+* Room Settings added.
+
+
+## [0.1.24]
+### Updated
+
+* Improvement and fixing minor issue in showing title and avatar in the header.
+
+
+## [0.1.23]
+### Updated
+
+* Send attachments (Video/Audio/Text File and ...).
+* Download attachments.
+* Fixing some minor warnings in qml codes.
+
+
+## [0.1.22]
+### Updated
+
+* Cancel ciba login request in the login form.
+
+
+## [0.1.21]
+### Updated
+
+* Add logout method to the gui library to logout and cleanup properly.
+
+
+## [0.1.20]
+### Updated
+
+* Set parent for `RoomListModel` at creation time.
+* Set Cpp as ownership for `TimelineModel` to delete properly when parent deleted.
+
+
+## [0.1.19]
+### Updated
+
+* List of users in start chat and invite to the room.
+
+
+
+## [0.1.18]
+### Updated
+
+* Speaker volume control added.
+
+
+
+## [0.1.17]
+### Updated
+
+* Show and change the audio device input volume.
+* Display the audio device input level meter.
+
+
+
+## [0.1.15]
+### Updated
+
+* Send commands.
+* Fixing crash issue 
+
+## [0.1.14]
+### Updated
+
+* Update with upstream.
+
+
+## [0.1.13]
+### Fixed and Changed
+
+* Click and see the user profile in member list dialog.
+* Fixing an issue in shortkey assignment.
+* Fixing an issue in showing the avatar in member list.
+* Move image providers classes from backend library to here.
+* Fixing jdenticon warning message.
+
+
+## [0.1.12]
+### Changed
+
+* Video/Audio input settings.
+
+
+## [0.1.11]
+### Changed
+
+* Disable auto start matrix client backend in gui library.
+
 
 ## [0.1.10]
 ### Fixed and Changed

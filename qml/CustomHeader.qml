@@ -23,6 +23,11 @@ Column {
     property bool enableCallButtons: false
     property bool inCalling: false
 
+    Component {
+        id: callSettingsDialogFactory
+        CallSettingsDialog {}
+    }
+
     ToolBar {
         id: toolBar
         width: parent.width
@@ -40,7 +45,7 @@ Column {
                     menuClicked()
                 }
             }
-
+            
             ToolButton {
                 id: backButton
                 icon.source: "qrc:/images/angle-arrow-left.svg"
@@ -49,24 +54,37 @@ Column {
                 visible: stack.depth > 1
                 onClicked: {
                     if(!inCalling || (CallManager.callType == CallType.VOICE)){
-                        var prevPage = stack.pop()
-                        if (prevPage) {
-                            prevPage.destroy()
-                        }
+//                        var prevPage = stack.pop()
+//                        if (prevPage) {
+//                            prevPage.destroy()
+//                        }
+                        qmlLibRoot.backPressed()
                     }
                 }
             }
 
-            // ToolButton {
-            //     id: verifyRect
-            //     icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
-            //     icon.color:"#C70039"
-            //     width: parent.height
-            //     height: parent.height
-            //     onClicked: {
-            //         selfVerificationCheck.verify()
-            //     }
-            // }
+            ToolButton {
+                id: verifyRect
+                icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
+                width: parent.height
+                height: parent.height
+                onClicked: {
+                    selfVerificationCheck.verify()
+                }
+            }
+
+            ToolButton {
+                id: callSettingsItem
+                icon.source: "qrc:/images/call-settings.svg"
+                icon.color:"gray"
+                width: parent.height
+                height: parent.height
+                visible: CallManager.callsSupported
+                onClicked: {
+                    var callSettingsDialog = callSettingsDialogFactory.createObject(parent);
+                    callSettingsDialog.open()
+                }
+            }
 
             Avatar {
                 id: avatar
@@ -170,7 +188,7 @@ Column {
     }
 
     function setRoomInfo(title, roomid, avatarUrl){
-        setTitle(title)
+        titleLabel.text = title
         avatar.url= avatarUrl.replace("mxc://", "image://MxcImage/")
         avatar.roomid= roomid
         avatar.userid= roomid
@@ -178,22 +196,12 @@ Column {
         avatar.visible=true
     }
 
-    function setTitle(title){
-        if(title)
-            titleLabel.text = title
-        avatar.visible=false
-    }
-
-    function title(){
-        return titleLabel.text
-    }
-    
     function setVerified(flag){
-        // if(flag){
-        //     verifyRect.visible = false
-        // } else {
-        //     verifyRect.visible = true
-        // }
+        if(flag){
+            verifyRect.icon.color = "green"
+        } else {
+            verifyRect.icon.color = "#C70039"
+        }
     }
 
     SelfVerificationCheck{
@@ -293,6 +301,17 @@ Column {
             onCallStateHandler()
         else if(state == "freecall")
             freeCallStateHandler()
+        if(CallManager.callsSupported){
+            var mics = CallManager.mics
+            var cams = CallManager.cameras
+            if(mics.length && cams.length){
+                callSettingsItem.icon.color="green"
+            } else if (mics.length || cams.length){
+                callSettingsItem.icon.color="red"
+            } else {
+                callSettingsItem.icon.color="gray"
+            }
+        }
     }
 
     Component.onCompleted: {

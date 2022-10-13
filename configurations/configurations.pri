@@ -4,9 +4,11 @@ include(ios/ios.pri)
 linux:!android {
     # Configurations only required for desktop linux (not android)
     LIBS += -lpx-auth-lib-cpp \
-            -lmatrix-client-library
-    QT += dbus
-
+            -lmatrix-client-library \
+            -llmdb
+    QT += dbus multimedia
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glib-2.0
     target.path = /usr/bin/
     target.files = matrix-client
 
@@ -17,7 +19,8 @@ linux:!android {
     app_icon.files = resources/images/matrix-client-icon_bright.svg
 
     INSTALLS += target app_icon desktop_file
+
+    LIBS += -lspdlog -lcurl -lcoeurl \
+            -lmatrix_client -lblurhash
 }
 
-LIBS += -lspdlog -lcurl -lcoeurl \
-        -lmatrix_client

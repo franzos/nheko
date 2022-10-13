@@ -14,6 +14,7 @@ Page {
     width: parent.width
     // property string displayName;
     title: "..."
+    property var avatar: ""
     ListView {
         id: roomListView
         anchors.fill: parent
@@ -26,13 +27,10 @@ Page {
         delegate:RoomDelegate{}
     }
 
-    AddUserDialog{
-        id:directChat
-        title: "Direct Chat"
-        x: (qmlLibRoot.width - width) / 2
-        y: (qmlLibRoot.height - height) / 2
-        onUserAdded:{
-            MatrixClient.startChat(userid)
+    Component {
+        id: directChatFactory
+        AddUserDialog {
+            title: "Direct Chat"
         }
     }
 
@@ -45,7 +43,10 @@ Page {
         palette.button: GlobalObject.colors.alternateBase
         font.pointSize: 15            
         text: "+"
-        onClicked: directChat.open()
+        onClicked: {    
+            var directChatDialog = directChatFactory.createObject(roomPage);
+            directChatDialog.open()
+        }
     }   
 
     function onVerificationStatusChanged(){
@@ -88,12 +89,13 @@ Page {
 
         function onUserDisplayNameReady(name){
             title = name
-            mainHeader.setTitle(name)
+            mainHeader.setRoomInfo(title, "", avatar)
             onVerificationStatusChanged()
         }
         
         function onUserAvatarReady(avatarUrl){
-            mainHeader.setRoomInfo(title, "", avatarUrl)
+            avatar = avatarUrl
+            mainHeader.setRoomInfo(title, "", avatar)
         }
 
         function onRoomCreated(id){

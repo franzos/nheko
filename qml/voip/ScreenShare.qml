@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -6,12 +11,10 @@ import GlobalObject 1.0
 
 Popup {
     modal: true
-    // only set the anchors on Qt 5.12 or higher
-    // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
-    Component.onCompleted: {
-        if (anchors)
-            anchors.centerIn = parent;
 
+    anchors.centerIn: parent;
+
+    Component.onCompleted: {
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
     }
     palette: GlobalObject.colors
@@ -80,7 +83,7 @@ Popup {
                 id: pipCheckBox
 
                 enabled: CallManager.cameras.length > 0
-                checked: Settings.screenSharePiP
+                checked: CallManager.cameras.length > 0// && Settings.screenSharePiP
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -122,19 +125,15 @@ Popup {
             Button {
                 text: qsTr("Share")
                 icon.source: "qrc:/images/screen-share.svg"
-                onClicked: {
-                    if (buttonLayout.validateMic()) {
-                        Settings.microphone = micCombo.currentText;
-                        if (pipCheckBox.checked)
-                            Settings.camera = cameraCombo.currentText;
 
+                onClicked: {
                         Settings.screenShareFrameRate = frameRateCombo.currentText;
                         Settings.screenSharePiP = pipCheckBox.checked;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                         Settings.screenShareHideCursor = hideCursorCheckBox.checked;
+
                         CallManager.sendInvite(room.roomId, CallType.SCREEN, windowCombo.currentIndex);
                         close();
-                    }
                 }
             }
 

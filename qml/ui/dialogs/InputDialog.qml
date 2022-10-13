@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import ".."
 import QtQuick 2.12
 import QtQuick.Controls 2.5
@@ -14,7 +19,7 @@ ApplicationWindow {
     modality: Qt.NonModal
     flags: Qt.Dialog
     width: 350
-    height: 2 * footer.height
+    height: fontMetrics.lineSpacing * 7
 
     function forceActiveFocus() {
         statusInput.forceActiveFocus();
