@@ -4,12 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.30]
+### Updated
+
+* Fixing issue in image decryption.
+
+
 ## [0.1.29]
 ### Updated
 
 * Sorting the room list based on the last message time.
 * Show the last message time for each room in room list page.
-* Fixing issue in image decryption.
 * Show ApplicationWindow as maximized in android.
 
 

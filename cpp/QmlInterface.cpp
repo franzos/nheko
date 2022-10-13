@@ -278,7 +278,7 @@ QmlInterface::QmlInterface(QObject *parent):
                 _client->joinRoom(QString::fromStdString(r.first));
             }
         }
-        _roomListModel->add(roomList);
+        addToRoomlist(roomList);
         
         QStringList leaveRooms;
         for(auto const &r: rooms.leave){
@@ -303,7 +303,7 @@ QmlInterface::QmlInterface(QObject *parent):
                 _client->joinRoom(r.first);
             }
         }
-        _roomListModel->add(roomList);
+        addToRoomlist(roomList);
     }
 
     void QmlInterface::setStyle(const QString &style, const QString &fallback){
