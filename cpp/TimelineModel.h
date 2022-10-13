@@ -271,7 +271,6 @@ signals:
     void currentIndexChanged(int index);
     void redactionFailed(QString id);
     void mediaCached(QString mxcUrl, QString cacheUrl);
-    void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
     void typingUsersChanged(const QStringList &users);
     void replyChanged(QString reply);
     void editChanged(QString reply);

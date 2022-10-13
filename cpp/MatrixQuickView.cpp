@@ -16,8 +16,8 @@ MatrixQuickView::MatrixQuickView(QWindow *parent):
         _videoCallQuickView->setSource(QUrl(QStringLiteral("qrc:/qml/voip/VideoCallEmbedPage.qml")));
         engine()->addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
         engine()->addImageProvider(QStringLiteral("blurhash"), new BlurhashProvider());
-        auto imgProvider = new MxcImageProvider();
-        engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
+        _mxcImageProvider = new MxcImageProvider();
+        engine()->addImageProvider(QStringLiteral("MxcImage"), _mxcImageProvider);
         if (jdenticonProviderisAvailable())
             engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 

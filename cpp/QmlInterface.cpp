@@ -356,4 +356,17 @@ QmlInterface::QmlInterface(QObject *parent):
         _roomListModel->cleanup();
         _client->logout();
     }
+
+    void QmlInterface::addToRoomlist(QList<RoomListItem> &roomlist){
+        for(auto const &r: roomlist){
+            auto timeline = Client::instance()->timeline(r.id());
+            if(timeline && timeline->events() && _mxcImageProvider){
+                connect(timeline->events(),
+                        &EventStore::newEncryptedImage,
+                        _mxcImageProvider,
+                        &MxcImageProvider::addEncryptionInfo);
+            }
+        }
+        _roomListModel->add(roomlist);
+    }
 }

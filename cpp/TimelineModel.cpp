@@ -103,7 +103,6 @@ TimelineModel::TimelineModel(
     connect(events, &EventStore::endInsertRows, this, [this]() { endInsertRows(); });
     connect(events, &EventStore::beginResetModel, this, [this]() { beginResetModel(); });
     connect(events, &EventStore::endResetModel, this, [this]() { endResetModel(); });
-    connect(events, &EventStore::newEncryptedImage, this, &TimelineModel::newEncryptedImage);
     connect(events, &EventStore::fetchedMore, this, [this]() { setPaginationInProgress(false); });
     // connect(events,
     //         &EventStore::startDMVerification,
