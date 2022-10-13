@@ -124,7 +124,10 @@ Room {
             "readReceipts": rr,
             "timelineModel": timelineModel
         });
-        dialog.show();
+        if(Qt.platform.os == "android")
+            dialog.showMaximized();
+        else 
+            dialog.show()
         destroyOnClose(dialog);
     }
 
@@ -135,7 +138,10 @@ Room {
 
         dialog.x= (qmlLibRoot.width - dialog.width) / 2
         dialog.y= (qmlLibRoot.height - dialog.height) / 2
-        dialog.show();
+        if(Qt.platform.os == "android")
+            dialog.showMaximized();
+        else 
+            dialog.show()
         destroyOnClose(dialog);
     }
     
@@ -261,7 +267,10 @@ Room {
             "profile": profile,
             "room": timelineModel
         });
-        userProfile.show();
+        if(Qt.platform.os == "android")
+            userProfile.showMaximized();
+        else 
+            userProfile.show();
         destroyOnClose(userProfile);
     }
 
@@ -270,7 +279,10 @@ Room {
             var roomSettings = roomSettingsComponent.createObject(timeline, {
                 "roomSettings": settings
             });
-            roomSettings.show();
+            if(Qt.platform.os == "android")
+                roomSettings.showMaximized();
+            else 
+                roomSettings.show();
             destroyOnClose(roomSettings);
         }
 
@@ -280,7 +292,10 @@ Room {
                 "room": timelineModel,
                 "timeline" : timeline
             });
-            membersDialog.show();
+            if(Qt.platform.os == "android")
+                membersDialog.showMaximized();
+            else 
+                membersDialog.show();
             destroyOnClose(membersDialog);
         }
 

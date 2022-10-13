@@ -172,7 +172,10 @@ Item {
         var dialog = deviceVerificationDialog.createObject(selfVerificationCheck, {
             "flow": flow
         });
-        dialog.show();
+        if(Qt.platform.os == "android")
+            dialog.showMaximized();
+        else 
+            dialog.show();
     }
 
     Component {

@@ -392,7 +392,12 @@ ApplicationWindow {
                 Button {
                     text: qsTr("Configure")
                     ToolTip.text: qsTr("Select events to hide in this room")
-                    onClicked: hiddenEventsDialog.show()
+                    onClicked: {
+                        if(Qt.platform.os == "android")
+                            hiddenEventsDialog.showMaximized();
+                        else 
+                            hiddenEventsDialog.show()
+                    }
                     Layout.alignment: Qt.AlignRight
                 }
 

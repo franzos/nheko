@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Sorting the room list based on the last message time.
 * Show the last message time for each room in room list page.
 * Fixing issue in image decryption.
+* Show ApplicationWindow as maximized in android.
 
 
 ## [0.1.28]
