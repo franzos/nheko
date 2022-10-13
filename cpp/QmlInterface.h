@@ -14,6 +14,7 @@
 #include "RoomListModel.h"
 #include "RoomListItem.h"
 #include "notifications/Manager.h"
+#include "MxcImageProvider.h"
 
 class NotificationsManager;
 
@@ -64,6 +65,7 @@ private slots:
 
 private:
     void checkCacheDirectory();
+    void addToRoomlist(QList<RoomListItem> &roomlist);
 
     bool _callAutoAccept = false;
     RoomListModel *_roomListModel = nullptr;
@@ -79,5 +81,7 @@ private:
     NotificationsManager _notificationsManager;
 #endif
     PX::AUTH::UserProfileInfo _cmUserInformation;
+protected:
+    MxcImageProvider *_mxcImageProvider = nullptr;
 };
 }

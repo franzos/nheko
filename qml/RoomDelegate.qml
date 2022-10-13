@@ -17,6 +17,7 @@ Rectangle {
     required property string avatar
     required property bool invite
     required property string lastmessage
+    required property string lastmessageTime
     required property int unreadcount
     // required property RoomInformation roomInformation
 //    color: index % 2 == 0 ? "lightsteelblue" : "transparent"
@@ -72,21 +73,31 @@ Rectangle {
                 }
             }
             
-            Rectangle {
-                id: rect
-                width: 20
-                height: 20
-                radius: width/2
-                color: "#03A9F4"
-                visible: (!invite && unreadcount) ? true : false
-                Layout.alignment: Qt.AlignRight
+            ColumnLayout{
+                Layout.fillWidth: true
+                Layout.leftMargin: 5; Layout.rightMargin: 5
+                Rectangle {
+                    id: rect
+                    width: 20
+                    height: 20
+                    radius: width/2
+                    color: "#03A9F4"
+                    visible: (!invite && unreadcount) ? true : false
+                    Layout.alignment: Qt.AlignRight
+                    Label {
+                        anchors.centerIn: parent
+                        text: unreadcount
+                        color: "white"
+                        font.pointSize: 9
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+
                 Label {
-                    anchors.centerIn: parent
-                    text: unreadcount
-                    color: "white"
-                    font.pointSize: 9
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
+                    text: lastmessageTime
+                    Layout.alignment: Qt.AlignRight
+                    color: "gray"
                 }
             }
         }

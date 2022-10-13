@@ -79,8 +79,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         //     return tr("Play animated images only on hover");
         // case TypingNotifications:
         //     return tr("Typing notifications");
-        // case SortByImportance:
-        //     return tr("Sort rooms by unreads");
+        case SortByImportance:
+            return tr("Sort rooms by unreads");
         // case ButtonsInTimeline:
         //     return tr("Show buttons in timeline");
         // case TimelineMaxWidth:
@@ -143,8 +143,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         //     return tr("GENERAL");
         // case TimelineSection:
         //     return tr("TIMELINE");
-        // case SidebarSection:
-        //     return tr("SIDEBAR");
+        case SidebarSection:
+            return tr("SIDEBAR");
         // case TraySection:
         //     return tr("TRAY");
         // case NotificationsSection:
@@ -192,8 +192,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         //     return i->animateImagesOnHover();
         // case TypingNotifications:
         //     return i->typingNotifications();
-        // case SortByImportance:
-        //     return i->sortByImportance();
+        case SortByImportance:
+            return i->sortByImportance();
         // case ButtonsInTimeline:
         //     return i->buttonsInTimeline();
         // case TimelineMaxWidth:
@@ -314,14 +314,14 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         //     return tr(
         //       "Show who is typing in a room.\nThis will also enable or disable sending typing "
         //       "notifications to others.");
-        // case SortByImportance:
-        //     return tr(
-        //       "Display rooms with new messages first.\nIf this is off, the list of rooms will only "
-        //       "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms "
-        //       "which "
-        //       "have active notifications (the small circle with a number in it) will be sorted on "
-        //       "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
-        //       "seem to consider them as important as the other rooms.");
+        case SortByImportance:
+            return tr(
+              "Display rooms with new messages first.\nIf this is off, the list of rooms will only "
+              "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms "
+              "which "
+              "have active notifications (the small circle with a number in it) will be sorted on "
+              "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
+              "seem to consider them as important as the other rooms.");
         // case ButtonsInTimeline:
         //     return tr(
         //       "Show buttons to quickly reply, react or access additional options next to each "
@@ -385,7 +385,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case Version:
         // case GeneralSection:
         // case TimelineSection:
-        // case SidebarSection:
+        case SidebarSection:
         // case TraySection:
         // case NotificationsSection:
         // case VoipSection:
@@ -435,7 +435,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         // case SmallAvatars:
         // case AnimateImagesOnHover:
         // case TypingNotifications:
-        // case SortByImportance:
+        case SortByImportance:
         // case ButtonsInTimeline:
         // case ReadReceipts:
         // case DesktopNotifications:
@@ -463,7 +463,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return ReadOnlyText;
         // case GeneralSection:
         // case TimelineSection:
-        // case SidebarSection:
+        case SidebarSection:
         // case TraySection:
         // case NotificationsSection:
         // case VoipSection:
@@ -652,13 +652,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         //     } else
         //         return false;
         // }
-        // case SortByImportance: {
-        //     if (value.userType() == QMetaType::Bool) {
-        //         i->setSortByImportance(value.toBool());
-        //         return true;
-        //     } else
-        //         return false;
-        // }
+        case SortByImportance: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setSortByImportance(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         // case ButtonsInTimeline: {
         //     if (value.userType() == QMetaType::Bool) {
         //         i->setButtonsInTimeline(value.toBool());
@@ -1007,9 +1007,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     // connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {
     //     emit dataChanged(index(GroupView), index(GroupView), {Value});
     // });
-    // connect(s.get(), &UserSettings::roomSortingChanged, this, [this]() {
-    //     emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
-    // });
+    connect(s.get(), &UserSettings::roomSortingChanged, this, [this]() {
+        emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
+    });
     // connect(s.get(), &UserSettings::decryptSidebarChanged, this, [this]() {
     //     emit dataChanged(index(DecryptSidebar), index(DecryptSidebar), {Value});
     // });

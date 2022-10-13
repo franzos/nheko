@@ -17,8 +17,8 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
     // }, Qt::QueuedConnection);
     addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());    
     addImageProvider(QStringLiteral("blurhash"), new BlurhashProvider());
-    auto imgProvider = new MxcImageProvider();
-    addImageProvider(QStringLiteral("MxcImage"), imgProvider);
+    _mxcImageProvider = new MxcImageProvider();
+    addImageProvider(QStringLiteral("MxcImage"), _mxcImageProvider);
     if (jdenticonProviderisAvailable())
         addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 }
