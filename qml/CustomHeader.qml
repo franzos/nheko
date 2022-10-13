@@ -54,10 +54,11 @@ Column {
                 visible: stack.depth > 1
                 onClicked: {
                     if(!inCalling || (CallManager.callType == CallType.VOICE)){
-                        var prevPage = stack.pop()
-                        if (prevPage) {
-                            prevPage.destroy()
-                        }
+//                        var prevPage = stack.pop()
+//                        if (prevPage) {
+//                            prevPage.destroy()
+//                        }
+                        qmlLibRoot.backPressed()
                     }
                 }
             }

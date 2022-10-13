@@ -126,7 +126,39 @@ qmake ../MatrixClientLib.pro
 
 ## Version release flow
 
-![release flow](docs/assets/release-flow.svg)
+```mermaid
+%%{init: { 'gitGraph': {'showBranches': true, 'showCommitLabel':true,'mainBranchName': 'master'}} }%%
+gitGraph
+    commit
+    branch development order: 3
+    checkout development
+    commit
+    branch feature1 order: 4
+    checkout feature1
+    commit
+    checkout development
+    merge feature1 tag: "v0.0.1"
+    branch mr-v0.0.1 order: 1
+    checkout mr-v0.0.1
+    commit
+    commit
+    checkout master
+    merge mr-v0.0.1
+    checkout development
+    merge mr-v0.0.1
+    branch feature2 order: 5
+    checkout feature2
+    commit
+    checkout development
+    merge feature2 tag: "v0.0.2"
+    branch mr-v0.0.2 order: 2
+    commit
+    commit
+    checkout master
+    merge mr-v0.0.2
+    checkout development
+    merge mr-v0.0.2
+```
 
 in order to release new versions for the `MatrixClient` we follow below steps:
 
@@ -139,7 +171,13 @@ in order to release new versions for the `MatrixClient` we follow below steps:
         - `android:versionName` is the string value shows to the users. we need to set it to match with the tag we want to set
     - it's also recommended to update the `CHANGELOG.md` mentioning the changes applied on current version
 4. committing the version related changes, now we can set the regarding tag on `development` branch.
-5. in order to release new versions for mobile, we need to submit a merge request from `development` branch to the `master` branch. we need to test the provided reference against mobile, and if it was acceptable, we approve the merge request and release new version for mobile.
+5. in order to release new mobile APK:
+   - create a branch from the `tag` we want to release APK based on, called `mr-vx.x.x`
+   - submit a merge request from this branch to the `master` 
+   - test the changes on mobile, apply fixes on mentioned branch
+   - merge changes to `master` after we created the APK successfully
+   - submit a merge-request to the `development` branch, to test new changes on desktop and make them available on future releases
+
 - **Note 1:** If we have a recent change in the vendor dependencies like updating the library version, we need to both mention in the submitted merge request and apply the related change in the `vendor/build-android.sh` file.
 
 
@@ -152,6 +190,8 @@ in order to publish new signed bundle for android:
     - select proper keystore file to sign the APK with
     - provide the password for the keystore
     - select the `Build Android App bundle (*.aab)` option
+- **Note:** release the bundle file, we need to increment the application version code, otherwise Google rejects the submitted bundle with the following message:
+  > Version code XX has already been used. Try another version code.
 
 following the above steps, we have the signed APK and bundle files. however since we updated the `ANDROID_TARGET_SDK_VERSION` to 30, we need to sign them manually with newer version of the signature schema than what supports by Qt Creator ( [reference](https://bugreports.qt.io/browse/QTBUG-91255?focusedCommentId=579924&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-579924) ). 
 

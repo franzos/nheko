@@ -52,6 +52,19 @@ Page {
         }
     }
 
+    function stackDepth() {
+        return stack.depth
+    }
+
+    function backPressed() {
+        if (stack.depth > 1) {
+            var prevPage = stack.pop()
+            if (prevPage) {
+                prevPage.destroy()
+            }
+        }
+    }
+
     Snackbar {
         id: snackbar 
     }
