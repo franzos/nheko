@@ -21,6 +21,6 @@ linux:!android {
     INSTALLS += target app_icon desktop_file
 
     LIBS += -lspdlog -lcurl -lcoeurl \
-            -lmatrix_client
+            -lmatrix_client -lblurhash
 }
 
