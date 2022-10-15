@@ -29,7 +29,7 @@ Item {
     property int metadataWidth
     property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
 
-    MxcMedia {
+    MxcMedia { 
         id: mxcmedia
 
         // TODO: Show error in overlay or so?
