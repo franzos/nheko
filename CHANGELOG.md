@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.31]
+### Updated
+
+* RoomSettings: change encryption dialog component (android issue to enable the encryption).
+
+
 ## [0.1.30]
 ### Updated
 
