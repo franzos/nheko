@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import Qt.labs.platform 1.1 as Platform
+import QtQuick.Dialogs 1.3
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -324,7 +324,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignRight
                 }
 
-                Platform.MessageDialog {
+                MessageDialog {
                     id: confirmEncryptionDialog
 
                     title: qsTr("End-to-End Encryption")
@@ -342,7 +342,7 @@ ApplicationWindow {
                         console.log("TEST: " + "Encyption enabled rejected")
                         encryptionToggle.checked = false;
                     }
-                    buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
+                    standardButtons: MessageDialog.Ok | MessageDialog.Cancel
                 }
 
                 // Label {
