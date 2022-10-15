@@ -314,6 +314,7 @@ ApplicationWindow {
 
                     checked: roomSettings.isEncryptionEnabled
                     onCheckedChanged: {
+                        console.log("TEST: " + "Current encryption status: " + roomSettings.isEncryptionEnabled)
                         if (roomSettings.isEncryptionEnabled) {
                             checked = true;
                             return ;
@@ -331,12 +332,14 @@ ApplicationWindow {
                                 Please take note that it can't be disabled afterwards.")
                     modality: Qt.NonModal
                     onAccepted: {
+                        console.log("TEST: " + "Encyption enabled accpeted")
                         if (roomSettings.isEncryptionEnabled)
                             return ;
-
+                        console.log("TEST: " + "Calling the enableEncryption")
                         roomSettings.enableEncryption();
                     }
                     onRejected: {
+                        console.log("TEST: " + "Encyption enabled rejected")
                         encryptionToggle.checked = false;
                     }
                     buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
