@@ -167,12 +167,10 @@ RoomSettings::accessJoinRules()
 void
 RoomSettings::enableEncryption()
 {
-    qDebug() << "TEST(cpp): " << "enableEncryption method";
     if (usesEncryption_)
         return;
 
     const auto room_id = roomid_.toStdString();
-    qDebug() << "TEST(cpp): " << "enable_encryption for room_id" << roomid_;
     http::client()->enable_encryption(
       room_id, [room_id, this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
           if (err) {
@@ -191,8 +189,6 @@ RoomSettings::enableEncryption()
           nhlog::net()->info("enabled encryption on room ({})", room_id);
       });
     usesEncryption_ = true;
-    qDebug() << "TEST(cpp): " << "emit encryptionChanged with useEncryption=" << usesEncryption_;
-
     emit encryptionChanged();
 }
 
