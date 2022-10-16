@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.31]
+### Fixed
+
+* Fixing issue in enable room encryption.
+* Fixing issue in big button size in Add user dialg.
+
+
 ## [0.1.30]
 ### Updated
 
