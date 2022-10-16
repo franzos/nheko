@@ -1,6 +1,5 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.5
-import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.12
 import Settings 1.0
@@ -12,11 +11,10 @@ import AudioDeviceControl 1.0
 Dialog {
     id: callSettings
     title: "Audio/Video Settings"
-    standardButtons: StandardButton.Ok | StandardButton.Cancel
-    onVisibilityChanged: {
-        if (!this.visible){
-            disconnectSignals()
-        }
+    width: (Qt.platform.os == "android" ? parent.width : 420)
+    standardButtons: Dialog.Ok | Dialog.Cancel
+    onAboutToHide: {
+        disconnectSignals()
     }
 
     Column {
@@ -110,15 +108,13 @@ Dialog {
         }
     }
 
-    onButtonClicked: {
-        if (clickedButton==StandardButton.Ok) {
-            Settings.microphone = audioCombo.currentText
-            Settings.camera = videoCombo.currentText
-            console.log("   - [default mic]: " + audioCombo.currentText)
-            console.log("   - [default cam]: " + videoCombo.currentText)
-        }
+    onAccepted: {
+        Settings.microphone = audioCombo.currentText
+        Settings.camera = videoCombo.currentText
+        console.log("   - [default mic]: " + audioCombo.currentText)
+        console.log("   - [default cam]: " + videoCombo.currentText)
     }
-
+    
     function sortDevices(devices){
         let sortedList = []
         for(var i=0; i<devices.length; i++){
