@@ -188,7 +188,6 @@ RoomSettings::enableEncryption()
 
           nhlog::net()->info("enabled encryption on room ({})", room_id);
       });
-
     usesEncryption_ = true;
     emit encryptionChanged();
 }
