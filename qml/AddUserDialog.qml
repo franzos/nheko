@@ -11,7 +11,7 @@ import "regex"
 import "ui"
 
 Dialog {
-    standardButtons: StandardButton.Ok | StandardButton.Cancel
+    standardButtons: Dialog.Ok | Dialog.Cancel
 
     Column {
         width: parent.width
