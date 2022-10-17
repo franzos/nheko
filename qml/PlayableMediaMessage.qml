@@ -23,7 +23,7 @@ Item {
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timeline.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent.width, implicitWidth)
-    height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
+    height: (((Qt.platform.os != "android") && (type == MtxEvent.VideoMessage)) ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
 
     property int metadataWidth
@@ -48,9 +48,9 @@ Item {
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
-        TapHandler {
-            onTapped: room.openMedia(eventId) //Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
-        }
+        // TapHandler {
+        //     onTapped: room.openMedia(eventId) //Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
+        // }
 
         Image {
             anchors.fill: parent
@@ -86,7 +86,12 @@ Item {
         mediaLoaded: mxcmedia.loaded
         mediaState: mxcmedia.state
         onPositionChanged: mxcmedia.position = position
-        onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+        onPlayPauseActivated: {
+            if(Qt.platform.os == "android")
+                room.openMedia(eventId)
+            else 
+                mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+        }
         onLoadActivated: mxcmedia.eventId = eventId
     }
 

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.31]
+### Fixed
+
+* Open Audio/Video messages in native media player in Android.
+
+
 ## [0.1.30]
 ### Updated
 
