@@ -75,10 +75,9 @@ MxcMediaProxy::orientation() const
 void
 MxcMediaProxy::startDownload()
 {
-    qDebug() << "TEST:" << "startDownload";
     if (!room_)
         return;
-    qDebug() << "TEST:" << "eventId:" << eventId_;
+
     if (eventId_.isEmpty())
         return;
 
@@ -90,9 +89,7 @@ MxcMediaProxy::startDownload()
     }
 
     QString mxcUrl   = QString::fromStdString(mtx::accessors::url(*event));
-    qDebug() << "TEST:" << "mxcUrl:" << mxcUrl;
     QString mimeType = QString::fromStdString(mtx::accessors::mimetype(*event));
-    qDebug() << "TEST:" << "mimeType:" << mimeType;
 
     auto encryptionInfo = mtx::accessors::file(*event);
 
@@ -105,7 +102,7 @@ MxcMediaProxy::startDownload()
 
     const auto url  = mxcUrl.toStdString();
     const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
-    qDebug() << "TEST:" << "name:" << name;
+
     QFileInfo filename(
       QStringLiteral("%1/media_cache/media/%2.%3")
         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
@@ -115,12 +112,9 @@ MxcMediaProxy::startDownload()
     }
 
     QDir().mkpath(filename.path());
-    qDebug() << "TEST:" << "file path:" << filename.path();
-
     QPointer<MxcMediaProxy> self = this;
 
     auto processBuffer = [this, encryptionInfo, filename, self, suffix](QIODevice &device) {
-        qDebug() << "TEST:" << "processBuffer";
         if (!self)
             return;
 
@@ -166,11 +160,9 @@ MxcMediaProxy::startDownload()
             emit loadedChanged();
         });
     };
-    qDebug() << "TEST:" << "filename is readable:" << filename.isReadable();
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
-            qDebug() << "TEST:" << "file opened readonly";
             processBuffer(f);
             return;
         }
@@ -181,7 +173,6 @@ MxcMediaProxy::startDownload()
                                                             const std::string &,
                                                             const std::string &,
                                                             mtx::http::RequestErr err) {
-                                 qDebug() << "TEST:" << "http::client()->download";
                                  if (err) {
                                      nhlog::net()->warn("failed to retrieve media {}: {} {}",
                                                         url,
@@ -194,7 +185,6 @@ MxcMediaProxy::startDownload()
                                      QFile file(filename.filePath());
                                      if (!file.open(QIODevice::WriteOnly))
                                          return;
-                                     qDebug() << "TEST:" << "file opened WriteOnly";
                                      QByteArray ba(data.data(), (int)data.size());
                                      file.write(ba);
                                      file.close();
