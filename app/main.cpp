@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     android_logger->info("log from android.");
     android_logger->info("- DATA LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString());
     android_logger->info("- CACHE LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString());
+    android_logger->info("- Media CACHE LOCATION: {}", (QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/matrix-client/").toStdString());
 #endif
 
     return app.exec();
