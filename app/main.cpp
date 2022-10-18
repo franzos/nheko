@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     auto android_logger = spdlog::android_logger_mt("android");
     android_logger->info("log from android.");
     android_logger->info("- DATA LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString());
-    android_logger->info("- CACHE LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString());
+    android_logger->info("- CACHE LOCATION: {}", GlobalObject::instance()->toStdString());
 #endif
 
     return app.exec();

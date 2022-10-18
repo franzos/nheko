@@ -254,4 +254,8 @@ Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
     material.background = ANDROID_MATERIAL_BACKGROUND;
     return material;
 };
+
+Q_INVOKABLE QString GlobalObject::mediaCachePath(){
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/media_cache";
+}
     

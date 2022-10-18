@@ -12,9 +12,8 @@
 #include <QMediaObject>
 #include <QMediaPlayer>
 #include <QMimeDatabase>
-#include <QStandardPaths>
 #include <QUrl>
-
+#include "../GlobalObject.h"
 #if defined(Q_OS_MACOS)
 // TODO (red_sky): Remove for Qt6.  See other ifdef below
 #include <QTemporaryFile>
@@ -79,8 +78,8 @@ MxcMediaProxy::startDownload()
     const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
 
     QFileInfo filename(
-      QStringLiteral("%1/media_cache/media/%2.%3")
-        .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
+      QStringLiteral("%1/media/%2.%3")
+        .arg(GlobalObject::instance()->mediaCachePath(), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
         return;
