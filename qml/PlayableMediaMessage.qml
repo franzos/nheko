@@ -23,7 +23,7 @@ Item {
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timeline.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent.width, implicitWidth)
-    height: (((Qt.platform.os != "android") && (type == MtxEvent.VideoMessage)) ? width*proportionalHeight : 80) + fileInfoLabel.height
+    height: ((type == MtxEvent.VideoMessage) ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
 
     property int metadataWidth
@@ -31,13 +31,18 @@ Item {
 
     MxcMedia { 
         id: mxcmedia
+        roomm: room
+        onMediaFilehanged: {
+            mediaPlayer.source = mediaFile
+        }
+    }
+
+    MediaPlayer { 
+        id: mediaPlayer
 
         // TODO: Show error in overlay or so?
         onError: console.log(error)
-        roomm: room
-        // desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
-        // this value automatically gets clamped for us between these two values.
-        volume: mediaControls.desiredVolume * 100
+        volume: mediaControls.desiredVolume
         muted: mediaControls.muted
     }
 
@@ -65,9 +70,9 @@ Item {
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
-                source: mxcmedia
+                source: mediaPlayer
                 flushMode: VideoOutput.FirstFrame
-                orientation: mxcmedia.orientation
+                // orientation: mediaPlayer.orientation
             }
 
         }
@@ -81,17 +86,12 @@ Item {
         anchors.right: content.right
         anchors.bottom: fileInfoLabel.top
         playingVideo: type == MtxEvent.VideoMessage
-        positionValue: mxcmedia.position
-        duration: mediaLoaded ? mxcmedia.duration : content.duration
-        mediaLoaded: mxcmedia.loaded
-        mediaState: mxcmedia.state
-        onPositionChanged: mxcmedia.position = position
-        onPlayPauseActivated: {
-            if(Qt.platform.os == "android")
-                room.openMedia(eventId)
-            else 
-                mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-        }
+        positionValue: mediaPlayer.position
+        duration: mediaLoaded ? mediaPlayer.duration : content.duration
+        mediaLoaded: mediaPlayer.source!=""
+        mediaState: mediaPlayer.playbackState
+        onPositionChanged: mediaPlayer.position = position
+        onPlayPauseActivated: mediaPlayer.playbackState == MediaPlayer.PlayingState ? mediaPlayer.pause() : mediaPlayer.play()
         onLoadActivated: mxcmedia.eventId = eventId
     }
 

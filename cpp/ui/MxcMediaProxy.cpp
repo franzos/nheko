@@ -25,51 +25,26 @@
 // #include "timeline/TimelineModel.h"
 
 MxcMediaProxy::MxcMediaProxy(QObject *parent)
-  : QMediaPlayer(parent)
+  : QObject(parent)
 {
     connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
     connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
-    connect(this,
-            qOverload<QMediaPlayer::Error>(&MxcMediaProxy::error),
-            [this](QMediaPlayer::Error error) {
-                nhlog::ui()->info("Media player error {} and errorStr {}",
-                                  error,
-                                  this->errorString().toStdString());
-            });
-    connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
-        nhlog::ui()->info("Media player status {} and error {}", status, this->error());
-    });
-    connect(this,
-            qOverload<const QString &, const QVariant &>(&MxcMediaProxy::metaDataChanged),
-            [this](QString t, QVariant) {
-                if (t == QMediaMetaData::Orientation)
-                    emit orientationChanged();
-            });
-}
-void
-MxcMediaProxy::setVideoSurface(QAbstractVideoSurface *surface)
-{
-    if (surface != m_surface) {
-        qDebug() << "Changing surface";
-        m_surface = surface;
-        setVideoOutput(m_surface);
-        emit videoSurfaceChanged();
-    }
-}
-
-QAbstractVideoSurface *
-MxcMediaProxy::getVideoSurface()
-{
-    return m_surface;
-}
-
-int
-MxcMediaProxy::orientation() const
-{
-    nhlog::ui()->debug("metadata: {}", availableMetaData().join(QStringLiteral(",")).toStdString());
-    auto orientation = metaData(QMediaMetaData::Orientation).toInt();
-    nhlog::ui()->debug("Video orientation: {}", orientation);
-    return orientation;
+    // connect(this,
+    //         qOverload<QMediaPlayer::Error>(&MxcMediaProxy::error),
+    //         [this](QMediaPlayer::Error error) {
+    //             nhlog::ui()->info("Media player error {} and errorStr {}",
+    //                               error,
+    //                               this->errorString().toStdString());
+    //         });
+    // connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
+    //     nhlog::ui()->info("Media player status {} and error {}", status, this->error());
+    // });
+    // connect(this,
+    //         qOverload<const QString &, const QVariant &>(&MxcMediaProxy::metaDataChanged),
+    //         [this](QString t, QVariant) {
+    //             if (t == QMediaMetaData::Orientation)
+    //                 emit orientationChanged();
+    //         });
 }
 
 void
@@ -129,35 +104,10 @@ MxcMediaProxy::startDownload()
         buffer.open(QIODevice::ReadOnly);
         buffer.reset();
 
-        QTimer::singleShot(0, this, [this, filename, suffix, encryptionInfo] {
-#if defined(Q_OS_MACOS)
-            if (encryptionInfo) {
-                // macOS has issues reading from a buffer in setMedia for whatever reason.
-                // Instead, write the buffer to a temporary file and read from that.
-                // This should be fixed in Qt6, so update this when we do that!
-                // TODO: REMOVE IN QT6
-                QTemporaryFile tempFile;
-                tempFile.setFileTemplate(tempFile.fileTemplate() + QLatin1Char('.') + suffix);
-                tempFile.open();
-                tempFile.write(buffer.data());
-                tempFile.close();
-                nhlog::ui()->debug("Playing media from temp buffer file: {}.  Remove in QT6!",
-                                   filename.filePath().toStdString());
-                this->setMedia(QUrl::fromLocalFile(tempFile.fileName()));
-            } else {
-                nhlog::ui()->info(
-                  "Playing buffer with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
-                this->setMedia(QUrl::fromLocalFile(filename.filePath()));
-            }
-#else
-            Q_UNUSED(suffix)
-            Q_UNUSED(encryptionInfo)
-
+        QTimer::singleShot(0, this, [this, filename] {
             nhlog::ui()->info(
               "Playing buffer with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
-            this->setMedia(QMediaContent(filename.fileName()), &buffer);
-#endif
-            emit loadedChanged();
+            setMediaFile(QUrl::fromLocalFile(filename.absoluteFilePath()));
         });
     };
     if (filename.isReadable()) {
