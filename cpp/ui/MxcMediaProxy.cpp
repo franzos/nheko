@@ -7,7 +7,6 @@
 
 #include <QDir>
 #include <QFile>
-#include <QFileInfo>
 #include <QMediaMetaData>
 #include <QMediaObject>
 #include <QMediaPlayer>
@@ -21,29 +20,12 @@
 
 #include <matrix-client-library/EventAccessors.h>
 #include <matrix-client-library/MatrixClient.h>
-// #include "timeline/TimelineModel.h"
 
 MxcMediaProxy::MxcMediaProxy(QObject *parent)
   : QObject(parent)
 {
     connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
     connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
-    // connect(this,
-    //         qOverload<QMediaPlayer::Error>(&MxcMediaProxy::error),
-    //         [this](QMediaPlayer::Error error) {
-    //             nhlog::ui()->info("Media player error {} and errorStr {}",
-    //                               error,
-    //                               this->errorString().toStdString());
-    //         });
-    // connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
-    //     nhlog::ui()->info("Media player status {} and error {}", status, this->error());
-    // });
-    // connect(this,
-    //         qOverload<const QString &, const QVariant &>(&MxcMediaProxy::metaDataChanged),
-    //         [this](QString t, QVariant) {
-    //             if (t == QMediaMetaData::Orientation)
-    //                 emit orientationChanged();
-    //         });
 }
 
 void
@@ -87,38 +69,17 @@ MxcMediaProxy::startDownload()
 
     QDir().mkpath(filename.path());
     QPointer<MxcMediaProxy> self = this;
-
-    auto processBuffer = [this, encryptionInfo, filename, self, suffix](QIODevice &device) {
-        if (!self)
-            return;
-
-        if (encryptionInfo) {
-            QByteArray ba = device.readAll();
-            std::string temp(ba.constData(), ba.size());
-            temp = mtx::crypto::to_string(mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
-            buffer.setData(temp.data(), temp.size());
-        } else {
-            buffer.setData(device.readAll());
-        }
-        buffer.open(QIODevice::ReadOnly);
-        buffer.reset();
-
-        QTimer::singleShot(0, this, [this, filename] {
-            nhlog::ui()->info(
-              "Playing buffer with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
-            setMediaFile(QUrl::fromLocalFile(filename.absoluteFilePath()));
-        });
-    };
+    
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
-            processBuffer(f);
+            setMediaFile(filename);
             return;
         }
     }
 
     http::client()->download(url,
-                             [filename, url, processBuffer](const std::string &data,
+                             [this, filename, url, encryptionInfo](const std::string &data,
                                                             const std::string &,
                                                             const std::string &,
                                                             mtx::http::RequestErr err) {
@@ -131,16 +92,23 @@ MxcMediaProxy::startDownload()
                                  }
 
                                  try {
+                                     QByteArray ba(data.data(), (int)data.size());
+                                     QBuffer buffer;
+                                     if (encryptionInfo) {
+                                         std::string temp(ba.constData(), ba.size());
+                                         temp = mtx::crypto::to_string(mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
+                                         buffer.setData(temp.data(), temp.size());
+                                     } else {
+                                         buffer.setData(ba);
+                                     }
+                                     
                                      QFile file(filename.filePath());
                                      if (!file.open(QIODevice::WriteOnly))
                                          return;
-                                     QByteArray ba(data.data(), (int)data.size());
-                                     file.write(ba);
+                                     
+                                     file.write(buffer.data());
                                      file.close();
-
-                                     QBuffer buf(&ba);
-                                     buf.open(QBuffer::ReadOnly);
-                                     processBuffer(buf);
+                                     setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
                                  }

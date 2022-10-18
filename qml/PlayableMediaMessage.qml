@@ -35,7 +35,7 @@ Item {
         onMediaFilehanged: {
             mediaPlayer.source = mediaFile
         }
-    }
+    } 
 
     MediaPlayer { 
         id: mediaPlayer
