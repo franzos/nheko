@@ -15,11 +15,11 @@
 #include <QFileInfo>
 #include <QPainter>
 #include <QPainterPath>
-#include <QStandardPaths>
 
 #include <matrix-client-library/Logging.h>
 #include <matrix-client-library/MatrixClient.h>
 #include <matrix-client-library/Utils.h>
+#include "GlobalObject.h"
 
 QHash<QString, mtx::crypto::EncryptedFile> infos;
 
@@ -133,8 +133,7 @@ MxcImageProvider::download(const QString &id,
                              .arg(requestedSize.height())
                              .arg(crop ? "crop" : "scale")
                              .arg(cropLocally ? 0 : radius);
-        QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
-                             "/media_cache",
+        QFileInfo fileInfo(GlobalObject::instance()->mediaCachePath(),
                            fileName);
         QDir().mkpath(fileInfo.absolutePath());
 
@@ -220,8 +219,7 @@ MxcImageProvider::download(const QString &id,
                                    QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)))
                                  .arg(radius);
 
-            QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
-                                 "/media_cache",
+            QFileInfo fileInfo(GlobalObject::instance()->mediaCachePath(),
                                fileName);
             QDir().mkpath(fileInfo.absolutePath());
 

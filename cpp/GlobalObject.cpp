@@ -10,6 +10,15 @@
 #include <matrix-client-library/Client.h>
 #include "Configuration.h"
 
+GlobalObject *GlobalObject::_instance  = nullptr;
+
+GlobalObject *GlobalObject::instance(){
+    if(_instance == nullptr){
+        _instance = new GlobalObject();
+    }
+    return _instance;
+}
+
 GlobalObject::GlobalObject(){
     Q_INIT_RESOURCE(mtx_gui_library_resources);
 }
@@ -245,4 +254,8 @@ Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
     material.background = ANDROID_MATERIAL_BACKGROUND;
     return material;
 };
+
+Q_INVOKABLE QString GlobalObject::mediaCachePath(){
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/media_cache";
+}
     

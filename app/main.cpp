@@ -4,6 +4,7 @@
 #include <QQuickWidget>
 #include <QMainWindow>
 #include <spdlog/spdlog.h>
+#include "../cpp/GlobalObject.h"
 #include "../cpp/MatrixQmlApplicationEngine.h"
 #include "../cpp/MatrixQuickView.h"
 
@@ -38,11 +39,10 @@ int main(int argc, char *argv[])
     spdlog::info("info log from spdlog");
     #endif
 #ifdef __ANDROID__
-    std::string tag = "android-logs";
-    auto android_logger = spdlog::android_logger_mt("android", tag);
+    auto android_logger = spdlog::android_logger_mt("android");
     android_logger->info("log from android.");
     android_logger->info("- DATA LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString());
-    android_logger->info("- CACHE LOCATION: {}", QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString());
+    android_logger->info("- CACHE LOCATION: {}", GlobalObject::instance()->mediaCachePath().toStdString());
 #endif
 
     return app.exec();

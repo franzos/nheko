@@ -41,8 +41,12 @@ class GlobalObject : public QObject
     Q_PROPERTY(int paddingMedium READ paddingMedium CONSTANT)
     Q_PROPERTY(int paddingLarge READ paddingLarge CONSTANT)
 
-public:
+private:
     GlobalObject();
+    static GlobalObject *_instance;
+
+public:
+    static GlobalObject *instance();
 
     QPalette colors() const;
     QPalette inactiveColors() const;
@@ -61,6 +65,7 @@ public:
     Q_INVOKABLE QString getApplicationVersion(){return QString::fromStdString(VERSION_APPLICATION);}
     Q_INVOKABLE QString checkMatrixServerUrl(QString url);
     Q_INVOKABLE AndroidMaterialTheme materialColors();
+    Q_INVOKABLE QString mediaCachePath();
     
 public slots:
     bool handleMatrixUri(const QByteArray &uri);

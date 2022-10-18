@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Fixing issue in enable room encryption.
 * Fixing issue in big button size in Add user dialg.
+* Fixing issue in openning the audio/video messages in Android.
 
 
 ## [0.1.30]
