@@ -852,8 +852,8 @@ TimelineModel::cacheMedia(const QString &eventId,
     const auto url  = mxcUrl.toStdString();
     const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
     QFileInfo filename(
-      QStringLiteral("%1/matrix-client/media_cache/%2.%3")
-        .arg(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation), name, suffix));
+      QStringLiteral("%1/media_cache/%2.%3")
+        .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
         return;

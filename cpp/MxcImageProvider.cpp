@@ -133,8 +133,8 @@ MxcImageProvider::download(const QString &id,
                              .arg(requestedSize.height())
                              .arg(crop ? "crop" : "scale")
                              .arg(cropLocally ? 0 : radius);
-        QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) +
-                             "/matrix-client/media_cache",
+        QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                             "/media_cache",
                            fileName);
         QDir().mkpath(fileInfo.absolutePath());
 
@@ -220,8 +220,8 @@ MxcImageProvider::download(const QString &id,
                                    QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)))
                                  .arg(radius);
 
-            QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) +
-                                 "/matrix-client/media_cache",
+            QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                                 "/media_cache",
                                fileName);
             QDir().mkpath(fileInfo.absolutePath());
 
