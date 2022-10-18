@@ -795,8 +795,7 @@ InputBar::command(const QString &command, QString args)
             return;
         }
         // 3 - Matrix URI handler, as if you clicked the URI
-        GlobalObject globalObject;
-        if (globalObject.handleMatrixUri(args)) {
+        if (GlobalObject::instance()->handleMatrixUri(args)) {
             return;
         }
         nhlog::net()->error("Could not resolve goto: {}", args.toStdString());

@@ -42,7 +42,7 @@ namespace PX::GUI::MATRIX{
     }
 
     void QmlInterface::checkCacheDirectory(){
-        GlobalObject gobject;
+        GlobalObject *gobject = GlobalObject::instance();
         QSettings *qSettings;
         auto cacheDirs = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
         if(cacheDirs.size()){
@@ -53,11 +53,11 @@ namespace PX::GUI::MATRIX{
                 qInfo() << " > QML Cache info detected:" << cacheInfoFile;
                 if(qSettings->contains("version")) {
                     auto version = qSettings->value("version").toString();
-                    if(version == gobject.getApplicationVersion()){
+                    if(version == gobject->getApplicationVersion()){
                         qInfo() << " > QML Cache version matched:" << version;
                         return;
                     } else {
-                        qInfo() << " > QML Cache should be updated from" << version << "to" << gobject.getApplicationVersion();
+                        qInfo() << " > QML Cache should be updated from" << version << "to" << gobject->getApplicationVersion();
                     }
                 } else {
                     qInfo() << " > QML Cache version not found!";
@@ -70,9 +70,9 @@ namespace PX::GUI::MATRIX{
                 if(QDir(cacheDir).removeRecursively())
                     qInfo() << " > QML Cache dir deleted:" << cacheDir; 
             }
-            qSettings->setValue("version",gobject.getApplicationVersion());
+            qSettings->setValue("version",gobject->getApplicationVersion());
             qSettings->sync();
-            qInfo() << " > QML Cache info created: Version" << gobject.getApplicationVersion();
+            qInfo() << " > QML Cache info created: Version" << gobject->getApplicationVersion();
         }
     }
 
@@ -173,7 +173,7 @@ QmlInterface::QmlInterface(QObject *parent):
         });
 
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return new GlobalObject();
+            return GlobalObject::instance();
         });
         qmlRegisterSingletonType<UserSettingsModel>("UserSettingsModel", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new UserSettingsModel();
