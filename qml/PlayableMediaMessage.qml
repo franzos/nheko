@@ -32,8 +32,10 @@ Item {
     MxcMedia { 
         id: mxcmedia
         roomm: room
+        eventId: content.eventId
         onMediaFilehanged: {
             mediaPlayer.source = mediaFile
+            busyIndicator.visible = false
         }
     } 
 
@@ -74,7 +76,13 @@ Item {
                 flushMode: VideoOutput.FirstFrame
                 // orientation: mediaPlayer.orientation
             }
-
+            BusyIndicator {
+                id: busyIndicator
+                anchors.centerIn: parent    
+                visible: false
+                width: 64; height: width
+                palette.dark: GlobalObject.colors.windowText
+            }
         }
 
     }
@@ -92,7 +100,11 @@ Item {
         mediaState: mediaPlayer.playbackState
         onPositionChanged: mediaPlayer.position = position
         onPlayPauseActivated: mediaPlayer.playbackState == MediaPlayer.PlayingState ? mediaPlayer.pause() : mediaPlayer.play()
-        onLoadActivated: mxcmedia.eventId = eventId
+        onLoadActivated: {
+            mxcmedia.startDownload()
+            busyIndicator.visible = true
+        }
+        onSaveAsActivated: mxcmedia.saveAs()
     }
 
     // information about file name and file size

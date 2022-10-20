@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## []
+### Changed
+
+* Update media control buttons. (Download/Save, Play/Pause, Volume)
+
+
 ## [0.1.31]
 ### Fixed
 

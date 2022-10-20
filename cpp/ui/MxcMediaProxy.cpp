@@ -12,6 +12,7 @@
 #include <QMediaPlayer>
 #include <QMimeDatabase>
 #include <QUrl>
+#include <QFileDialog>
 #include "../GlobalObject.h"
 #if defined(Q_OS_MACOS)
 // TODO (red_sky): Remove for Qt6.  See other ifdef below
@@ -24,9 +25,59 @@
 MxcMediaProxy::MxcMediaProxy(QObject *parent)
   : QObject(parent)
 {
-    connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
-    connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
+    connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::checkMediaFileExist);
+    connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::checkMediaFileExist);
 }
+
+// TODO: Dupplication code in checkMediaFileExist and startDownload
+void MxcMediaProxy::checkMediaFileExist(){
+    if (!room_)
+        return;
+
+    if (eventId_.isEmpty())
+        return;
+
+    auto event = room_->eventById(eventId_);
+    if (!event) {
+        nhlog::ui()->error("Failed to load media for event {}, event not found.",
+                           eventId_.toStdString());
+        return;
+    }
+
+    QString mxcUrl   = QString::fromStdString(mtx::accessors::url(*event));
+    QString mimeType = QString::fromStdString(mtx::accessors::mimetype(*event));
+
+    auto encryptionInfo = mtx::accessors::file(*event);
+
+    // If the message is a link to a non mxcUrl, don't download it
+    if (!mxcUrl.startsWith(QLatin1String("mxc://"))) {
+        return;
+    }
+
+    QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
+
+    const auto url  = mxcUrl.toStdString();
+    const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
+
+    QFileInfo filename(
+      QStringLiteral("%1/media/%2.%3")
+        .arg(GlobalObject::instance()->mediaCachePath(), name, suffix));
+    if (QDir::cleanPath(name) != name) {
+        nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
+        return;
+    }
+
+    QDir().mkpath(filename.path());
+    QPointer<MxcMediaProxy> self = this;
+    
+    if (filename.isReadable()) {
+        QFile f(filename.filePath());
+        if (f.open(QIODevice::ReadOnly)) {
+            setMediaFile(filename);
+            return;
+        }
+    }
+}    
 
 void
 MxcMediaProxy::startDownload()
@@ -113,4 +164,18 @@ MxcMediaProxy::startDownload()
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
                                  }
                              });
+}
+
+void MxcMediaProxy::saveAs(){
+    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + mediaFile_.fileName();
+    const auto fileName =
+      QFileDialog::getSaveFileName(nullptr, tr("Save as ..."), defaultFilePath, tr("."));
+
+    if (fileName.isEmpty())
+        return;
+    if(QFile::copy(mediaFile_.toLocalFile(), fileName)){
+        nhlog::ui()->info("File saved in " + fileName.toStdString());
+    } else {
+        nhlog::ui()->warn("Failure in file saving in " + fileName.toStdString());
+    }
 }
