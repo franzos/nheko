@@ -5,9 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ## []
-### Changed
+### Fixed and Changed
 
 * Update media control buttons. (Download/Save, Play/Pause, Volume)
+* Fixing issue in sending the thumbnail of video messages.
 
 
 ## [0.1.31]
