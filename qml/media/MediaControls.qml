@@ -26,7 +26,6 @@ Rectangle {
 
     signal playPauseActivated()
     signal loadActivated()
-    signal saveAsActivated()
 
     function showControls() {
         controlHideTimer.restart();
@@ -100,22 +99,8 @@ Rectangle {
                 buttonTextColor: GlobalObject.colors.text
                 Layout.preferredHeight: 20
                 Layout.preferredWidth: 20
-                image: {
-                    if (control.mediaLoaded) {
-                        enabled = true
-                        return ":/images/save.svg";
-                    } else {
-                        return ":/images/download.svg";
-                    }
-                }
-                onClicked: {
-                    if(control.mediaLoaded){
-                        control.saveAsActivated()
-                    } else {
-                        enabled = false
-                        control.loadActivated()
-                    }
-                }
+                image: ":/images/download.svg"
+                onClicked: control.loadActivated()
             }
             // Play/pause button
             ImageButton {

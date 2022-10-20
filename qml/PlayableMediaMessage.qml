@@ -101,10 +101,9 @@ Item {
         onPositionChanged: mediaPlayer.position = position
         onPlayPauseActivated: mediaPlayer.playbackState == MediaPlayer.PlayingState ? mediaPlayer.pause() : mediaPlayer.play()
         onLoadActivated: {
-            mxcmedia.startDownload()
             busyIndicator.visible = true
+            mxcmedia.startDownload()
         }
-        onSaveAsActivated: mxcmedia.saveAs()
     }
 
     // information about file name and file size

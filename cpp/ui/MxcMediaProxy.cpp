@@ -121,16 +121,21 @@ MxcMediaProxy::startDownload()
     QDir().mkpath(filename.path());
     QPointer<MxcMediaProxy> self = this;
     
+    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + mediaFile_.fileName();
+    const auto saveAsFilename =
+      QFileDialog::getSaveFileName(nullptr, tr("Save as ..."), defaultFilePath, suffix);
+
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
+            saveAs(saveAsFilename);
             setMediaFile(filename);
             return;
         }
     }
 
     http::client()->download(url,
-                             [this, filename, url, encryptionInfo](const std::string &data,
+                             [this, saveAsFilename, filename, url, encryptionInfo](const std::string &data,
                                                             const std::string &,
                                                             const std::string &,
                                                             mtx::http::RequestErr err) {
@@ -159,6 +164,7 @@ MxcMediaProxy::startDownload()
                                      
                                      file.write(buffer.data());
                                      file.close();
+                                     saveAs(saveAsFilename);
                                      setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
@@ -166,16 +172,19 @@ MxcMediaProxy::startDownload()
                              });
 }
 
-void MxcMediaProxy::saveAs(){
-    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + mediaFile_.fileName();
-    const auto fileName =
-      QFileDialog::getSaveFileName(nullptr, tr("Save as ..."), defaultFilePath, tr("."));
+void MxcMediaProxy::setMediaFile(const QFileInfo &fileinfo){
+    mediaFile_ = QUrl::fromLocalFile(fileinfo.absoluteFilePath());
+    nhlog::ui()->info("Media file loaded (" + fileinfo.absoluteFilePath().toStdString() + 
+                        ", size: " + std::to_string(fileinfo.size()) + " bytes)");
+    emit mediaFilehanged();
+}
 
-    if (fileName.isEmpty())
+void MxcMediaProxy::saveAs(const QString &filename){
+    if (filename.isEmpty())
         return;
-    if(QFile::copy(mediaFile_.toLocalFile(), fileName)){
-        nhlog::ui()->info("File saved in " + fileName.toStdString());
+    if(QFile::copy(mediaFile_.toLocalFile(), filename)){
+        nhlog::ui()->info("File saved in " + filename.toStdString());
     } else {
-        nhlog::ui()->warn("Failure in file saving in " + fileName.toStdString());
+        nhlog::ui()->warn("Failure in file saving in " + filename.toStdString());
     }
 }
