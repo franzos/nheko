@@ -122,6 +122,11 @@ MxcMediaProxy::startDownload()
     QPointer<MxcMediaProxy> self = this;
     
     const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + mediaFile_.fileName();
+    #ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
+    if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted)
+        nhlog::ui()->warn("Don't have permission to write here \"" + defaultFilePath.toStdString() + "\"");
+    #endif
     const auto saveAsFilename =
       QFileDialog::getSaveFileName(nullptr, tr("Save as ..."), defaultFilePath, suffix);
 
