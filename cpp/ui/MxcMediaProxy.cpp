@@ -17,6 +17,8 @@
 #if defined(Q_OS_MACOS)
 // TODO (red_sky): Remove for Qt6.  See other ifdef below
 #include <QTemporaryFile>
+#elif defined(Q_OS_ANDROID)
+#include <QtAndroid>
 #endif
 
 #include <matrix-client-library/EventAccessors.h>
