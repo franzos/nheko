@@ -786,8 +786,7 @@ TimelineModel::saveMedia(const QString &eventId) const
       QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     const QString openLocation = downloadsFolder + "/" + originalFilename;
 
-    const QString filename =
-      QFileDialog::getSaveFileName(nullptr, dialogTitle, openLocation, filterString);
+    const auto filename = GlobalObject::getSaveFileName(dialogTitle, openLocation, originalFilename, filterString);
 
     if (filename.isEmpty())
         return false;

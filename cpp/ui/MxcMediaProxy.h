@@ -37,12 +37,7 @@ public:
         emit roomChanged();
     }
     QUrl mediaFile() const {return mediaFile_;}
-    void setMediaFile(const QFileInfo &fileinfo){
-        mediaFile_ = QUrl::fromLocalFile(fileinfo.absoluteFilePath());
-        nhlog::ui()->info("Media file loaded (" + fileinfo.absoluteFilePath().toStdString() + 
-                            ", size: " + std::to_string(fileinfo.size()) + " bytes)");
-        emit mediaFilehanged();
-    }
+    void setMediaFile(const QFileInfo &fileinfo);
 
 signals:
     void roomChanged();
@@ -55,7 +50,8 @@ private slots:
     
 public slots:
     void startDownload();
-    void saveAs();
+    void saveAs(const QString &source, const QString &dst);
+    void saveBufferToFile(const QString &filename, const QBuffer &buffer);
 
 private:
     TimelineModel *room_ = nullptr;

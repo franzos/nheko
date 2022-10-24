@@ -70,7 +70,11 @@ public:
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
     bool handleMatrixUri(const QUrl &uri);
-    
+    static QString getSaveFileName(const QString &caption = QString(),
+                                   const QString &dir = QString(),
+                                   const QString &selectedFile = QString(),
+                                   const QString &filter = QString());
+
 signals:
     void colorsChanged();
     void profileChanged();

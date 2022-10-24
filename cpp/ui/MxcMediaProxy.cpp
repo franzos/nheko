@@ -17,6 +17,8 @@
 #if defined(Q_OS_MACOS)
 // TODO (red_sky): Remove for Qt6.  See other ifdef below
 #include <QTemporaryFile>
+#elif defined(Q_OS_ANDROID)
+#include <QtAndroid>
 #endif
 
 #include <matrix-client-library/EventAccessors.h>
@@ -121,16 +123,19 @@ MxcMediaProxy::startDownload()
     QDir().mkpath(filename.path());
     QPointer<MxcMediaProxy> self = this;
     
+    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    const auto saveAsFilename = GlobalObject::getSaveFileName("Save", defaultFilePath, filename.fileName(), suffix);
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
+            saveAs(filename.filePath(), saveAsFilename);
             setMediaFile(filename);
             return;
         }
     }
 
     http::client()->download(url,
-                             [this, filename, url, encryptionInfo](const std::string &data,
+                             [this, saveAsFilename, filename, url, encryptionInfo](const std::string &data,
                                                             const std::string &,
                                                             const std::string &,
                                                             mtx::http::RequestErr err) {
@@ -152,13 +157,8 @@ MxcMediaProxy::startDownload()
                                      } else {
                                          buffer.setData(ba);
                                      }
-                                     
-                                     QFile file(filename.filePath());
-                                     if (!file.open(QIODevice::WriteOnly))
-                                         return;
-                                     
-                                     file.write(buffer.data());
-                                     file.close();
+                                     saveBufferToFile(filename.filePath(), buffer);
+                                     saveBufferToFile(saveAsFilename, buffer);
                                      setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
@@ -166,16 +166,32 @@ MxcMediaProxy::startDownload()
                              });
 }
 
-void MxcMediaProxy::saveAs(){
-    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + mediaFile_.fileName();
-    const auto fileName =
-      QFileDialog::getSaveFileName(nullptr, tr("Save as ..."), defaultFilePath, tr("."));
+void MxcMediaProxy::setMediaFile(const QFileInfo &fileinfo){
+    mediaFile_ = QUrl::fromLocalFile(fileinfo.absoluteFilePath());
+    nhlog::ui()->info("Media file loaded (" + fileinfo.absoluteFilePath().toStdString() + 
+                        ", size: " + std::to_string(fileinfo.size()) + " bytes)");
+    emit mediaFilehanged();
+}
 
-    if (fileName.isEmpty())
+void MxcMediaProxy::saveBufferToFile(const QString &filename, const QBuffer &buffer){
+    if(filename.isEmpty())
         return;
-    if(QFile::copy(mediaFile_.toLocalFile(), fileName)){
-        nhlog::ui()->info("File saved in " + fileName.toStdString());
-    } else {
-        nhlog::ui()->warn("Failure in file saving in " + fileName.toStdString());
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly))
+        return;
+    file.write(buffer.data());
+    file.close();
+    nhlog::ui()->info(QString("File stored in \"" + filename +"\" (size: " + QString::number(buffer.size()) + ")").toStdString());
+}
+
+void MxcMediaProxy::saveAs(const QString &source, const QString &dst){
+    if (source.isEmpty() || dst.isEmpty())
+        return;
+    
+    QFile dstFile(mediaFile_.toLocalFile());
+    if (dstFile.open(QIODevice::ReadOnly)) {
+        auto data = dstFile.readAll();
+        saveBufferToFile(dst, QBuffer(&data));
+        dstFile.close();
     }
 }

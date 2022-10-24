@@ -150,7 +150,7 @@ function BUILD_MTXCLIENT {
 
     BUILD_LIB $src_path $build_path $target \
         ${OPENSSL_CMAKE_DEFINITIONS[@]} \
-        -DCMAKE_FIND_ROOT_PATH=/home/reza/Qt/5.15.2/android \
+        -DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android \
         -Dfmt_DIR=${DIST_DIR}/$target/lib/cmake/fmt \
         -Dspdlog_DIR=${DIST_DIR}/$target/lib/cmake/spdlog \
         -DSPDLOG_FMT_EXTERNAL=ON \

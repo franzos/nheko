@@ -37,7 +37,9 @@ export QT_PLUGIN_PATH="..."
 
 in order to build third-party libraries for Android, following dependencies need to be prepared:
 
-1. Android SDK and NDK
+1. Follow the instruction to qt android environment preparing [here](./QtAndroidEnvironment.md).
+
+2. Android SDK and NDK
     > after installing the Android SDK and NDK in order to have the command line access following variables need to be added to environment: 
     > ```bash
     > export ANDROID_HOME=$HOME/Android/Sdk
@@ -50,15 +52,8 @@ in order to build third-party libraries for Android, following dependencies need
     > export PATH=$PATH:$ANDROID_HOME/platform-tools
     > export PATH=$PATH:$ANDROID_NDK
     > ```
-2. Qt for Android
-    > best way is to setup Qt from it's official net installer.
 
-2. OpenSSL Library
-    > prebuilt OpenSSL binaries for android can be fetched from [KDAB repository](https://github.com/KDAB/android_openssl). an easy way to set these libraries is to use Qt Creator:
-    > 
-    > `Tools` > `Options` > `Devices` > `Android` > `Android OpenSSL settings` > `Download OpenSSL`
-
-Preparing the dependencies you need to run following command to build vendor libraries:
+3. Preparing the dependencies you need to run following command to build vendor libraries:
 ```shell
 ./vendor/build-android.sh all
 ```
@@ -97,6 +92,8 @@ installing the NDK, we need to add it manually to the list of compilers:
 1. go to `Tools` > `Options` > `Kits` > `Compilers`
 2. Clone default Clang C compiler: `Android Clang (C, arm, NDK 21.x.xxxxx)` and change it to the matching one for our installed NDK
 3. Clone default Clang C++ compiler: `Android Clang (C++, arm, NDK 21.x.xxxxx)` and change it to the matching one for our installed NDK
+
+**Build it just for `arm64-v8a`: `QtCreator` > `Projects` > `Build & Run` > `Build` > `Build Steps` > `ABIs` > Disable all platforms except `arm64-v8a`.
 
 ### Setup Kit
 in order to setup Kit:
