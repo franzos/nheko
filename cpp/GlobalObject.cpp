@@ -8,6 +8,11 @@
 #include <QUrl>
 #include <QWindow>
 #include <matrix-client-library/Client.h>
+#include <QFileDialog>
+#include <QString>
+#if defined(Q_OS_ANDROID)
+#include <QtAndroid>
+#endif
 #include "Configuration.h"
 
 GlobalObject *GlobalObject::_instance  = nullptr;
@@ -258,4 +263,17 @@ Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
 Q_INVOKABLE QString GlobalObject::mediaCachePath(){
     return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/media_cache";
 }
-    
+
+QString GlobalObject::getSaveFileName(const QString &caption,
+                                   const QString &dir,
+                                   const QString &selectedFile,
+                                   const QString &filter){
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
+    if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted)
+        nhlog::ui()->warn("Don't have permission to write here \"" + dir.toStdString() + "\"");
+    return QFileDialog::getSaveFileName(nullptr, selectedFile, dir, filter);
+#else
+    return QFileDialog::getSaveFileName(nullptr, caption, dir + "/" + selectedFile, filter);
+#endif
+}

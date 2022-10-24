@@ -123,19 +123,12 @@ MxcMediaProxy::startDownload()
     QDir().mkpath(filename.path());
     QPointer<MxcMediaProxy> self = this;
     
-    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + mediaFile_.fileName();
-    #ifdef Q_OS_ANDROID
-    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
-    if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted)
-        nhlog::ui()->warn("Don't have permission to write here \"" + defaultFilePath.toStdString() + "\"");
-    #endif
-    const auto saveAsFilename =
-      QFileDialog::getSaveFileName(nullptr, tr("Save as ..."), defaultFilePath, suffix);
-
+    const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    const auto saveAsFilename = GlobalObject::getSaveFileName("Save", defaultFilePath, filename.fileName(), suffix);
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
-            saveAs(saveAsFilename);
+            saveAs(filename.filePath(), saveAsFilename);
             setMediaFile(filename);
             return;
         }
@@ -164,14 +157,9 @@ MxcMediaProxy::startDownload()
                                      } else {
                                          buffer.setData(ba);
                                      }
-                                     
-                                     QFile file(filename.filePath());
-                                     if (!file.open(QIODevice::WriteOnly))
-                                         return;
-                                     
-                                     file.write(buffer.data());
-                                     file.close();
-                                     saveAs(saveAsFilename);
+                                     saveBufferToFile(filename.filePath(), buffer);
+                                     if(!saveAsFilename.isEmpty())
+                                        saveBufferToFile(saveAsFilename, buffer);
                                      setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
@@ -186,12 +174,23 @@ void MxcMediaProxy::setMediaFile(const QFileInfo &fileinfo){
     emit mediaFilehanged();
 }
 
-void MxcMediaProxy::saveAs(const QString &filename){
-    if (filename.isEmpty())
+void MxcMediaProxy::saveBufferToFile(const QString &filename, const QBuffer &buffer){
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly))
         return;
-    if(QFile::copy(mediaFile_.toLocalFile(), filename)){
-        nhlog::ui()->info("File saved in " + filename.toStdString());
-    } else {
-        nhlog::ui()->warn("Failure in file saving in " + filename.toStdString());
+    file.write(buffer.data());
+    file.close();
+    nhlog::ui()->info(QString("File stored in \"" + filename +"\" (size: " + QString::number(buffer.size()) + ")").toStdString());
+}
+
+void MxcMediaProxy::saveAs(const QString &source, const QString &dst){
+    if (source.isEmpty() || dst.isEmpty())
+        return;
+    
+    QFile dstFile(mediaFile_.toLocalFile());
+    if (dstFile.open(QIODevice::ReadOnly)) {
+        auto data = dstFile.readAll();
+        saveBufferToFile(dst, QBuffer(&data));
+        dstFile.close();
     }
 }
