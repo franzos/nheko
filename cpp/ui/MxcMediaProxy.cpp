@@ -158,8 +158,7 @@ MxcMediaProxy::startDownload()
                                          buffer.setData(ba);
                                      }
                                      saveBufferToFile(filename.filePath(), buffer);
-                                     if(!saveAsFilename.isEmpty())
-                                        saveBufferToFile(saveAsFilename, buffer);
+                                     saveBufferToFile(saveAsFilename, buffer);
                                      setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
@@ -175,6 +174,8 @@ void MxcMediaProxy::setMediaFile(const QFileInfo &fileinfo){
 }
 
 void MxcMediaProxy::saveBufferToFile(const QString &filename, const QBuffer &buffer){
+    if(filename.isEmpty())
+        return;
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly))
         return;

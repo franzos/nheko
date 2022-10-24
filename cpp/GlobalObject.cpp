@@ -270,8 +270,10 @@ QString GlobalObject::getSaveFileName(const QString &caption,
                                    const QString &filter){
 #ifdef Q_OS_ANDROID
     QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
-    if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted)
+    if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted){
         nhlog::ui()->warn("Don't have permission to write here \"" + dir.toStdString() + "\"");
+        return "";
+    }
     return QFileDialog::getSaveFileName(nullptr, selectedFile, dir, filter);
 #else
     return QFileDialog::getSaveFileName(nullptr, caption, dir + "/" + selectedFile, filter);
