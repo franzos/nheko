@@ -7,6 +7,7 @@
 #include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
+#include <QBuffer>
 #include <QUrl>
 #include "Theme.h"
 #include "Application.h"
@@ -74,6 +75,8 @@ public slots:
                                    const QString &dir = QString(),
                                    const QString &selectedFile = QString(),
                                    const QString &filter = QString());
+    static void saveAs(const QString &source, const QString &dst);
+    static void saveBufferToFile(const QString &filename, const QBuffer &buffer);
 
 signals:
     void colorsChanged();

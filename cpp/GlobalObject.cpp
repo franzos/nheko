@@ -10,6 +10,7 @@
 #include <matrix-client-library/Client.h>
 #include <QFileDialog>
 #include <QString>
+#include <QBuffer>
 #if defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #endif
@@ -278,4 +279,27 @@ QString GlobalObject::getSaveFileName(const QString &caption,
 #else
     return QFileDialog::getSaveFileName(nullptr, caption, dir + "/" + selectedFile, filter);
 #endif
+}
+
+void GlobalObject::saveBufferToFile(const QString &filename, const QBuffer &buffer){
+    if(filename.isEmpty())
+        return;
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly))
+        return;
+    file.write(buffer.data());
+    file.close();
+    nhlog::ui()->info(QString("File stored in \"" + filename +"\" (size: " + QString::number(buffer.size()) + ")").toStdString());
+}
+
+void GlobalObject::saveAs(const QString &source, const QString &dst){
+    if (source.isEmpty() || dst.isEmpty())
+        return;
+
+    QFile dstFile(source);
+    if (dstFile.open(QIODevice::ReadOnly)) {
+        auto data = dstFile.readAll();
+        saveBufferToFile(dst, QBuffer(&data));
+        dstFile.close();
+    }
 }

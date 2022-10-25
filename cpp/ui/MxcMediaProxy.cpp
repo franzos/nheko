@@ -128,7 +128,7 @@ MxcMediaProxy::startDownload()
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
-            saveAs(filename.filePath(), saveAsFilename);
+            GlobalObject::saveAs(filename.filePath(), saveAsFilename);
             setMediaFile(filename);
             return;
         }
@@ -157,8 +157,8 @@ MxcMediaProxy::startDownload()
                                      } else {
                                          buffer.setData(ba);
                                      }
-                                     saveBufferToFile(filename.filePath(), buffer);
-                                     saveBufferToFile(saveAsFilename, buffer);
+                                     GlobalObject::saveBufferToFile(filename.filePath(), buffer);
+                                     GlobalObject::saveBufferToFile(saveAsFilename, buffer);
                                      setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
@@ -173,25 +173,3 @@ void MxcMediaProxy::setMediaFile(const QFileInfo &fileinfo){
     emit mediaFilehanged();
 }
 
-void MxcMediaProxy::saveBufferToFile(const QString &filename, const QBuffer &buffer){
-    if(filename.isEmpty())
-        return;
-    QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly))
-        return;
-    file.write(buffer.data());
-    file.close();
-    nhlog::ui()->info(QString("File stored in \"" + filename +"\" (size: " + QString::number(buffer.size()) + ")").toStdString());
-}
-
-void MxcMediaProxy::saveAs(const QString &source, const QString &dst){
-    if (source.isEmpty() || dst.isEmpty())
-        return;
-    
-    QFile dstFile(mediaFile_.toLocalFile());
-    if (dstFile.open(QIODevice::ReadOnly)) {
-        auto data = dstFile.readAll();
-        saveBufferToFile(dst, QBuffer(&data));
-        dstFile.close();
-    }
-}

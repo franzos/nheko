@@ -50,8 +50,6 @@ private slots:
     
 public slots:
     void startDownload();
-    void saveAs(const QString &source, const QString &dst);
-    void saveBufferToFile(const QString &filename, const QBuffer &buffer);
 
 private:
     TimelineModel *room_ = nullptr;
