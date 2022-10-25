@@ -17,7 +17,9 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QTextBoundaryFinder>
-
+#if defined(Q_OS_ANDROID)
+#include <QtAndroid>
+#endif
 #include <QRegularExpression>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
@@ -330,7 +332,15 @@ InputBar::send()
 void
 InputBar::openFileSelection()
 {
-    const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+    const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.READ_EXTERNAL_STORAGE"});
+    if (res["android.permission.READ_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted){
+        nhlog::ui()->warn("Don't have permission to write here \"" + homeFolder.toStdString() + "\"");
+        return;
+    }
+#endif
     const auto fileName =
       QFileDialog::getOpenFileName(nullptr, tr("Select a file"), homeFolder, tr("All Files (*)"));
 
@@ -816,11 +826,10 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
   , source(std::move(source_))
   , mimetype_(std::move(mimetype))
   , originalFilename_(QFileInfo(originalFilename).fileName())
-  , absoluteFilePath_(QFileInfo(originalFilename).absoluteFilePath())
   , encrypt_(encrypt)
 {
     mimeClass_ = mimetype_.left(mimetype_.indexOf(u'/'));
-
+    
     if (!source->isOpen())
         source->open(QIODevice::ReadOnly);
 
@@ -856,6 +865,10 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         blurhash_ =
           QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
     } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
+        // TODO
+        auto tmp = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + "originalFilename_";
+        GlobalObject::saveBufferToFile(tmp, QBuffer(&data));
+        absoluteFilePath_ = tmp;
         auto mediaPlayer = new QMediaPlayer(
           this,
           mimeClass_ == u"video" ? QFlags{QMediaPlayer::VideoSurface} : QMediaPlayer::Flags{});
@@ -1054,18 +1067,72 @@ MediaUpload::startUpload()
       });
 }
 
+QImage thumbnailFromVideoFrame(const QVideoFrame& buffer){
+    QVideoFrame f = buffer;
+    f.map( QAbstractVideoBuffer::ReadOnly );
+
+    const auto fmt = f.image().format();
+    QImage image;
+
+    if( fmt != QImage::Format_Invalid ) {
+        image = f.image();
+        nhlog::ui()->info("Thumbnail image generated.");
+    } else if( f.pixelFormat() == QVideoFrame::Format_ABGR32 ) {
+        nhlog::ui()->warn("Thumbnail image format is invalid!");
+        const auto max = f.width() * f.height() * 4;
+        std::vector< uchar > buf;
+        buf.reserve( max );
+        uchar * bits = f.bits();
+
+        static const size_t i1 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 2 : 0 );
+        static const size_t i2 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 1 : 3 );
+        static const size_t i3 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 0 : 2 );
+        static const size_t i4 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 3 : 1 );
+
+        for( auto i = 0; i < max; )
+        {
+            buf.push_back( bits[ i1 ] );
+            buf.push_back( bits[ i2 ] );
+            buf.push_back( bits[ i3 ] );
+            buf.push_back( bits[ i4 ] );
+
+            bits += 4;
+            i += 4;
+        }
+        nhlog::ui()->info("Thumbnail image generated.");
+        image = QImage( &buf[ 0 ], f.width(), f.height(), f.bytesPerLine(),QImage::Format_ARGB32 ).copy();
+    }
+    return image;
+}
+
 QVideoFrame InputVideoFilterRunnable::run(QVideoFrame *input, const QVideoSurfaceFormat &surfaceFormat, RunFlags flags) { 
     (void)surfaceFormat;
     (void)flags;
     auto frame = *input;
     if(input){
-        auto image = frame.image();
-        if (image.format() == QImage::Format_Invalid || image.size().isEmpty()) {
-            nhlog::ui()->warn("Thumbnail image format is invalid!");
-        } else {
-            nhlog::ui()->info("Thumbnail image generated.");
-            _thumbnailImage = image;
-        }
+        _thumbnailImage = thumbnailFromVideoFrame(frame);
+    //    QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(QVideoFrame::Format_ARGB32);
+    //    if (format == QImage::Format_Invalid) {
+    //        nhlog::ui()->warn("Thumbnail image format is invalid!");
+    //    } else {
+    //        QVideoFrame frametodraw(frame);
+    //        if (!frametodraw.map(QAbstractVideoBuffer::ReadOnly)) {
+    //            nhlog::ui()->warn("Thumbnail image format is invalid!");
+    //        }
+
+    //        // this is a shallow operation. it just refer the frame buffer
+    //        QImage image(qAsConst(frametodraw).bits(),
+    //                     frametodraw.width(),
+    //                     frametodraw.height(),
+    //                     frametodraw.bytesPerLine(),
+    //                     format);
+    //        image.detach();
+
+    //        frametodraw.unmap();
+    //        _thumbnailImage = image;
+    //         nhlog::ui()->info("Thumbnail image generated.");
+    //         qDebug() << _thumbnailImage;
+    //    }
     }
     return frame;
 }
