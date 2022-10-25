@@ -54,13 +54,12 @@ Page {
         
                     MediaPlayer { 
                         id: mediaPlayer
-
-                        onError: console.log(modelData.absoluteFilePath)
+                        onError: console.log(error + " : " + source)
                         volume: 0
                         muted: true
-                        source: modelData.mediaType == MediaUpload.Video ? "file://" + modelData.absoluteFilePath : ""
+                        source: modelData.mediaType === MediaUpload.Video ? "file://" + modelData.absoluteFilePath : ""
                         autoPlay: true
-                        onPlaying:{ 
+                        onPlaying:{
                             if(videoOutput.filters[0]) {
                                 videoOutput.filters[0].active = true;
                             }
@@ -68,7 +67,7 @@ Page {
                     }
                     VideoOutput {
                         id: videoOutput
-                        visible: modelData.mediaType == MediaUpload.Video
+                        visible: modelData.mediaType === MediaUpload.Video
                         clip: true
                         anchors.fill: parent
                         fillMode: VideoOutput.PreserveAspectFit
@@ -85,7 +84,7 @@ Page {
                         case MediaUpload.Image: return "image";
                         default: return "zip";
                     }
-                    source: (modelData.mediaType != MediaUpload.Video) ? "image://colorimage/:/images/"+typeStr+".svg?" + GlobalObject.colors.buttonText : ""
+                    source: (modelData.mediaType !== MediaUpload.Video) ? "image://colorimage/:/images/"+typeStr+".svg?" + GlobalObject.colors.buttonText : ""
                 }
                 MatrixTextField {
                     Layout.fillWidth: true
