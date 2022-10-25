@@ -17,6 +17,7 @@
 #include "mydevice.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/DelegateChooser.h"
+#include "ui/InputBar.h"
 #include "ui/MxcAnimatedImage.h"
 #include "ui/MxcMediaProxy.h"
 #include "ui/emoji/EmojiModel.h"
@@ -196,6 +197,7 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterType<MxcMediaProxy>("MxcMedia", 1, 0, "MxcMedia");
         qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
         qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
+        qmlRegisterType<InputVideoFilter>("InputVideoFilter", 1, 0, "InputVideoFilter");
         qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
         qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
         qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);
