@@ -382,25 +382,22 @@ Rectangle {
             // visible: showAllButtons
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
-            width: 22
-            height: 22
+            width: 26; height: width
             image: ":/images/attach.svg"
             Layout.margins: 8
             onClicked: room.input.openFileSelection()
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")
-
-            // Rectangle {
-            //     anchors.fill: parent
-            //     color: GlobalObject.colors.window
-            //     visible: room && room.input.uploading
-
-            //     // NhekoBusyIndicator {
-            //     //     anchors.fill: parent
-            //     //     running: parent.visible
-            //     // }
-
-            // }
+            Rectangle {
+                width: parent.width; height: width
+                color: GlobalObject.colors.window
+                visible: room && (room.input.uploading || room.input.uploads.length)
+                BusyIndicator {
+                    width: parent.width; height: width
+                    palette.dark: GlobalObject.colors.windowText
+                    running: parent.visible
+                }
+            }
         }
 
         ImageButton {
