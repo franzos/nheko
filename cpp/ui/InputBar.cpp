@@ -1101,6 +1101,7 @@ QImage thumbnailFromVideoFrame(const QVideoFrame& buffer){
         }
         nhlog::ui()->info("Thumbnail image generated.");
         image = QImage( &buf[ 0 ], f.width(), f.height(), f.bytesPerLine(),QImage::Format_ARGB32 ).copy();
+        image = image.mirrored(false,true);
     }
     return image;
 }
@@ -1109,32 +1110,10 @@ QVideoFrame InputVideoFilterRunnable::run(QVideoFrame *input, const QVideoSurfac
     (void)surfaceFormat;
     (void)flags;
     auto frame = *input;
-    if(input){
+    if(input && _thumbnailImage.format() == QImage::Format_Invalid){
         _thumbnailImage = thumbnailFromVideoFrame(frame);
-    //    QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(QVideoFrame::Format_ARGB32);
-    //    if (format == QImage::Format_Invalid) {
-    //        nhlog::ui()->warn("Thumbnail image format is invalid!");
-    //    } else {
-    //        QVideoFrame frametodraw(frame);
-    //        if (!frametodraw.map(QAbstractVideoBuffer::ReadOnly)) {
-    //            nhlog::ui()->warn("Thumbnail image format is invalid!");
-    //        }
-
-    //        // this is a shallow operation. it just refer the frame buffer
-    //        QImage image(qAsConst(frametodraw).bits(),
-    //                     frametodraw.width(),
-    //                     frametodraw.height(),
-    //                     frametodraw.bytesPerLine(),
-    //                     format);
-    //        image.detach();
-
-    //        frametodraw.unmap();
-    //        _thumbnailImage = image;
-    //         nhlog::ui()->info("Thumbnail image generated.");
-    //         qDebug() << _thumbnailImage;
-    //    }
     }
-    return frame;
+    return QVideoFrame(_thumbnailImage);
 }
 
 QImage InputVideoFilterRunnable::thumbnailImage(){
