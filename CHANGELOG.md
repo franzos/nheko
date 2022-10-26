@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.33]
+### Fixed and Changed
+
+* Update media control buttons to having save as icon.
+* ANDROID: fixing thumbnail issue.
+* Single attach at the moment in uploading.
+* Fixing the warnings.
+
+
 ## [0.1.32]
 ### Fixed and Changed
 
