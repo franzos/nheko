@@ -41,8 +41,9 @@ ApplicationWindow {
         id: confirmEncryptionDialogFactory
         Dialog {
             title: qsTr("End-to-End Encryption")
-            x: (qmlLibRoot.width - width) / 2
-            y: (qmlLibRoot.height - height) / 2
+            x: (parent.width - width) / 2
+            y: (parent.height - height) / 2
+            standardButtons: Dialog.Cancel | Dialog.Ok
             Column {
                 width:parent.width
                 spacing: 10
@@ -59,7 +60,6 @@ ApplicationWindow {
             onRejected: {
                 encryptionToggle.checked = false;
             }
-            standardButtons: Dialog.Cancel | Dialog.Ok
         }
     }
     Flickable {
