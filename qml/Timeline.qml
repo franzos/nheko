@@ -252,6 +252,8 @@ Room {
         id: inviteDialog
 
         InviteDialog {
+            x: (qmlLibRoot.width - width) / 2
+            y: (qmlLibRoot.height - height) / 2
         }
     }
 

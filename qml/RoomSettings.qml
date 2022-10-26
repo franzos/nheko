@@ -39,12 +39,18 @@ ApplicationWindow {
     }
     Component{
         id: confirmEncryptionDialogFactory
-
-        MessageDialog {
+        Dialog {
             title: qsTr("End-to-End Encryption")
-            text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
-                        Please take note that it can't be disabled afterwards.")
-            modality: Qt.NonModal
+            x: (qmlLibRoot.width - width) / 2
+            y: (qmlLibRoot.height - height) / 2
+            Column {
+                width:parent.width
+                spacing: 10
+                Label {
+                    text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
+                                            Please take note that it can't be disabled afterwards.")
+                }
+            }
             onAccepted: {
                 if (roomSettings.isEncryptionEnabled)
                     return ;
@@ -53,7 +59,7 @@ ApplicationWindow {
             onRejected: {
                 encryptionToggle.checked = false;
             }
-            standardButtons: MessageDialog.Ok | MessageDialog.Cancel
+            standardButtons: Dialog.Cancel | Dialog.Ok
         }
     }
     Flickable {
