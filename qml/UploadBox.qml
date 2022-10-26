@@ -1,8 +1,10 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import QtMultimedia 5.15
 import GlobalObject 1.0
 import MediaUpload 1.0
+import InputVideoFilter 1.0
 import "./ui"
 
 Page {
@@ -29,7 +31,7 @@ Page {
         width: Math.min(contentWidth, parent.availableWidth)
         model: room ? room.input.uploads : undefined
         spacing: 8
-
+    
         delegate: Pane {
             padding: 4
             height: uploadPopup.availableHeight - buttons.height - (scr.visible? scr.height : 0)
@@ -49,6 +51,32 @@ Page {
                     fillMode: Image.PreserveAspectFit
                     smooth: true
                     mipmap: true
+        
+                    MediaPlayer { 
+                        id: mediaPlayer
+                        onError: console.log(error + " : " + source)
+                        volume: 0
+                        muted: true
+                        source: modelData.mediaType === MediaUpload.Video ? "file://" + modelData.absoluteFilePath : ""
+                        autoPlay: true
+                        onPlaying:{
+                            if(videoOutput.filters[0]) {
+                                videoOutput.filters[0].active = true;
+                            }
+                        }
+                    }
+                    VideoOutput {
+                        id: videoOutput
+                        visible: modelData.mediaType === MediaUpload.Video
+                        clip: true
+                        anchors.fill: parent
+                        fillMode: VideoOutput.PreserveAspectFit
+                        source: mediaPlayer
+                        flushMode: VideoOutput.FirstFrame
+                        filters: [ modelData.inputVideoFilter() ]
+                        // videoSurface: modelData.mediaType == MediaUpload.Video ? modelData.videoSurface : null
+                        // orientation: mediaPlayer.orientation
+                    }
 
                     property string typeStr: switch(modelData.mediaType) {
                         case MediaUpload.Video: return "video-file";
@@ -56,7 +84,7 @@ Page {
                         case MediaUpload.Image: return "image";
                         default: return "zip";
                     }
-                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/images/"+typeStr+".svg?" + GlobalObject.colors.buttonText)
+                    source: (modelData.mediaType !== MediaUpload.Video) ? "image://colorimage/:/images/"+typeStr+".svg?" + GlobalObject.colors.buttonText : ""
                 }
                 MatrixTextField {
                     Layout.fillWidth: true

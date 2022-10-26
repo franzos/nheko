@@ -91,25 +91,32 @@ Rectangle {
             spacing: 4
             Layout.fillWidth: true
 
-            // Cache/Play/pause button
+            // Cache button
+            ImageButton {
+                id: downloadImage
+
+                Layout.alignment: Qt.AlignLeft
+                buttonTextColor: GlobalObject.colors.text
+                Layout.preferredHeight: 20
+                Layout.preferredWidth: 20
+                image: ":/images/download.svg"
+                onClicked: control.loadActivated()
+            }
+            // Play/pause button
             ImageButton {
                 id: playbackStateImage
-
+                enabled: control.mediaLoaded
                 Layout.alignment: Qt.AlignLeft
                 buttonTextColor: GlobalObject.colors.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
                 image: {
-                    if (control.mediaLoaded) {
-                        if (control.mediaState == MediaPlayer.PlayingState)
-                            return ":/images/pause-symbol.svg";
-                        else
-                            return ":/images/play-sign.svg";
-                    } else {
-                        return ":/images/download.svg";
-                    }
+                    if (control.mediaState == MediaPlayer.PlayingState)
+                        return ":/images/pause-symbol.svg";
+                    else
+                        return ":/images/play-sign.svg";
                 }
-                onClicked: control.mediaLoaded ? control.playPauseActivated() : control.loadActivated()
+                onClicked: control.playPauseActivated()
             }
 
             ImageButton {

@@ -4,10 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.31]
-### Updated
+## [0.1.33]
+### Fixed and Changed
 
-* RoomSettings: change encryption dialog component (android issue to enable the encryption).
+* Update media control buttons to having save as icon.
+* ANDROID: fixing thumbnail issue.
+* Single attach at the moment in uploading.
+* Fixing the warnings.
+
+
+## [0.1.32]
+### Fixed and Changed
+
+* Update media control buttons. (Download/Save, Play/Pause, Volume)
+* Fixing issue in sending the thumbnail of video messages.
+
+
+## [0.1.31]
+### Fixed
+
+* Fixing issue in enable room encryption.
+* Fixing issue in big button size in Add user dialg.
+* Fixing issue in openning the audio/video messages in Android.
 
 
 ## [0.1.30]

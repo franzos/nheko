@@ -25,6 +25,7 @@
 #include <matrix-client-library/voip/CallDevices.h>
 
 #include "../Application.h"
+#include "../GlobalObject.h"
 
 QHash<int, QByteArray>
 UserSettingsModel::roleNames() const
@@ -898,9 +899,8 @@ UserSettingsModel::exportSessionKeys()
 }
     
     // Open file dialog to save the file.
-    const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    const QString fileName   = QFileDialog::getSaveFileName(
-      nullptr, tr("File to save the exported session keys"), homeFolder);
+    const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    const auto fileName = GlobalObject::getSaveFileName("File to save the exported session keys", homeFolder);
 
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {

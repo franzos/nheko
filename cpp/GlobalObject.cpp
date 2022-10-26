@@ -8,7 +8,22 @@
 #include <QUrl>
 #include <QWindow>
 #include <matrix-client-library/Client.h>
+#include <QFileDialog>
+#include <QString>
+#include <QBuffer>
+#if defined(Q_OS_ANDROID)
+#include <QtAndroid>
+#endif
 #include "Configuration.h"
+
+GlobalObject *GlobalObject::_instance  = nullptr;
+
+GlobalObject *GlobalObject::instance(){
+    if(_instance == nullptr){
+        _instance = new GlobalObject();
+    }
+    return _instance;
+}
 
 GlobalObject::GlobalObject(){
     Q_INIT_RESOURCE(mtx_gui_library_resources);
@@ -245,4 +260,46 @@ Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
     material.background = ANDROID_MATERIAL_BACKGROUND;
     return material;
 };
-    
+
+Q_INVOKABLE QString GlobalObject::mediaCachePath(){
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/media_cache";
+}
+
+QString GlobalObject::getSaveFileName(const QString &caption,
+                                   const QString &dir,
+                                   const QString &selectedFile,
+                                   const QString &filter){
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
+    if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted){
+        nhlog::ui()->warn("Don't have permission to write here \"" + dir.toStdString() + "\"");
+        return "";
+    }
+    return QFileDialog::getSaveFileName(nullptr, selectedFile, dir, filter);
+#else
+    return QFileDialog::getSaveFileName(nullptr, caption, dir + "/" + selectedFile, filter);
+#endif
+}
+
+void GlobalObject::saveBufferToFile(const QString &filename, const QBuffer &buffer){
+    if(filename.isEmpty())
+        return;
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly))
+        return;
+    file.write(buffer.data());
+    file.close();
+    nhlog::ui()->info(QString("File stored in \"" + filename +"\" (size: " + QString::number(buffer.size()) + ")").toStdString());
+}
+
+void GlobalObject::saveAs(const QString &source, const QString &dst){
+    if (source.isEmpty() || dst.isEmpty())
+        return;
+
+    QFile dstFile(source);
+    if (dstFile.open(QIODevice::ReadOnly)) {
+        auto data = dstFile.readAll();
+        saveBufferToFile(dst, QBuffer(&data));
+        dstFile.close();
+    }
+}

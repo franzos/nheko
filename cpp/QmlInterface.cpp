@@ -17,6 +17,7 @@
 #include "mydevice.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/DelegateChooser.h"
+#include "ui/InputBar.h"
 #include "ui/MxcAnimatedImage.h"
 #include "ui/MxcMediaProxy.h"
 #include "ui/emoji/EmojiModel.h"
@@ -42,7 +43,7 @@ namespace PX::GUI::MATRIX{
     }
 
     void QmlInterface::checkCacheDirectory(){
-        GlobalObject gobject;
+        GlobalObject *gobject = GlobalObject::instance();
         QSettings *qSettings;
         auto cacheDirs = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
         if(cacheDirs.size()){
@@ -53,11 +54,11 @@ namespace PX::GUI::MATRIX{
                 qInfo() << " > QML Cache info detected:" << cacheInfoFile;
                 if(qSettings->contains("version")) {
                     auto version = qSettings->value("version").toString();
-                    if(version == gobject.getApplicationVersion()){
+                    if(version == gobject->getApplicationVersion()){
                         qInfo() << " > QML Cache version matched:" << version;
                         return;
                     } else {
-                        qInfo() << " > QML Cache should be updated from" << version << "to" << gobject.getApplicationVersion();
+                        qInfo() << " > QML Cache should be updated from" << version << "to" << gobject->getApplicationVersion();
                     }
                 } else {
                     qInfo() << " > QML Cache version not found!";
@@ -70,9 +71,9 @@ namespace PX::GUI::MATRIX{
                 if(QDir(cacheDir).removeRecursively())
                     qInfo() << " > QML Cache dir deleted:" << cacheDir; 
             }
-            qSettings->setValue("version",gobject.getApplicationVersion());
+            qSettings->setValue("version",gobject->getApplicationVersion());
             qSettings->sync();
-            qInfo() << " > QML Cache info created: Version" << gobject.getApplicationVersion();
+            qInfo() << " > QML Cache info created: Version" << gobject->getApplicationVersion();
         }
     }
 
@@ -173,7 +174,7 @@ QmlInterface::QmlInterface(QObject *parent):
         });
 
         qmlRegisterSingletonType<GlobalObject>("GlobalObject", 1, 0, "GlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return new GlobalObject();
+            return GlobalObject::instance();
         });
         qmlRegisterSingletonType<UserSettingsModel>("UserSettingsModel", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
             return new UserSettingsModel();
@@ -196,6 +197,7 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterType<MxcMediaProxy>("MxcMedia", 1, 0, "MxcMedia");
         qmlRegisterType<PresenceEmitter>("Presence", 1, 0, "Presence");
         qmlRegisterType<RoomInformation>("RoomInformation", 1, 0, "RoomInformation");
+        qmlRegisterType<InputVideoFilter>("InputVideoFilter", 1, 0, "InputVideoFilter");
         qmlRegisterSingletonInstance<QmlInterface>("QmlInterface", 1, 0, "QmlInterface", this);
         qmlRegisterSingletonInstance<Client>("MatrixClient", 1, 0, "MatrixClient", _client);
         qmlRegisterSingletonInstance<CallManager>("CallManager", 1, 0, "CallManager", _callMgr);

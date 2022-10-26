@@ -17,7 +17,9 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QTextBoundaryFinder>
-
+#if defined(Q_OS_ANDROID)
+#include <QtAndroid>
+#endif
 #include <QRegularExpression>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
@@ -330,7 +332,15 @@ InputBar::send()
 void
 InputBar::openFileSelection()
 {
-    const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+    const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.READ_EXTERNAL_STORAGE"});
+    if (res["android.permission.READ_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted){
+        nhlog::ui()->warn("Don't have permission to write here \"" + homeFolder.toStdString() + "\"");
+        return;
+    }
+#endif
     const auto fileName =
       QFileDialog::getOpenFileName(nullptr, tr("Select a file"), homeFolder, tr("All Files (*)"));
 
@@ -795,8 +805,7 @@ InputBar::command(const QString &command, QString args)
             return;
         }
         // 3 - Matrix URI handler, as if you clicked the URI
-        GlobalObject globalObject;
-        if (globalObject.handleMatrixUri(args)) {
+        if (GlobalObject::instance()->handleMatrixUri(args)) {
             return;
         }
         nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
@@ -820,7 +829,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
   , encrypt_(encrypt)
 {
     mimeClass_ = mimetype_.left(mimetype_.indexOf(u'/'));
-
+    
     if (!source->isOpen())
         source->open(QIODevice::ReadOnly);
 
@@ -856,48 +865,75 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         blurhash_ =
           QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
     } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
+        // TODO
+        auto tmp = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + "originalFilename_";
+        GlobalObject::saveBufferToFile(tmp, QBuffer(&data));
+        absoluteFilePath_ = tmp;
         auto mediaPlayer = new QMediaPlayer(
           this,
           mimeClass_ == u"video" ? QFlags{QMediaPlayer::VideoSurface} : QMediaPlayer::Flags{});
         mediaPlayer->setMuted(true);
 
         if (mimeClass_ == u"video") {
-            auto newSurface = new InputVideoSurface(this);
-            connect(
-              newSurface, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
-                  if (img.size().isEmpty())
-                      return;
+            connect(&_inputVideoFilter, &InputVideoFilter::newImage, this, [this](QImage img) {
+                if (img.size().isEmpty())
+                    return;
+                nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
+                this->setThumbnail(img);
 
-                  mediaPlayer->stop();
+                if (!dimensions_.isValid())
+                    this->dimensions_ = img.size();
 
-                  auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
-                  if (orientation == 90 || orientation == 270 || orientation == 180) {
-                      img =
-                        img.transformed(QTransform().rotate(orientation), Qt::SmoothTransformation);
-                  }
+                if (img.height() > 200 && img.width() > 360)
+                    img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+                std::vector<unsigned char> data_;
+                for (int y = 0; y < img.height(); y++) {
+                    for (int x = 0; x < img.width(); x++) {
+                        auto p = img.pixel(x, y);
+                        data_.push_back(static_cast<unsigned char>(qRed(p)));
+                        data_.push_back(static_cast<unsigned char>(qGreen(p)));
+                        data_.push_back(static_cast<unsigned char>(qBlue(p)));
+                    }
+                }
+                blurhash_ = QString::fromStdString(
+                blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
+            });
+            // auto inputVideoSurface_ = new InputVideoSurface(this);
+            // connect(
+            //   inputVideoSurface_, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
+            //       if (img.size().isEmpty())
+            //           return;
 
-                  nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
+            //       mediaPlayer->stop();
 
-                  this->setThumbnail(img);
+            //       auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
+            //       if (orientation == 90 || orientation == 270 || orientation == 180) {
+            //           img =
+            //             img.transformed(QTransform().rotate(orientation), Qt::SmoothTransformation);
+            //       }
 
-                  if (!dimensions_.isValid())
-                      this->dimensions_ = img.size();
+            //       nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
 
-                  if (img.height() > 200 && img.width() > 360)
-                      img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-                  std::vector<unsigned char> data_;
-                  for (int y = 0; y < img.height(); y++) {
-                      for (int x = 0; x < img.width(); x++) {
-                          auto p = img.pixel(x, y);
-                          data_.push_back(static_cast<unsigned char>(qRed(p)));
-                          data_.push_back(static_cast<unsigned char>(qGreen(p)));
-                          data_.push_back(static_cast<unsigned char>(qBlue(p)));
-                      }
-                  }
-                  blurhash_ = QString::fromStdString(
-                    blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
-              });
-            mediaPlayer->setVideoOutput(newSurface);
+            //       this->setThumbnail(img);
+
+            //       if (!dimensions_.isValid())
+            //           this->dimensions_ = img.size();
+
+            //       if (img.height() > 200 && img.width() > 360)
+            //           img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+            //       std::vector<unsigned char> data_;
+            //       for (int y = 0; y < img.height(); y++) {
+            //           for (int x = 0; x < img.width(); x++) {
+            //               auto p = img.pixel(x, y);
+            //               data_.push_back(static_cast<unsigned char>(qRed(p)));
+            //               data_.push_back(static_cast<unsigned char>(qGreen(p)));
+            //               data_.push_back(static_cast<unsigned char>(qBlue(p)));
+            //           }
+            //       }
+            //       blurhash_ = QString::fromStdString(
+            //         blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
+            //   });
+            // mediaPlayer->setVideoOutput(inputVideoSurface_);
         }
 
         connect(mediaPlayer,
@@ -946,7 +982,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         mediaPlayer->setMedia(
           QMediaContent(originalFile ? originalFile->fileName() : originalFilename_), source.get());
 
-        mediaPlayer->play();
+        // mediaPlayer->play();
     }
 }
 
@@ -959,45 +995,44 @@ MediaUpload::startUpload()
         buffer.open(QIODevice::WriteOnly);
         thumbnail_.save(&buffer, "PNG", 0);
         if (ba.size() >= (data.size() - data.size() / 10)) {
-            nhlog::ui()->info(
-              "Thumbnail is not a lot smaller than original image, not uploading it");
+            nhlog::ui()->warn(
+              "Thumbnail is not a lot smaller than original image");
             nhlog::ui()->debug(
               "\n    Image size: {:9d}\nThumbnail size: {:9d}", data.size(), ba.size());
-        } else {
-            auto payload = std::string(ba.data(), ba.size());
-            if (encrypt_) {
-                mtx::crypto::BinaryBuf buf;
-                std::tie(buf, thumbnailEncryptedFile) =
-                  mtx::crypto::encrypt_file(std::move(payload));
-                payload = mtx::crypto::to_string(buf);
-            }
-            thumbnailSize_ = payload.size();
-
-            http::client()->upload(
-              payload,
-              encryptedFile ? "application/octet-stream" : "image/png",
-              "",
-              [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
-                  if (err) {
-                    //   emit ChatPage::instance()->showNotification(
-                    //     tr("Failed to upload media. Please try again."));
-                      nhlog::net()->warn("failed to upload media: {} {} ({})",
-                                         err->matrix_error.error,
-                                         to_string(err->matrix_error.errcode),
-                                         static_cast<int>(err->status_code));
-                      thumbnail_ = QImage();
-                      startUpload();
-                      return;
-                  }
-
-                  thumbnailUrl_ = QString::fromStdString(res.content_uri);
-                  if (thumbnailEncryptedFile)
-                      thumbnailEncryptedFile->url = res.content_uri;
-
-                  startUpload();
-              });
-            return;
+        } 
+        auto payload = std::string(ba.data(), ba.size());
+        if (encrypt_) {
+            mtx::crypto::BinaryBuf buf;
+            std::tie(buf, thumbnailEncryptedFile) =
+                mtx::crypto::encrypt_file(std::move(payload));
+            payload = mtx::crypto::to_string(buf);
         }
+        thumbnailSize_ = payload.size();
+
+        http::client()->upload(
+            payload,
+            encryptedFile ? "application/octet-stream" : "image/png",
+            "",
+            [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
+                if (err) {
+                //   emit ChatPage::instance()->showNotification(
+                //     tr("Failed to upload media. Please try again."));
+                    nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                        err->matrix_error.error,
+                                        to_string(err->matrix_error.errcode),
+                                        static_cast<int>(err->status_code));
+                    thumbnail_ = QImage();
+                    startUpload();
+                    return;
+                }
+
+                thumbnailUrl_ = QString::fromStdString(res.content_uri);
+                if (thumbnailEncryptedFile)
+                    thumbnailEncryptedFile->url = res.content_uri;
+
+                startUpload();
+            });
+        return;
     }
 
     auto payload = std::string(data.data(), data.size());
@@ -1030,6 +1065,71 @@ MediaUpload::startUpload()
 
           emit uploadComplete(this, std::move(url));
       });
+}
+
+QImage thumbnailFromVideoFrame(const QVideoFrame& buffer){
+    QVideoFrame f = buffer;
+    f.map( QAbstractVideoBuffer::ReadOnly );
+
+    const auto fmt = f.image().format();
+    QImage image;
+
+    if( fmt != QImage::Format_Invalid ) {
+        image = f.image();
+        nhlog::ui()->info("Thumbnail image generated.");
+    } else if( f.pixelFormat() == QVideoFrame::Format_ABGR32 ) {
+        nhlog::ui()->warn("Thumbnail image format is invalid!");
+        const auto max = f.width() * f.height() * 4;
+        std::vector< uchar > buf;
+        buf.reserve( max );
+        uchar * bits = f.bits();
+
+        static const size_t i1 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 2 : 0 );
+        static const size_t i2 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 1 : 3 );
+        static const size_t i3 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 0 : 2 );
+        static const size_t i4 = ( Q_BYTE_ORDER == Q_LITTLE_ENDIAN ? 3 : 1 );
+
+        for( auto i = 0; i < max; )
+        {
+            buf.push_back( bits[ i1 ] );
+            buf.push_back( bits[ i2 ] );
+            buf.push_back( bits[ i3 ] );
+            buf.push_back( bits[ i4 ] );
+
+            bits += 4;
+            i += 4;
+        }
+        nhlog::ui()->info("Thumbnail image generated.");
+        image = QImage( &buf[ 0 ], f.width(), f.height(), f.bytesPerLine(),QImage::Format_ARGB32 ).copy();
+        image = image.mirrored(false,true);
+    }
+    return image;
+}
+
+QVideoFrame InputVideoFilterRunnable::run(QVideoFrame *input, const QVideoSurfaceFormat &surfaceFormat, RunFlags flags) { 
+    (void)surfaceFormat;
+    (void)flags;
+    auto frame = *input;
+    if(input && _thumbnailImage.format() == QImage::Format_Invalid){
+        _thumbnailImage = thumbnailFromVideoFrame(frame);
+    }
+    return QVideoFrame(_thumbnailImage);
+}
+
+QImage InputVideoFilterRunnable::thumbnailImage(){
+    return _thumbnailImage;
+}
+
+QVideoFilterRunnable *InputVideoFilter::createFilterRunnable() { 
+    _inputVideoFilterRunnable = new InputVideoFilterRunnable;
+    connect(this, &QAbstractVideoFilter::activeChanged, this,[this](){
+        if(!isActive() && !_inputVideoFilterRunnable->thumbnailImage().size().isEmpty()){
+            emit newImage(_inputVideoFilterRunnable->thumbnailImage());
+            setActive(false);
+        }
+    });
+    setActive(false);
+    return _inputVideoFilterRunnable;
 }
 
 void

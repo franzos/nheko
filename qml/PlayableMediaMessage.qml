@@ -23,21 +23,28 @@ Item {
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timeline.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent.width, implicitWidth)
-    height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
+    height: ((type == MtxEvent.VideoMessage) ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
 
     property int metadataWidth
     property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
 
-    MxcMedia {
+    MxcMedia { 
         id: mxcmedia
+        roomm: room
+        eventId: content.eventId
+        onMediaFilehanged: {
+            mediaPlayer.source = mediaFile
+            busyIndicator.visible = false
+        }
+    } 
+
+    MediaPlayer { 
+        id: mediaPlayer
 
         // TODO: Show error in overlay or so?
         onError: console.log(error)
-        roomm: room
-        // desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
-        // this value automatically gets clamped for us between these two values.
-        volume: mediaControls.desiredVolume * 100
+        volume: mediaControls.desiredVolume
         muted: mediaControls.muted
     }
 
@@ -48,9 +55,9 @@ Item {
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
-        TapHandler {
-            onTapped: room.openMedia(eventId) //Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
-        }
+        // TapHandler {
+        //     onTapped: room.openMedia(eventId) //Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
+        // }
 
         Image {
             anchors.fill: parent
@@ -65,11 +72,17 @@ Item {
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
-                source: mxcmedia
+                source: mediaPlayer
                 flushMode: VideoOutput.FirstFrame
-                orientation: mxcmedia.orientation
+                // orientation: mediaPlayer.orientation
             }
-
+            BusyIndicator {
+                id: busyIndicator
+                anchors.centerIn: parent    
+                visible: false
+                width: 64; height: width
+                palette.dark: GlobalObject.colors.windowText
+            }
         }
 
     }
@@ -81,13 +94,16 @@ Item {
         anchors.right: content.right
         anchors.bottom: fileInfoLabel.top
         playingVideo: type == MtxEvent.VideoMessage
-        positionValue: mxcmedia.position
-        duration: mediaLoaded ? mxcmedia.duration : content.duration
-        mediaLoaded: mxcmedia.loaded
-        mediaState: mxcmedia.state
-        onPositionChanged: mxcmedia.position = position
-        onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-        onLoadActivated: mxcmedia.eventId = eventId
+        positionValue: mediaPlayer.position
+        duration: mediaLoaded ? mediaPlayer.duration : content.duration
+        mediaLoaded: mediaPlayer.source!=""
+        mediaState: mediaPlayer.playbackState
+        onPositionChanged: mediaPlayer.position = position
+        onPlayPauseActivated: mediaPlayer.playbackState == MediaPlayer.PlayingState ? mediaPlayer.pause() : mediaPlayer.play()
+        onLoadActivated: {
+            busyIndicator.visible = true
+            mxcmedia.startDownload()
+        }
     }
 
     // information about file name and file size

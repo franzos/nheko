@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QAbstractVideoSurface>
+#include <QVideoFilterRunnable>
 #include <QIODevice>
 #include <QImage>
 #include <QObject>
@@ -14,6 +15,7 @@
 #include <QTimer>
 #include <QUrl>
 #include <QVariantList>
+#include <QDebug>
 #include <deque>
 #include <memory>
 
@@ -50,6 +52,27 @@ signals:
     void newImage(QImage img);
 };
 
+
+class InputVideoFilterRunnable : public QVideoFilterRunnable {
+public:
+    QVideoFrame run(QVideoFrame *input, const QVideoSurfaceFormat &surfaceFormat, RunFlags flags);
+    QImage thumbnailImage();
+private:
+    QImage _thumbnailImage;
+};
+
+class InputVideoFilter : public QAbstractVideoFilter {
+    Q_OBJECT
+public:
+    QVideoFilterRunnable *createFilterRunnable();
+signals:
+    void finished(QObject *result);
+    void newImage(QImage img);
+private:
+    InputVideoFilterRunnable *_inputVideoFilterRunnable;
+};
+
+
 class MediaUpload : public QObject
 {
     Q_OBJECT
@@ -58,6 +81,7 @@ class MediaUpload : public QObject
     Q_PROPERTY(QUrl thumbnail READ thumbnailDataUrl NOTIFY thumbnailChanged)
     //    Q_PROPERTY(QString humanSize READ humanSize NOTIFY huSizeChanged)
     Q_PROPERTY(QString filename READ filename WRITE setFilename NOTIFY filenameChanged)
+    Q_PROPERTY(QString absoluteFilePath READ absoluteFilePath WRITE setFilePath)
 
     // thumbnail video
     // https://stackoverflow.com/questions/26229633/display-on-screen-using-qabstractvideosurface
@@ -93,6 +117,7 @@ public:
     [[nodiscard]] QString mimetype() const { return mimetype_; }
     [[nodiscard]] QString mimeClass() const { return mimeClass_; }
     [[nodiscard]] QString filename() const { return originalFilename_; }
+    [[nodiscard]] QString absoluteFilePath() const { return absoluteFilePath_; }
     [[nodiscard]] QString blurhash() const { return blurhash_; }
     [[nodiscard]] uint64_t size() const { return size_; }
     [[nodiscard]] uint64_t duration() const { return duration_; }
@@ -119,6 +144,13 @@ public:
         }
     }
 
+    void setFilePath(QString path)
+    {
+        if (path != absoluteFilePath_) {
+            absoluteFilePath_ = std::move(path);
+        }
+    }
+
 signals:
     void uploadComplete(MediaUpload *self, QString url);
     void uploadFailed(MediaUpload *self);
@@ -128,6 +160,9 @@ signals:
 
 public slots:
     void startUpload();
+    InputVideoFilter *inputVideoFilter(){
+        return &_inputVideoFilter;
+    }
 
 private slots:
     void setThumbnail(QImage img)
@@ -144,11 +179,12 @@ public:
     QString mimetype_;
     QString mimeClass_;
     QString originalFilename_;
+    QString absoluteFilePath_;
     QString blurhash_;
     QString thumbnailUrl_;
     QString url_;
     std::optional<mtx::crypto::EncryptedFile> encryptedFile, thumbnailEncryptedFile;
-
+    InputVideoFilter _inputVideoFilter;
     QImage thumbnail_;
 
     QSize dimensions_;

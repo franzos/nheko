@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.5
-import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.12
 import MatrixClient 1.0
@@ -11,7 +10,8 @@ import "regex"
 import "ui"
 
 Dialog {
-    standardButtons: StandardButton.Ok | StandardButton.Cancel
+    standardButtons: Dialog.Ok | Dialog.Cancel
+    width: (Qt.platform.os == "android" ? parent.width : 420)
 
     Column {
         width: parent.width
@@ -97,14 +97,14 @@ Dialog {
             }
         } 
     }
-    onButtonClicked: {
-        if (clickedButton==StandardButton.Ok) {
-            MatrixClient.onUserInfoLoaded.connect(gotoInvite)
-            MatrixClient.onUserInfoLoadingFailed.connect(disconnectSignals)
-            MatrixClient.userInformation(userIDField.text)
-        } else if (clickedButton==StandardButton.Cancel) {
-            userIDField.text = ""
-        }
+    onAccepted: {
+        MatrixClient.onUserInfoLoaded.connect(gotoInvite)
+        MatrixClient.onUserInfoLoadingFailed.connect(disconnectSignals)
+        MatrixClient.userInformation(userIDField.text)
+    }
+    
+    onRejected: {
+        userIDField.text = ""
     }
 
     function disconnectSignals(msg){
