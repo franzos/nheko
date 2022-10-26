@@ -385,10 +385,11 @@ Rectangle {
             width: 26; height: width
             image: ":/images/attach.svg"
             Layout.margins: 8
-            onClicked: room.input.openFileSelection()
+            onClicked: !uploadingicon.visible ? room.input.openFileSelection() : {}
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")
             Rectangle {
+                id: uploadingicon
                 width: parent.width; height: width
                 color: GlobalObject.colors.window
                 visible: room && (room.input.uploading || room.input.uploads.length)
