@@ -382,7 +382,7 @@ Rectangle {
             // visible: showAllButtons
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
-            width: 26; height: width
+            width: 24; height: width
             image: ":/images/attach.svg"
             Layout.margins: 8
             onClicked: !uploadingicon.visible ? room.input.openFileSelection() : {}
@@ -396,7 +396,7 @@ Rectangle {
                 BusyIndicator {
                     width: parent.width; height: width
                     palette.dark: GlobalObject.colors.windowText
-                    running: parent.visible
+                    running: true
                 }
             }
         }
