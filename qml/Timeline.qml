@@ -252,8 +252,6 @@ Room {
         id: inviteDialog
 
         InviteDialog {
-            x: (qmlLibRoot.width - width) / 2
-            y: (qmlLibRoot.height - height) / 2
         }
     }
 
@@ -307,7 +305,10 @@ Room {
                 "plainRoomName": name,
                 "invitees": invitees
             });
-            dialog.show();
+            if(Qt.platform.os == "android")
+                dialog.showMaximized();
+            else 
+                dialog.show();
             destroyOnClose(dialog);
         }
 
