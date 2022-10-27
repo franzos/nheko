@@ -25,7 +25,10 @@ Column {
 
     Component {
         id: callSettingsDialogFactory
-        CallSettingsDialog {}
+        CallSettingsDialog {
+            x: (qmlLibRoot.width - width) / 2
+            y: (qmlLibRoot.height - height) / 2
+        }
     }
 
     ToolBar {

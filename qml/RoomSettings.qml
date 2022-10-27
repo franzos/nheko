@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import Qt.labs.platform 1.1 as Platform
+import QtQuick.Dialogs 1.3
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -36,6 +36,31 @@ ApplicationWindow {
     ScrollHelper {
         flickable: flickable
         anchors.fill: flickable
+    }
+    Component{
+        id: confirmEncryptionDialogFactory
+        Dialog {
+            title: qsTr("End-to-End Encryption")
+            x: (parent.width - width) / 2
+            y: (parent.height - height) / 2
+            standardButtons: Dialog.Cancel | Dialog.Ok
+            Column {
+                width:parent.width
+                spacing: 10
+                Label {
+                    text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
+                                            Please take note that it can't be disabled afterwards.")
+                }
+            }
+            onAccepted: {
+                if (roomSettings.isEncryptionEnabled)
+                    return ;
+                roomSettings.enableEncryption();
+            }
+            onRejected: {
+                encryptionToggle.checked = false;
+            }
+        }
     }
     Flickable {
         id: flickable
@@ -318,28 +343,12 @@ ApplicationWindow {
                             checked = true;
                             return ;
                         }
-                        confirmEncryptionDialog.open();
+                        if(!checked)
+                            return;
+                        var confirmEncryptionDialog = confirmEncryptionDialogFactory.createObject(roomSettingsDialog);
+                        confirmEncryptionDialog.open()
                     }
                     Layout.alignment: Qt.AlignRight
-                }
-
-                Platform.MessageDialog {
-                    id: confirmEncryptionDialog
-
-                    title: qsTr("End-to-End Encryption")
-                    text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
-                                Please take note that it can't be disabled afterwards.")
-                    modality: Qt.NonModal
-                    onAccepted: {
-                        if (roomSettings.isEncryptionEnabled)
-                            return ;
-
-                        roomSettings.enableEncryption();
-                    }
-                    onRejected: {
-                        encryptionToggle.checked = false;
-                    }
-                    buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
                 }
 
                 // Label {

@@ -7,6 +7,7 @@
 #include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
+#include <QBuffer>
 #include <QUrl>
 #include "Theme.h"
 #include "Application.h"
@@ -41,8 +42,12 @@ class GlobalObject : public QObject
     Q_PROPERTY(int paddingMedium READ paddingMedium CONSTANT)
     Q_PROPERTY(int paddingLarge READ paddingLarge CONSTANT)
 
-public:
+private:
     GlobalObject();
+    static GlobalObject *_instance;
+
+public:
+    static GlobalObject *instance();
 
     QPalette colors() const;
     QPalette inactiveColors() const;
@@ -61,11 +66,18 @@ public:
     Q_INVOKABLE QString getApplicationVersion(){return QString::fromStdString(VERSION_APPLICATION);}
     Q_INVOKABLE QString checkMatrixServerUrl(QString url);
     Q_INVOKABLE AndroidMaterialTheme materialColors();
+    Q_INVOKABLE QString mediaCachePath();
     
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
     bool handleMatrixUri(const QUrl &uri);
-    
+    static QString getSaveFileName(const QString &caption = QString(),
+                                   const QString &dir = QString(),
+                                   const QString &selectedFile = QString(),
+                                   const QString &filter = QString());
+    static void saveAs(const QString &source, const QString &dst);
+    static void saveBufferToFile(const QString &filename, const QBuffer &buffer);
+
 signals:
     void colorsChanged();
     void profileChanged();

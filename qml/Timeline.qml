@@ -305,7 +305,10 @@ Room {
                 "plainRoomName": name,
                 "invitees": invitees
             });
-            dialog.show();
+            if(Qt.platform.os == "android")
+                dialog.showMaximized();
+            else 
+                dialog.show();
             destroyOnClose(dialog);
         }
 
