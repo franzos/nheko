@@ -28,6 +28,7 @@ Item {
 
     property int metadataWidth
     property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
+    property bool playAfterDownload: false
 
     MxcMedia { 
         id: mxcmedia
@@ -36,12 +37,16 @@ Item {
         onMediaFilehanged: {
             mediaPlayer.source = mediaFile
             busyIndicator.visible = false
+            if(playAfterDownload){
+                playAfterDownload=false
+                mediaPlayer.play()
+            }
         }
     } 
 
     MediaPlayer { 
         id: mediaPlayer
-
+ 
         // TODO: Show error in overlay or so?
         onError: console.log(error)
         volume: mediaControls.desiredVolume
@@ -99,10 +104,25 @@ Item {
         mediaLoaded: mediaPlayer.source!=""
         mediaState: mediaPlayer.playbackState
         onPositionChanged: mediaPlayer.position = position
-        onPlayPauseActivated: mediaPlayer.playbackState == MediaPlayer.PlayingState ? mediaPlayer.pause() : mediaPlayer.play()
+        onPlayPauseActivated: {
+            if(!playAfterDownload){
+                if(mediaPlayer.playbackState == MediaPlayer.PlayingState){
+                    mediaPlayer.pause()
+                } else {
+                    if(mediaPlayer.source!=""){
+                        mediaPlayer.play()
+                    } else {
+                        console.log("Media source isn't exist in the cache, go for download ...")
+                        playAfterDownload = true
+                        busyIndicator.visible = true
+                        mxcmedia.startDownload(true)
+                    }
+                }
+            }
+        }
         onLoadActivated: {
             busyIndicator.visible = true
-            mxcmedia.startDownload()
+            mxcmedia.startDownload(false)
         }
     }
 

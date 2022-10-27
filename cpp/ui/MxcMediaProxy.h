@@ -45,11 +45,9 @@ signals:
     void loadedChanged();
     void mediaFilehanged();
 
-private slots:
-    void checkMediaFileExist();
-    
 public slots:
-    void startDownload();
+    void checkMediaFileExist();
+    void startDownload(bool justCache);
 
 private:
     TimelineModel *room_ = nullptr;

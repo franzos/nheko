@@ -74,7 +74,7 @@ Rectangle {
         anchors.left: control.left
         anchors.right: control.right
 
-        NhekoSlider {
+        NhekoSlider { 
             Layout.fillWidth: true
             Layout.leftMargin: 4
             Layout.rightMargin: 4
@@ -105,7 +105,6 @@ Rectangle {
             // Play/pause button
             ImageButton {
                 id: playbackStateImage
-                enabled: control.mediaLoaded
                 Layout.alignment: Qt.AlignLeft
                 buttonTextColor: GlobalObject.colors.text
                 Layout.preferredHeight: 24

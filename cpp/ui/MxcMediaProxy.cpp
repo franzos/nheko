@@ -82,7 +82,7 @@ void MxcMediaProxy::checkMediaFileExist(){
 }    
 
 void
-MxcMediaProxy::startDownload()
+MxcMediaProxy::startDownload(bool justCache)
 {
     if (!room_)
         return;
@@ -124,18 +124,21 @@ MxcMediaProxy::startDownload()
     QPointer<MxcMediaProxy> self = this;
     
     const QString defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-    const auto saveAsFilename = GlobalObject::getSaveFileName("Save", defaultFilePath, filename.fileName(), suffix);
+    QString saveAsFilename;
+    if(!justCache)
+        saveAsFilename = GlobalObject::getSaveFileName("Save", defaultFilePath, filename.fileName(), suffix);
     if (filename.isReadable()) {
         QFile f(filename.filePath());
         if (f.open(QIODevice::ReadOnly)) {
-            GlobalObject::saveAs(filename.filePath(), saveAsFilename);
+            if(!justCache)
+                GlobalObject::saveAs(filename.filePath(), saveAsFilename);
             setMediaFile(filename);
             return;
         }
     }
-
+ 
     http::client()->download(url,
-                             [this, saveAsFilename, filename, url, encryptionInfo](const std::string &data,
+                             [this, justCache, saveAsFilename, filename, url, encryptionInfo](const std::string &data,
                                                             const std::string &,
                                                             const std::string &,
                                                             mtx::http::RequestErr err) {
@@ -158,7 +161,8 @@ MxcMediaProxy::startDownload()
                                          buffer.setData(ba);
                                      }
                                      GlobalObject::saveBufferToFile(filename.filePath(), buffer);
-                                     GlobalObject::saveBufferToFile(saveAsFilename, buffer);
+                                     if(!justCache)
+                                        GlobalObject::saveBufferToFile(saveAsFilename, buffer);
                                      setMediaFile(filename);
                                  } catch (const std::exception &e) {
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
