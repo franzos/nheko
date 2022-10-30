@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 import QmlInterface 1.0
 import GlobalObject 1.0
+import LOGIN_TYPE 1.0
 import "regex"
 import "ui"
 
@@ -76,7 +77,7 @@ Page {
                 combo.restart()
                 for (var prop in options) {
                     console.log("Object item:", prop, "=", options[prop])
-                    combo.model.append ({ text: prop })
+                    combo.model.append ({ text: options[prop] , value: prop})
                 }
             }
         }
@@ -86,7 +87,9 @@ Page {
             editable: false
             flat: true     
             displayText:"Select Login Option"  
-            
+            textRole: "text"
+            valueRole: "value"
+
             Layout.leftMargin: 50
             Layout.rightMargin: 50
             background:Rectangle {
@@ -102,7 +105,7 @@ Page {
             //  Component.onCompleted:  displayText  = "Select Login Option"    
             onActivated: {
                 displayText = combo.text
-                if(currentText == "PASSWORD"){
+                if(currentValue == LOGIN_TYPE.PASSWORD){
                     passwordText.visible = true
                     loginButton.enabled= true
                 } else {
@@ -127,9 +130,9 @@ Page {
                 Layout.alignment: Qt.AlignHCenter
                 enabled: false
                 onClicked: {
-                    if(combo.currentText == "PASSWORD")
+                    if(combo.currentValue == LOGIN_TYPE.PASSWORD){
                         gotoLogin()
-                    else if (combo.currentText == "CIBA"){
+                    } else if (combo.currentValue == LOGIN_TYPE.CIBA){
                         gotoCibaLogin("")
                     }
                 }
@@ -203,9 +206,9 @@ Page {
     }
     
     function onLoginProgramatically(type, accessToken){
-        if(type == QmlInterface.LOGIN_TYPE.CIBA)
+        if(type == LOGIN_TYPE.CIBA)
             gotoCibaLogin(accessToken)
-        else if(type == QmlInterface.LOGIN_TYPE.PASSWORD)
+        else if(type == LOGIN_TYPE.PASSWORD)
             gotoLogin()
     }
 

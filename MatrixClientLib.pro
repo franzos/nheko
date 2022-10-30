@@ -17,6 +17,7 @@ headers.files = cpp/Application.h \
                 cpp/GlobalObject.h \
                 cpp/InviteesModel.h \
                 cpp/MemberList.h \
+                cpp/MxcImageProvider.h \
                 cpp/Reaction.h \ 
                 cpp/RoomListModel.h \
                 cpp/Clipboard.h \ 
@@ -29,7 +30,7 @@ headers.files = cpp/Application.h \
                 cpp/UsersModel.h \
                 cpp/ColorImageProvider.h \
                 cpp/Configuration.h \
-                cpp/MatrixQuickView.h \
+                cpp/MatrixQuickView.h \ 
                 cpp/QmlInterface.h \
                 cpp/RoomListItem.h \
                 cpp/Theme.h

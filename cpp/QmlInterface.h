@@ -6,6 +6,7 @@
 #include <QQuickView>
 #include <QWindow>
 #include <QQmlEngine>
+#include <px-auth-lib-cpp/Authentication.h>
 #include <matrix-client-library/Client.h>
 #include <matrix-client-library/UserProfile.h>
 #include <matrix-client-library/voip/CallManager.h>
@@ -24,10 +25,7 @@ class QmlInterface : public QObject {
     Q_OBJECT
 
 public: 
-    enum class LOGIN_TYPE {
-        PASSWORD,
-        CIBA
-    };
+    typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
     Q_ENUMS(LOGIN_TYPE)
 
     QmlInterface(QObject *parent = nullptr);
@@ -40,13 +38,13 @@ public:
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
-    void login(LOGIN_TYPE type, const QString &accessToken = "");
+    void login(PX::AUTH::LOGIN_TYPE type, const QString &accessToken = "");
     void logout();
 
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
-    void loginProgramatically(LOGIN_TYPE type, const QString &accessToken);
+    void loginProgramatically(PX::AUTH::LOGIN_TYPE type, const QString &accessToken);
     void notificationClicked(const QString &roomid);
     
 public slots:

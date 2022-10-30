@@ -37,6 +37,7 @@ namespace PX::GUI::MATRIX{
 
     using webrtc::CallType;
     using webrtc::State;
+    using PX::AUTH::LOGIN_TYPE;
 
     Client *QmlInterface::backendClient(){
         return _client;
@@ -243,6 +244,8 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
         qRegisterMetaType<webrtc::State>();
         qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "WebRTCState", 1, 0, "WebRTCState", QStringLiteral("Can't instantiate enum"));
+        qRegisterMetaType<PX::AUTH::LOGIN_TYPE>();
+        qmlRegisterUncreatableMetaObject(PX::AUTH::staticMetaObject, "LOGIN_TYPE", 1, 0, "LOGIN_TYPE", QStringLiteral("Can't instantiate enum"));
         qmlRegisterUncreatableType<UserProfile>("UserProfile",1,0,"UserProfile","UserProfile needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<Permissions>("Permissions",1,0,"Permissions","Permissions needs to be instantiated on the C++ side");
         qmlRegisterUncreatableMetaObject(verification::staticMetaObject,"VerificationStatus",1,0,"VerificationStatus",QStringLiteral("Can't instantiate enum!"));
@@ -346,7 +349,7 @@ QmlInterface::QmlInterface(QObject *parent):
         }
     };
 
-    void QmlInterface::login(LOGIN_TYPE type, const QString &accessToken){
+    void QmlInterface::login(PX::AUTH::LOGIN_TYPE type, const QString &accessToken){
         emit loginProgramatically(type, accessToken);
     }
     
