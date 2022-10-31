@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Changed
 
 * Update to use CIBA from `px-auth-library-cpp`.
+* Enable/Disable the CIBA codes by a build flag.
 
 
 ## [0.1.33]
