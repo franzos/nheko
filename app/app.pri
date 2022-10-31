@@ -1,6 +1,9 @@
 QT += network qml quick quickcontrols2 widgets quickwidgets svg multimedia
 CONFIG += c++17
-
+CIBA_AUTH {
+    DEFINES += CIBA_AUTH
+    message(" + CIBA: enabled.")
+}
 SOURCES += \
     $$PWD/../cpp/AvatarProvider.cpp \
     $$PWD/../cpp/BlurhashProvider.cpp \

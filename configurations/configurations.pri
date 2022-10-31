@@ -3,9 +3,12 @@ include(ios/ios.pri)
 
 linux:!android {
     # Configurations only required for desktop linux (not android)
-    LIBS += -lpx-auth-lib-cpp \
-            -lmatrix-client-library \
+    LIBS += -lmatrix-client-library \
             -llmdb
+    CIBA_AUTH {
+        LIBS += -lpx-auth-lib-cpp
+    }
+
     QT += dbus multimedia
     CONFIG += link_pkgconfig
     PKGCONFIG += glib-2.0

@@ -111,7 +111,9 @@ QmlInterface::QmlInterface(QObject *parent):
         #endif
     #endif
 #endif
+#ifdef CIBA_AUTH
     connect(_client, &Client::cmUserInfoUpdated,this, &QmlInterface::setCMUserInformation);
+#endif
     connect(_client, &Client::newUpdate,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
@@ -238,8 +240,10 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterUncreatableMetaObject(AudioDeviceInfo::staticMetaObject, "AudioDeviceInfo", 1, 0, "AudioDeviceInfo", QStringLiteral("Can't instantiate AudioDeviceInfo"));    
         qRegisterMetaType<UserInformation>();
         qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
+#ifdef CIBA_AUTH
         qRegisterMetaType<PX::AUTH::UserProfileInfo>();
         qmlRegisterUncreatableMetaObject(PX::AUTH::UserProfileInfo::staticMetaObject, "UserProfileInfo", 1, 0, "UserProfileInfo", QStringLiteral("Can't instantiate UserProfileInfo"));    
+#endif
         qRegisterMetaType<webrtc::CallType>();
         qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
         qRegisterMetaType<webrtc::State>();
@@ -316,7 +320,7 @@ QmlInterface::QmlInterface(QObject *parent):
         QQuickStyle::setFallbackStyle(fallback);
         qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
     }
-
+#ifdef CIBA_AUTH
     void QmlInterface::setCMUserInformation(const PX::AUTH::UserProfileInfo &info){
         _cmUserInformation = info;
     }
@@ -324,7 +328,7 @@ QmlInterface::QmlInterface(QObject *parent):
     PX::AUTH::UserProfileInfo QmlInterface::cmUserInformation(){
         return _cmUserInformation;
     }
-
+#endif
     QString QmlInterface::userId(){
         return _userId;
     }

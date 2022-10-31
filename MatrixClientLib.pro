@@ -4,10 +4,11 @@ TEMPLATE = lib
 TARGET = matrix-client-gui-library
 
 LIBS += -lmatrix-client-library \
-        -lpx-auth-lib-cpp \
         -lspdlog -lcurl -lcoeurl -llmdb \
         -lmatrix_client -lblurhash
-        
+CIBA_AUTH {
+        LIBS += -lpx-auth-lib-cpp
+}
 include(cpp/cpp.pri)
 include(qml/qml.pri)
 

@@ -6,7 +6,6 @@
 #include <QQuickView>
 #include <QWindow>
 #include <QQmlEngine>
-#include <px-auth-lib-cpp/Authentication.h>
 #include <matrix-client-library/Client.h>
 #include <matrix-client-library/UserProfile.h>
 #include <matrix-client-library/voip/CallManager.h>
@@ -25,10 +24,9 @@ class QmlInterface : public QObject {
     Q_OBJECT
 
 public: 
-    [[deprecated("Use the \"PX::AUTH::LOGIN_TYPE\" class instead of it.")]]
-    typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
-    Q_ENUMS(LOGIN_TYPE)
-
+    // [[deprecated("Use the \"PX::AUTH::LOGIN_TYPE\" class instead of it.")]]
+    // typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
+    // Q_ENUMS(LOGIN_TYPE)
     QmlInterface(QObject *parent = nullptr);
     Client *backendClient();
     QUrl mainLibQMLurl();
@@ -54,10 +52,19 @@ public slots:
     void setUserId(const QString userID);
     QString getServerAddress();
     void setServerAddress(const QString &server);
+#ifdef CIBA_AUTH
     void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
     PX::AUTH::UserProfileInfo cmUserInformation();
+#endif
     bool jdenticonProviderisAvailable();
-    
+    bool cibaSupport(){
+        #ifdef CIBA_AUTH
+        return true;
+        #else
+        return false;
+        #endif
+    }
+
 private slots:
     void initiateFinishedCB();
     void newSyncCb(const mtx::responses::Sync &sync);
@@ -79,7 +86,9 @@ private:
 #if defined(NOTIFICATION_DBUS_SYS)
     NotificationsManager _notificationsManager;
 #endif
+#ifdef CIBA_AUTH
     PX::AUTH::UserProfileInfo _cmUserInformation;
+#endif
 protected:
     MxcImageProvider *_mxcImageProvider = nullptr;
 };
