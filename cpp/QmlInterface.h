@@ -19,14 +19,11 @@
 class NotificationsManager;
 
 namespace PX::GUI::MATRIX {
-
 class QmlInterface : public QObject {
     Q_OBJECT
-
 public: 
-    // [[deprecated("Use the \"PX::AUTH::LOGIN_TYPE\" class instead of it.")]]
-    // typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
-    // Q_ENUMS(LOGIN_TYPE)
+    [[deprecated("Use the \"PX::AUTH::LOGIN_TYPE\" class instead of it.")]]
+    typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
     QmlInterface(QObject *parent = nullptr);
     Client *backendClient();
     QUrl mainLibQMLurl();
