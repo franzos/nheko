@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.36]
+### Fixed
+
+* Update to fixing issue to integrate gui library in other applications.
+
+
 ## [0.1.35]
 ### Changed
 
