@@ -5,9 +5,6 @@ linux:!android {
     # Configurations only required for desktop linux (not android)
     LIBS += -lmatrix-client-library \
             -llmdb
-    CIBA_AUTH {
-        LIBS += -lpx-auth-lib-cpp
-    }
 
     QT += dbus multimedia
     CONFIG += link_pkgconfig

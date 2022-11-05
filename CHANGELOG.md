@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.35]
+### Changed
+
+* LOGIN_TYPE typedef for keeping backward compatibility.
+
+
+## [0.1.34]
+### Changed
+
+* Update to use CIBA from `px-auth-library-cpp`.
+* Enable/Disable the CIBA codes by a build flag.
+
+
 ## [0.1.33]
 ### Fixed and Changed
 
