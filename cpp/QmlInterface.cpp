@@ -37,7 +37,7 @@ namespace PX::GUI::MATRIX{
 
     using webrtc::CallType;
     using webrtc::State;
-    using PX::AUTH::LOGIN_TYPE;
+    // using PX::AUTH::LOGIN_TYPE;
 
     Client *QmlInterface::backendClient(){
         return _client;
@@ -111,7 +111,9 @@ QmlInterface::QmlInterface(QObject *parent):
         #endif
     #endif
 #endif
+#if CIBA_AUTH
     connect(_client, &Client::cmUserInfoUpdated,this, &QmlInterface::setCMUserInformation);
+#endif
     connect(_client, &Client::newUpdate,this, &QmlInterface::newSyncCb);
     connect(_client, &Client::initiateFinished,this, &QmlInterface::initiateFinishedCB);
     connect(_client, &Client::logoutOk,[&](){
@@ -238,14 +240,16 @@ QmlInterface::QmlInterface(QObject *parent):
         qmlRegisterUncreatableMetaObject(AudioDeviceInfo::staticMetaObject, "AudioDeviceInfo", 1, 0, "AudioDeviceInfo", QStringLiteral("Can't instantiate AudioDeviceInfo"));    
         qRegisterMetaType<UserInformation>();
         qmlRegisterUncreatableMetaObject(UserInformation::staticMetaObject, "UserInformation", 1, 0, "UserInformation", QStringLiteral("Can't instantiate UserInformation"));    
+#if CIBA_AUTH
         qRegisterMetaType<PX::AUTH::UserProfileInfo>();
         qmlRegisterUncreatableMetaObject(PX::AUTH::UserProfileInfo::staticMetaObject, "UserProfileInfo", 1, 0, "UserProfileInfo", QStringLiteral("Can't instantiate UserProfileInfo"));    
+#endif
         qRegisterMetaType<webrtc::CallType>();
         qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "CallType", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
         qRegisterMetaType<webrtc::State>();
         qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject, "WebRTCState", 1, 0, "WebRTCState", QStringLiteral("Can't instantiate enum"));
-        qRegisterMetaType<PX::AUTH::LOGIN_TYPE>();
-        qmlRegisterUncreatableMetaObject(PX::AUTH::staticMetaObject, "LOGIN_TYPE", 1, 0, "LOGIN_TYPE", QStringLiteral("Can't instantiate enum"));
+        // qRegisterMetaType<PX::AUTH::LOGIN_TYPE>();
+        // qmlRegisterUncreatableMetaObject(PX::AUTH::staticMetaObject, "LOGIN_TYPE", 1, 0, "LOGIN_TYPE", QStringLiteral("Can't instantiate enum"));
         qmlRegisterUncreatableType<UserProfile>("UserProfile",1,0,"UserProfile","UserProfile needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<Permissions>("Permissions",1,0,"Permissions","Permissions needs to be instantiated on the C++ side");
         qmlRegisterUncreatableMetaObject(verification::staticMetaObject,"VerificationStatus",1,0,"VerificationStatus",QStringLiteral("Can't instantiate enum!"));
@@ -316,7 +320,7 @@ QmlInterface::QmlInterface(QObject *parent):
         QQuickStyle::setFallbackStyle(fallback);
         qDebug() << "Style:" << QQuickStyle::name() << QQuickStyle::availableStyles() << ", Fallback:" << fallback;
     }
-
+#if CIBA_AUTH
     void QmlInterface::setCMUserInformation(const PX::AUTH::UserProfileInfo &info){
         _cmUserInformation = info;
     }
@@ -324,7 +328,7 @@ QmlInterface::QmlInterface(QObject *parent):
     PX::AUTH::UserProfileInfo QmlInterface::cmUserInformation(){
         return _cmUserInformation;
     }
-
+#endif
     QString QmlInterface::userId(){
         return _userId;
     }
@@ -349,7 +353,7 @@ QmlInterface::QmlInterface(QObject *parent):
         }
     };
 
-    void QmlInterface::login(PX::AUTH::LOGIN_TYPE type, const QString &accessToken){
+    void QmlInterface::login(LOGIN_TYPE type, const QString &accessToken){
         emit loginProgramatically(type, accessToken);
     }
     

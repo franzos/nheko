@@ -6,7 +6,6 @@
 #include <QQuickView>
 #include <QWindow>
 #include <QQmlEngine>
-#include <px-auth-lib-cpp/Authentication.h>
 #include <matrix-client-library/Client.h>
 #include <matrix-client-library/UserProfile.h>
 #include <matrix-client-library/voip/CallManager.h>
@@ -16,6 +15,7 @@
 #include "RoomListItem.h"
 #include "notifications/Manager.h"
 #include "MxcImageProvider.h"
+#include "Features.h"
 
 class NotificationsManager;
 
@@ -25,7 +25,13 @@ class QmlInterface : public QObject {
     Q_OBJECT
 
 public: 
-    typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
+    // [[deprecated("Use the \"PX::AUTH::LOGIN_TYPE\" class instead of it.")]]
+    // typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
+    enum class LOGIN_TYPE {
+        PASSWORD,
+        CIBA
+    };
+
     Q_ENUMS(LOGIN_TYPE)
 
     QmlInterface(QObject *parent = nullptr);
@@ -38,13 +44,13 @@ public:
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
-    void login(PX::AUTH::LOGIN_TYPE type, const QString &accessToken = "");
+    void login(LOGIN_TYPE type, const QString &accessToken = "");
     void logout();
 
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
-    void loginProgramatically(PX::AUTH::LOGIN_TYPE type, const QString &accessToken);
+    void loginProgramatically(LOGIN_TYPE type, const QString &accessToken);
     void notificationClicked(const QString &roomid);
     
 public slots:
@@ -53,10 +59,19 @@ public slots:
     void setUserId(const QString userID);
     QString getServerAddress();
     void setServerAddress(const QString &server);
+#if CIBA_AUTH
     void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
     PX::AUTH::UserProfileInfo cmUserInformation();
+#endif
     bool jdenticonProviderisAvailable();
-    
+    bool cibaSupport(){
+        #if CIBA_AUTH
+        return true;
+        #else
+        return false;
+        #endif
+    }
+
 private slots:
     void initiateFinishedCB();
     void newSyncCb(const mtx::responses::Sync &sync);
@@ -78,7 +93,9 @@ private:
 #if defined(NOTIFICATION_DBUS_SYS)
     NotificationsManager _notificationsManager;
 #endif
+#if CIBA_AUTH
     PX::AUTH::UserProfileInfo _cmUserInformation;
+#endif
 protected:
     MxcImageProvider *_mxcImageProvider = nullptr;
 };

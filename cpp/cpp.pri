@@ -6,6 +6,10 @@ linux:!android {
 }
 CONFIG += c++17
 
+CIBA_AUTH {
+    message(" + CIBA: enabled.")
+}
+
 SOURCES += \
     $$PWD/AvatarProvider.cpp \
     $$PWD/BlurhashProvider.cpp \

@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 import MatrixClient 1.0
 import QmlInterface 1.0
 import GlobalObject 1.0
-import LOGIN_TYPE 1.0
+// import LOGIN_TYPE 1.0
 import "regex"
 import "ui"
 
@@ -105,7 +105,7 @@ Page {
             //  Component.onCompleted:  displayText  = "Select Login Option"    
             onActivated: {
                 displayText = combo.text
-                if(currentValue == LOGIN_TYPE.PASSWORD){
+                if(currentText == "PASSWORD"){
                     passwordText.visible = true
                     loginButton.enabled= true
                 } else {
@@ -130,9 +130,9 @@ Page {
                 Layout.alignment: Qt.AlignHCenter
                 enabled: false
                 onClicked: {
-                    if(combo.currentValue == LOGIN_TYPE.PASSWORD){
+                    if(combo.currentText == "PASSWORD"){
                         gotoLogin()
-                    } else if (combo.currentValue == LOGIN_TYPE.CIBA){
+                    } else if (combo.currentText == "CIBA"){
                         gotoCibaLogin("")
                     }
                 }
@@ -206,9 +206,9 @@ Page {
     }
     
     function onLoginProgramatically(type, accessToken){
-        if(type == LOGIN_TYPE.CIBA)
+        if(type == QmlInterface.LOGIN_TYPE.CIBA)
             gotoCibaLogin(accessToken)
-        else if(type == LOGIN_TYPE.PASSWORD)
+        else if(type == QmlInterface.LOGIN_TYPE.PASSWORD)
             gotoLogin()
     }
 
