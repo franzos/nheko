@@ -37,3 +37,5 @@ UpdateTranslations.sh
 *.qmlproject
 *.DS_Store
 *.qm
+
+./cpp/Features.h
