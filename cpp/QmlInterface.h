@@ -24,12 +24,7 @@ class QmlInterface : public QObject {
     Q_OBJECT
 public: 
     // [[deprecated("Use the \"PX::AUTH::LOGIN_TYPE\" class instead of it.")]]
-    // typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
-    enum class LOGIN_TYPE {
-        PASSWORD,
-        CIBA
-    };
-
+    typedef PX::AUTH::LOGIN_TYPE LOGIN_TYPE;
     Q_ENUMS(LOGIN_TYPE)
 
     QmlInterface(QObject *parent = nullptr);
@@ -42,13 +37,13 @@ public:
     Q_INVOKABLE QString defaultUserIdFormat() {return _defaultUserIdFormat;};
     void setAutoAcceptCall(bool mode) { _callAutoAccept = mode; };
     bool autoAcceptCall() { return _callAutoAccept; };
-    void login(LOGIN_TYPE type, const QString &accessToken = "");
+    void login(PX::AUTH::LOGIN_TYPE type, const QString &accessToken = "");
     void logout();
 
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
-    void loginProgramatically(LOGIN_TYPE type, const QString &accessToken);
+    void loginProgramatically(PX::AUTH::LOGIN_TYPE type, const QString &accessToken);
     void notificationClicked(const QString &roomid);
     
 public slots:
