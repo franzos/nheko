@@ -90,6 +90,22 @@ Rectangle {
             Layout.margins: 4
             spacing: 4
             Layout.fillWidth: true
+            // Play/pause button
+            ImageButton {
+                id: playbackStateImage
+                Layout.alignment: Qt.AlignLeft
+                buttonTextColor: GlobalObject.colors.text
+                Layout.preferredHeight: 24
+                Layout.preferredWidth: 24
+                Layout.rightMargin: 20
+                image: {
+                    if (control.mediaState == MediaPlayer.PlayingState)
+                        return ":/images/pause-symbol.svg";
+                    else
+                        return ":/images/play-sign.svg";
+                }
+                onClicked: control.playPauseActivated()
+            }
 
             // Cache button
             ImageButton {
@@ -102,22 +118,7 @@ Rectangle {
                 image: ":/images/download.svg"
                 onClicked: control.loadActivated()
             }
-            // Play/pause button
-            ImageButton {
-                id: playbackStateImage
-                Layout.alignment: Qt.AlignLeft
-                buttonTextColor: GlobalObject.colors.text
-                Layout.preferredHeight: 24
-                Layout.preferredWidth: 24
-                image: {
-                    if (control.mediaState == MediaPlayer.PlayingState)
-                        return ":/images/pause-symbol.svg";
-                    else
-                        return ":/images/play-sign.svg";
-                }
-                onClicked: control.playPauseActivated()
-            }
-
+            
             ImageButton {
                 id: volumeButton
 
