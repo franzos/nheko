@@ -12,7 +12,6 @@
 #include <QGuiApplication>
 #include <QInputMethod>
 #include <QMediaMetaData>
-#include <QMediaPlayer>
 #include <QMimeData>
 #include <QMimeDatabase>
 #include <QStandardPaths>
@@ -865,15 +864,9 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         blurhash_ =
           QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
     } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
-        // TODO
-        auto tmp = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + "originalFilename_";
+        auto tmp = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/tmpvideoupload";
         GlobalObject::saveBufferToFile(tmp, QBuffer(&data));
         absoluteFilePath_ = tmp;
-        auto mediaPlayer = new QMediaPlayer(
-          this,
-          mimeClass_ == u"video" ? QFlags{QMediaPlayer::VideoSurface} : QMediaPlayer::Flags{});
-        mediaPlayer->setMuted(true);
-
         if (mimeClass_ == u"video") {
             connect(&_inputVideoFilter, &InputVideoFilter::newImage, this, [this](QImage img) {
                 if (img.size().isEmpty())
@@ -898,91 +891,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                 blurhash_ = QString::fromStdString(
                 blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
             });
-            // auto inputVideoSurface_ = new InputVideoSurface(this);
-            // connect(
-            //   inputVideoSurface_, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
-            //       if (img.size().isEmpty())
-            //           return;
-
-            //       mediaPlayer->stop();
-
-            //       auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
-            //       if (orientation == 90 || orientation == 270 || orientation == 180) {
-            //           img =
-            //             img.transformed(QTransform().rotate(orientation), Qt::SmoothTransformation);
-            //       }
-
-            //       nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
-
-            //       this->setThumbnail(img);
-
-            //       if (!dimensions_.isValid())
-            //           this->dimensions_ = img.size();
-
-            //       if (img.height() > 200 && img.width() > 360)
-            //           img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-            //       std::vector<unsigned char> data_;
-            //       for (int y = 0; y < img.height(); y++) {
-            //           for (int x = 0; x < img.width(); x++) {
-            //               auto p = img.pixel(x, y);
-            //               data_.push_back(static_cast<unsigned char>(qRed(p)));
-            //               data_.push_back(static_cast<unsigned char>(qGreen(p)));
-            //               data_.push_back(static_cast<unsigned char>(qBlue(p)));
-            //           }
-            //       }
-            //       blurhash_ = QString::fromStdString(
-            //         blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
-            //   });
-            // mediaPlayer->setVideoOutput(inputVideoSurface_);
         }
-
-        connect(mediaPlayer,
-                qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
-                this,
-                [mediaPlayer](QMediaPlayer::Error error) {
-                    nhlog::ui()->debug("Media player error {} and errorStr {}",
-                                       error,
-                                       mediaPlayer->errorString().toStdString());
-                });
-        connect(mediaPlayer,
-                &QMediaPlayer::mediaStatusChanged,
-                [mediaPlayer](QMediaPlayer::MediaStatus status) {
-                    nhlog::ui()->debug(
-                      "Media player status {} and error {}", status, mediaPlayer->error());
-                });
-        connect(mediaPlayer,
-                qOverload<const QString &, const QVariant &>(&QMediaPlayer::metaDataChanged),
-                [this, mediaPlayer](QString t, QVariant) {
-                    nhlog::ui()->debug("Got metadata {}", t.toStdString());
-
-                    if (mediaPlayer->duration() > 0)
-                        this->duration_ = mediaPlayer->duration();
-
-                    auto dimensions = mediaPlayer->metaData(QMediaMetaData::Resolution).toSize();
-                    if (!dimensions.isEmpty()) {
-                        dimensions_ = dimensions;
-                        auto orientation =
-                          mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
-                        if (orientation == 90 || orientation == 270) {
-                            dimensions_.transpose();
-                        }
-                    }
-                });
-        connect(mediaPlayer, &QMediaPlayer::durationChanged, [this, mediaPlayer](qint64 duration) {
-            if (duration > 0) {
-                this->duration_ = mediaPlayer->duration();
-                if (mimeClass_ == u"audio")
-                    mediaPlayer->stop();
-            }
-            nhlog::ui()->debug("Duration changed {}", duration);
-        });
-
-        auto originalFile = qobject_cast<QFile *>(source.get());
-
-        mediaPlayer->setMedia(
-          QMediaContent(originalFile ? originalFile->fileName() : originalFilename_), source.get());
-
-        // mediaPlayer->play();
     }
 }
 

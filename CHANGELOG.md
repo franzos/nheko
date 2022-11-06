@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Removed filename in file attachments.
 * Disable attach button tooltip on android.
 * Fixing issue in refreshing the CM profile.
+* Remove QMediaPlayer object and retrieve video metadata in QML.
 
 
 ## [0.1.36]

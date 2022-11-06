@@ -64,6 +64,18 @@ Page {
                                 videoOutput.filters[0].active = true;
                             }
                         }
+                        function onMetaDataChangedHandler(){
+                            if(duration !=0 && metaData.resolution){
+                                metaData.onMetaDataChanged.disconnect(onMetaDataChangedHandler)
+                                model.duration = duration
+                                model.dimensions = metaData.resolution
+                                console.log("Got metadata duration   : ", model.duration);
+                                console.log("Got metadata dimensions : ", model.dimensions);
+                            }
+                        }
+                        Component.onCompleted: {
+                            metaData.onMetaDataChanged.connect(onMetaDataChangedHandler)
+                        }
                     }
                     VideoOutput {
                         id: videoOutput

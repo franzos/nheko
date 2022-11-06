@@ -9,7 +9,6 @@
 #include <QFile>
 #include <QMediaMetaData>
 #include <QMediaObject>
-#include <QMediaPlayer>
 #include <QMimeDatabase>
 #include <QUrl>
 #include <QFileDialog>
