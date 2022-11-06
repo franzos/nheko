@@ -213,6 +213,7 @@ function BUILD_MATRIX_CLIENT_LIBRARY {
 
     BUILD_LIB "$src_path" "$build_path" "$target" \
         ${OPENSSL_CMAKE_DEFINITIONS[@]} \
+        -DCIBA_AUTHENTICATION=ON \
         -DVOIP=OFF \
         -Dfmt_DIR=${DIST_DIR}/$target/lib/cmake/fmt \
         -Dspdlog_DIR=${DIST_DIR}/$target/lib/cmake/spdlog \
