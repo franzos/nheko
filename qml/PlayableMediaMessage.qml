@@ -131,7 +131,7 @@ Item {
         id: fileInfoLabel
 
         anchors.bottom: content.bottom
-        text: body + " [" + filesize + "]"
+        text: filesize
         textFormat: Text.RichText
         elide: Text.ElideRight
         color: GlobalObject.colors.text
