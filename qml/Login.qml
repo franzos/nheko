@@ -23,8 +23,8 @@ Page {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             placeholderText: "User ID or CM account" + (QmlInterface.defaultUserIdFormat()?" (e.g.: " + QmlInterface.defaultUserIdFormat() + ")" : "")
-            Keys.onReturnPressed: loginButton.gotoLogin()
-            Keys.onEnterPressed: loginButton.gotoLogin()
+            Keys.onReturnPressed: gotoLogin()
+            Keys.onEnterPressed: gotoLogin()
             onTextChanged: {     
                 if(!QmlInterface.getServerAddress()) {
                     discoveryTimer.restart()
@@ -49,8 +49,8 @@ Page {
             Layout.rightMargin: 50
             Layout.fillWidth: true
             placeholderText: qsTr("Password")
-            Keys.onReturnPressed: loginButton.gotoLogin()
-            Keys.onEnterPressed: loginButton.gotoLogin()
+            Keys.onReturnPressed: gotoLogin()
+            Keys.onEnterPressed: gotoLogin()
         }
 
        
@@ -63,8 +63,8 @@ Page {
             Layout.fillWidth: true
             validator: MatrixServerRegex{}
             placeholderText: "Matrix Server (e.g.: https://matrix.pantherx.org)"
-            Keys.onReturnPressed: loginButton.gotoLogin()
-            Keys.onEnterPressed: loginButton.gotoLogin()
+            Keys.onReturnPressed: gotoLogin()
+            Keys.onEnterPressed: gotoLogin()
             onTextChanged: {            
                 serverChangTimer.restart()
             }
