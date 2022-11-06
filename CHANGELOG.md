@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Fixing issue in attach Enter/Return press to login.
 * Removed filename in file attachments.
 * Disable attach button tooltip on android.
+* Fixing issue in refreshing the CM profile.
 
 
 ## [0.1.36]

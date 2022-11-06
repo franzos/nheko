@@ -97,9 +97,9 @@ Page {
 
     Component.onCompleted: {
         if(QmlInterface.cibaSupport()){
-            source = Qt.createQmlObject('import UserProfileInfo 1.0;',qmlLibRoot,"UserProfileInfoSnippet")
             MatrixClient.onCmUserInfoFailure.connect(onCmUserInfoFailure)
             MatrixClient.onCmUserInfoUpdated.connect(onCmUserInfoUpdated)
+            loader.source = Qt.createQmlObject('import UserProfileInfo 1.0;',qmlLibRoot,"UserProfileInfoSnippet")
         }
     }
 
