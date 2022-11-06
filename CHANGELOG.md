@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed
 
 * Fixing issue in attach Enter/Return press to login.
-
+* Removed filename in file attachments.
+* Disable attach button tooltip on android.
 
 
 ## [0.1.36]
