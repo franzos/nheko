@@ -42,7 +42,7 @@ android {
     } else {
         lines += "$${H}define CIBA_AUTH 0"
     }
-    write_file($$PWD/../cpp/Features.h, lines)
+    write_file($$PWD/../../cpp/Features.h, lines)
 
 }
 
