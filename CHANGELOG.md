@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.38]
+### Updated
+
+* Enable CIBA integration as default.
+
+
+
 ## [0.1.37]
 ### Fixed
 
