@@ -66,9 +66,11 @@ Rectangle {
                     color: GlobalObject.colors.windowText
                 }
                 Label {
+                    Layout.fillWidth: true
                     text: invite ? "Pending invite." : lastmessage 
                     font.pointSize: 10
                     color: "gray"
+                    clip: true
                 }
             }
             
