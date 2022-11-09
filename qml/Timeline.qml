@@ -24,30 +24,6 @@ Room {
     MessageView{
         anchors.fill: parent
     }
-    // ListView {
-    //     id: timelineView
-    //     anchors.fill: parent
-    //     spacing: 10
-    //     anchors.leftMargin: 10
-    //     anchors.rightMargin: 10
-    //     anchors.topMargin: 10
-    //     anchors.bottomMargin: 20
-
-    //     flickableDirection: Flickable.VerticalFlick
-    //     boundsBehavior: Flickable.StopAtBounds
-    //     ScrollBar.vertical: ScrollBar {}
-    //     model: timelineModel
-
-    //     delegate:TimelineDelegate{
-    //         id: eventItems
-    //     }
-
-    //     onCountChanged: {
-    //         var newIndex = count - 1
-    //         positionViewAtEnd()
-    //         currentIndex = newIndex
-    //     }
-    // }
 
     footer: ColumnLayout {
         id: footer
@@ -75,33 +51,6 @@ Room {
             //     sendButton.enabled = messageInput.text.length > 0 ? true : false
             // }
         }
-        // Row {
-        //     width: parent.width - 20
-            
-        //     MessageInput {
-        //         id: messageInput
-        //         width: parent.width //- sendButton.width            
-        //         // placeholderText: qsTr("Enter your message ...")
-        //         // Keys.onReturnPressed: sendButton.sendMessage() // Enter key
-        //         // Keys.onEnterPressed: sendButton.sendMessage() // Numpad enter key
-        //         // onTextChanged: {
-        //         //     sendButton.enabled = messageInput.text.length > 0 ? true : false
-        //         // }
-        //     }
-        //     ToolButton {
-        //     //     id: sendButton
-        //     //     icon.source: "qrc:/images/send.svg"
-        //     //     enabled: true// messageInput.text.length > 0 ? true : false
-        //     //     function sendMessage(){
-        //     //         if(messageInput.text.length > 0) {
-        //     //             timelineModel.send(messageInput.text);
-        //     //             messageInput.text = ""
-        //     //         }
-        //     //         messageInput.forceActiveFocus()
-        //     //     }
-        //     //     onClicked: sendMessage()
-        //     }
-        // }
     }
 
     EmojiPicker {
