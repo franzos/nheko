@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed
 
 * Fixing message preview issue for long messages in room list.
-
+* Fixing layout issue for last message in chat.
 
 
 ## [0.1.38]

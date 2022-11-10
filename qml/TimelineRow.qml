@@ -201,7 +201,8 @@ AbstractButton {
                 Layout.row: 2//Settings.bubbles? 2 : 0
                 Layout.rowSpan:1// Settings.bubbles? 1 : 2
                 Layout.bottomMargin: -2
-                Layout.topMargin: contentItem.fitsMetadata? -height-Layout.bottomMargin : 0
+                // Commented this file because of odd behaviour for last long message height issue #158
+                // Layout.topMargin: contentItem.fitsMetadata? -height-Layout.bottomMargin : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent

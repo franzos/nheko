@@ -22,7 +22,8 @@ Room {
     header :RoomTopBar {
     }
     MessageView{
-        anchors.fill: parent
+        height: timeline.height - messageInput.height - typingIndicator.height - 50
+        width: parent.width
     }
 
     footer: ColumnLayout {
