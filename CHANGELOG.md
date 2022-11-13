@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.39] - NOT RELEASED YET
+## [0.1.39]
 ### Fixed
 
 * Fixing message preview issue for long messages in room list.
