@@ -1,0 +1,63 @@
+From a41559fe97c1d94efd17998831b51111209e8a13 Mon Sep 17 00:00:00 2001
+From: Reza Alizadeh Majd <r.majd@pantherx.org>
+Date: Sun, 20 Nov 2022 20:53:08 +0330
+Subject: [PATCH] fix-ios-build
+
+---
+ CMakeLists.txt | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f70b9a2..64a048c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,16 @@
+ cmake_minimum_required(VERSION 3.11...3.13)
+ 
++if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.12)
++project(matrix_client
++	VERSION 0.8.2
++	DESCRIPTION "Client API library for Matrix."
++	HOMEPAGE_URL https://git.pantherx.org/development/libraries/qmtxclient)
++else()
++project(matrix_client
++	VERSION 0.8.2
++	DESCRIPTION "Client API library for Matrix.")
++endif()
++
+ 
+ set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard")
+ set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "Require C++ standard to be supported")
+@@ -9,8 +20,7 @@ set(CMAKE_AUTOMOC ON)
+ set(CMAKE_AUTORCC ON)
+ set(CMAKE_AUTOUIC ON)
+ 
+-find_package(Qt5Core REQUIRED PATHS "${CMAKE_FIND_ROOT_PATH}/lib/cmake")
+-find_package(Qt5Network REQUIRED PATHS "${CMAKE_FIND_ROOT_PATH}/lib/cmake")
++find_package(Qt5 COMPONENTS Core Network REQUIRED)
+ 
+ if(CMAKE_VERSION VERSION_LESS "3.7.0")
+ 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
+@@ -34,19 +44,6 @@ option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
+ option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
+ 	${HUNTER_ENABLED})
+ 
+-
+-if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.12)
+-project(matrix_client
+-	VERSION 0.8.2
+-	DESCRIPTION "Client API library for Matrix."
+-	HOMEPAGE_URL https://git.pantherx.org/development/libraries/qmtxclient)
+-else()
+-project(matrix_client
+-	VERSION 0.8.2
+-	DESCRIPTION "Client API library for Matrix.")
+-endif()
+-
+-
+ option(ASAN "Compile with address sanitizers" OFF)
+ option(BUILD_LIB_TESTS "Build tests" ON)
+ option(BUILD_LIB_EXAMPLES "Build examples" ON)
+-- 
+2.38.1
+
