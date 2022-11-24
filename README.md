@@ -61,20 +61,10 @@ in order to build third-party libraries for Android, following dependencies need
 
 ### iOS
 
-1. init submodules
-    ```bash
-    $ git submodule update --init
-    ```
+1. build openssl library:  `./vendor/build-ios.sh openssl` 
+2. build all other dependencies: `./vendor/build-ios all`
 
-2. build openssl 
-    ```bash
-    $ bash ./vendor/setup_ios.sh openssl
-    ```
-
-3. build dependencies
-    ```bash
-    $ bash ./vendor/setup_ios.sh all
-    ```
+**Note:** in order ro build 3rd-parties individually, we can use: `./vendor/build-ios.sh LIB_NAME` which the `LIB_NAME` points to the function in `build-ios.sh`: `BUILD_LIB_NAME`.
 
 ## Build for Android
 since third-party libraries are not compatible with default NDK installed bt QtCreator, we need to setup custom Kit for our application. following steps describe how we can setup required configurations.

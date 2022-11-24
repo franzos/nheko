@@ -3,9 +3,10 @@ ios {
     !exists($$DIST_DIR):error("vendor packages has not been setup yet! (run vendor/build-ios.sh)")
 
     QMAKE_INFO_PLIST = $$PWD/Info.plist
+    CONFIG -= bitcode
+    # QMAKE_ASSET_CATALOGS += $$PWD/Assets.xcassets
 
     INCLUDEPATH += $$DIST_DIR/include
-    message($$INCLUDEPATH)
 
     LIBS += -L$$DIST_DIR/lib \
             -lssl -lcrypto \
