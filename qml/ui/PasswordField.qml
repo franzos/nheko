@@ -8,22 +8,28 @@ RowLayout {
     Layout.fillWidth: true
     property alias placeholderText: passwordTextField.placeholderText
     property alias text: passwordTextField.text
-    property alias echoMode: passwordTextField.echoMode
     
+    // There is a bug in iOS when the Password mode is enabled, so as a quick/temporary workaround
+    // this property won't be change for iOS
+    // https://git.pantherx.org/development/mobile/matrix-client/-/issues/162
     TextField {
         id: passwordTextField
         Layout.fillWidth: true
-        anchors.fill: parent
+        echoMode:   {
+                        if(Qt.platform.os != "ios") 
+                            return TextField.Password
+                    }
     }
 
     ToolButton {
         id: button
-        icon.source: (passwordTextField.echoMode==TextInput.Password?"qrc:/images/hint.svg":"qrc:/images/visibility.svg")
+        enabled: Qt.platform.os != "ios"
+        icon.source: (passwordTextField.echoMode==TextField.Password?"qrc:/images/hint.svg":"qrc:/images/visibility.svg")
         onClicked: {
-            if(passwordTextField.echoMode==TextInput.Password){
-                passwordTextField.echoMode = TextInput.Normal
+            if(passwordTextField.echoMode==TextField.Password){
+                passwordTextField.echoMode = TextField.Normal
             } else {
-                passwordTextField.echoMode=TextInput.Password
+                passwordTextField.echoMode=TextField.Password
             }
         }
     }
