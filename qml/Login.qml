@@ -42,7 +42,6 @@ Page {
 
         PasswordField {
             id: passwordText
-            echoMode: TextInput.Password
             visible: false
             // text: "riverbed-judiciary-sworn"
             Layout.leftMargin: 50
