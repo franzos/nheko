@@ -126,11 +126,14 @@ function BUILD_MTXCLIENT {
 
 function BUILD_LMDB {
     name="lmdb"
-    version="mdb.master"
-    download_url="https://github.com/ramajd/lmdb.git"
+    version="LMDB_0.9.29"
+    download_url="https://github.com/LMDB/lmdb.git"
     FETCH_REPOSITORY $name $version $download_url
+    APPLY_PATCH $name \
+        $PATCH_DIR/lmdb/0001-add-cmake-support.patch
 
-    BUILD_LIB $name
+    BUILD_LIB $name \
+        -DMDB_USE_POSIX_SEM=ON
 }
 
 function BUILD_LMDBXX {
