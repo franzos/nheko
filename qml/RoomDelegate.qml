@@ -63,7 +63,6 @@ Rectangle {
                     text: name
                     font.italic: invite ? true : false
                     font.pointSize: 14
-                    color: GlobalObject.colors.windowText
                 }
                 Label {
                     Layout.fillWidth: true
