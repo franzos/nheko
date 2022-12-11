@@ -21,9 +21,15 @@ Room {
     anchors.top: parent.top
     header :RoomTopBar {
     }
-    MessageView{
-        height: timeline.height - messageInput.height - typingIndicator.height - 50
-        width: parent.width
+
+    Rectangle {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        color: GlobalObject.colors.base
+        MessageView{
+            height: timeline.height - messageInput.height - typingIndicator.height - 50
+            width: timeline.width
+        }
     }
 
     footer: ColumnLayout {

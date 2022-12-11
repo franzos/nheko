@@ -104,7 +104,7 @@ AbstractButton {
         width: Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20))// Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
         height: msg.height+msg.anchors.margins*2
 
-        property color userColor: room.userColor(userId, "GlobalObject.colors.base")
+        property color userColor: room.userColor(userId, GlobalObject.colors.base)
         property color bgColor: GlobalObject.colors.base
         color: !isStateEvent ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
