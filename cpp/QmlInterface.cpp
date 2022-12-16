@@ -100,7 +100,7 @@ QmlInterface::QmlInterface(QObject *parent):
     #else
         setServerAddress(DEFAULT_SERVER);
     #endif
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     setStyle("Material", "Default");
 #else
     #ifdef Q_OS_LINUX
