@@ -16,7 +16,7 @@ import CursorShape 1.0
 import Crypto 1.0
 import MtxEvent 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: roomMembersRoot
 
     property MemberList members
@@ -26,8 +26,6 @@ ApplicationWindow {
     height: 650
     width: 420
     minimumHeight: 420
-    palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {

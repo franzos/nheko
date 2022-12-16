@@ -6,16 +6,15 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import GlobalObject 1.0
+import "../../"
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: rawMessageRoot
 
     property alias rawMessage: rawMessageView.text
 
     height: 420
     width: 420
-    palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {

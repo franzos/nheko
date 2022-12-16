@@ -8,8 +8,9 @@ import QtQuick.Controls 2.3
 import QtQuick.Window 2.13
 import VerificationManager 1.0
 import GlobalObject 1.0
+import "../"
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: dialog
 
     property var flow
@@ -18,7 +19,6 @@ ApplicationWindow {
     title: stack.currentItem ? (stack.currentItem.title_ || "") : ""
     modality: Qt.NonModal
     palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     //height: stack.currentItem.implicitHeight
     minimumHeight: stack.currentItem.implicitHeight + 2 * GlobalObject.paddingLarge
     height: stack.currentItem.implicitHeight + 2 * GlobalObject.paddingMedium

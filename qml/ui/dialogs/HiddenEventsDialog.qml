@@ -11,7 +11,7 @@ import GlobalObject 1.0
 import HiddenEvents 1.0
 import MtxEvent 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: hiddenEventsDialog
 
     property string roomid: ""

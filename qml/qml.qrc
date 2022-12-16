@@ -2,6 +2,7 @@
     <qresource prefix="/qml/">
         <file>AddUserDialog.qml</file>
         <file>CallSettingsDialog.qml</file>
+        <file>CustomApplicationWindow.qml</file>
         <file>CustomBorder.qml</file>
         <file>CustomHeader.qml</file>
         <file>Encrypted.qml</file>
