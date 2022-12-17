@@ -229,7 +229,7 @@ ApplicationWindow {
                 selectByMouse: true //!Settings.mobileMode
                 color: GlobalObject.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
-                onLinkActivated: Nheko.openLink(link)
+                onLinkActivated: GlobalObject.openLink(link)
 
                 CursorShape {
                     anchors.fill: parent
