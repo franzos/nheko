@@ -22,7 +22,7 @@ TextEdit {
     // this always has to be enabled, otherwise you can't click links anymore!
     //enabled: selectByMouse
     color: GlobalObject.colors.text
-    // onLinkActivated: Nheko.openLink(link)
+    onLinkActivated: GlobalObject.openLink(link)
     ToolTip.visible: hoveredLink || false
     ToolTip.text: hoveredLink
     // Setting a tooltip delay makes the hover text empty .-.
