@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.41] - NOT RELEASED YET
+### Fixed
+
+* Fixing issue in opening the links in text messages.
+
+
 ## [0.1.40]
 ### Updated
 
