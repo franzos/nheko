@@ -22,6 +22,7 @@ Page {
     Material.theme: Material.System
     Material.primary: GlobalObject.materialColors().primary
     Material.accent: GlobalObject.materialColors().accent
+    Material.foreground: GlobalObject.materialColors().primaryForeground
     StackView {
         id: stack
         anchors.fill: parent

@@ -253,7 +253,7 @@ QString GlobalObject::checkMatrixServerUrl(QString url){
 
 Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
     AndroidMaterialTheme material;
-    material.accent = ANDROID_MATERIAL_ACCENT;
+    material.accent = colors().buttonText().color().name(QColor::HexArgb);
     material.primary = ANDROID_MATERIAL_PRIMARY;
     material.primaryForeground = ANDROID_MATERIAL_PRIMARY_FOREGROUND;
     material.foreground = ANDROID_MATERIAL_FOREGROUND;

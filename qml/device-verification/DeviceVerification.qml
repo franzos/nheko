@@ -25,11 +25,6 @@ CustomApplicationWindow {
     minimumWidth: 400
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
-    background: Rectangle {
-        color: GlobalObject.colors.window
-    }
-
-
     StackView {
         id: stack
 
