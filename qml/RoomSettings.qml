@@ -401,7 +401,7 @@ CustomApplicationWindow {
                     text: qsTr("Configure")
                     ToolTip.text: qsTr("Select events to hide in this room")
                     onClicked: {
-                        if(Qt.platform.os == "android")
+                        if(GlobalObject.mobileMode())
                             hiddenEventsDialog.showMaximized();
                         else 
                             hiddenEventsDialog.show()

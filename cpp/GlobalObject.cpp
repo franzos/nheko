@@ -303,3 +303,11 @@ void GlobalObject::saveAs(const QString &source, const QString &dst){
         dstFile.close();
     }
 }
+
+Q_INVOKABLE bool GlobalObject::mobileMode(){
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    return true;
+#else
+    return false;
+#endif
+}

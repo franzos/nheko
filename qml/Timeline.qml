@@ -9,6 +9,7 @@ import CallManager 1.0
 import Rooms 1.0
 import CallType 1.0
 import UserProfile 1.0
+import GlobalObject 1.0
 import "ui"
 import "ui/dialogs"
 
@@ -75,7 +76,7 @@ Room {
             "readReceipts": rr,
             "timelineModel": timelineModel
         });
-        if(Qt.platform.os == "android")
+        if(GlobalObject.mobileMode())
             dialog.showMaximized();
         else 
             dialog.show()
@@ -89,7 +90,7 @@ Room {
 
         dialog.x= (qmlLibRoot.width - dialog.width) / 2
         dialog.y= (qmlLibRoot.height - dialog.height) / 2
-        if(Qt.platform.os == "android")
+        if(GlobalObject.mobileMode())
             dialog.showMaximized();
         else 
             dialog.show()
@@ -218,7 +219,7 @@ Room {
             "profile": profile,
             "room": timelineModel
         });
-        if(Qt.platform.os == "android")
+        if(GlobalObject.mobileMode())
             userProfile.showMaximized();
         else 
             userProfile.show();
@@ -230,7 +231,7 @@ Room {
             var roomSettings = roomSettingsComponent.createObject(timeline, {
                 "roomSettings": settings
             });
-            if(Qt.platform.os == "android")
+            if(GlobalObject.mobileMode())
                 roomSettings.showMaximized();
             else 
                 roomSettings.show();
@@ -243,7 +244,7 @@ Room {
                 "room": timelineModel,
                 "timeline" : timeline
             });
-            if(Qt.platform.os == "android")
+            if(GlobalObject.mobileMode())
                 membersDialog.showMaximized();
             else 
                 membersDialog.show();
@@ -256,7 +257,7 @@ Room {
                 "plainRoomName": name,
                 "invitees": invitees
             });
-            if(Qt.platform.os == "android")
+            if(GlobalObject.mobileMode())
                 dialog.showMaximized();
             else 
                 dialog.show();

@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 
 import SelfVerificationStatus 1.0
 import VerificationManager 1.0
-
+import GlobalObject 1.0
 Item {
     id: selfVerificationCheck
     visible: false
@@ -172,7 +172,7 @@ Item {
         var dialog = deviceVerificationDialog.createObject(selfVerificationCheck, {
             "flow": flow
         });
-        if(Qt.platform.os == "android")
+        if(GlobalObject.mobileMode())
             dialog.showMaximized();
         else 
             dialog.show();

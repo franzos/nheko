@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 
 import MatrixClient 1.0
+import GlobalObject 1.0
 
 ApplicationWindow {
     id: qmlApplication
@@ -24,7 +25,7 @@ ApplicationWindow {
     }
 
     onClosing: {
-        if (Qt.platform.os === 'android') {
+        if (GlobalObject.mobileMode()) {
             if (mainLibqml.stackDepth() > 1) {
                 close.accepted = false
                 mainLibqml.backPressed()

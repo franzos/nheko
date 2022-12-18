@@ -386,7 +386,7 @@ Rectangle {
             image: ":/images/attach.svg"
             Layout.margins: 8
             onClicked: !uploadingicon.visible ? room.input.openFileSelection() : {}
-            ToolTip.visible: (Qt.platform.os != "android" ? hovered : false)
+            ToolTip.visible: (GlobalObject.mobileMode() ? false  : hovered)
             ToolTip.text: qsTr("Send a file")
             Rectangle {
                 id: uploadingicon
