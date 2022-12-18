@@ -34,6 +34,7 @@ Column {
     ToolBar {
         id: toolBar
         width: parent.width
+        Material.foreground: GlobalObject.materialColors().primaryForeground
         RowLayout {
             anchors.fill: parent
             spacing: 5

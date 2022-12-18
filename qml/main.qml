@@ -6,7 +6,7 @@ import QtQuick.Controls.Material 2.15
 import MatrixClient 1.0
 import GlobalObject 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: qmlApplication
     title: qsTr("Matrix Client")
     visibility: "Maximized"

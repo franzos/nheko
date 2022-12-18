@@ -97,6 +97,7 @@ Page {
                 color: GlobalObject.colors.window
                 border.color: GlobalObject.colors.windowText
             } 
+            
             Layout.fillWidth: true
             model: ListModel {
                 id: model               

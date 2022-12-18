@@ -5,10 +5,16 @@ import QtQuick.Controls.Material 2.15
 import GlobalObject 1.0
 
 ApplicationWindow {
-    Material.theme: Material.System
+    Material.theme: {
+        if(GlobalObject.themeName() == "dark")
+            return Material.Dark
+        else if(GlobalObject.themeName() == "light")
+            return Material.Light
+        else
+            return Material.System
+    }
     Material.primary: GlobalObject.materialColors().primary
     Material.accent: GlobalObject.materialColors().accent
-    Material.foreground: GlobalObject.materialColors().primaryForeground
     palette: GlobalObject.colors
-    // color: GlobalObject.colors.window
+    //color: GlobalObject.colors.window
 }

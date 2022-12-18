@@ -68,6 +68,7 @@ public:
     Q_INVOKABLE AndroidMaterialTheme materialColors();
     Q_INVOKABLE QString mediaCachePath();
     Q_INVOKABLE bool mobileMode();
+    Q_INVOKABLE QString themeName();
     
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
