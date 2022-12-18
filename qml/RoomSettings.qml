@@ -492,5 +492,9 @@ CustomApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
         onAccepted: close()
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 }

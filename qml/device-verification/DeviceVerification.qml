@@ -18,7 +18,6 @@ CustomApplicationWindow {
     onClosing: VerificationManager.removeVerificationFlow(flow)
     title: stack.currentItem ? (stack.currentItem.title_ || "") : ""
     modality: Qt.NonModal
-    palette: GlobalObject.colors
     //height: stack.currentItem.implicitHeight
     minimumHeight: stack.currentItem.implicitHeight + 2 * GlobalObject.paddingLarge
     height: stack.currentItem.implicitHeight + 2 * GlobalObject.paddingMedium

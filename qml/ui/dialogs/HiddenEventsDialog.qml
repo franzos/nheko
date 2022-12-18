@@ -127,6 +127,10 @@ CustomApplicationWindow {
             hiddenEventsDialog.close();
         }
         onRejected: hiddenEventsDialog.close();
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 
 }

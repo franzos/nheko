@@ -128,6 +128,10 @@ CustomApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
         onAccepted: readReceiptsRoot.close()
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 
 }

@@ -109,7 +109,10 @@ Page {
 
     footer: DialogButtonBox {
         id: buttons
-
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
         standardButtons: DialogButtonBox.Cancel
         Button {
             text: qsTr("Upload %n file(s)", "", (room ? room.input.uploads.length : 0))

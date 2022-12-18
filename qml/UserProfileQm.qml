@@ -422,21 +422,18 @@ CustomApplicationWindow {
             }
 
         }
+    }
 
-        footer: DialogButtonBox {
-            z: 2
-            width: devicelist.width
-            alignment: Qt.AlignRight
-            standardButtons: DialogButtonBox.Ok
-            onAccepted: userProfileDialog.close()
+    footer: DialogButtonBox {
+        width: userProfileDialog.width
+        alignment: Qt.AlignRight
+        standardButtons: DialogButtonBox.Ok
+        onAccepted: userProfileDialog.close()
 
-            background: Rectangle {
-                anchors.fill: parent
-                color: GlobalObject.colors.window
-            }
-
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
         }
-
     }
 
 }

@@ -264,6 +264,10 @@ CustomApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
         onAccepted: roomMembersRoot.close()
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 
 }
