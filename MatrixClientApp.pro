@@ -1,5 +1,5 @@
 message("Building MatrixClient GUI Application")
-VERSION = 0.1.40
+VERSION = 0.1.41
 TEMPLATE = app
 TARGET = matrix-client
 
