@@ -18,6 +18,8 @@
 
 GlobalObject *GlobalObject::_instance  = nullptr;
 
+#define SELECTED_THEME  Theme::ThemeMode::System
+
 GlobalObject *GlobalObject::instance(){
     if(_instance == nullptr){
         _instance = new GlobalObject();
@@ -30,7 +32,7 @@ GlobalObject::GlobalObject(){
 }
 
 QPalette GlobalObject::colors() const {
-    return Theme::paletteFromTheme(QString("system"));
+    return Theme::paletteFromTheme(SELECTED_THEME);
 }
 
 QPalette GlobalObject::inactiveColors() const {
@@ -40,7 +42,7 @@ QPalette GlobalObject::inactiveColors() const {
 }
 
 Theme GlobalObject::theme() const {
-    return Theme(QString("system"));
+    return Theme(SELECTED_THEME);
 }
 
 void GlobalObject::openLink(QString link) {
@@ -253,7 +255,7 @@ QString GlobalObject::checkMatrixServerUrl(QString url){
 
 Q_INVOKABLE AndroidMaterialTheme GlobalObject::materialColors(){
     AndroidMaterialTheme material;
-    material.accent = ANDROID_MATERIAL_ACCENT;
+    material.accent = ANDROID_MATERIAL_ACCENT; //colors().buttonText().color().name(QColor::HexArgb);
     material.primary = ANDROID_MATERIAL_PRIMARY;
     material.primaryForeground = ANDROID_MATERIAL_PRIMARY_FOREGROUND;
     material.foreground = ANDROID_MATERIAL_FOREGROUND;
@@ -302,4 +304,21 @@ void GlobalObject::saveAs(const QString &source, const QString &dst){
         saveBufferToFile(dst, QBuffer(&data));
         dstFile.close();
     }
+}
+
+Q_INVOKABLE bool GlobalObject::mobileMode(){
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    return true;
+#else
+    return false;
+#endif
+}
+
+Q_INVOKABLE QString GlobalObject::themeName(){
+    // TODO improvment: access enum object in qml instead of string
+    if(SELECTED_THEME == Theme::ThemeMode::Light)
+        return "light";
+    else if(SELECTED_THEME == Theme::ThemeMode::Dark)
+        return "dark";
+    return "system";
 }

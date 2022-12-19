@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.41] - NOT RELEASED YET
-### Fixed
+## [0.1.41]
+### Fixed and Updated
 
 * Fixing issue in opening the links in text messages.
+* Theme improvment.
+* Set material style for iOS.
 
 
 ## [0.1.40]

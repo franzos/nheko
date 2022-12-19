@@ -66,9 +66,16 @@ class Theme : public QPalette
     Q_PROPERTY(QColor error READ error CONSTANT)
     Q_PROPERTY(QColor orange READ orange CONSTANT)
 public:
+
+    enum class ThemeMode {
+        System,
+        Dark,
+        Light
+    };
+
     Theme() {}
-    explicit Theme(QStringView theme);
-    static QPalette paletteFromTheme(QStringView theme);
+    explicit Theme(ThemeMode theme);
+    static QPalette paletteFromTheme(ThemeMode theme);
 
     QColor sidebarBackground() const { return sidebarBackground_; }
     QColor alternateButton() const { return alternateButton_; }

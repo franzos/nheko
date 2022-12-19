@@ -14,7 +14,7 @@ import "./ui"
 import "./ui/dialogs"
 import "../"
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: roomSettingsDialog
 
     property var roomSettings
@@ -23,11 +23,10 @@ ApplicationWindow {
     minimumHeight: 450
     width: 450
     height: 680
-    palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     title: qsTr("Room Settings")
+
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -402,7 +401,7 @@ ApplicationWindow {
                     text: qsTr("Configure")
                     ToolTip.text: qsTr("Select events to hide in this room")
                     onClicked: {
-                        if(Qt.platform.os == "android")
+                        if(GlobalObject.mobileMode())
                             hiddenEventsDialog.showMaximized();
                         else 
                             hiddenEventsDialog.show()
@@ -493,5 +492,9 @@ ApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
         onAccepted: close()
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 }

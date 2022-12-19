@@ -11,7 +11,7 @@ import AudioDeviceControl 1.0
 Dialog {
     id: callSettings
     title: "Audio/Video Settings"
-    width: (Qt.platform.os == "android" ? parent.width : 420)
+    width: (GlobalObject.mobileMode() ? parent.width : 420)
     standardButtons: Dialog.Ok | Dialog.Cancel
     onAboutToHide: {
         disconnectSignals()
@@ -49,16 +49,16 @@ Dialog {
             Slider {
                 id: micVolumeSlider
                 width: parent.width
-                visible: Qt.platform.os != "android"
+                visible: !GlobalObject.mobileMode()
                 onMoved: {
-                    if (Qt.platform.os != "android")
+                    if (!GlobalObject.mobileMode())
                         AudioDeviceControl.setMicrophoneVolume(audioCombo.currentText, micVolumeSlider.value)
                 }
             }
             LinearGradient {
                 id: levelGradient
                 width: parent.width
-                visible: Qt.platform.os != "android"
+                visible: !GlobalObject.mobileMode()
                 height: 5
                 start: Qt.point(0, 0)
                 end: Qt.point(parent.width, 0)
@@ -77,9 +77,9 @@ Dialog {
             Slider {
                 id: spkVolumeSlider
                 width: parent.width
-                visible: Qt.platform.os != "android"
+                visible: !GlobalObject.mobileMode()
                 onMoved: {
-                    if (Qt.platform.os != "android")
+                    if (!GlobalObject.mobileMode())
                         AudioDeviceControl.setSpeakerVolume(spkVolumeSlider.value)
                 }
             }
@@ -125,14 +125,14 @@ Dialog {
     }
 
     function updateMicVolumeAndLevelMeter(device){
-        if (Qt.platform.os != "android") {
+        if (!GlobalObject.mobileMode()) {
             AudioDeviceControl.deviceChanged(device)
             micVolumeSlider.value = AudioDeviceControl.getMicrophoneVolume(device)
         }
     }
 
     function updateSpkVolumeAndLevelMeter(device){
-        if (Qt.platform.os != "android") {
+        if (!GlobalObject.mobileMode()) {
             spkVolumeSlider.value = AudioDeviceControl.getSpeakerVolume(device)
         }
     }
@@ -154,7 +154,7 @@ Dialog {
     }
     
     function disconnectSignals() {
-        if (Qt.platform.os != "android") {
+        if (!GlobalObject.mobileMode()) {
             AudioDeviceControl.onLevelChanged.disconnect(onLevelChangedCallback)
             AudioDeviceControl.onNewInputDeviceStatus.disconnect(onNewInputDeviceStatusCallback)
             AudioDeviceControl.onNewOutputDeviceStatus.disconnect(onNewOutputDeviceStatusCallback)
@@ -190,7 +190,7 @@ Dialog {
         } else {
             videoCombo.displayText = "Not connected!"
         }
-        if (Qt.platform.os != "android") {
+        if (!GlobalObject.mobileMode()) {
             AudioDeviceControl.onLevelChanged.connect(onLevelChangedCallback)
             AudioDeviceControl.onNewInputDeviceStatus.connect(onNewInputDeviceStatusCallback)
             AudioDeviceControl.onNewOutputDeviceStatus.connect(onNewOutputDeviceStatusCallback)

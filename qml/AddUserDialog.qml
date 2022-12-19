@@ -11,7 +11,7 @@ import "ui"
 
 Dialog {
     standardButtons: Dialog.Ok | Dialog.Cancel
-    width: (Qt.platform.os == "android" ? parent.width : 420)
+    width: (GlobalObject.mobileMode() ? parent.width : 420)
 
     Column {
         width: parent.width

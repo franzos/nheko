@@ -19,9 +19,6 @@ Page {
     property bool callAutoAccept: false
     property var videoItem
     
-    Material.theme: Material.Light
-    Material.primary: GlobalObject.materialColors().primary
-    Material.accent: GlobalObject.materialColors().accent
     StackView {
         id: stack
         anchors.fill: parent

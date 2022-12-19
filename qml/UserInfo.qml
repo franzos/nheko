@@ -6,7 +6,7 @@ import UserInformation 1.0
 import QmlInterface 1.0
 import "ui"
 
-Page {
+Page { 
     id: userInfo
     width: parent.width
     title: "Profile"

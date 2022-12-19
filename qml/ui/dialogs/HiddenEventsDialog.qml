@@ -11,7 +11,7 @@ import GlobalObject 1.0
 import HiddenEvents 1.0
 import MtxEvent 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: hiddenEventsDialog
 
     property string roomid: ""
@@ -127,6 +127,10 @@ ApplicationWindow {
             hiddenEventsDialog.close();
         }
         onRejected: hiddenEventsDialog.close();
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import SelfVerificationStatus 1.0
 Dialog {
     id: bootstrapCrosssigning
     width: parent.width
+    height: parent.height
     onAccepted: SelfVerificationStatus.setupCrosssigning(storeSecretsOnline.checked, usePassword.checked ? passwordField.text : "", useOnlineKeyBackup.checked)
 
     modal: true

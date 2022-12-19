@@ -16,12 +16,11 @@ import DelegateChoice 1.0
 import "./device-verification"
 import "./ui"
 
-Rectangle {
+Page {
     id: userSettingsDialog
 
     property int collapsePoint: 600
     property bool collapsed: width < collapsePoint
-    color: GlobalObject.colors.window
 
     VerifyWithPassphraseMessage {
         id: downloadCrossSigningDialog

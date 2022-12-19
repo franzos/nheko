@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import "../../"
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -12,7 +13,7 @@ import CursorShape 1.0
 import ReadReceiptsProxy 1.0
 import TimelineModel 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: readReceiptsRoot
 
     property ReadReceiptsProxy readReceipts
@@ -22,8 +23,6 @@ ApplicationWindow {
     width: 340
     minimumHeight: 380
     minimumWidth: headerTitle.width + 2 * 8
-    palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -129,6 +128,10 @@ ApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
         onAccepted: readReceiptsRoot.close()
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 
 }

@@ -16,7 +16,7 @@ import VerificationStatus 1.0
 import Crypto 1.0
 import TimelineModel 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: userProfileDialog
 
     property var profile
@@ -26,8 +26,6 @@ ApplicationWindow {
     width: 420
     minimumWidth: 150
     minimumHeight: 150
-    palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
@@ -424,21 +422,18 @@ ApplicationWindow {
             }
 
         }
+    }
 
-        footer: DialogButtonBox {
-            z: 2
-            width: devicelist.width
-            alignment: Qt.AlignRight
-            standardButtons: DialogButtonBox.Ok
-            onAccepted: userProfileDialog.close()
+    footer: DialogButtonBox {
+        width: userProfileDialog.width
+        alignment: Qt.AlignRight
+        standardButtons: DialogButtonBox.Ok
+        onAccepted: userProfileDialog.close()
 
-            background: Rectangle {
-                anchors.fill: parent
-                color: GlobalObject.colors.window
-            }
-
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
         }
-
     }
 
 }

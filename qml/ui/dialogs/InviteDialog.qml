@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import "../../"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -11,7 +12,8 @@ import GlobalObject 1.0
 import InviteesModel 1.0
 import CursorShape 1.0
 import MatrixClient 1.0
-ApplicationWindow {
+
+CustomApplicationWindow {
     id: inviteDialogRoot
 
     property string roomId
@@ -36,8 +38,6 @@ ApplicationWindow {
     title: qsTr("Invite users to %1").arg(plainRoomName)
     height: 380
     width: 340
-    palette: GlobalObject.colors
-    color: GlobalObject.colors.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -261,7 +261,10 @@ ApplicationWindow {
             DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
             onClicked: inviteDialogRoot.close()
         }
-
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
 
 }
