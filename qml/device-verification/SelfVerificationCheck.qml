@@ -109,7 +109,6 @@ Item {
 
     NoMasterKeyMessage {
         id: noMasterKeyMessage
-        width: parent.width
     }
 
     function verify(){
