@@ -5,7 +5,7 @@ android {
     DIST_DIR=$$PWD/../../vendor/_dist
     for (abi, ANDROID_ABIS): !exists($$DIST_DIR/$${abi}):error("vendor packages has not been setup yet! (run vendor/build-android.sh)")
 
-    ANDROID_TARGET_SDK_VERSION = 30
+    ANDROID_TARGET_SDK_VERSION = 31
     ANDROID_MIN_SDK_VERSION = 23
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD
