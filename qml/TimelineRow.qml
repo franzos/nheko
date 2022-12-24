@@ -57,7 +57,22 @@ AbstractButton {
         onPressAndHold: {
             messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText, r, mouse.x, mouse.y)
         }
+
+        onClicked: {
+            if(GlobalObject.mobileMode()){
+                contentItem.selectByMouse = false
+                row.bgColor=GlobalObject.colors.base
+            }
+        }
+
+        onDoubleClicked: {
+            if(GlobalObject.mobileMode()){
+                contentItem.selectByMouse = true
+                row.bgColor="gray"
+            }
+        }
     }
+
     onDoubleClicked: chat.model.reply = eventId
 
     DragHandler {

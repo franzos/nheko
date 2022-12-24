@@ -44,6 +44,7 @@ Item {
     required property int relatedEventCacheBuster
     property bool fitsMetadata: (chooser.child && chooser.child.fitsMetadata) ? chooser.child.fitsMetadata : false
     property int metadataWidth
+    property bool selectByMouse: !GlobalObject.mobileMode()
 
     height: chooser.child ? chooser.child.height : 20
 
@@ -76,6 +77,7 @@ Item {
                 isReply: d.isReply
                 keepFullText: d.keepFullText
                 metadataWidth: d.metadataWidth
+                selectByMouse: d.selectByMouse
             }
 
         }

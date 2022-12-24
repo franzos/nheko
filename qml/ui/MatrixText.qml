@@ -18,7 +18,7 @@ TextEdit {
     readOnly: true
     focus: false
     wrapMode: Text.Wrap
-    selectByMouse: !GlobalObject.mobileMode
+    selectByMouse: !GlobalObject.mobileMode()
     // this always has to be enabled, otherwise you can't click links anymore!
     enabled: true //selectByMouse
     color: GlobalObject.colors.text
