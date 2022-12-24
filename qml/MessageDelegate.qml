@@ -130,6 +130,13 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.LocationMessage
+
+            
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.Sticker
 
             ImageMessage {
