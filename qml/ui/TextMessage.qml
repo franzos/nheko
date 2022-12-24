@@ -40,8 +40,8 @@ MatrixText {
     width: parent.width
     height: !keepFullText ? Math.round(Math.min(timeline.height / 8, implicitHeight)) : implicitHeight
     clip: !keepFullText
-    selectByMouse: !isReply//!Settings.mobileMode && !isReply
-    // enabled: !Settings.mobileMode
+    selectByMouse: !GlobalObject.mobileMode && !isReply
+    enabled: !GlobalObject.mobileMode
     // font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     CursorShape {
