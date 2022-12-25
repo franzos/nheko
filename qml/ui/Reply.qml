@@ -26,6 +26,7 @@ AbstractButton {
     property string formattedBody
     property string eventId
     property string filename
+    property string geoUri
     property string filesize
     property string url
     property bool isOnlyEmoji
@@ -108,6 +109,7 @@ AbstractButton {
             eventId: r.eventId
             filename: r.filename
             filesize: r.filesize
+            geoUri: r.geoUri
             proportionalHeight: r.proportionalHeight
             type: r.type
             typeString: r.typeString ?? ""

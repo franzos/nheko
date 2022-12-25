@@ -372,6 +372,7 @@ Item {
             required property string formattedBody
             required property string eventId
             required property string filename
+            required property string geoUri
             required property string filesize
             required property string url
             required property string thumbnailUrl
@@ -438,6 +439,7 @@ Item {
                 formattedBody: wrapper.formattedBody
                 eventId: chat.model, wrapper.eventId
                 filename: wrapper.filename
+                geoUri: wrapper.geoUri
                 filesize: wrapper.filesize
                 url: wrapper.url
                 thumbnailUrl: wrapper.thumbnailUrl

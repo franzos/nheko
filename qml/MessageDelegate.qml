@@ -30,6 +30,7 @@ Item {
     required property string formattedBody
     required property string eventId
     required property string filename
+    required property string geoUri
     required property string filesize
     required property string url
     required property string thumbnailUrl
@@ -131,7 +132,17 @@ Item {
 
         DelegateChoice {
             roleValue: MtxEvent.LocationMessage
-
+            LocationMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                body: d.body
+                blurhash: d.blurhash
+                isReply: d.isReply
+                eventId: d.eventId
+                geoUri: d.geoUri
+                metadataWidth: d.metadataWidth
+            }
             
 
         }

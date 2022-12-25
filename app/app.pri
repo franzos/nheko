@@ -1,4 +1,4 @@
-QT += network qml quick quickcontrols2 widgets quickwidgets svg multimedia
+QT += network qml quick quickcontrols2 widgets quickwidgets svg multimedia location
 CONFIG += c++17
 
 SOURCES += \

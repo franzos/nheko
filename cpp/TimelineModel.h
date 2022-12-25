@@ -110,6 +110,7 @@ public:
         CallType,
         Dump,
         RelatedEventCacheBuster,
+        GeoUri,
     };
     Q_ENUM(Roles);
 
