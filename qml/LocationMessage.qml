@@ -40,15 +40,22 @@ AbstractButton {
         plugin: mapPlugin
         zoomLevel: maximumZoomLevel*4/5
 
-        Component.onCompleted: {
-            circle = Qt.createQmlObject('import QtLocation 5.15; MapCircle {}', lm)
-            circle.center = mapview.center
-            circle.radius = 30
-            circle.color = 'green'
-            circle.border.width = 0
-            mapview.addMapItem(circle)
+        MapCircle {
+            center:mapview.center
+            radius: 30
+            color: 'green'
+            border.width: 0
         }
-        
+        MouseArea {
+            id: mouseArea
+            property variant lastCoordinate
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+            onPressed : {
+                GlobalObject.openLink(geoUri)
+            }
+        }
     }
 
     Component.onCompleted: {
