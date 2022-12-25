@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.42]
+### Fixed and Updated
+
+* Touch behaviour improvment.
+
+
 ## [0.1.41]
 ### Fixed and Updated
 
