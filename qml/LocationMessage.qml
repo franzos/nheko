@@ -16,6 +16,8 @@ AbstractButton {
     required property string geoUri
     property double divisor: isReply ? 5 : 3
     property int tempWidth: originalWidth < 1? 400: originalWidth
+    property double latitude
+    property double longtitude
 
     implicitWidth: Math.round(tempWidth*Math.min((timeline.height/divisor)/(tempWidth*proportionalHeight), 1))
     width: Math.min(parent.width,implicitWidth)
@@ -27,7 +29,7 @@ AbstractButton {
     
     Plugin {
         id: mapPlugin
-        name: "osm"
+        name: "googlemaps"
         // "mapboxgl", "esri", ...
         // PluginParameter { name: "osm.mapping.offline.directory"; value: "//offlinemaps directory" }
     }
@@ -39,10 +41,11 @@ AbstractButton {
         anchors.fill: parent
         plugin: mapPlugin
         zoomLevel: maximumZoomLevel*4/5
+        center: QtPositioning.coordinate(latitude,longtitude)
 
         MapCircle {
-            center:mapview.center
-            radius: 30
+            center: QtPositioning.coordinate(latitude,longtitude)
+            radius: 5
             color: 'green'
             border.width: 0
         }
@@ -63,9 +66,9 @@ AbstractButton {
         if(coord.length > 1){
             var lat_long_arr = coord[1].split(",")
             if(lat_long_arr.length > 1) {
-                var lat = Number(lat_long_arr[0])
-                var lon = Number(lat_long_arr[1])
-                mapview.center = QtPositioning.coordinate(lat,lon)
+                latitude = Number(lat_long_arr[0])
+                longtitude = Number(lat_long_arr[1])
+                
             }
         }
     }
