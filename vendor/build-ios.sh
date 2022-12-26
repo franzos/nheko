@@ -110,7 +110,7 @@ function BUILD_OLM {
 
 function BUILD_MTXCLIENT {
     name="qmtxclient"
-    version="v0.8.2-2"
+    version="v0.8.2-3"
     download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $version $download_url
     APPLY_PATCH $name $PATCH_DIR/mtxclient/0001-fix-ios-build.patch

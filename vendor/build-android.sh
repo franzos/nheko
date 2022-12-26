@@ -144,7 +144,7 @@ function BUILD_OLM {
 function BUILD_MTXCLIENT {
     target="$1"
     name="qmtxclient"
-    tag="v0.8.2-2"
+    tag="v0.8.2-3"
     download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
 
