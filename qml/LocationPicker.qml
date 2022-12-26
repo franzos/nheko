@@ -41,7 +41,7 @@ CustomApplicationWindow {
 
         onPositionChanged: {
             var coord = src.position.coordinate;
-            if(currentLocationFound) {
+            if(!currentLocationFound) {
                 currentLocationFound = true
                 mapview.center = coord
                 mapCircle.center = coord
