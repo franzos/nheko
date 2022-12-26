@@ -29,7 +29,7 @@ AbstractButton {
     
     Plugin {
         id: mapPlugin
-        name: "googlemaps"
+        name: "osm"
         // "mapboxgl", "esri", ...
         // PluginParameter { name: "osm.mapping.offline.directory"; value: "//offlinemaps directory" }
     }
@@ -45,7 +45,7 @@ AbstractButton {
 
         MapCircle {
             center: QtPositioning.coordinate(latitude,longtitude)
-            radius: 5
+            radius: 10
             color: 'green'
             border.width: 0
         }
@@ -56,7 +56,7 @@ AbstractButton {
             acceptedButtons: Qt.LeftButton | Qt.RightButton
 
             onPressed : {
-                GlobalObject.openLink(geoUri)
+                GlobalObject.openLink(geoUri + "?q=" + latitude + "," + longtitude + "(" + body + ")")
             }
         }
     }
