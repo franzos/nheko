@@ -44,6 +44,11 @@ Dialog {
         model: modelMenu
         delegate: componentDelegate
     }
+    
+    LocationPicker {
+        id: locationPicker
+    }
+
     Component {
         id: componentDelegate
 
@@ -92,15 +97,15 @@ Dialog {
                         case "Document":
                         case "Audio/Video":
                         case "Image":
-                            close()
                             room.input.openFileSelection()
                             break;  
                         case "Location":
-                            close()
                             room.input.locationPermission()
-                            console.log("TODO")
+                            var locationPicker = locationPickerDialog.createObject(room);
+                            locationPicker.showMaximized()
                             break;        
                     }
+                    close()
                 }
             }
         }

@@ -101,6 +101,12 @@ Page {
     }
 
     Component {
+        id: locationPickerDialog
+        LocationPicker {
+        }
+    }
+
+    Component {
         id: rawMessageDialog
 
         RawMessageDialog {
