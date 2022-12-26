@@ -378,6 +378,7 @@ Rectangle {
         //     }
 
         // }
+
         ImageButton {
             // visible: showAllButtons
             Layout.alignment: Qt.AlignBottom
@@ -385,7 +386,13 @@ Rectangle {
             width: 24; height: width
             image: ":/images/attach.svg"
             Layout.margins: 8
-            onClicked: !uploadingicon.visible ? room.input.openFileSelection() : {}
+            onClicked: {
+                if(!uploadingicon.visible) {
+                    var dialog = attachmentTypeDialog.createObject(timeline, {"room": timelineModel});
+                    dialog.open()
+                    destroyOnClose(dialog);  
+                } 
+            }
             ToolTip.visible: (GlobalObject.mobileMode() ? false  : hovered)
             ToolTip.text: qsTr("Send a file")
             Rectangle {

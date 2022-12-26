@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/qml/">
         <file>AddUserDialog.qml</file>
+        <file>AttachmentTypeDialog.qml</file>
         <file>CallSettingsDialog.qml</file>
         <file>CustomApplicationWindow.qml</file>
         <file>CustomBorder.qml</file>

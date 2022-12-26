@@ -14,6 +14,7 @@
         <file>images/clock.svg</file>
         <file>images/collapsed.svg</file>
         <file>images/delete.svg</file>
+        <file>images/document.svg</file>
         <file>images/dismiss.svg</file>
         <file>images/dismiss_edit.svg</file>
         <file>images/double-checkmark.svg</file>
@@ -25,6 +26,7 @@
         <file>images/expanded.svg</file>
         <file>images/hint.svg</file>
         <file>images/image-failed.svg</file>
+        <file>images/location.svg</file>
         <file>images/lowprio.svg</file>
         <file>images/microphone-mute.svg</file>
         <file>images/microphone-unmute.svg</file>
