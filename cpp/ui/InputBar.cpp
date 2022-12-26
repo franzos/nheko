@@ -349,6 +349,16 @@ InputBar::openFileSelection()
     startUploadFromPath(fileName);
 }
 
+void InputBar::locationPermission(){
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.ACCESS_FINE_LOCATION"});
+    if (res["android.permission.ACCESS_FINE_LOCATION"] != QtAndroid::PermissionResult::Granted){
+        nhlog::ui()->warn("Don't have permission to access fine location");
+        return;
+    }
+#endif
+}
+
 QString
 replaceMatrixToMarkdownLink(QString input)
 {

@@ -9,7 +9,7 @@ import TimelineModel 1.0
 Dialog {
     id: atd
     width: 250
-    height: 270
+    height: 300
     title: "Attach"
     property var room: timelineModel
 
@@ -92,10 +92,12 @@ Dialog {
                         case "Document":
                         case "Audio/Video":
                         case "Image":
-                            room.input.openFileSelection()
                             close()
+                            room.input.openFileSelection()
                             break;  
                         case "Location":
+                            close()
+                            room.input.locationPermission()
                             console.log("TODO")
                             break;        
                     }

@@ -230,6 +230,7 @@ public slots:
     bool insertMimeData(const QMimeData *data);
     void updateState(int selectionStart, int selectionEnd, int cursorPosition, const QString &text);
     void openFileSelection();
+    void locationPermission();
     [[nodiscard]] bool uploading() const { return uploading_; }
     void message(const QString &body,
                  MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
