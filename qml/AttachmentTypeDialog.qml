@@ -101,7 +101,7 @@ Dialog {
                             break;  
                         case "Location":
                             room.input.locationPermission()
-                            var locationPicker = locationPickerDialog.createObject(room);
+                            var locationPicker = locationPickerDialog.createObject(room, {"room": room});
                             locationPicker.showMaximized()
                             break;        
                     }

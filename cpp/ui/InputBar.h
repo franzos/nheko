@@ -235,6 +235,7 @@ public slots:
     void message(const QString &body,
                  MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                  bool rainbowify              = false);
+    void location(const QString &lat, const QString lon);
     void reaction(const QString &reactedEvent, const QString &reactionKey);
     void sticker(CombinedImagePackModel *model, int row);
 

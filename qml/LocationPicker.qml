@@ -3,12 +3,14 @@ import QtQuick.Controls 2.3
 import QtLocation 5.15
 import QtPositioning 5.15
 import GlobalObject 1.0
+import TimelineModel 1.0
 
 CustomApplicationWindow {
     id: roomMembersRoot
     property double latitude: 51.477928
     property double longtitude: -0.001545
     property bool currentLocationFound: false
+    property var room: timelineModel
     Plugin {
         id: mapPlugin
         name: "osm"
@@ -53,7 +55,8 @@ CustomApplicationWindow {
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
             var coord = mapCircle.center;
-            console.log("TODO: Coordinate:", coord.latitude, coord.longitude);
+            room.input.location(coord.latitude, coord.longitude)
+            close()
         }
         onRejected: {
             close()
