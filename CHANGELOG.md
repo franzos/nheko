@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed and Updated
 
 * Touch behaviour improvment.
+* Support Location message.
 
 
 ## [0.1.41]
