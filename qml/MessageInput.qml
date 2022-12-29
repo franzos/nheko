@@ -388,9 +388,13 @@ Rectangle {
             Layout.margins: 8
             onClicked: {
                 if(!uploadingicon.visible) {
-                    var dialog = attachmentTypeDialog.createObject(timeline, {"room": timelineModel});
-                    dialog.open()
-                    destroyOnClose(dialog);  
+                    if(GlobalObject.mobileMode()){
+                        var dialog = attachmentTypeDialog.createObject(timeline, {"room": timelineModel});
+                        dialog.open()
+                        destroyOnClose(dialog);
+                    } else {
+                        room.input.openFileSelection()
+                    }
                 } 
             }
             ToolTip.visible: (GlobalObject.mobileMode() ? false  : hovered)
