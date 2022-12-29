@@ -9,7 +9,6 @@ AbstractButton {
     required property int type
     required property int originalWidth
     required property double proportionalHeight
-    required property string blurhash
     required property string body
     required property bool isReply
     required property string eventId
@@ -21,17 +20,14 @@ AbstractButton {
 
     implicitWidth: Math.round(tempWidth*Math.min((timeline.height/divisor)/(tempWidth*proportionalHeight), 1))
     width: Math.min(parent.width,implicitWidth)
-    height: width*proportionalHeight
+    height: width*proportionalHeight/2
     hoverEnabled: true
 
     property int metadataWidth
-    property bool fitsMetadata: (parent.width - width) > metadataWidth+4
     
     Plugin {
         id: mapPlugin
         name: "osm"
-        // "mapboxgl", "esri", ...
-        // PluginParameter { name: "osm.mapping.offline.directory"; value: "//offlinemaps directory" }
     }
 
     Map {
@@ -68,7 +64,6 @@ AbstractButton {
             if(lat_long_arr.length > 1) {
                 latitude = Number(lat_long_arr[0])
                 longtitude = Number(lat_long_arr[1])
-                
             }
         }
     }

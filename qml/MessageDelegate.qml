@@ -137,7 +137,6 @@ Item {
                 originalWidth: d.originalWidth
                 proportionalHeight: d.proportionalHeight
                 body: d.body
-                blurhash: d.blurhash
                 isReply: d.isReply
                 eventId: d.eventId
                 geoUri: d.geoUri

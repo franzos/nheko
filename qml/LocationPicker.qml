@@ -14,8 +14,6 @@ CustomApplicationWindow {
     Plugin {
         id: mapPlugin
         name: "osm"
-        // "mapboxgl", "esri", ...
-        // PluginParameter { name: "osm.mapping.offline.directory"; value: "//offlinemaps directory" }
     }
 
     Map {
