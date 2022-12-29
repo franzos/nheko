@@ -10,7 +10,7 @@ CustomApplicationWindow {
     property double latitude: 51.477928
     property double longtitude: -0.001545
     property bool currentLocationFound: false
-    property var room: timelineModel
+    property var room
     Plugin {
         id: mapPlugin
         name: "osm"
