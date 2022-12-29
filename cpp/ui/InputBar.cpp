@@ -349,6 +349,16 @@ InputBar::openFileSelection()
     startUploadFromPath(fileName);
 }
 
+void InputBar::locationPermission(){
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.ACCESS_FINE_LOCATION"});
+    if (res["android.permission.ACCESS_FINE_LOCATION"] != QtAndroid::PermissionResult::Granted){
+        nhlog::ui()->warn("Don't have permission to access fine location");
+        return;
+    }
+#endif
+}
+
 QString
 replaceMatrixToMarkdownLink(QString input)
 {
@@ -460,6 +470,54 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
     }
 
     room->timeline()->sendMessageEvent(text, mtx::events::EventType::RoomMessage);
+}
+
+void 
+InputBar::location(const QString &lat, const QString lon)
+{
+    QString geoUri = "geo:" + lat + "," + lon;
+    mtx::events::msg::Location location = {};
+    location.body = QString("Location was shared at " + geoUri).toStdString();
+    location.geo_uri = geoUri.toStdString();
+
+    if (!room->edit().isEmpty()) {
+        if (!room->reply().isEmpty()) {
+            location.relations.relations.push_back(
+              {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+        }
+
+        location.relations.relations.push_back(
+          {mtx::common::RelationType::Replace, room->edit().toStdString()});
+
+    } else if (!room->reply().isEmpty()) {
+        auto related = room->relatedInfo(room->reply());
+
+        // Skip reply fallbacks to users who would cause a room ping with the fallback.
+        // This should be fine, since in some cases the reply fallback can be omitted now and the
+        // alternative is worse! On Element Android this applies to any substring, but that is their
+        // bug to fix.
+        if (!related.quoted_user.startsWith("@room:")) {
+        QString body;
+        bool firstLine = true;
+        auto lines     = related.quoted_body.splitRef(u'\n');
+        for (auto line : qAsConst(lines)) {
+            if (firstLine) {
+                firstLine = false;
+                body      = QStringLiteral("> <%1> %2\n").arg(related.quoted_user, line);
+            } else {
+                body += QStringLiteral("> %1\n").arg(line);
+            }
+        }
+
+        location.body =
+            QStringLiteral("%1\n%2").arg(body, QString::fromStdString(location.body)).toStdString();
+        }
+
+        location.relations.relations.push_back(
+          {mtx::common::RelationType::InReplyTo, related.related_event});
+    }
+
+    room->timeline()->sendMessageEvent(location, mtx::events::EventType::RoomMessage);
 }
 
 void

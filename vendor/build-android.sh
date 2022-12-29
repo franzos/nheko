@@ -144,7 +144,7 @@ function BUILD_OLM {
 function BUILD_MTXCLIENT {
     target="$1"
     name="qmtxclient"
-    tag="v0.8.2-2"
+    tag="v0.8.2-4"
     download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
 
@@ -207,7 +207,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
-    tag="0.1.30"
+    tag="0.1.31"
     repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 

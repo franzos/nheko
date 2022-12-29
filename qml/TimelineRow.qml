@@ -24,6 +24,7 @@ AbstractButton {
     required property string formattedBody
     required property string eventId
     required property string filename
+    required property string geoUri
     required property string filesize
     required property string url
     required property string thumbnailUrl
@@ -157,6 +158,7 @@ AbstractButton {
                 formattedBody: r.relatedEventCacheBuster, fromModel(TimelineModel.FormattedBody) ?? ""
                 eventId: fromModel(TimelineModel.EventId) ?? ""
                 filename: r.relatedEventCacheBuster, fromModel(TimelineModel.Filename) ?? ""
+                geoUri: r.relatedEventCacheBuster, fromModel(TimelineModel.GeoUri) ?? ""
                 filesize: r.relatedEventCacheBuster, fromModel(TimelineModel.Filesize) ?? ""
                 proportionalHeight: r.relatedEventCacheBuster, fromModel(TimelineModel.ProportionalHeight) ?? 1
                 type: r.relatedEventCacheBuster, fromModel(TimelineModel.Type) ?? MtxEvent.UnknownMessage
@@ -189,6 +191,7 @@ AbstractButton {
                 formattedBody: r.formattedBody
                 eventId: r.eventId
                 filename: r.filename
+                geoUri: r.geoUri
                 filesize: r.filesize
                 proportionalHeight: r.proportionalHeight
                 type: r.type

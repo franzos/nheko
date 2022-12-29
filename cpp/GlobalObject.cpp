@@ -54,8 +54,8 @@ void GlobalObject::openLink(QString link) {
           QStringLiteral("http"),
           QStringLiteral("https"),
           QStringLiteral("mailto"),
+          QStringLiteral("geo"),
         };
-
         if (allowedUrlSchemes.contains(url.scheme()))
             QDesktopServices::openUrl(url);
         else

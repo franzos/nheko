@@ -110,7 +110,7 @@ function BUILD_OLM {
 
 function BUILD_MTXCLIENT {
     name="qmtxclient"
-    version="v0.8.2-2"
+    version="v0.8.2-4"
     download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $version $download_url
     APPLY_PATCH $name $PATCH_DIR/mtxclient/0001-fix-ios-build.patch
@@ -173,7 +173,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 
 function BUILD_MATRIX_CLIENT_LIBRARY {
     name="matrix-client-library"
-    version="0.1.30"
+    version="0.1.31"
     download_url="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $version $download_url
     APPLY_PATCH $name \

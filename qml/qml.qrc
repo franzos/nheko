@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/qml/">
         <file>AddUserDialog.qml</file>
+        <file>AttachmentTypeDialog.qml</file>
         <file>CallSettingsDialog.qml</file>
         <file>CustomApplicationWindow.qml</file>
         <file>CustomBorder.qml</file>
@@ -18,6 +19,8 @@
         <file>FileMessage.qml</file>
         <file>MessageDelegate.qml</file>
         <file>ImageMessage.qml</file>
+        <file>LocationMessage.qml</file>
+        <file>LocationPicker.qml</file>
         <file>MessageInput.qml</file>
         <file>MessageView.qml</file>
         <file>NoticeMessage.qml</file>

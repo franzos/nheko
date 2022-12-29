@@ -1,4 +1,4 @@
-QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus 
+QT += network qml quick quickcontrols2 widgets quickwidgets svg dbus location
 linux:!android {
     QT += multimedia
     CONFIG += link_pkgconfig

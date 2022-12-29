@@ -230,10 +230,12 @@ public slots:
     bool insertMimeData(const QMimeData *data);
     void updateState(int selectionStart, int selectionEnd, int cursorPosition, const QString &text);
     void openFileSelection();
+    void locationPermission();
     [[nodiscard]] bool uploading() const { return uploading_; }
     void message(const QString &body,
                  MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                  bool rainbowify              = false);
+    void location(const QString &lat, const QString lon);
     void reaction(const QString &reactedEvent, const QString &reactionKey);
     void sticker(CombinedImagePackModel *model, int row);
 

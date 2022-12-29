@@ -185,6 +185,7 @@ TimelineModel::roleNames() const
       {CallType, "callType"},
       {Dump, "dump"},
       {RelatedEventCacheBuster, "relatedEventCacheBuster"},
+      {GeoUri, "geoUri"},
     };
 
     return roles;
@@ -448,11 +449,13 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
         m.insert(names[CallType], data(event, static_cast<int>(CallType)));
         m.insert(names[EncryptionError], data(event, static_cast<int>(EncryptionError)));
-
+        m.insert(names[GeoUri], data(event, static_cast<int>(GeoUri)));
         return QVariant(m);
     }
     case RelatedEventCacheBuster:
         return relatedEventCacheBuster;
+    case GeoUri:
+        return QVariant(QString::fromStdString(geoUri(event)));
     default:
         return {};
     }
