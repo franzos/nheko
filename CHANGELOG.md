@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Touch behaviour improvment.
 * Support Location message.
-
+* Removed broken emojis.
 
 ## [0.1.41]
 ### Fixed and Updated
