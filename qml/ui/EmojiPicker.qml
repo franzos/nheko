@@ -71,7 +71,7 @@ Menu {
                 placeholderText: qsTr("Search")
                 selectByMouse: true
                 rightPadding: clearSearch.width
-                onTextChanged: searchTimer.restart()
+                onDisplayTextChanged: searchTimer.restart()
                 onVisibleChanged: {
                     if (visible)
                         forceActiveFocus();
@@ -84,7 +84,7 @@ Menu {
 
                     interval: 350 // tweak as needed?
                     onTriggered: {
-                        emojiPopup.model.searchString = emojiSearch.text;
+                        emojiPopup.model.searchString = emojiSearch.displayText;
                         emojiPopup.model.category = Emoji.Category.Search;
                     }
                 }

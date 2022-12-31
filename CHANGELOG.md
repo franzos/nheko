@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Touch behaviour improvment.
 * Support Location message.
 * Removed broken emojis.
+* Fixing minor issue in emoji search.
+
 
 ## [0.1.41]
 ### Fixed and Updated
