@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Support Location message.
 * Removed broken emojis.
 * Fixing minor issue in emoji search.
+* Fixing crash issue in sending the attachments.
 
 
 ## [0.1.41]

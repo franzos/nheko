@@ -56,7 +56,7 @@ protected:
     QHash<int, QByteArray> roleNames() const;
     QList<RoomListItem> _roomListItems;
     QStringList _roomIds;
-    QList<TimelineModel *> _timelines;
+    QMap<QString, TimelineModel *> _timelines;
 };
 
 class FilteredRoomlistModel : public QSortFilterProxyModel

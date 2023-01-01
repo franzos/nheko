@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <deque>
 #include <memory>
+#include <QQmlEngine>
 
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
@@ -161,7 +162,9 @@ signals:
 public slots:
     void startUpload();
     InputVideoFilter *inputVideoFilter(){
-        return &_inputVideoFilter;
+        auto p = &_inputVideoFilter;
+        QQmlEngine::setObjectOwnership(p, QQmlEngine::CppOwnership);
+        return p;
     }
 
 private slots:

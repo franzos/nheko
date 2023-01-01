@@ -92,8 +92,9 @@ int RoomListModel::roomidToIndex(const QString &roomid){
 }
 
 void RoomListModel::cleanup(){
-    for(auto const &t: _timelines){
-        t->deleteLater();
+    QMap<QString, TimelineModel *>::iterator i;
+    for (i = _timelines.begin(); i != _timelines.end(); ++i){
+        i.value()->deleteLater();
     }
     _timelines.clear();
 }
@@ -214,8 +215,11 @@ void RoomListModel::remove(const QStringList &ids){
 }
 
 TimelineModel *RoomListModel::timelineModel(const QString &roomId){
+    if(_timelines.contains(roomId)){
+        return _timelines[roomId];
+    }
     auto model = new TimelineModel(roomId, this);
-    _timelines << model;
+    _timelines[roomId] = model;
     QQmlEngine::setObjectOwnership(model, QQmlEngine::CppOwnership);
     return model;
 }
