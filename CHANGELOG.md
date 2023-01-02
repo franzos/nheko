@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 * Removed broken emojis.
 * Fixing minor issue in emoji search.
 * Fixing crash issue in sending the attachments.
+* Upstream merge@0.10.2.
 
 
 ## [0.1.41]
