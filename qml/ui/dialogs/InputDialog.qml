@@ -4,12 +4,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import "../.."
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import GlobalObject 1.0
 
-ApplicationWindow {
+CustomApplicationWindow {
     id: inputDialog
 
     property alias prompt: promptLabel.text
@@ -19,7 +20,7 @@ ApplicationWindow {
     modality: Qt.NonModal
     flags: Qt.Dialog
     width: 350
-    height: fontMetrics.lineSpacing * 7
+    height: 130
 
     function forceActiveFocus() {
         statusInput.forceActiveFocus();

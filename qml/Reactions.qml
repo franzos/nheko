@@ -12,10 +12,9 @@ import GlobalObject 1.0
 Flow {
     id: reactionFlow
 
-    // highlight colors for selfReactedEvent background
-    property real highlightHue: GlobalObject.colors.highlight.hslHue
-    property real highlightSat: GlobalObject.colors.highlight.hslSaturation
-    property real highlightLight: GlobalObject.colors.highlight.hslLightness
+    // lower-contrast colors to avoid distracting from text & to enhance hover effect
+    property color gentleHighlight: Qt.hsla(GlobalObject.colors.highlight.hslHue, GlobalObject.colors.highlight.hslSaturation, GlobalObject.colors.highlight.hslLightness, 0.8)
+    property color gentleText: Qt.hsla(GlobalObject.colors.text.hslHue, GlobalObject.colors.text.hslSaturation, GlobalObject.colors.text.hslLightness, 0.6)
     property string eventId
     property alias reactions: repeater.model
 
@@ -74,7 +73,7 @@ Flow {
                         return textMetrics.elidedText;
                     }
                     // font.family: Settings.emojiFont
-                    color: reaction.hovered ? GlobalObject.colors.highlight : GlobalObject.colors.text
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? GlobalObject.colors.highlightedText: GlobalObject.colors.text
                     maximumLineCount: 1
                 }
 
@@ -83,7 +82,7 @@ Flow {
 
                     height: Math.floor(reactionCounter.implicitHeight * 1.4)
                     width: 1
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? GlobalObject.colors.highlight : GlobalObject.colors.text
+                    color: reaction.hovered ? GlobalObject.colors.text: gentleText
                 }
 
                 Text {
@@ -92,7 +91,7 @@ Flow {
                     anchors.verticalCenter: divider.verticalCenter
                     text: modelData.count
                     font: reaction.font
-                    color: reaction.hovered ? GlobalObject.colors.highlight : GlobalObject.colors.text
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? GlobalObject.colors.highlightedText: GlobalObject.colors.windowText
                 }
 
             }
@@ -101,8 +100,8 @@ Flow {
                 anchors.centerIn: parent
                 implicitWidth: reaction.implicitWidth
                 implicitHeight: reaction.implicitHeight
-                border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? GlobalObject.colors.highlight : GlobalObject.colors.text
-                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : GlobalObject.colors.window
+                border.color: reaction.hovered ? GlobalObject.colors.text: gentleText
+                color: reaction.hovered ? GlobalObject.colors.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : GlobalObject.colors.window)
                 border.width: 1
                 radius: reaction.height / 2
             }

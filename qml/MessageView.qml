@@ -190,10 +190,13 @@ Item {
         Shortcut {
             sequence: StandardKey.Cancel
             onActivated: {
-                if (chat.model.reply)
+                if(room.input.uploads.length > 0)
+                    room.input.declineUploads();
+                else if(chat.model.reply)
                     chat.model.reply = undefined;
                 else
                     chat.model.edit = undefined;
+                room.focusMessageInput();
             }
         }
 
@@ -230,13 +233,7 @@ Item {
             }
         }
 
-        // Connections {
-        //     function onFocusChanged() {
-        //         readTimer.running = TimelineManager.isWindowFocused;
-        //     }
-
-        //     target: TimelineManager
-        // }
+        Window.onActiveChanged: readTimer.running = Window.active
 
         Timer {
             id: readTimer
@@ -529,6 +526,25 @@ Item {
 
                 target: chat
             }
+
+        }
+
+        footer: Item {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: 20
+            visible: chat.model && chat.model.paginationInProgress
+            // hacky, but works
+            height: loadingSpinner.height + 2 * 20
+
+            Spinner {
+                id: loadingSpinner
+
+                anchors.centerIn: parent
+                anchors.margins: 20
+                running: chat.model && chat.model.paginationInProgress
+                foreground: GlobalObject.colors.mid
+                z: 3
+            }
         }
     }
 
@@ -564,7 +580,7 @@ Item {
         }
 
         Component {
-            id: removeReason
+            id: removeReason 
             InputDialog {
                 id: removeReasonDialog
 

@@ -9,6 +9,7 @@
 #include <QTextBoundaryFinder>
 
 #include "CompletionModelRoles.h"
+#include <matrix-client-library/Logging.h>
 
 CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
                                            int max_mistakes,
@@ -20,32 +21,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
 {
     setSourceModel(model);
 
-    // insert all the full texts
-    for (int i = 0; i < sourceModel()->rowCount(); i++) {
-        if (static_cast<size_t>(i) < max_completions_)
-            mapping.push_back(i);
-
-        auto string1 = sourceModel()
-                         ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
-                         .toString()
-                         .toLower();
-        if (!string1.isEmpty())
-            trie_.insert(string1.toUcs4(), i);
-
-        auto string2 = sourceModel()
-                         ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
-                         .toString()
-                         .toLower();
-        if (!string2.isEmpty())
-            trie_.insert(string2.toUcs4(), i);
-    }
-
-    // insert the partial matches
-    for (int i = 0; i < sourceModel()->rowCount(); i++) {
-        auto insertParts = [i, this](const QString &str) {
-            if (str.isEmpty())
-                return;
-
+    auto insertParts = [this](const QString &str, int id) {
             QTextBoundaryFinder finder(QTextBoundaryFinder::BoundaryType::Word, str);
             finder.toStart();
             do {
@@ -55,19 +31,43 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
 
                 auto ref = str.midRef(start, end - start).trimmed();
                 if (!ref.isEmpty())
-                    trie_.insert(ref.toUcs4(), i);
+                trie_.insert<ElementRank::second>(ref.toUcs4(), id);
             } while (finder.position() < str.size());
         };
 
-        insertParts(sourceModel()
+    const auto start_at = std::chrono::steady_clock::now();
+
+    // insert full texts and partial matches
+    for (int i = 0; i < sourceModel()->rowCount(); i++) {
+        // full texts are ranked first and partial matches second
+        // that way when searching full texts will be first in result list
+
+        auto string1 = sourceModel()
                       ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
                       .toString()
-                      .toLower());
-        insertParts(sourceModel()
+                         .toLower();
+        if (!string1.isEmpty()) {
+            trie_.insert<ElementRank::first>(string1.toUcs4(), i);
+            insertParts(string1, i);
+        }
+
+        auto string2 = sourceModel()
                       ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
                       .toString()
-                      .toLower());
+                         .toLower();
+        if (!string2.isEmpty()) {
+            trie_.insert<ElementRank::first>(string2.toUcs4(), i);
+            insertParts(string2, i);
+        }
     }
+
+    const auto end_at     = std::chrono::steady_clock::now();
+    const auto build_time = std::chrono::duration<double, std::milli>(end_at - start_at);
+    nhlog::ui()->debug("CompletionProxyModel: build trie: {} ms", build_time.count());
+
+    // initialize default mapping
+    mapping.resize(std::min(max_completions_, static_cast<size_t>(model->rowCount())));
+    std::iota(mapping.begin(), mapping.end(), 0);
 
     connect(
       this,

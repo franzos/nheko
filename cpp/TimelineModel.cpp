@@ -272,6 +272,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             if (isReply)
                 formattedBody_ = formattedBody_.remove(replyFallback);
         }
+        formattedBody_ = utils::escapeBlacklistedHtml(formattedBody_);
 
         // TODO(Nico): Don't parse html with a regex
         const static QRegularExpression matchIsImg(QStringLiteral("<img [^>]+>"));
@@ -309,8 +310,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             formattedBody_.replace(curImg, imgReplacement);
         }
 
-        return QVariant(
-          utils::replaceEmoji(utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
+        return QVariant(utils::replaceEmoji(utils::linkifyMessage(formattedBody_)));
     }
     case Url:
         return QVariant(QString::fromStdString(url(event)));
@@ -1761,19 +1761,16 @@ TimelineModel::formatMemberEvent(const QString &id)
         }
         break;
     case Membership::Leave:
-        if (!prevEvent) // Should only ever happen temporarily
-            return {};
-
-        if (prevEvent->content.membership == Membership::Invite) {
-            if (event->state_key == event->sender)
-                rendered = tr("%1 rejected their invite.").arg(name);
-            else
-                rendered = tr("%2 revoked the invite to %1.").arg(name, senderName);
-        } else if (prevEvent->content.membership == Membership::Join) {
+        if (!prevEvent || prevEvent->content.membership == Membership::Join) {
             if (event->state_key == event->sender)
                 rendered = tr("%1 left the room.").arg(name);
             else
                 rendered = tr("%2 kicked %1.").arg(name, senderName);
+        } else if (prevEvent->content.membership == Membership::Invite) {
+            if (event->state_key == event->sender)
+                rendered = tr("%1 rejected their invite.").arg(name);
+            else
+                rendered = tr("%2 revoked the invite to %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Ban) {
             rendered = tr("%2 unbanned %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Knock) {
@@ -1817,6 +1814,8 @@ TimelineModel::setEdit(const QString &newEdit)
         nhlog::ui()->debug("Stored: {}", textBeforeEdit.toStdString());
     }
 
+    auto quoted = [](QString in) { return in.replace("[", "\\[").replace("]", "\\]"); };
+
     if (edit_ != newEdit) {
         auto ev = events->get(newEdit.toStdString(), "");
         if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
@@ -1841,7 +1840,7 @@ TimelineModel::setEdit(const QString &newEdit)
 
                     for (const auto &[user, link] : reverseNameMapping) {
                         // TODO(Nico): html unescape the user name
-                        editText.replace(user, QStringLiteral("[%1](%2)").arg(user, link));
+                        editText.replace(user, QStringLiteral("[%1](%2)").arg(quoted(user), link));
                     }
                 }
 

@@ -71,17 +71,17 @@ MemberListBackend::data(const QModelIndex &index, int role) const
         return m_memberList[index.row()].first.display_name;
     case AvatarUrl:
         return m_memberList[index.row()].second;
-    // case Trustlevel: {
-    //     auto stat =
-    //       cache::verificationStatus(m_memberList[index.row()].first.user_id.toStdString());
+    case Trustlevel: {
+        auto stat =
+          cache::verificationStatus(m_memberList[index.row()].first.user_id.toStdString());
 
-    //     if (!stat)
-    //         return crypto::Unverified;
-    //     if (stat->unverified_device_count)
-    //         return crypto::Unverified;
-    //     else
-    //         return stat->user_verified;
-    // }
+        if (!stat)
+            return crypto::Unverified;
+        if (stat->unverified_device_count)
+            return crypto::Unverified;
+        else
+            return stat->user_verified;
+    }
     case Powerlevel:
         return static_cast<qlonglong>(
           Client::instance()->timeline(room_id_)->powerLevels().user_level(m_memberList[index.row()].first.user_id.toStdString()));
@@ -158,6 +158,8 @@ MemberList::sortBy(const MemberSortRoles role)
 bool
 MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
-    return m_model.m_memberList[source_row].first.user_id.contains(filterString) ||
-           m_model.m_memberList[source_row].first.display_name.contains(filterString);
+    return m_model.m_memberList[source_row].first.user_id.contains(filterString,
+                                                                   Qt::CaseInsensitive) ||
+           m_model.m_memberList[source_row].first.display_name.contains(filterString,
+                                                                        Qt::CaseInsensitive);
 }
