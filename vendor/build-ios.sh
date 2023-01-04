@@ -176,8 +176,6 @@ function BUILD_MATRIX_CLIENT_LIBRARY {
     version="0.1.32"
     download_url="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $version $download_url
-    APPLY_PATCH $name \
-        $PATCH_DIR/matrix-client-library/0001-fix-ios-build-issues.patch
 
     BUILD_LIB $name \
         -DCMAKE_FIND_ROOT_PATH=$QT5_ROOT \
