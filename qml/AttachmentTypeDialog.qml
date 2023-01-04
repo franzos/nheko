@@ -44,10 +44,6 @@ Dialog {
         model: modelMenu
         delegate: componentDelegate
     }
-    
-    LocationPicker {
-        id: locationPicker
-    }
 
     Component {
         id: componentDelegate
@@ -100,7 +96,6 @@ Dialog {
                             room.input.openFileSelection()
                             break;  
                         case "Location":
-                            room.input.locationPermission()
                             var locationPicker = locationPickerDialog.createObject(room, {"room": room});
                             locationPicker.showMaximized()
                             break;        
