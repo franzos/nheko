@@ -6,8 +6,9 @@ import MatrixClient 1.0
 import Rooms 1.0
 import GlobalObject 1.0
 import QmlInterface 1.0
-
+import MatrixClient 1.0
 import "device-verification"
+import "ui/dialogs"
 
 Page {
     id: roomPage
@@ -26,6 +27,13 @@ Page {
         model: Rooms
         delegate:RoomDelegate{}
     }
+    
+    Component {
+        id: createRoomComponent
+
+        CreateRoom {
+        }
+    }
 
     Component {
         id: directChatFactory
@@ -33,6 +41,13 @@ Page {
             title: "Direct Chat"
             x: (qmlLibRoot.width - width) / 2
             y: (qmlLibRoot.height - height) / 2
+        }
+    }
+
+    Component {
+        id: joinRoomDialog
+
+        JoinRoomDialog {
         }
     }
 
@@ -45,9 +60,35 @@ Page {
         palette.button: GlobalObject.colors.alternateBase
         font.pointSize: 15            
         text: "+"
-        onClicked: {    
-            var directChatDialog = directChatFactory.createObject(roomPage);
-            directChatDialog.open()
+        onClicked: roomJoinCreateMenu.open(parent)
+        Menu {
+            id: roomJoinCreateMenu
+
+            MenuItem {
+                text: qsTr("Join a room")
+                onTriggered: {
+                    var dialog = joinRoomDialog.createObject(roomPage);
+                    dialog.show();
+                    destroyOnClose(dialog);
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Create a new room")
+                onTriggered: {
+                    var createRoom = createRoomComponent.createObject(roomPage);
+                    createRoom.show();
+                    timelineRoot.destroyOnClose(createRoom);
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Start a direct chat")
+                onTriggered: {
+                    var directChatDialog = directChatFactory.createObject(roomPage);
+                    directChatDialog.open()
+                }
+            }
         }
     }   
 

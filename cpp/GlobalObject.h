@@ -69,7 +69,12 @@ public:
     Q_INVOKABLE QString mediaCachePath();
     Q_INVOKABLE bool mobileMode();
     Q_INVOKABLE QString themeName();
-    
+    Q_INVOKABLE void createRoom(bool space,
+                            QString name,
+                            QString topic,
+                            QString aliasLocalpart,
+                            bool isEncrypted,
+                            int preset);
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
     bool handleMatrixUri(const QUrl &uri);
