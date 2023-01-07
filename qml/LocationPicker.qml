@@ -48,7 +48,7 @@ CustomApplicationWindow {
             }
         }
     }
-
+    
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
