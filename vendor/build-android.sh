@@ -207,7 +207,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
-    tag="0.1.32"
+    tag="0.1.33"
     repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 
