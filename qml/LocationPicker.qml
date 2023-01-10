@@ -18,6 +18,7 @@ CustomApplicationWindow {
     }
     header: 
         Label {
+            id: locationPromptLabel
             width: parent.width
             text: qsTr("Activate your device location to share it.")
             visible: !GlobalObject.isLocationPermissionGranted()
@@ -59,6 +60,10 @@ CustomApplicationWindow {
                 mapview.center = coord
                 mapCircle.center = coord
             }
+            if(GlobalObject.isLocationPermissionGranted())
+                locationPromptLabel.visible=false
+            else
+                locationPromptLabel.visible=true
         }
     }
     
