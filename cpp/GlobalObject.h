@@ -75,6 +75,8 @@ public:
                             QString aliasLocalpart,
                             bool isEncrypted,
                             int preset);
+    Q_INVOKABLE bool isLocationPermissionGranted();
+
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
     bool handleMatrixUri(const QUrl &uri);

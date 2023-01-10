@@ -365,3 +365,15 @@ GlobalObject::createRoom(bool space,
 
     emit Client::instance()->createRoom(req);
 }
+
+Q_INVOKABLE bool GlobalObject::isLocationPermissionGranted(){
+#ifdef Q_OS_ANDROID
+    auto result = QtAndroid::checkPermission("android.permission.ACCESS_FINE_LOCATION");
+    if(result == QtAndroid::PermissionResult::Denied) {
+        return false;
+    }
+    return true;
+#else
+    return false;
+#endif
+}

@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtLocation 5.15
+import QtQuick.Layouts 1.2
 import QtPositioning 5.15
 import GlobalObject 1.0
 import TimelineModel 1.0
@@ -15,6 +16,18 @@ CustomApplicationWindow {
         id: mapPlugin
         name: "osm"
     }
+    header: 
+        Label {
+            width: parent.width
+            text: qsTr("Activate your device location to share it.")
+            visible: !GlobalObject.isLocationPermissionGranted()
+            font.pointSize: 14
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            background: Rectangle {
+                color: "red"
+            }
+        }
 
     Map {
         id: mapview
