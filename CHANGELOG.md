@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Fixing issue in requesting the location permission in Android.
 * Create and join room added.
+* Location sharing: message prompt if no permission in Android.
+
 
 ## [0.1.42]
 ### Fixed and Updated
