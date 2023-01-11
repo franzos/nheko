@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.44]
+### Updated
+
+* Set login type programatically in gui library.
+
 ## [0.1.43]
 ### Fixed and Updated
 

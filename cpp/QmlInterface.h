@@ -43,6 +43,7 @@ public:
 signals:
     void userIdChanged(const QString &userId);
     void serverAddressChanged(const QString &server);
+    void loginTypeChanged(const PX::AUTH::LOGIN_TYPE type);
     void loginProgramatically(PX::AUTH::LOGIN_TYPE type, const QString &accessToken);
     void notificationClicked(const QString &roomid);
     
@@ -52,6 +53,8 @@ public slots:
     void setUserId(const QString userID);
     QString getServerAddress();
     void setServerAddress(const QString &server);
+    PX::AUTH::LOGIN_TYPE getLoginType();
+    void setLoginType(PX::AUTH::LOGIN_TYPE type);
 #if CIBA_AUTH
     void setCMUserInformation(const PX::AUTH::UserProfileInfo &info);
     PX::AUTH::UserProfileInfo cmUserInformation();
@@ -83,6 +86,7 @@ private:
     QString _defaultUserIdFormat = "@user:matrix.org";
     QString _serverAddress = "";
     QString _userId = "";
+    PX::AUTH::LOGIN_TYPE _type;
 #if defined(NOTIFICATION_DBUS_SYS)
     NotificationsManager _notificationsManager;
 #endif

@@ -38,8 +38,6 @@ Page {
             onTriggered: MatrixClient.serverDiscovery(MatrixClient.extractHostName(userIdText.text))
         }
 
-       
-
         PasswordField {
             id: passwordText
             visible: false
@@ -74,9 +72,16 @@ Page {
             onTriggered: {
                 var options = MatrixClient.loginOptions(matrixServerText.text)
                 combo.restart()
+                var cnt = 0
                 for (var prop in options) {
                     console.log("Object item:", prop, "=", options[prop])
                     combo.model.append ({ text: options[prop] , value: prop})
+                    if ((QmlInterface.getLoginType() != LOGIN_TYPE.UNKNOWN) && (QmlInterface.getLoginType() == prop)){
+                        combo.currentIndex = cnt
+                        combo.visible=false
+                        loginButton.enabled = true
+                    }
+                    cnt++;
                 }
             }
         }
@@ -200,7 +205,7 @@ Page {
         matrixServerText.text=QmlInterface.getServerAddress()
     }
     
-    function onUserIdChanged(address){
+    function onUserIdChanged(userId){
         userIdText.enabled=!QmlInterface.userId()
         userIdText.text=QmlInterface.userId()
     }
