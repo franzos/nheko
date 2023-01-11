@@ -17,7 +17,6 @@ Page {
         spacing: 10
         TextField {
             id: userIdText
-            enabled: !QmlInterface.userId()
             text: QmlInterface.userId()
             Layout.leftMargin: 50
             Layout.rightMargin: 50
@@ -206,7 +205,6 @@ Page {
     }
     
     function onUserIdChanged(userId){
-        userIdText.enabled=!QmlInterface.userId()
         userIdText.text=QmlInterface.userId()
     }
     
