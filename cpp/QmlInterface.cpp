@@ -353,6 +353,18 @@ QmlInterface::QmlInterface(QObject *parent):
         }
     };
 
+    PX::AUTH::LOGIN_TYPE QmlInterface::getLoginType(){
+        return _type;
+    };
+
+    void QmlInterface::setLoginType(PX::AUTH::LOGIN_TYPE type){
+        if(type!=_type){
+            qInfo()<<"Default login type set to " << type;
+            _type = type;
+            emit loginTypeChanged(_type);
+        }
+    }
+
     void QmlInterface::login(PX::AUTH::LOGIN_TYPE type, const QString &accessToken){
         emit loginProgramatically(type, accessToken);
     }
