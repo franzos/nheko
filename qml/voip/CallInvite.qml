@@ -138,7 +138,7 @@ Popup {
         RowLayout {
             id: buttonLayout
 
-            property int buttonSize: callInv.height / 8
+            property int buttonSize: callInv.height / 16
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
@@ -165,14 +165,21 @@ Popup {
                 }
 
                 background: Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    border.color: "#ff0000"
+                    border.width: 5
                     radius: buttonLayout.buttonSize / 2
-                    color: "#ff0000"
                 }
 
-                contentItem: Image {
-                    source: "image://colorimage/:/images/end-call.svg?#ffffff"
+                Image {
+                    width: buttonLayout.buttonSize - 30
+                    height: width
+                    anchors.centerIn: parent
+                    source: "image://colorimage/:/images/end-call.svg?#ff0000"
                     fillMode: Image.PreserveAspectFit
                 }
+
 
             }
 
@@ -186,12 +193,18 @@ Popup {
                 onClicked: acceptCall()
 
                 background: Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    border.color: "#00ff00"
+                    border.width: 5
                     radius: buttonLayout.buttonSize / 2
-                    color: "#00ff00"
                 }
 
-                contentItem: Image {
-                    source: "image://colorimage/" + acceptButton.image + "?#ffffff"
+                Image {
+                    width: buttonLayout.buttonSize - 30
+                    height: width
+                    anchors.centerIn: parent
+                    source: "image://colorimage/" + acceptButton.image + "?#00ff00"
                     fillMode: Image.PreserveAspectFit
                 }
 
