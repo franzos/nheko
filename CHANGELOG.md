@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.45]
+### Updated
+
+* Call buttons update.
+
 ## [0.1.44]
 ### Updated
 
