@@ -16,6 +16,28 @@ Dialog {
     onAboutToHide: {
         disconnectSignals()
     }
+    
+    Timer {
+        // https://git.pantherx.org/development/mobile/matrix-client/-/issues/181
+        id: debounceTimer
+        interval: 200
+        onTriggered: {
+            micVolumeSlider.enabled=true
+            spkVolumeSlider.enabled=true
+            videoCombo.enabled=true
+            callSettings.standardButton(Dialog.Ok).enabled=true;
+            callSettings.standardButton(Dialog.Cancel).enabled=true
+        }
+    }
+
+    function startDebounceTimer(){
+        micVolumeSlider.enabled=false
+        spkVolumeSlider.enabled=false
+        videoCombo.enabled=false
+        callSettings.standardButton(Dialog.Ok).enabled=false;
+        callSettings.standardButton(Dialog.Cancel).enabled=false
+        debounceTimer.start()
+    }
 
     Column {
         width: parent.width
@@ -43,6 +65,7 @@ Dialog {
                 } 
                 model: ListModel {}
                 onActivated: {
+                    startDebounceTimer()
                     updateMicVolumeAndLevelMeter(audioCombo.currentText)
                 }
             }
@@ -104,6 +127,9 @@ Dialog {
                     border.color: GlobalObject.colors.windowText
                 } 
                 model: ListModel {}   
+                onActivated:{
+                    startDebounceTimer()
+                }
             }
         }
     }
