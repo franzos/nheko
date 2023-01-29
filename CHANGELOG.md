@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Updated
 
 * Call buttons update.
+* CallSettingsDialog: add delay as debounce on combobox click.
 
 ## [0.1.44]
 ### Updated
