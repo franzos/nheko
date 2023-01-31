@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 * Call buttons update.
 * CallSettingsDialog: add delay as debounce on combobox click.
+* Audio output control.
 
 ## [0.1.44]
 ### Updated
