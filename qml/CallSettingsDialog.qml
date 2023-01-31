@@ -97,13 +97,34 @@ Dialog {
             Label {
                 text: qsTr("Output Volume:")
             }
+            ComboBox {
+                id: audioOutputCombo
+                editable: false
+                flat: true  
+                width: parent.width
+                
+                Layout.leftMargin: 50
+                Layout.rightMargin: 50
+                background:Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 40
+                    color: GlobalObject.colors.window
+                    border.color: GlobalObject.colors.windowText
+                } 
+                model: ListModel {}
+                onActivated: {
+                    startDebounceTimer()
+                    AudioDeviceControl.setDefaultAudioOutput(audioOutputCombo.currentText)
+                    updateSpkVolumeAndLevelMeter(audioOutputCombo.currentText)
+                }
+            }
             Slider {
                 id: spkVolumeSlider
                 width: parent.width
                 visible: !GlobalObject.mobileMode()
                 onMoved: {
                     if (!GlobalObject.mobileMode())
-                        AudioDeviceControl.setSpeakerVolume(spkVolumeSlider.value)
+                        AudioDeviceControl.setSpeakerVolume(audioOutputCombo.currentText,spkVolumeSlider.value)
                 }
             }
         }
@@ -138,6 +159,7 @@ Dialog {
         Settings.microphone = audioCombo.currentText
         Settings.camera = videoCombo.currentText
         console.log("   - [default mic]: " + audioCombo.currentText)
+        console.log("   - [default spk]: " + audioOutputCombo.currentText)
         console.log("   - [default cam]: " + videoCombo.currentText)
     }
     
@@ -175,8 +197,23 @@ Dialog {
         }
     }
 
+    function onDefaultOutputDeviceChangedCallback(index){
+        // Nothing for now
+    }
+
     function onNewOutputDeviceStatusCallback(index){
-        spkVolumeSlider.value = AudioDeviceControl.getSpeakerVolume()
+        var defaultAudioOut = AudioDeviceControl.defaultAudioOutput();
+        var spks = sortDevices(AudioDeviceControl.audioOutputDevices())
+        audioOutputCombo.model.clear()
+        if(spks.length){
+            for (var s = 0; s < spks.length; s++) {
+                audioOutputCombo.model.append({text: spks[s]})
+            }
+            audioOutputCombo.currentIndex = audioOutputCombo.indexOfValue(defaultAudioOut)
+        } else {
+            audioOutputCombo.displayText = "Not connected!"
+        }
+        updateSpkVolumeAndLevelMeter(audioOutputCombo.currentText)
     }
     
     function disconnectSignals() {
@@ -184,6 +221,7 @@ Dialog {
             AudioDeviceControl.onLevelChanged.disconnect(onLevelChangedCallback)
             AudioDeviceControl.onNewInputDeviceStatus.disconnect(onNewInputDeviceStatusCallback)
             AudioDeviceControl.onNewOutputDeviceStatus.disconnect(onNewOutputDeviceStatusCallback)
+            AudioDeviceControl.onDefaultOutputDeviceChanged.disconnect(onDefaultOutputDeviceChangedCallback)
         }
     }
 
@@ -207,7 +245,6 @@ Dialog {
         } else {
             audioCombo.displayText="Not connected!"
         }
-        updateSpkVolumeAndLevelMeter()
         if(cams.length){
             for (var c = 0; c < cams.length; c++) {
                 videoCombo.model.append({text: cams[c]})
@@ -216,10 +253,12 @@ Dialog {
         } else {
             videoCombo.displayText = "Not connected!"
         }
+        onNewOutputDeviceStatusCallback()
         if (!GlobalObject.mobileMode()) {
             AudioDeviceControl.onLevelChanged.connect(onLevelChangedCallback)
             AudioDeviceControl.onNewInputDeviceStatus.connect(onNewInputDeviceStatusCallback)
             AudioDeviceControl.onNewOutputDeviceStatus.connect(onNewOutputDeviceStatusCallback)
+            AudioDeviceControl.onDefaultOutputDeviceChanged.connect(onDefaultOutputDeviceChangedCallback)
         }
     }
 }
