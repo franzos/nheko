@@ -38,118 +38,125 @@ Dialog {
         callSettings.standardButton(Dialog.Cancel).enabled=false
         debounceTimer.start()
     }
-
-    Column {
+    ScrollView {
+        id: scroll
+        clip: true
+        anchors.fill: parent 
+        ScrollBar.horizontal.visible: false
+        ScrollBar.vertical.visible: true
         width: parent.width
-        spacing: 20
+        Column {
+            width: parent.width
+            spacing: 20
 
-        Column {
-            width: parent.width
-            spacing: 5
-            Label {
-                text: qsTr("Audio Input:")
-            }
-            ComboBox {
-                id: audioCombo
-                editable: false
-                flat: true  
+            Column {
                 width: parent.width
-                
-                Layout.leftMargin: 50
-                Layout.rightMargin: 50
-                background:Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 40
-                    color: GlobalObject.colors.window
-                    border.color: GlobalObject.colors.windowText
-                } 
-                model: ListModel {}
-                onActivated: {
-                    startDebounceTimer()
-                    updateMicVolumeAndLevelMeter(audioCombo.currentText)
+                spacing: 5
+                Label {
+                    text: qsTr("Audio Input:")
+                }
+                ComboBox {
+                    id: audioCombo
+                    editable: false
+                    flat: true  
+                    width: parent.width
+                    
+                    Layout.leftMargin: 50
+                    Layout.rightMargin: 50
+                    background:Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 40
+                        color: GlobalObject.colors.window
+                        border.color: GlobalObject.colors.windowText
+                    } 
+                    model: ListModel {}
+                    onActivated: {
+                        startDebounceTimer()
+                        updateMicVolumeAndLevelMeter(audioCombo.currentText)
+                    }
+                }
+                Slider {
+                    id: micVolumeSlider
+                    width: parent.width
+                    visible: !GlobalObject.mobileMode()
+                    onMoved: {
+                        if (!GlobalObject.mobileMode())
+                            AudioDeviceControl.setMicrophoneVolume(audioCombo.currentText, micVolumeSlider.value)
+                    }
+                }
+                LinearGradient {
+                    id: levelGradient
+                    width: parent.width
+                    visible: !GlobalObject.mobileMode()
+                    height: 5
+                    start: Qt.point(0, 0)
+                    end: Qt.point(parent.width, 0)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "blue" }
+                        GradientStop { position: 1.0; color: GlobalObject.colors.base } 
+                    }
                 }
             }
-            Slider {
-                id: micVolumeSlider
+            Column {
                 width: parent.width
-                visible: !GlobalObject.mobileMode()
-                onMoved: {
-                    if (!GlobalObject.mobileMode())
-                        AudioDeviceControl.setMicrophoneVolume(audioCombo.currentText, micVolumeSlider.value)
+                spacing: 5
+                Label {
+                    text: qsTr("Output Volume:")
+                }
+                ComboBox {
+                    id: audioOutputCombo
+                    editable: false
+                    flat: true  
+                    width: parent.width
+                    
+                    Layout.leftMargin: 50
+                    Layout.rightMargin: 50
+                    background:Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 40
+                        color: GlobalObject.colors.window
+                        border.color: GlobalObject.colors.windowText
+                    } 
+                    model: ListModel {}
+                    onActivated: {
+                        startDebounceTimer()
+                        AudioDeviceControl.setDefaultAudioOutput(audioOutputCombo.currentText)
+                        updateSpkVolumeAndLevelMeter(audioOutputCombo.currentText)
+                    }
+                }
+                Slider {
+                    id: spkVolumeSlider
+                    width: parent.width
+                    visible: !GlobalObject.mobileMode()
+                    onMoved: {
+                        if (!GlobalObject.mobileMode())
+                            AudioDeviceControl.setSpeakerVolume(audioOutputCombo.currentText,spkVolumeSlider.value)
+                    }
                 }
             }
-            LinearGradient {
-                id: levelGradient
+            Column {
                 width: parent.width
-                visible: !GlobalObject.mobileMode()
-                height: 5
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: "blue" }
-                    GradientStop { position: 1.0; color: GlobalObject.colors.base } 
+                spacing: 5
+                Label {
+                    text: qsTr("Video Input:")
                 }
-            }
-        }
-        Column {
-            width: parent.width
-            spacing: 5
-            Label {
-                text: qsTr("Output Volume:")
-            }
-            ComboBox {
-                id: audioOutputCombo
-                editable: false
-                flat: true  
-                width: parent.width
-                
-                Layout.leftMargin: 50
-                Layout.rightMargin: 50
-                background:Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 40
-                    color: GlobalObject.colors.window
-                    border.color: GlobalObject.colors.windowText
-                } 
-                model: ListModel {}
-                onActivated: {
-                    startDebounceTimer()
-                    AudioDeviceControl.setDefaultAudioOutput(audioOutputCombo.currentText)
-                    updateSpkVolumeAndLevelMeter(audioOutputCombo.currentText)
-                }
-            }
-            Slider {
-                id: spkVolumeSlider
-                width: parent.width
-                visible: !GlobalObject.mobileMode()
-                onMoved: {
-                    if (!GlobalObject.mobileMode())
-                        AudioDeviceControl.setSpeakerVolume(audioOutputCombo.currentText,spkVolumeSlider.value)
-                }
-            }
-        }
-        Column {
-            width: parent.width
-            spacing: 5
-            Label {
-                text: qsTr("Video Input:")
-            }
-            ComboBox {
-                id: videoCombo
-                editable: false
-                flat: true  
-                width: parent.width
-                Layout.leftMargin: 50
-                Layout.rightMargin: 50
-                background:Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 40
-                    color: GlobalObject.colors.window
-                    border.color: GlobalObject.colors.windowText
-                } 
-                model: ListModel {}   
-                onActivated:{
-                    startDebounceTimer()
+                ComboBox {
+                    id: videoCombo
+                    editable: false
+                    flat: true  
+                    width: parent.width
+                    Layout.leftMargin: 50
+                    Layout.rightMargin: 50
+                    background:Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 40
+                        color: GlobalObject.colors.window
+                        border.color: GlobalObject.colors.windowText
+                    } 
+                    model: ListModel {}   
+                    onActivated:{
+                        startDebounceTimer()
+                    }
                 }
             }
         }
