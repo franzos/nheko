@@ -20,7 +20,7 @@ linux:!android {
 
     INSTALLS += target app_icon desktop_file
 
-    LIBS += -lspdlog -lcurl -lcoeurl \
+    LIBS += -lspdlog \
             -lmatrix_client -lblurhash
 
     H = $$LITERAL_HASH

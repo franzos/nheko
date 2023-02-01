@@ -4,7 +4,7 @@ TEMPLATE = lib
 TARGET = matrix-client-gui-library
 
 LIBS += -lmatrix-client-library \
-        -lspdlog -lcurl -lcoeurl -llmdb \
+        -lspdlog -llmdb \
         -lmatrix_client -lblurhash
         
 include(cpp/cpp.pri)
