@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.46]
+### Fixed
+
+* Fixing issue in selecting the devices in CallSettingsDialog comboboxes.
+
+
 ## [0.1.45]
 ### Updated
 
