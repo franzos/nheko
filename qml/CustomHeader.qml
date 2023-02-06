@@ -26,8 +26,6 @@ Column {
     Component {
         id: callSettingsDialogFactory
         CallSettingsDialog {
-            x: (qmlLibRoot.width - width) / 2
-            y: (qmlLibRoot.height - height) / 2
         }
     }
 
@@ -84,8 +82,11 @@ Column {
                 height: parent.height
                 visible: CallManager.callsSupported
                 onClicked: {
-                    var callSettingsDialog = callSettingsDialogFactory.createObject(parent);
-                    callSettingsDialog.open()
+                    if(!GlobalObject.mobileMode()) {
+                        var callSettingsDialog = callSettingsDialogFactory.createObject(parent);
+                        callSettingsDialog.show();
+                        destroyOnClose(callSettingsDialog);
+                    }
                 }
             }
 

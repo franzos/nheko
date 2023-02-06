@@ -8,36 +8,15 @@ import GlobalObject 1.0
 import AudioDeviceInfo 1.0
 import AudioDeviceControl 1.0
 
-Dialog {
+CustomApplicationWindow {
     id: callSettings
     title: "Audio/Video Settings"
-    width: (GlobalObject.mobileMode() ? parent.width : 420)
-    standardButtons: Dialog.Ok | Dialog.Cancel
-    onAboutToHide: {
-        disconnectSignals()
-    }
+    minimumWidth: 340
+    minimumHeight: 450
+    width: 450
+    height: 680
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     
-    Timer {
-        // https://git.pantherx.org/development/mobile/matrix-client/-/issues/181
-        id: debounceTimer
-        interval: 200
-        onTriggered: {
-            micVolumeSlider.enabled=true
-            spkVolumeSlider.enabled=true
-            videoCombo.enabled=true
-            callSettings.standardButton(Dialog.Ok).enabled=true;
-            callSettings.standardButton(Dialog.Cancel).enabled=true
-        }
-    }
-
-    function startDebounceTimer(){
-        micVolumeSlider.enabled=false
-        spkVolumeSlider.enabled=false
-        videoCombo.enabled=false
-        callSettings.standardButton(Dialog.Ok).enabled=false;
-        callSettings.standardButton(Dialog.Cancel).enabled=false
-        debounceTimer.start()
-    }
     ScrollView {
         id: scroll
         clip: true
@@ -45,9 +24,12 @@ Dialog {
         ScrollBar.horizontal.visible: false
         ScrollBar.vertical.visible: true
         width: parent.width
+        anchors.topMargin: 20
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
         Column {
             width: parent.width
-            spacing: 20
+            spacing: 30
 
             Column {
                 width: parent.width
@@ -71,7 +53,6 @@ Dialog {
                     } 
                     model: ListModel {}
                     onActivated: {
-                        startDebounceTimer()
                         updateMicVolumeAndLevelMeter(audioCombo.currentText)
                     }
                 }
@@ -101,7 +82,7 @@ Dialog {
                 width: parent.width
                 spacing: 5
                 Label {
-                    text: qsTr("Output Volume:")
+                    text: qsTr("Audio Output:")
                 }
                 ComboBox {
                     id: audioOutputCombo
@@ -119,7 +100,6 @@ Dialog {
                     } 
                     model: ListModel {}
                     onActivated: {
-                        startDebounceTimer()
                         AudioDeviceControl.setDefaultAudioOutput(audioOutputCombo.currentText)
                         updateSpkVolumeAndLevelMeter(audioOutputCombo.currentText)
                     }
@@ -154,21 +134,29 @@ Dialog {
                         border.color: GlobalObject.colors.windowText
                     } 
                     model: ListModel {}   
-                    onActivated:{
-                        startDebounceTimer()
-                    }
+                    onActivated:{}
                 }
             }
         }
     }
 
-    onAccepted: {
-        Settings.microphone = audioCombo.currentText
-        Settings.camera = videoCombo.currentText
-        console.log("   - [default mic]: " + audioCombo.currentText)
-        console.log("   - [default spk]: " + audioOutputCombo.currentText)
-        console.log("   - [default cam]: " + videoCombo.currentText)
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+        onAccepted: {
+            Settings.microphone = audioCombo.currentText
+            Settings.camera = videoCombo.currentText
+            console.log("   - [default mic]: " + audioCombo.currentText)
+            console.log("   - [default spk]: " + audioOutputCombo.currentText)
+            console.log("   - [default cam]: " + videoCombo.currentText)
+            close()
+        }
+        background: Rectangle {
+            anchors.fill: parent
+            color: GlobalObject.colors.window
+        }
     }
+
+
     
     function sortDevices(devices){
         let sortedList = []
