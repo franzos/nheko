@@ -22,6 +22,10 @@ Drawer {
             icon: ":/images/settings.svg"            
         }
         ListElement {
+            item: "My QR code"
+            icon: ":/images/qrcode.svg"            
+        }
+        ListElement {
             item: "Logout"
             icon: ":/images/power-off.svg"            
         }
@@ -42,7 +46,12 @@ Drawer {
         model: modelMenu
         delegate: componentDelegate
     }
+    Component {
+        id: qrCodeComponent
 
+        QRCode {
+        }
+    }
     Component {
         id: componentDelegate
 
@@ -90,6 +99,14 @@ Drawer {
                     switch( item ) {
                         case "Logout":
                             logoutDialog.open()
+                            break;
+                        case "My QR code":
+                            var qrCode = qrCodeComponent.createObject(menu);
+                            if(GlobalObject.mobileMode())
+                                qrCode.showMaximized();
+                            else 
+                                qrCode.show();
+                            destroyOnClose(qrCode);
                             break;
                         case "Settings":
                             var settings = userSettingsPage.createObject(stack);

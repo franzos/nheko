@@ -19,7 +19,6 @@ SOURCES += \
     $$PWD/../cpp/Reaction.cpp \
     $$PWD/../cpp/ReadReceiptsModel.cpp \
     $$PWD/../cpp/RoomListItem.cpp \
-    $$PWD/../cpp/RoomListItem.h  \
     $$PWD/../cpp/RoomListModel.cpp \
     $$PWD/../cpp/RoomsModel.cpp \
     $$PWD/../cpp/Theme.cpp \
