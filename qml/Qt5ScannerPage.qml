@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Window 2.12
 import QtMultimedia 5.12
+import QtQuick.Layouts 1.12
+import MatrixClient 1.0
 import com.scythestudio.scodes 1.0
 
 
@@ -15,7 +17,8 @@ CustomApplicationWindow {
   flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
   title: qsTr("My QR code")
 
-  
+  property var mx_id;
+
   Camera {
     id: camera
 
@@ -87,26 +90,48 @@ CustomApplicationWindow {
 
     Column {
       anchors.centerIn: parent
-
+      width: parent.width
       spacing: 20
-
-      Text {
+      Label {
         id: scanResultText
-
+        width: parent.width - 20
         anchors.horizontalCenter: parent.horizontalCenter
-
-        text: barcodeScanner.captured
+        wrapMode: Text.Wrap
+        text: {
+          startChatButton.visible=false
+          var JsonObject = JSON.parse(barcodeScanner.captured)
+          mx_id = JsonObject.mx_id
+          if(mx_id) {
+            startChatButton.visible=true
+            return "Do you want to start direct chat with \"" + mx_id + "\"?"
+          } else
+            return "Invalid Matrix ID QR Code!"
+        }
       }
 
-      Button {
-        id: scanButton
+      RowLayout {
+        id: buttonsLayout
+        width: parent.width
+        spacing: 5
+        Button {
+          id: scanButton
+          text: qsTr("Scan again")
+          Layout.alignment: (startChatButton.visible?Qt.AlignRight:Qt.AlignCenter)
+          onClicked: {
+            barcodeScanner.active = true
+          }
+        }
 
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        text: qsTr("Scan again")
-
-        onClicked: {
-          barcodeScanner.active = true
+        Button {
+          id: startChatButton
+          text: qsTr("Start Chat")
+          Layout.alignment: Qt.AlignLeft
+          onClicked: {
+            if(mx_id){
+              MatrixClient.startChat(mx_id, false)
+              close()
+            }
+          }
         }
       }
     }
