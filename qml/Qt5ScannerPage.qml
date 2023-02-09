@@ -15,7 +15,7 @@ CustomApplicationWindow {
   height: 680
   modality: Qt.NonModal
   flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-  title: qsTr("My QR code")
+  title: qsTr("Scan QR code ...")
 
   property var mx_id;
 
@@ -80,7 +80,7 @@ CustomApplicationWindow {
       console.log("captured: " + captured)
     }
   }
-
+  
   Rectangle {
     id: resultScreen
 
@@ -108,32 +108,33 @@ CustomApplicationWindow {
             return "Invalid Matrix ID QR Code!"
         }
       }
+    }
+  }
+  footer: DialogButtonBox {
+    id: footerDialog
+    visible: !barcodeScanner.active
+    Button {
+      id: scanButton
+      text: qsTr("Scan again")
+      onClicked: {
+        barcodeScanner.active = true
+      }
+    }
 
-      RowLayout {
-        id: buttonsLayout
-        width: parent.width
-        spacing: 5
-        Button {
-          id: scanButton
-          text: qsTr("Scan again")
-          Layout.alignment: (startChatButton.visible?Qt.AlignRight:Qt.AlignCenter)
-          onClicked: {
-            barcodeScanner.active = true
-          }
-        }
-
-        Button {
-          id: startChatButton
-          text: qsTr("Start Chat")
-          Layout.alignment: Qt.AlignLeft
-          onClicked: {
-            if(mx_id){
-              MatrixClient.startChat(mx_id, false)
-              close()
-            }
-          }
+    Button {
+      id: startChatButton
+      text: qsTr("Start Chat")
+      onClicked: {
+        if(mx_id){
+          MatrixClient.startChat(mx_id, false)
+          close()
         }
       }
+    }
+    
+    background: Rectangle {
+        anchors.fill: parent
+        color: GlobalObject.colors.window
     }
   }
 }

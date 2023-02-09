@@ -104,6 +104,7 @@ Page {
                         directChatDialog.showMaximized();
                     else 
                         directChatDialog.show();
+                    destroyOnClose(directChatDialog);
                 }
             }
         }
