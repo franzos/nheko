@@ -45,6 +45,12 @@ Page {
     }
 
     Component {
+        id: directChatQrFactory
+        Qt5ScannerPage {
+        }
+    }
+
+    Component {
         id: joinRoomDialog
 
         JoinRoomDialog {
@@ -87,6 +93,17 @@ Page {
                 onTriggered: {
                     var directChatDialog = directChatFactory.createObject(roomPage);
                     directChatDialog.open()
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Direct chat from QR")
+                onTriggered: {
+                    var directChatDialog = directChatQrFactory.createObject(roomPage);
+                    if(GlobalObject.mobileMode())
+                        directChatDialog.showMaximized();
+                    else 
+                        directChatDialog.show();
                 }
             }
         }

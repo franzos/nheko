@@ -1,0 +1,114 @@
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Window 2.12
+import QtMultimedia 5.12
+import com.scythestudio.scodes 1.0
+
+
+CustomApplicationWindow {
+  id: scannerpage
+  minimumWidth: 340
+  minimumHeight: 450
+  width: 450
+  height: 680
+  modality: Qt.NonModal
+  flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+  title: qsTr("My QR code")
+
+  
+  Camera {
+    id: camera
+
+    focus {
+      focusMode: CameraFocus.FocusContinuous
+      focusPointMode: CameraFocus.FocusPointAuto
+    }
+  }
+
+  VideoOutput {
+    id: videoOutput
+
+    anchors.fill: parent
+
+    source: camera
+
+    autoOrientation: true
+
+    fillMode: VideoOutput.PreserveAspectCrop
+
+    // add barcodeScanner to videoOutput's filters to enable catching barcodes
+    filters: [barcodeScanner]
+
+    onSourceRectChanged: {
+      barcodeScanner.captureRect = videoOutput.mapRectToSource(videoOutput.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)))
+    }
+
+    Qt5ScannerOverlay {
+      id: scannerOverlay
+
+      anchors.fill: parent
+
+      captureRect: videoOutput.mapRectToItem(barcodeScanner.captureRect)
+    }
+
+    // used to get camera focus on touched point
+    MouseArea {
+      id: focusTouchArea
+
+      anchors.fill: parent
+
+      onClicked: {
+        camera.focus.customFocusPoint = Qt.point(mouse.x / width,
+                                                 mouse.y / height)
+        camera.focus.focusMode = CameraFocus.FocusMacro
+        camera.focus.focusPointMode = CameraFocus.FocusPointCustom
+      }
+    }
+  }
+
+  SBarcodeScanner {
+    id: barcodeScanner
+
+    // you can adjust capture rect (scan area) ne changing these Qt.rect() parameters
+    captureRect: videoOutput.mapRectToSource(videoOutput.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)))
+
+    onCapturedChanged: {
+      active = false
+      console.log("captured: " + captured)
+    }
+  }
+
+  Rectangle {
+    id: resultScreen
+
+    anchors.fill: parent
+
+    visible: !barcodeScanner.active
+
+    Column {
+      anchors.centerIn: parent
+
+      spacing: 20
+
+      Text {
+        id: scanResultText
+
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        text: barcodeScanner.captured
+      }
+
+      Button {
+        id: scanButton
+
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        text: qsTr("Scan again")
+
+        onClicked: {
+          barcodeScanner.active = true
+        }
+      }
+    }
+  }
+}

@@ -107,6 +107,7 @@ Drawer {
                             else 
                                 qrCode.show();
                             destroyOnClose(qrCode);
+                            menu.close()
                             break;
                         case "Settings":
                             var settings = userSettingsPage.createObject(stack);

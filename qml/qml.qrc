@@ -26,6 +26,8 @@
         <file>NoticeMessage.qml</file>
         <file>PlayableMediaMessage.qml</file>
         <file>QRCode.qml</file>
+        <file>Qt5ScannerOverlay.qml</file>
+        <file>Qt5ScannerPage.qml</file>
         <file>Reactions.qml</file>
         <file>ReplyPopup.qml</file>
         <file>Room.qml</file>

@@ -29,7 +29,12 @@
 #include "AvatarProvider.h"
 #include "JdenticonProvider.h"
 #include "InviteesModel.h"
-#include "../vendor/SCodes/SBarcodeGenerator.h"
+#include "SBarcodeGenerator.h"
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    #include "SBarcodeFilter.h"
+#else
+    #include "SBarcodeScanner.h"
+#endif
 
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(QVector<UserInformation>)
@@ -190,6 +195,11 @@ QmlInterface::QmlInterface(QObject *parent):
         });
         qRegisterMetaType<std::vector<DeviceInfo>>();
         qRegisterMetaType<QVector<UserInformation>>();
+        #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+            qmlRegisterType<SBarcodeFilter>("com.scythestudio.scodes", 1, 0, "SBarcodeScanner");
+        #else
+            qmlRegisterType<SBarcodeScanner>("com.scythestudio.scodes", 1, 0, "SBarcodeScanner");
+        #endif
         qmlRegisterType<SBarcodeGenerator>("com.scythestudio.scodes", 1, 0, "SBarcodeGenerator");
         qmlRegisterType<HiddenEvents>("HiddenEvents", 1, 0, "HiddenEvents");
         qmlRegisterType<emoji::EmojiModel>("EmojiModel", 1, 0, "EmojiModel");
