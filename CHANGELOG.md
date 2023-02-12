@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.47]
+### Fixed
+
+* New direct chat from QR code.
+* Added My QR code to menu items.
+
+
 ## [0.1.46]
 ### Fixed
 
