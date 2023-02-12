@@ -3,7 +3,7 @@
 
 #include <qqml.h>
 
-#include "./zxing-cpp/core/src/BarcodeFormat.h"
+#include "BarcodeFormat.h"
 
 namespace SCodes {
 Q_NAMESPACE

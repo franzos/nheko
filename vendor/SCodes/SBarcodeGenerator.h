@@ -7,8 +7,8 @@
 #include <QQuickItem>
 #include <QObject>
 
-#include "./zxing-cpp/core/src/BitMatrix.h"
-#include "./zxing-cpp/core/src/ByteMatrix.h"
+#include "BitMatrix.h"
+#include "ByteMatrix.h"
 
 #include "SBarcodeFormat.h"
 
