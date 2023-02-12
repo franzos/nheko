@@ -195,9 +195,13 @@ function BUILD_BLURHASH {
         "-DBUILD_SHARED_LIBS=OFF"
 }
 
+function GIT_SUBMODULE_UPDATE {
+    git submodule update --recursive --init
+}
 
 function BUILD_ALL {
-    BUILD_FMT && \
+    GIT_SUBMODULE_UPDATE && \
+        BUILD_FMT && \
         BUILD_SPDLOG && \
         BUILD_JSON && \
         BUILD_OLM && \

@@ -237,9 +237,14 @@ function BUILD_BLURHASH {
     BUILD_LIB "$src_path" "$build_path" "$target"
 }
 
+function GIT_SUBMODULE_UPDATE {
+    git submodule update --recursive --init
+}
+
 function BUILD_ALL {
     target="$1"
-    BUILD_FMT "$target" && \
+    GIT_SUBMODULE_UPDATE && \
+        BUILD_FMT "$target" && \
         BUILD_SPDLOG "$target" && \
         BUILD_JSON "$target" && \
         BUILD_OLM "$target" && \
