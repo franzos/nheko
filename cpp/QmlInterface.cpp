@@ -29,11 +29,11 @@
 #include "AvatarProvider.h"
 #include "JdenticonProvider.h"
 #include "InviteesModel.h"
-#include "SBarcodeGenerator.h"
+#include <SCodes/SBarcodeGenerator.h>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    #include "SBarcodeFilter.h"
+    #include <SCodes/SBarcodeFilter.h>
 #else
-    #include "SBarcodeScanner.h"
+    #include <SCodes/SBarcodeScanner.h>
 #endif
 
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)

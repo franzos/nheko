@@ -4,8 +4,9 @@ include(ios/ios.pri)
 linux:!android {
     # Configurations only required for desktop linux (not android)
     LIBS += -lmatrix-client-library \
+            -lSCodes -lZXing\
             -llmdb
-
+            
     QT += dbus multimedia
     CONFIG += link_pkgconfig
     PKGCONFIG += glib-2.0

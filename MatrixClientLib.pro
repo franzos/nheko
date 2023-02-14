@@ -4,12 +4,12 @@ TEMPLATE = lib
 TARGET = matrix-client-gui-library
 
 LIBS += -lmatrix-client-library \
+        -lSCodes -lZXing\
         -lspdlog -llmdb \
         -lmatrix_client -lblurhash
         
 include(cpp/cpp.pri)
 include(qml/qml.pri)
-include(lib/SCodes/src/SCodes.pri)
 
 headers.path  = /usr/include/matrix-client-gui-library
 headers.files = cpp/Application.h \

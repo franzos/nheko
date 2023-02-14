@@ -6,7 +6,6 @@ TARGET = matrix-client
 include(configurations/configurations.pri)
 include(app/app.pri)
 include(qml/qml.pri)
-include(lib/SCodes/src/SCodes.pri)
 
 QMAKE_TARGET_BUNDLE_PREFIX = org.pantherx
 QMAKE_BUNDLE = matrix-client
