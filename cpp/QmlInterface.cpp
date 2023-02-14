@@ -29,13 +29,21 @@
 #include "AvatarProvider.h"
 #include "JdenticonProvider.h"
 #include "InviteesModel.h"
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+#include <SBarcodeGenerator.h>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    #include <SBarcodeFilter.h>
+#else
+    #include <SBarcodeScanner.h>
+#endif
+#else
 #include <SCodes/SBarcodeGenerator.h>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     #include <SCodes/SBarcodeFilter.h>
 #else
     #include <SCodes/SBarcodeScanner.h>
 #endif
-
+#endif
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(QVector<UserInformation>)
 

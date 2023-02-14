@@ -1,7 +1,7 @@
 android {
     !exists($$(ANDROID_HOME)/android_openssl/openssl.pri):error("OpenSSL not found!")
     include($$(ANDROID_HOME)/android_openssl/openssl.pri)
-
+    include(../../lib/SCodes/src/SCodes.pri)
     DIST_DIR=$$PWD/../../vendor/_dist
     for (abi, ANDROID_ABIS): !exists($$DIST_DIR/$${abi}):error("vendor packages has not been setup yet! (run vendor/build-android.sh)")
 

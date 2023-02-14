@@ -1,6 +1,7 @@
 ios {
     DIST_DIR=$$PWD/../../vendor/_dist
     !exists($$DIST_DIR):error("vendor packages has not been setup yet! (run vendor/build-ios.sh)")
+    include(../../lib/SCodes/src/SCodes.pri)
 
     QMAKE_INFO_PLIST = $$PWD/Info.plist
     CONFIG -= bitcode
