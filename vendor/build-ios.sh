@@ -161,7 +161,7 @@ function BUILD_CMARK {
 
 function BUILD_PX_AUTH_LIB_CPP {
     name="px-auth-lib-cpp"
-    version="0.0.28"
+    version="0.0.29"
     download_url="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $version $download_url
 
@@ -173,7 +173,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 
 function BUILD_MATRIX_CLIENT_LIBRARY {
     name="matrix-client-library"
-    version="0.1.36"
+    version="0.1.37"
     download_url="git@git.pantherx.org:development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $version $download_url
 
