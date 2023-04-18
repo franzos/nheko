@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QQuickWidget>
 #include <QMainWindow>
+#include <QtGlobal>
+
 #include <spdlog/spdlog.h>
 #include "../cpp/GlobalObject.h"
 #include "../cpp/MatrixQmlApplicationEngine.h"
@@ -16,6 +18,7 @@ using namespace PX::GUI::MATRIX;
 
 int main(int argc, char *argv[])
 {
+    qputenv("GST_DEBUG", "3");
     #if 0
     // JUST as an Example for using embeding the QML items into QWidgets
     QApplication app(argc, argv);
