@@ -1,35 +1,37 @@
 android {
-    !exists($$(ANDROID_HOME)/android_openssl/openssl.pri):error("OpenSSL not found!")
-    include($$(ANDROID_HOME)/android_openssl/openssl.pri)
+    !exists($$(OPENSSL_ROOT_DIR)/../openssl.pri):error("OpenSSL not found!")
+    include($$(OPENSSL_ROOT_DIR)/../openssl.pri)
+
     include(../../lib/SCodes/src/SCodes.pri)
     DIST_DIR=$$PWD/../../vendor/_dist
-    for (abi, ANDROID_ABIS): !exists($$DIST_DIR/$${abi}):error("vendor packages has not been setup yet! (run vendor/build-android.sh)")
+    
+    !exists($${DIST_DIR}/$${ANDROID_TARGET_ARCH}):error("vendor packages has not been setup yet! (run vendor/build-android.sh) $${DIST_DIR}/$${ANDROID_TARGET_ARCH}")
 
-    ANDROID_TARGET_SDK_VERSION = 31
-    ANDROID_MIN_SDK_VERSION = 23
+    ANDROID_TARGET_SDK_VERSION = 32
+    ANDROID_MIN_SDK_VERSION = 24
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD
 
     DEFINES += SPDLOG_FMT_EXTERNAL=ON
 
     # https://stackoverflow.com/a/69466519/4380582
-    for (abi, ANDROID_ABIS): ANDROID_EXTRA_LIBS += \
-            $$DIST_DIR/$${abi}/lib/libfmt.so \
-            $$DIST_DIR/$${abi}/lib/libspdlog.so \
-            $$DIST_DIR/$${abi}/lib/libmatrix-client-library_$${abi}.so \
-            $$DIST_DIR/$${abi}/lib/libmatrix_client_$${abi}.so \
-            $$DIST_DIR/$${abi}/lib/libcmark.so \
-            $$DIST_DIR/$${abi}/lib/libolm.so \
-            $$DIST_DIR/$${abi}/lib/libblurhash.so
+    ANDROID_EXTRA_LIBS += \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libfmt.so \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libspdlog.so \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libmatrix-client-library_$${ANDROID_TARGET_ARCH}.so \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libmatrix_client_$${ANDROID_TARGET_ARCH}.so \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libcmark.so \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libolm.so \
+        $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libblurhash.so
 
 
     QT += androidextras concurrent
-    for (abi, ANDROID_ABIS): INCLUDEPATH += $$DIST_DIR/$${abi}/include
-    for (abi, ANDROID_ABIS): LIBS += -L$$DIST_DIR/$${abi}/lib
-    for (abi, ANDROID_ABIS): LIBS += -lfmt -lspdlog \
-            -lmatrix_client_$${abi} \
-            -lmatrix-client-library_$${abi} \
-            -lblurhash
+    
+    INCLUDEPATH += $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/include
+    LIBS += $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libfmt.so \
+            $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libblurhash.so \
+            $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libmatrix_client_$${ANDROID_TARGET_ARCH}.so \
+            $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libmatrix-client-library_$${ANDROID_TARGET_ARCH}.so
 
 
     H = $$LITERAL_HASH
@@ -37,8 +39,8 @@ android {
     NO_CIBA_AUTH {
         lines += "$${H}define CIBA_AUTH 0"
     } else {
-        for (abi, ANDROID_ABIS): ANDROID_EXTRA_LIBS += $$DIST_DIR/$${abi}/lib/libpx-auth-lib-cpp_$${abi}.so
-        for (abi, ANDROID_ABIS): LIBS += -lpx-auth-lib-cpp_$${abi}
+        ANDROID_EXTRA_LIBS += $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libpx-auth-lib-cpp_$${ANDROID_TARGET_ARCH}.so
+        LIBS += $${DIST_DIR}/$${ANDROID_TARGET_ARCH}/lib/libpx-auth-lib-cpp_$${ANDROID_TARGET_ARCH}.so
         lines += "$${H}define CIBA_AUTH 1"
         message(" + CIBA: enabled.")
     }

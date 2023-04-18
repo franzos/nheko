@@ -1,10 +1,14 @@
 #!/usr/bin/env  bash
 
+##### [Check Environment Variables] ###########################################
+[ -z "$ANDROID_NDK_ROOT" ] && echo "ANDROID_NDK_ROOT is not set" && exit 1
+[ -z "$QT_ANDROID_ROOT" ] && echo "QT_ANDROID_ROOT is not set" && exit 1
+[ -z "$OPENSSL_ROOT" ] && echo "OPENSSL_ROOT is not set" && exit 1
+
 ##### [Build Configurations] ##################################################
-CMAKE_TOOLCHAIN="${ANDROID_NDK}/build/cmake/android.toolchain.cmake"
+CMAKE_TOOLCHAIN="${ANDROID_NDK_ROOT}/build/cmake/android.toolchain.cmake"
 MIN_SDK_VERSION=21
-TARGET=arm64-v8a
-OPENSSL_ROOT_DIR="${ANDROID_HOME}/android_openssl/"
+TARGETS=( "armeabi-v7a" "arm64-v8a" )
 # BUILD_VERBOSE=1
 
 ##### [Global Variables] ######################################################
@@ -48,7 +52,7 @@ function BUILD_LIB {
         is_verbose=-v 
     fi
 
-    cmake --build $build_path $is_verbose --config Release \
+    cmake --build $build_path $is_verbose -j$(nproc) --config Release \
         &&  cmake --install $build_path --config Release
 
 }
@@ -62,7 +66,7 @@ function DOWNLOAD_EXTRACT {
     src_path="$TEMP_DIR/$name_version"
     build_path="$BUILD_DIR/$target/$name_version"
 
-    [ ! -f "$archive_path" ] && wget -O "$archive_path" "$url" || echo ">> Use cached version: $archive_path"
+    [ ! -f "$src_path" ] && [ ! -f "$archive_path" ] && wget -O "$archive_path" "$url" || echo ">> Use cached version: $archive_path"
     [ ! -d "$src_path" ] && tar xf $archive_path --directory "$TEMP_DIR"
 }
 
@@ -73,7 +77,7 @@ function FETCH_REPOSITORY {
     src_path="$TEMP_DIR/$name-$tag"
     build_path="$BUILD_DIR/$target/$name-$tag"
     
-    if [ ! -d "$src_path" ]; then
+    if [ ! -d "$src_path" ] && [ ! -f "$src_path" ]; then
         git clone --branch "$tag" --depth 1 "$repo" "$src_path"
     else
         echo ">> Use cached version: $src_path"
@@ -86,6 +90,7 @@ function APPLY_PATCH {
     unset params[0]
 
     git -C "$src_path" config commit.gpgsign off
+    git -C "$src_path" config user.email root@buildkitsandbox
     git -C "$src_path" am ${params[@]}
 }
 
@@ -144,13 +149,14 @@ function BUILD_OLM {
 function BUILD_MTXCLIENT {
     target="$1"
     name="qmtxclient"
-    tag="v0.8.2-4"
-    download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
+    tag="v0.8.2-5"
+    # download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
+    download_url="https://test-docker:glpat-vssCeYnW1-v7eX6TDzAH@git.pantherx.org/development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
 
     BUILD_LIB $src_path $build_path $target \
         ${OPENSSL_CMAKE_DEFINITIONS[@]} \
-        -DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android \
+        -DCMAKE_FIND_ROOT_PATH=${QT_ANDROID_ROOT} \
         -Dfmt_DIR=${DIST_DIR}/$target/lib/cmake/fmt \
         -Dspdlog_DIR=${DIST_DIR}/$target/lib/cmake/spdlog \
         -DSPDLOG_FMT_EXTERNAL=ON \
@@ -197,18 +203,20 @@ function BUILD_PX_AUTH_LIB_CPP {
     target="$1"
     name="px-auth-lib-cpp"
     tag="0.0.25"
-    repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
+    # repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
+    repo="https://test-docker:glpat-A4v_ruskPYqzHx71dgGs@git.pantherx.org/development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $tag $repo
 
     BUILD_LIB "$src_path" "$build_path" "$target" \
-        -DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android
+        -DCMAKE_FIND_ROOT_PATH=${QT_ANDROID_ROOT}
 }
 
 function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
     tag="0.1.36"
-    repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
+    # repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
+    repo="https://test-docker:glpat-dsWPevCcVHyqzFXxzhnP@git.pantherx.org/development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 
     BUILD_LIB "$src_path" "$build_path" "$target" \
@@ -224,7 +232,7 @@ function BUILD_MATRIX_CLIENT_LIBRARY {
         -DCMARK_INCLUDE_DIR=${DIST_DIR}/${target}/include \
         -DCMARK_LIBRARY=${DIST_DIR}/${target}/lib/libcmark.a \
         -Dnlohmann_json_DIR=${DIST_DIR}/${target}/lib/cmake/nlohmann_json \
-        -DCMAKE_FIND_ROOT_PATH=~/Qt/5.15.2/android
+        -DCMAKE_FIND_ROOT_PATH=${QT_ANDROID_ROOT}
 }
 
 function BUILD_BLURHASH {
@@ -243,18 +251,18 @@ function GIT_SUBMODULE_UPDATE {
 
 function BUILD_ALL {
     target="$1"
-    GIT_SUBMODULE_UPDATE && \
+    # GIT_SUBMODULE_UPDATE && \
         BUILD_FMT "$target" && \
         BUILD_SPDLOG "$target" && \
         BUILD_JSON "$target" && \
         BUILD_OLM "$target" && \
-        BUILD_MTXCLIENT "$target" && \
         BUILD_LMDB "$target" && \
         BUILD_LMDBXX "$target" && \
         BUILD_CMARK "$target" && \
+        BUILD_BLURHASH "$target" && \
+        BUILD_MTXCLIENT "$target" && \
         BUILD_PX_AUTH_LIB_CPP "$target" && \
         BUILD_MATRIX_CLIENT_LIBRARY "$target" && \
-        BUILD_BLURHASH "$target" && \
         echo "DONE"
 }
 
@@ -264,23 +272,12 @@ mkdir -p $TEMP_DIR
 mkdir -p $BUILD_DIR
 mkdir -p $DIST_DIR
 
-if [ $# -eq 2 ]; then
-    TARGET="$2"
-fi
+for TARGET in "${TARGETS[@]}"; do
+    OPENSSL_CMAKE_DEFINITIONS=( "-DOPENSSL_ROOT_DIR=$OPENSSL_ROOT" 
+            "-DOPENSSL_INCLUDE_DIR=$OPENSSL_ROOT/include" 
+            "-DOPENSSL_CRYPTO_LIBRARY=$OPENSSL_ROOT/$TARGET/libcrypto_1_1.so" 
+            "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT}/$TARGET/libssl_1_1.so" )
+    
+    $(eval echo "BUILD_${1^^} $TARGET")    
+done
 
-if [ "$TARGET" = "armeabi-v7a" ]; then
-    OPENSSL_CMAKE_DEFINITIONS=( "-DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR" 
-        "-DOPENSSL_INCLUDE_DIR=$OPENSSL_ROOT_DIR/static/include" 
-        "-DOPENSSL_CRYPTO_LIBRARY=$OPENSSL_ROOT_DIR/latest/arm/libcrypto_1_1.so" 
-        "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/latest/arm/libssl_1_1.so" )
-elif [ "$TARGET" = "arm64-v8a" ]; then
-    OPENSSL_CMAKE_DEFINITIONS=( "-DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR" 
-        "-DOPENSSL_INCLUDE_DIR=$OPENSSL_ROOT_DIR/static/include" 
-        "-DOPENSSL_CRYPTO_LIBRARY=$OPENSSL_ROOT_DIR/latest/arm64/libcrypto_1_1.so" 
-        "-DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/latest/arm64/libssl_1_1.so" )
-else
-    echo "Error: invalid target: $TARGET"
-    exit 1
-fi
-
-$(eval echo "BUILD_${1^^} $TARGET")
