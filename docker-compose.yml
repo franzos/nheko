@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  matrix-client-builder:
+    container_name: matrix-client-builder
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    network_mode: host
+    command: tail -f /dev/null
+    environment:
+      - QT_GRAPHICSSYSTEM=native
+    volumes:
+      - .:/usr/src/app
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # - ./working/cache:/root/.cache

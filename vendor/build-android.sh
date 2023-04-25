@@ -150,7 +150,8 @@ function BUILD_MTXCLIENT {
     target="$1"
     name="qmtxclient"
     tag="v0.8.2-5"
-    download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
+    # download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
+    download_url="https://test-docker:glpat-vssCeYnW1-v7eX6TDzAH@git.pantherx.org/development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $tag $download_url
 
     BUILD_LIB $src_path $build_path $target \
@@ -202,7 +203,8 @@ function BUILD_PX_AUTH_LIB_CPP {
     target="$1"
     name="px-auth-lib-cpp"
     tag="0.0.25"
-    repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
+    # repo="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
+    repo="https://test-docker:glpat-A4v_ruskPYqzHx71dgGs@git.pantherx.org/development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $tag $repo
 
     BUILD_LIB "$src_path" "$build_path" "$target" \
@@ -213,7 +215,8 @@ function BUILD_MATRIX_CLIENT_LIBRARY {
     target="$1"
     name="matrix-client-library"
     tag="0.1.36"
-    repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
+    # repo="git@git.pantherx.org:development/libraries/matrix-client-library.git"
+    repo="https://test-docker:glpat-dsWPevCcVHyqzFXxzhnP@git.pantherx.org/development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $tag $repo
 
     BUILD_LIB "$src_path" "$build_path" "$target" \

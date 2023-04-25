@@ -20,7 +20,7 @@ repositories {
 apply plugin: 'com.android.application'
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.so', '*.aar'])
 }
 
 android {
@@ -44,7 +44,7 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java']
+            java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java', 'android/src']
             aidl.srcDirs = [qt5AndroidDir + '/src', 'src', 'aidl']
             res.srcDirs = [qt5AndroidDir + '/res', 'res']
             resources.srcDirs = ['resources']

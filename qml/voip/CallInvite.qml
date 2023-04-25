@@ -142,12 +142,13 @@ Popup {
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
-                    var dialog = deviceError.createObject(callInv, {
-                        "errorString": qsTr("No microphone found."),
-                        "image": ":/images/place-call.svg"
-                    });
-                    dialog.open();
-                    destroyOnClose(dialog);
+                    // FIXME: temporary disable the microphone check logic
+                    // var dialog = deviceError.createObject(callInv, {
+                    //     "errorString": qsTr("No microphone found."),
+                    //     "image": ":/images/place-call.svg"
+                    // });
+                    // dialog.open();
+                    // destroyOnClose(dialog);
                     return false;
                 }
                 return true;
@@ -220,15 +221,15 @@ Popup {
     }
 
     function acceptCall(){
-        if (buttonLayout.validateMic()) {
-            Settings.microphone = micCombo.currentText;
-            if (cameraCombo.visible)
-                Settings.camera = cameraCombo.currentText;
-
+        // FIXME: temporary disable the microphone check logic
+        // if (buttonLayout.validateMic()) {
+        //     Settings.microphone = micCombo.currentText;
+            // if (cameraCombo.visible)
+                // Settings.camera = cameraCombo.currentText;
             CallManager.acceptInvite();
             console.log("Call invite Accepted!");
-            close();
-        }
+        //     close();
+        // }
     }
 
 }
