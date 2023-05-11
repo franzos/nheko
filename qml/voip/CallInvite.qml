@@ -221,6 +221,14 @@ Popup {
     }
 
     function acceptCall(){
+        if (CallManager.callType == CallType.VIDEO && GlobalObject.requestCameraPermission() == false) {
+            CallManager.hangUp();
+            return;
+        }
+        if (GlobalObject.requestMicrophonePermission() == false) {
+            CallManager.hangUp();
+            return;
+        }
         // FIXME: temporary disable the microphone check logic
         // if (buttonLayout.validateMic()) {
         //     Settings.microphone = micCombo.currentText;

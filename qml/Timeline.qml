@@ -64,10 +64,16 @@ Room {
     }
 
     function startVoiceCall(){
+        if (GlobalObject.requestMicrophonePermission() == false)
+            return
         CallManager.sendInvite(roomid,CallType.VOICE)
     }
     
     function startVideoCall(){
+        if (GlobalObject.requestCameraPermission() == false)
+            return
+        if (GlobalObject.requestMicrophonePermission() == false)
+            return
         CallManager.sendInvite(roomid,CallType.VIDEO)
     }
 

@@ -77,6 +77,9 @@ public:
                             int preset);
     Q_INVOKABLE bool isLocationPermissionGranted();
 
+    Q_INVOKABLE bool requestCameraPermission();
+    Q_INVOKABLE bool requestMicrophonePermission();
+
 public slots:
     bool handleMatrixUri(const QByteArray &uri);
     bool handleMatrixUri(const QUrl &uri);

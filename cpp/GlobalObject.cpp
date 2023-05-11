@@ -272,6 +272,7 @@ QString GlobalObject::getSaveFileName(const QString &caption,
                                    const QString &selectedFile,
                                    const QString &filter){
 #ifdef Q_OS_ANDROID
+    Q_UNUSED(caption);
     QtAndroid::PermissionResultMap res = QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
     if (res["android.permission.WRITE_EXTERNAL_STORAGE"] != QtAndroid::PermissionResult::Granted){
         nhlog::ui()->warn("Don't have permission to write here \"" + dir.toStdString() + "\"");
@@ -283,7 +284,7 @@ QString GlobalObject::getSaveFileName(const QString &caption,
 #endif
 }
 
-void GlobalObject::saveBufferToFile(const QString &filename, const QBuffer &buffer){
+void GlobalObject::saveBufferToFile(const QString &filename, const QBuffer &buffer) {
     if(filename.isEmpty())
         return;
     QFile file(filename);
@@ -316,9 +317,9 @@ Q_INVOKABLE bool GlobalObject::mobileMode(){
 
 Q_INVOKABLE QString GlobalObject::themeName(){
     // TODO improvment: access enum object in qml instead of string
-    if(SELECTED_THEME == Theme::ThemeMode::Light)
+    if (SELECTED_THEME == Theme::ThemeMode::Light)
         return "light";
-    else if(SELECTED_THEME == Theme::ThemeMode::Dark)
+    else if (SELECTED_THEME == Theme::ThemeMode::Dark)
         return "dark";
     return "system";
 }
@@ -376,4 +377,27 @@ Q_INVOKABLE bool GlobalObject::isLocationPermissionGranted(){
 #else
     return false;
 #endif
+}
+
+Q_INVOKABLE bool GlobalObject::requestCameraPermission() {
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap result = QtAndroid::requestPermissionsSync(QStringList({"android.permission.CAMERA"}));
+    if (result["android.permission.CAMERA"] == QtAndroid::PermissionResult::Denied) {
+        nhlog::ui()->warn("Don't have permission to use camera");
+        return false;
+    }
+#endif
+    return true;
+
+}
+
+Q_INVOKABLE bool GlobalObject::requestMicrophonePermission() {
+#ifdef Q_OS_ANDROID
+    QtAndroid::PermissionResultMap result = QtAndroid::requestPermissionsSync(QStringList({"android.permission.RECORD_AUDIO"}));
+    if (result["android.permission.RECORD_AUDIO"] == QtAndroid::PermissionResult::Denied) {
+        nhlog::ui()->warn("Don't have permission to use microphone");
+        return false;
+    }
+#endif
+    return true;
 }
