@@ -53,7 +53,7 @@ signals:
     void rowCountChanged();
 
 protected:
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
     QList<RoomListItem> _roomListItems;
     QStringList _roomIds;
     QMap<QString, TimelineModel *> _timelines;

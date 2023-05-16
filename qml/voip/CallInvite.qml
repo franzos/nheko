@@ -96,6 +96,7 @@ Popup {
 
             RowLayout {
                 Layout.alignment: Qt.AlignCenter
+                visible: !(Qt.platform.os === "android" || Qt.platform.os === "ios")
 
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize

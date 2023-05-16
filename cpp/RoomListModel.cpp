@@ -128,9 +128,10 @@ void RoomListModel::add(RoomListItem &item){
             item.setUnreadCount(timeline->notificationCount());
             QString roomID = item.id();
             connect(timeline, &Timeline::lastMessageChanged,[this,roomID, timeline](const DescInfo &e){
+                Q_UNUSED(timeline);
                 auto idx = this->roomidToIndex(roomID);
                 if(idx != -1) {
-                    qDebug() << "New event recieved from in " << roomID;
+                    qDebug() << "New event received from in " << roomID;
                     QString body = e.body;
                     body.remove(QRegExp("[\\n\\t\\r]"));
                     
