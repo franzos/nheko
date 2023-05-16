@@ -1,4 +1,4 @@
-FROM franzos/gstreamer-qt:5.15.8-lts-lgpl-gst-1.20.6-android-latest
+FROM franzos/gstreamer-qt:5.15.8-lts-lgpl-gst-1.22.2-android-v0.2
 
 # RUN apt update && \
 #     apt install -y \

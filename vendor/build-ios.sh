@@ -110,8 +110,8 @@ function BUILD_OLM {
 
 function BUILD_MTXCLIENT {
     name="qmtxclient"
-    version="v0.8.2-4"
-    download_url="git@git.pantherx.org:development/libraries/qmtxclient.git"
+    version="v0.8.2-5"
+    download_url="https://mca:FczxLeMQzwVzsxXnehWP@git.pantherx.org/development/libraries/qmtxclient.git"
     FETCH_REPOSITORY $name $version $download_url
     APPLY_PATCH $name $PATCH_DIR/mtxclient/0001-fix-ios-build.patch
 
@@ -161,8 +161,8 @@ function BUILD_CMARK {
 
 function BUILD_PX_AUTH_LIB_CPP {
     name="px-auth-lib-cpp"
-    version="0.0.28"
-    download_url="git@git.pantherx.org:development/libraries/px-auth-library-cpp.git"
+    version="0.0.29"
+    download_url="https://mca:SxB6Lr5g5sMdMmxGjd1W@git.pantherx.org/development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $version $download_url
 
     BUILD_LIB $name \
@@ -173,8 +173,8 @@ function BUILD_PX_AUTH_LIB_CPP {
 
 function BUILD_MATRIX_CLIENT_LIBRARY {
     name="matrix-client-library"
-    version="0.1.36"
-    download_url="git@git.pantherx.org:development/libraries/matrix-client-library.git"
+    version="0.1.38"
+    download_url="https://mca:ffFm2xbZ2EH1FEgwG2Y1@git.pantherx.org/development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $version $download_url
 
     BUILD_LIB $name \
