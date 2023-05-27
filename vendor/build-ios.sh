@@ -161,7 +161,7 @@ function BUILD_CMARK {
 
 function BUILD_PX_AUTH_LIB_CPP {
     name="px-auth-lib-cpp"
-    version="0.0.29"
+    version="0.0.30"
     download_url="https://mca:SxB6Lr5g5sMdMmxGjd1W@git.pantherx.org/development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $version $download_url
 

@@ -202,7 +202,7 @@ function BUILD_CMARK {
 function BUILD_PX_AUTH_LIB_CPP {
     target="$1"
     name="px-auth-lib-cpp"
-    tag="0.0.29"
+    tag="0.0.30"
     repo="https://mca:SxB6Lr5g5sMdMmxGjd1W@git.pantherx.org/development/libraries/px-auth-library-cpp.git"
     FETCH_REPOSITORY $name $tag $repo
 
