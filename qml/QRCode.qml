@@ -49,6 +49,16 @@ CustomApplicationWindow {
       cache: false
     }
 
+    Button {
+        text: qsTr("Close")
+        visible: Qt.platform.os === 'ios'
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        onClicked: {
+            qrCodeWindow.close()
+        }
+    }
+
     Popup {
       id: generatePopup
       anchors.centerIn: parent
