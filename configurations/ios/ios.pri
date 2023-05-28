@@ -16,6 +16,7 @@ ios {
     LIBS += -framework AVFoundation
     LIBS += -framework CoreMedia
     LIBS += -framework CoreVideo
+    LIBS += -framework IOSurface
     LIBS += -framework VideoToolbox
     LIBS += -liconv
     LIBS += -lresolv
