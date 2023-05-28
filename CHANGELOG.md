@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.49]
+### Changes
+* add WebRTC support to iOS version.
+
+### Fixed
+* add button to close QRCode dialog on iOS
+* fix issue showing the call butons on home screen after call finished.
+
 ## [0.1.48]
 ### Changes 
 * WebRTC support added to Android version.

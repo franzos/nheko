@@ -279,7 +279,7 @@ Column {
         State {
             name: "freecall"
             StateChangeScript {
-                script: freeCallStateHandler()
+                script: stack.depth === 1 ? noneStateHandler() : freeCallStateHandler()
             }
         },
         State {
