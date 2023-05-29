@@ -27,34 +27,47 @@ CustomApplicationWindow {
     }
   }
 
-  VideoOutput {
-    id: videoOutput
+  ColumnLayout {
     anchors.fill: parent
-    source: camera
-    autoOrientation: true
-    fillMode: VideoOutput.PreserveAspectCrop
-    // add barcodeScanner to videoOutput's filters to enable catching barcodes
-    filters: [barcodeScanner]
-    onSourceRectChanged: {
-      barcodeScanner.captureRect = videoOutput.mapRectToSource(videoOutput.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)))
-    }
 
-    Qt5ScannerOverlay {
-      id: scannerOverlay
-      anchors.fill: parent
-      captureRect: videoOutput.mapRectToItem(barcodeScanner.captureRect)
-    }
-
-    // used to get camera focus on touched point
-    MouseArea {
-      id: focusTouchArea
-      anchors.fill: parent
-      onClicked: {
-        camera.focus.customFocusPoint = Qt.point(mouse.x / width,
-                                                 mouse.y / height)
-        camera.focus.focusMode = CameraFocus.FocusMacro
-        camera.focus.focusPointMode = CameraFocus.FocusPointCustom
+    VideoOutput {
+      id: videoOutput
+      // anchors.fill: parent
+      Layout.fillHeight: true
+      Layout.fillWidth: true
+      source: camera
+      autoOrientation: true
+      fillMode: VideoOutput.PreserveAspectCrop
+      // add barcodeScanner to videoOutput's filters to enable catching barcodes
+      filters: [barcodeScanner]
+      onSourceRectChanged: {
+        barcodeScanner.captureRect = videoOutput.mapRectToSource(videoOutput.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)))
       }
+
+      Qt5ScannerOverlay {
+        id: scannerOverlay
+        anchors.fill: parent
+        captureRect: videoOutput.mapRectToItem(barcodeScanner.captureRect)
+      }
+
+      // used to get camera focus on touched point
+      MouseArea {
+        id: focusTouchArea
+        anchors.fill: parent
+        onClicked: {
+          camera.focus.customFocusPoint = Qt.point(mouse.x / width,
+                                                    mouse.y / height)
+          camera.focus.focusMode = CameraFocus.FocusMacro
+          camera.focus.focusPointMode = CameraFocus.FocusPointCustom
+        }
+      }
+    }
+
+    Button {
+        id: cancelButton
+        Layout.fillWidth: true
+        onClicked: scannerpage.close()
+        text: qsTr("Cancel")
     }
   }
 
