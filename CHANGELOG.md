@@ -7,10 +7,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.1.49]
 ### Changes
 * add WebRTC support to iOS version.
+* add button to close QRCode dialog on iOS
+* add cancel button to QRCode scanner page
 
 ### Fixed
-* add button to close QRCode dialog on iOS
-* fix issue showing the call butons on home screen after call finished.
+* fix issue showing the call buttons on home screen after call finished.
+* adjust call button size on mobile devices
+
 
 ## [0.1.48]
 ### Changes 

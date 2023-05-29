@@ -173,7 +173,7 @@ function BUILD_PX_AUTH_LIB_CPP {
 
 function BUILD_MATRIX_CLIENT_LIBRARY {
     name="matrix-client-library"
-    version="0.1.38"
+    version="0.1.39"
     download_url="https://mca:ffFm2xbZ2EH1FEgwG2Y1@git.pantherx.org/development/libraries/matrix-client-library.git"
     FETCH_REPOSITORY $name $version $download_url
 
