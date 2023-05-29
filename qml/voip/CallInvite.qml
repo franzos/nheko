@@ -139,7 +139,7 @@ Popup {
         RowLayout {
             id: buttonLayout
 
-            property int buttonSize: callInv.height / 16
+            property int buttonSize: Qt.platform.os === 'android' || Qt.platform.os == 'ios' ? callInv.height / 10 : callInv.height / 16
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
@@ -159,6 +159,7 @@ Popup {
             spacing: callInv.height / 6
 
             RoundButton {
+                id: endCallButton
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
                 onClicked: {
@@ -188,11 +189,14 @@ Popup {
             RoundButton {
                 id: acceptButton
 
-                property string image: CallManager.callType == CallType.VIDEO ? ":/images/video.svg" : ":/images/place-call.svg"
+                property string image: CallManager.callType === CallType.VIDEO ? ":/images/video.svg" : ":/images/place-call.svg"
 
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
-                onClicked: acceptCall()
+                onClicked: {
+                    buttonLayout.visible = false
+                    acceptTimer.start()
+                }
 
                 background: Rectangle {
                     anchors.fill: parent
@@ -212,6 +216,24 @@ Popup {
 
             }
 
+            Timer {
+                id: acceptTimer
+                interval: 200
+                running: false
+                repeat: false
+                onTriggered: acceptCall()
+            }
+
+        }
+
+        RowLayout {
+            id: callPreparationLayout
+            visible: !buttonLayout.visible
+            Layout.alignment: Qt.AlignHCenter
+
+            Text {
+                text: qsTr("Accepting Offer")
+            }
         }
 
     }
