@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QQuickWidget>
 #include <QMainWindow>
+#include <QtGlobal>
 #include <spdlog/spdlog.h>
 #include "../cpp/GlobalObject.h"
 #include "../cpp/MatrixQmlApplicationEngine.h"
@@ -16,6 +17,10 @@ using namespace PX::GUI::MATRIX;
 
 int main(int argc, char *argv[])
 {
+    // if (!qputenv("GST_DEBUG", "3")) {
+    //     qWarning() << "Failed to set GST_DEBUG environment variable";
+    // }
+
     #if 0
     // JUST as an Example for using embeding the QML items into QWidgets
     QApplication app(argc, argv);
@@ -30,7 +35,7 @@ int main(int argc, char *argv[])
     #else
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    
+
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":images/app-icon_bright.svg"));
     

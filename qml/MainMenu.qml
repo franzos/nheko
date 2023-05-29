@@ -151,10 +151,19 @@ Drawer {
         y: (qmlLibRoot.height - height) / 2
         title: "About"
         standardButtons: Dialog.Ok
-        Label {
+
+        ColumnLayout {
             width: parent.width
-            wrapMode: Text.Wrap
-            text: "Matrix Library: "+MatrixClient.getLibraryVersion()+"\n"+"Matrix GUI Library: "+GlobalObject.getApplicationVersion()         
+            Label {
+                width: parent.width
+                wrapMode: Text.Wrap
+                text: "Matrix Library: " + MatrixClient.getLibraryVersion()
+            }
+            Label {
+                width: parent.width
+                wrapMode: Text.Wrap
+                text: "Matrix GUI Library: " + GlobalObject.getApplicationVersion()
+            }
         }
       
         onAccepted: {

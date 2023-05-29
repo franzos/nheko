@@ -25,7 +25,7 @@ Page {
         onCurrentItemChanged:{
             // TODO these params should be retireved from a general Page class and load to the Header
             mainHeader.state = "none"
-            if(currentItem instanceof Timeline || currentItem == videoItem) {
+            if(currentItem instanceof Timeline || currentItem === videoItem) {
                 mainHeader.onNewCallState() 
             }
             

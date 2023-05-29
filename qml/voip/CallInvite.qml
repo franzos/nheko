@@ -68,7 +68,7 @@ Popup {
             Layout.bottomMargin: callInv.height / 25
 
             Image {
-                property string image: CallManager.callType == CallType.VIDEO ? ":/images/video.svg" : ":/images/place-call.svg"
+                property string image: CallManager.callType === CallType.VIDEO ? ":/images/video.svg" : ":/images/place-call.svg"
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: callInv.height / 10
@@ -79,7 +79,7 @@ Popup {
 
             Label {
                 Layout.alignment: Qt.AlignCenter
-                text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
+                text: CallManager.callType === CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
                 font.pointSize: fontMetrics.font.pointSize * 2
                 color: GlobalObject.colors.windowText
             }
@@ -115,7 +115,7 @@ Popup {
             }
 
             RowLayout {
-                visible: CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0
+                visible: CallManager.callType === CallType.VIDEO && CallManager.cameras.length > 0
                 Layout.alignment: Qt.AlignCenter
 
                 Image {
@@ -142,7 +142,7 @@ Popup {
             property int buttonSize: Qt.platform.os === 'android' || Qt.platform.os == 'ios' ? callInv.height / 10 : callInv.height / 16
 
             function validateMic() {
-                if (CallManager.mics.length == 0) {
+                if (CallManager.mics.length === 0) {
                     // FIXME: temporary disable the microphone check logic
                     // var dialog = deviceError.createObject(callInv, {
                     //     "errorString": qsTr("No microphone found."),
@@ -244,7 +244,7 @@ Popup {
     }
 
     function acceptCall(){
-        if (CallManager.callType == CallType.VIDEO && GlobalObject.requestCameraPermission() == false) {
+        if (CallManager.callType === CallType.VIDEO && GlobalObject.requestCameraPermission() === false) {
             CallManager.hangUp();
             return;
         }

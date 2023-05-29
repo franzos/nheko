@@ -233,7 +233,7 @@ Column {
         if(CallManager.isOnCall){
             state = "oncall"
             inCalling = true
-            if(CallManager.callType != CallType.VOICE){
+            if(CallManager.callType !== CallType.VOICE){
                 if(qmlLibRoot.embedVideoQML){
                     stack.push(videoItem);
                 }
@@ -242,7 +242,7 @@ Column {
         } else {
             state = "freecall"
             inCalling = false
-            if(stack.currentItem == videoItem && qmlLibRoot.embedVideoQML)
+            if(stack.currentItem === videoItem && qmlLibRoot.embedVideoQML)
                 stack.pop()
         }
     }    
