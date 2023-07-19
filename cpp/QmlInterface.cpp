@@ -29,6 +29,8 @@
 #include "AvatarProvider.h"
 #include "JdenticonProvider.h"
 #include "InviteesModel.h"
+#include "notifications/notificationhandler.h"
+
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #include <SBarcodeGenerator.h>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -317,6 +319,11 @@ QmlInterface::QmlInterface(QObject *parent):
     }
 
     void QmlInterface::initiateFinishedCB(){
+        if (!NotificationHandler::Instance()->token().isEmpty()) {
+            submitPushToken(NotificationHandler::Instance()->tokenStr());
+        }
+        connect(NotificationHandler::Instance(), &NotificationHandler::tokenChanged, this, &QmlInterface::submitPushToken);
+
         auto joinedRooms = _client->joinedRoomList();
         auto inviteRooms = _client->inviteRoomList();
         QList<RoomListItem> roomList;
@@ -333,6 +340,11 @@ QmlInterface::QmlInterface(QObject *parent):
             }
         }
         addToRoomlist(roomList);
+    }
+
+    void QmlInterface::submitPushToken(const QString &token) {
+        _client->registerPushers(PUSH_URL, APPLICATION_ID, APPLICATION_NAME, token);
+        qDebug() << "PUSH TOKEN SUBMITTED:" << token;
     }
 
     void QmlInterface::setStyle(const QString &style, const QString &fallback){

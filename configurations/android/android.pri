@@ -46,14 +46,31 @@ android {
     }
     write_file($$PWD/../../cpp/Features.h, lines)
 
-}
 
-DISTFILES += \
-    $$PWD/AndroidManifest.xml \
-    $$PWD/build.gradle \
-    $$PWD/gradle.properties \
-    $$PWD/gradle/wrapper/gradle-wrapper.jar \
-    $$PWD/gradle/wrapper/gradle-wrapper.properties \
-    $$PWD/gradlew \
-    $$PWD/gradlew.bat \
-    $$PWD/res/values/libs.xml
+    # Setup Firebase messaging
+    GOOGLE_FIREBASE_SDK = $$getenv(FIREBASE_CPP_SDK)
+    !exists($${GOOGLE_FIREBASE_SDK}):error("FIREBASE_CPP_SDK environment variable is not set!")
+
+    INCLUDEPATH += $${GOOGLE_FIREBASE_SDK}/include
+    DEPENDPATH += $${GOOGLE_FIREBASE_SDK}/include
+
+    LIBS += -L$${GOOGLE_FIREBASE_SDK}/libs/android/arm64-v8a -lfirebase_app -lfirebase_messaging
+
+    PRE_TARGETDEPS += $${GOOGLE_FIREBASE_SDK}/libs/android/arm64-v8a/libfirebase_app.a
+    PRE_TARGETDEPS += $${GOOGLE_FIREBASE_SDK}/libs/android/arm64-v8a/libfirebase_messaging.a
+
+    DISTFILES += \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/gradle/wrapper/gradle-wrapper.jar \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/gradle/wrapper/gradle-wrapper.properties \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/gradlew \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/gradlew.bat \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/build.gradle \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/gradle.properties \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/google-services.json \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/settings.gradle \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/src/org/pantherx/matrixclient/MainActivity.java \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/src/org/pantherx/matrixclient/NotificationClient.java \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/src/org/pantherx/matrixclient/NotificationListenerService.java \
+        $${ANDROID_PACKAGE_SOURCE_DIR}/res/values/libs.xml
+}

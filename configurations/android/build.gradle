@@ -7,7 +7,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:3.6.0'
+        classpath 'com.google.gms:google-services:4.3.15'  // Google Services plugin
     }
 }
 
@@ -19,8 +20,24 @@ repositories {
 
 apply plugin: 'com.android.application'
 
+project.ext {
+  // Configure the Firebase C++ SDK location. This is the property that you set in gradle.properties
+  // This might need to be more complex. I got this from https://github.com/firebase/quickstart-cpp/blob/master/remote_config/testapp/build.gradle
+  firebase_cpp_sdk_dir = System.getProperty('firebase_cpp_sdk.dir')
+}
+
+repositories {
+    flatDir {
+        dirs project.ext.firebase_cpp_sdk_dir + "/libs/android"
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.so', '*.aar'])
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
+    implementation 'com.google.firebase.messaging.cpp:firebase_messaging_cpp@aar'
+    implementation 'com.google.android.gms:play-services-base:16.1.0'
 }
 
 android {
@@ -76,5 +93,13 @@ android {
         resConfig "en"
         minSdkVersion = qtMinSdkVersion
         targetSdkVersion = qtTargetSdkVersion
+        multiDexEnabled true
     }
 }
+
+apply from: "$gradle.firebase_cpp_sdk_dir/Android/firebase_dependencies.gradle"
+firebaseCpp.dependencies {
+    messaging
+}
+
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin

@@ -8,8 +8,9 @@
 #include "../cpp/GlobalObject.h"
 #include "../cpp/MatrixQmlApplicationEngine.h"
 #include "../cpp/MatrixQuickView.h"
+#include "../cpp/notifications/notificationhandler.h"
 
-#ifdef __ANDROID__
+#ifdef Q_OS_ANDROID
 #include <spdlog/sinks/android_sink.h>
 #endif
 
@@ -38,6 +39,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":images/app-icon_bright.svg"));
+
+    NotificationHandler::Instance()->startMessaging();
     
     MatrixQmlApplicationEngine matrixClientApp;   
     matrixClientApp.load();

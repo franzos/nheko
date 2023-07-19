@@ -71,6 +71,7 @@ public slots:
 private slots:
     void initiateFinishedCB();
     void newSyncCb(const mtx::responses::Sync &sync);
+    void submitPushToken(const QString &token);
 
 private:
     void checkCacheDirectory();

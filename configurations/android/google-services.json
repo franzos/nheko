@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "638354392006",
+    "project_id": "px-matrix-client",
+    "storage_bucket": "px-matrix-client.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638354392006:android:a1792e88c2b000cfb2e8c7",
+        "android_client_info": {
+          "package_name": "org.pantherx.matrixclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638354392006-8nfvl7i71u65mkeb811j1ueconbssutr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZJof3c8HRz0Fhzq-5kNzKhMFW0KPZfHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638354392006-8nfvl7i71u65mkeb811j1ueconbssutr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

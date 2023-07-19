@@ -27,6 +27,10 @@ SOURCES += \
     \
     $$PWD/../cpp/notifications/Manager.cpp \
     $$PWD/../cpp/notifications/ManagerLinux.cpp \
+    $$PWD/../cpp/notifications/notificationhandler.cpp \
+    $$PWD/../cpp/notifications/firebase/firebaseqtabstractmodule.cpp \
+    $$PWD/../cpp/notifications/firebase/firebaseqtapp.cpp \
+    $$PWD/../cpp/notifications/firebase/firebaseqtmessaging.cpp \
     \
     $$PWD/../cpp/ui/emoji/EmojiModel.cpp \
     $$PWD/../cpp/ui/emoji/Provider.cpp \
@@ -70,6 +74,11 @@ HEADERS += \
     $$PWD/../cpp/UsersModel.cpp \
     \
     $$PWD/../cpp/notifications/Manager.h \
+    $$PWD/../cpp/notifications/notificationhandler.h \
+    $$PWD/../cpp/notifications/firebase/firebaseqtabstractmodule.h \
+    $$PWD/../cpp/notifications/firebase/firebaseqtapp.h \
+    $$PWD/../cpp/notifications/firebase/firebaseqtapp_p.h \
+    $$PWD/../cpp/notifications/firebase/firebaseqtmessaging.h \
     \
     $$PWD/../cpp/ui/emoji/EmojiModel.h \
     $$PWD/../cpp/ui/emoji/Provider.h \
