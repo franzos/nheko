@@ -38,9 +38,14 @@ FROM franzos/gstreamer-qt:5.15.8-lts-lgpl-gst-1.22.2-android-v0.2
 #         ccache \
 #         libssl-dev
 
+RUN wget https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_11.1.0.zip -O /vendor/firebase_cpp_sdk.zip
+RUN unzip /vendor/firebase_cpp_sdk.zip -d /vendor
+RUN rm /vendor/firebase_cpp_sdk.zip
+
 ENV QT_ANDROID_ROOT=/opt/Qt-android-5.15.8-lts-lgpl
 ENV QMAKE=/opt/Qt-android-5.15.8-lts-lgpl/bin/qmake
 ENV OPENSSL_ROOT=/opt/android_openssl/ssl_1.1
+ENV FIREBASE_CPP_SDK=/vendor/firebase_cpp_sdk
 
 # RUN git clone https://gitlab.freedesktop.org/gstreamer/cerbero.git /vendor/cerbero && \
 #     cd /vendor/cerbero && git checkout 1.20.6 

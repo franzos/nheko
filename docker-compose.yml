@@ -3,10 +3,7 @@ version: '3'
 services:
   matrix-client-builder:
     container_name: matrix-client-builder
-    build:
-      context: .
-      dockerfile: Dockerfile
-      network: host
+    image: matrix-builder
     network_mode: host
     command: tail -f /dev/null
     environment:

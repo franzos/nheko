@@ -211,3 +211,14 @@ following the above steps, we have the signed APK and bundle files. however sinc
   $ zip -d "${file_path}" META-INF/\*
   ```
 more info over here: https://source.android.com/security/apksigning
+
+
+## Build using docker:
+
+1. create the build image using `docker build -t matrix-builder .`
+2. run the build container using the `docker compose up`
+3. get shell access on container using `docker exec -it matrix-client-builder bash`
+4. build vendor dependencies using `./vendor/build-android.sh all arm64-v8a`
+5. build the application using `mkdir build && cd build && $QMAKE ANDROID_ABIS='arm64-v8a' ../MatrixClientApp.pro && make -j4`
+6. create the APK using `make apk`
+7. create the bundle using `make bundle`
