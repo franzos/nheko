@@ -45,7 +45,7 @@ public class MainActivity extends QtActivity {
                 message.putExtras(intent);
                 startService(message);
             }
-            setIntent(intent);    
+            setIntent(intent);
         } else {
             Log.d("MainActivity", "No extras");
             super.onNewIntent(intent);
