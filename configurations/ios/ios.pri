@@ -21,6 +21,18 @@ ios {
     LIBS += -liconv
     LIBS += -lresolv
 
+
+    APP_ENTITLEMENTS.name = CODE_SIGN_ENTITLEMENTS
+    APP_ENTITLEMENTS.value = $$PWD/app.entitlements
+    QMAKE_MAC_XCODE_SETTINGS += APP_ENTITLEMENTS
+
+    # PLUGINS.path = PlugIns
+    # PLUGINS.files = $$PWD/PlugIns/notifications.appex
+    # QMAKE_BUNDLE_DATA += PLUGINS
+
+    OBJECTIVE_SOURCES += \
+        $$PWD/APNSApplicationDelegate.mm
+    
     QMAKE_INFO_PLIST = $$PWD/Info.plist
     CONFIG -= bitcode
     # QMAKE_ASSET_CATALOGS += $$PWD/Assets.xcassets
@@ -37,4 +49,9 @@ ios {
             -lmatrix_client \
             -lpx-auth-lib-cpp \
             -lmatrix-client-library
+
+    # DISTFILES += \
+    #     app.entitlements \
+    #     PlugIns/notifications.appex
+
 }

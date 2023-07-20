@@ -65,5 +65,10 @@ void NotificationHandler::submitLog(const QString &logMessage)
 
 QString NotificationHandler::tokenStr() const
 {
+#ifdef Q_OS_IOS
+    // APNS push token needs to be converted to base64:
+    //      https://github.com/matrix-org/matrix-ios-sdk/blob/822095fc29093ad0aa5e2dd48ff5b3c71183aef4/README.rst#L431
+    return m_token.toBase64();
+#endif
     return m_token;
 }
