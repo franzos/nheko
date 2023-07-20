@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.50]
+### Changes
+* add push notification support to Android/iOS versions.
+
 ## [0.1.49]
 ### Changes
 * add WebRTC support to iOS version.

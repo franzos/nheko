@@ -221,4 +221,4 @@ more info over here: https://source.android.com/security/apksigning
 4. build vendor dependencies using `./vendor/build-android.sh all arm64-v8a`
 5. build the application using `mkdir build && cd build && $QMAKE ANDROID_ABIS='arm64-v8a' ../MatrixClientApp.pro && make -j4`
 6. create the APK using `make apk`
-7. create the bundle using `make bundle`
+7. create the bundle using `make aab`
