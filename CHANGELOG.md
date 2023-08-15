@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.52]
+### Fixed
+* improve the speaker voice echo issue
+
 ## [0.1.51]
 ### Fixed
 * add permission request for push notification in Android.
