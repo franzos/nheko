@@ -13,11 +13,13 @@ CustomApplicationWindow {
     visible: true
     property bool embedVideoQML
     property bool callAutoAccept
+    property bool hideKeyBackup: false
 
     MainLib{
         id: mainLibqml
         embedVideoQML: qmlApplication.embedVideoQML
         callAutoAccept: qmlApplication.callAutoAccept
+        hideKeyBackup: qmlApplication.hideKeyBackup
     }
 
     Component.onCompleted: {

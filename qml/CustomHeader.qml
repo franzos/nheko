@@ -22,6 +22,7 @@ Column {
     signal optionClicked(Item item)
     property bool enableCallButtons: false
     property bool inCalling: false
+    property bool hideKeyBackup: false
 
     Component {
         id: callSettingsDialogFactory
@@ -69,6 +70,7 @@ Column {
                 icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
                 width: parent.height
                 height: parent.height
+                visible: !hideKeyBackup
                 onClicked: {
                     selfVerificationCheck.verify()
                 }

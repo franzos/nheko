@@ -7,8 +7,14 @@
 
 namespace PX::GUI::MATRIX{
 
-MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent): 
-    QmlInterface(parent), QQmlApplicationEngine(parent){            
+QMap<QString, ApplicationFeatures> ApplicationOptions::FeatureStrings = {
+    {"keybackup", ApplicationFeatures::KeyBackup}
+};
+
+MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent, ApplicationOptions options):
+    QmlInterface(parent), QQmlApplicationEngine(parent),
+    m_options(options)
+{
     // connect(this, &QQmlApplicationEngine::objectCreated,
     //             QCoreApplication::instance(), [&](QObject *obj, const QUrl &objUrl) {
     //     if (!obj && mainAppQMLurl() == objUrl) {
@@ -24,9 +30,13 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent):
 }
 
 void MatrixQmlApplicationEngine::load(bool callAutoAccept){
+    if (m_options.hiddenFeatures.contains(ApplicationFeatures::KeyBackup)) {
+        qDebug() << "!!! KEY BACKUP FEATURE IS DISABLED !!!";
+    }
     QQmlApplicationEngine::setInitialProperties({
         { "embedVideoQML", !callAutoAccept },
-        { "callAutoAccept", callAutoAccept}
+        { "callAutoAccept", callAutoAccept},
+        {"hideKeyBackup", m_options.hiddenFeatures.contains(ApplicationFeatures::KeyBackup)},
     });
     setAutoAcceptCall(callAutoAccept);
     QQmlApplicationEngine::load(mainAppQMLurl());
