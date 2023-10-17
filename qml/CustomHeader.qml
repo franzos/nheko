@@ -84,7 +84,7 @@ Column {
                 icon.color:"gray"
                 width: parent.height
                 height: parent.height
-                visible: CallManager.callsSupported
+                visible: CallManager.callsSupported && (hiddenFeatures.indexOf('interface') < 0)
                 onClicked: {
                     if(!GlobalObject.mobileMode()) {
                         var callSettingsDialog = callSettingsDialogFactory.createObject(parent);

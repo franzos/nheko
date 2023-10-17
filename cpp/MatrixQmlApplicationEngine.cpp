@@ -10,6 +10,7 @@ namespace PX::GUI::MATRIX{
 QMap<ApplicationOptions::AppFeatures, QString> ApplicationOptions::APP_FEATURES_DICT = {
     {ApplicationOptions::AppFeatures::keybackup, "keybackup"},
     {ApplicationOptions::AppFeatures::menu, "menu"},
+    {ApplicationOptions::AppFeatures::interface, "interface"},
     {ApplicationOptions::AppFeatures::settings_interface, "settings_interface"},
     };
 
