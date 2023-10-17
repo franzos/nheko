@@ -22,7 +22,8 @@ Column {
     signal optionClicked(Item item)
     property bool enableCallButtons: false
     property bool inCalling: false
-    property bool hideKeyBackup: false
+    property var hiddenFeatures: []
+    property var hiddenMenuEntries: []
 
     Component {
         id: callSettingsDialogFactory
@@ -42,7 +43,7 @@ Column {
                 icon.source: "qrc:/images/slide-icon.svg"
                 width: parent.height
                 height: parent.height
-                visible: stack.depth == 1
+                visible: stack.depth <= 1
                 onClicked: {
                     menuClicked()
                 }
@@ -70,7 +71,7 @@ Column {
                 icon.source: "qrc:/images/shield-filled-exclamation-mark.svg"
                 width: parent.height
                 height: parent.height
-                visible: !hideKeyBackup
+                visible:  hiddenFeatures.indexOf('keybackup') < 0
                 onClicked: {
                     selfVerificationCheck.verify()
                 }
@@ -295,7 +296,7 @@ Column {
     function menuClickedCallback(){
         if(!navDrawer.opened)
             navDrawer.open()
-
+        
         if(navDrawer.opened)
             navDrawer.close()
     }
@@ -321,6 +322,7 @@ Column {
     }
 
     Component.onCompleted: {
+        navDrawer.hiddenEntries = hiddenMenuEntries
         menuClicked.connect(menuClickedCallback)
         listenToCallManager()
         CallManager.onDevicesChanged.connect(onDevicesChanged)
@@ -328,6 +330,7 @@ Column {
 
     MainMenu{
         id: navDrawer
+        hiddenEntries: hiddenMenuEntreis
         y: mainHeader.height
         width: (parent.width < parent.height)?parent.width/2: parent.width/5
         height: parent.height - mainHeader.height

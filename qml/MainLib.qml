@@ -17,7 +17,8 @@ Page {
     anchors.fill:parent
     property bool embedVideoQML: false
     property bool callAutoAccept: false
-    property bool hideKeyBackup: false
+    property var hiddenFeatures: []
+    property var hiddenMenuEntries: []
     property var videoItem
     
     StackView {
@@ -77,7 +78,8 @@ Page {
     header: CustomHeader {
         id: mainHeader
         enableCallButtons: !callAutoAccept
-        hideKeyBackup: hideKeyBackup
+        hiddenFeatures: hiddenFeatures
+        hiddenMenuEntries: hiddenMenuEntries
         state: "none"
     } 
 
@@ -227,7 +229,8 @@ Page {
     }
     
     Component.onCompleted: {
-        mainHeader.hideKeyBackup = hideKeyBackup
+        mainHeader.hiddenFeatures = qmlLibRoot.hiddenFeatures
+        mainHeader.hiddenMenuEntries = qmlLibRoot.hiddenMenuEntries
         stack.push(busyIndicator)
         if(CallManager.callsSupported){            
             videoItem = Qt.createQmlObject('import QtQuick 2.15; import QtQuick.Layouts 1.3; import QtQuick.Controls 2.15; import "voip/"; Page {Layout.fillWidth: true; title: "Video Call"; VideoCallEmbedPage{}}',

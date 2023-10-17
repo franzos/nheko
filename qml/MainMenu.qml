@@ -10,31 +10,51 @@ Drawer {
 
     signal aboutClicked()
     property alias currentItem: listViewMenu.currentIndex
+    property var hiddenEntries: []
 
     ListModel {
         id: modelMenu
         ListElement {
             item: "Profile"
-            icon: ":/images/px-user.svg"            
+            icon: ":/images/px-user.svg"
+            name: "profile"
         }
         ListElement {
             item: "Settings"
-            icon: ":/images/settings.svg"            
+            icon: ":/images/settings.svg"
+            name: "settings"
         }
         ListElement {
             item: "My QR code"
             icon: ":/images/qrcode.svg"            
+            name: "my_qr_code"
         }
         ListElement {
             item: "Logout"
             icon: ":/images/power-off.svg"            
+            name: "logout"
         }
         ListElement {
             item: "About"
             icon: ":/images/about.svg"            
+            name: "about"
         }       
     }
-   
+
+    ListModel {
+        id: modelMenuFiltered
+    }
+
+    Component.onCompleted: {
+        modelMenuFiltered.clear()
+        for (var i = 0; i < modelMenu.count; i++) {
+            var currentName = modelMenu.get(i).name
+            if (menu.hiddenEntries.indexOf(currentName) < 0) {
+                modelMenuFiltered.append(modelMenu.get(i))
+            }
+        }
+    }
+
     ListView {
         id: listViewMenu
         anchors.top: parent.top
@@ -43,7 +63,7 @@ Drawer {
         anchors.bottom: parent.bottom
         // spacing: 10
         clip: true
-        model: modelMenu
+        model: modelMenuFiltered
         delegate: componentDelegate
     }
     Component {
@@ -89,7 +109,7 @@ Drawer {
                 bBorderwidth: 1
                 borderColor: GlobalObject.colors.alternateBase
             }
-          
+
             MouseArea {
                 id: ma
                 anchors.fill: parent

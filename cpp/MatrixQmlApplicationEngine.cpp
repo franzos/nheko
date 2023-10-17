@@ -7,9 +7,17 @@
 
 namespace PX::GUI::MATRIX{
 
-QMap<QString, ApplicationFeatures> ApplicationOptions::FeatureStrings = {
-    {"keybackup", ApplicationFeatures::KeyBackup}
-};
+QMap<ApplicationOptions::AppFeatures, QString> ApplicationOptions::APP_FEATURES_DICT = {
+    {ApplicationOptions::AppFeatures::keybackup, "keybackup"},
+    };
+
+QMap<ApplicationOptions::AppMenuEntries, QString> ApplicationOptions::APP_MENU_ENTRIES_DICT = {
+    { ApplicationOptions::AppMenuEntries::profile, "profile" },
+    { ApplicationOptions::AppMenuEntries::settings, "settings" },
+    { ApplicationOptions::AppMenuEntries::my_qr_code, "my_qr_code" },
+    { ApplicationOptions::AppMenuEntries::logout, "logout" },
+    { ApplicationOptions::AppMenuEntries::about, "about" },
+    };
 
 MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent, ApplicationOptions options):
     QmlInterface(parent), QQmlApplicationEngine(parent),
@@ -30,13 +38,21 @@ MatrixQmlApplicationEngine::MatrixQmlApplicationEngine(QObject *parent, Applicat
 }
 
 void MatrixQmlApplicationEngine::load(bool callAutoAccept){
-    if (m_options.hiddenFeatures.contains(ApplicationFeatures::KeyBackup)) {
-        qDebug() << "!!! KEY BACKUP FEATURE IS DISABLED !!!";
+    QStringList hiddenFeatures;
+    for (const auto &feature : m_options.hiddenFeatures) {
+        hiddenFeatures << ApplicationOptions::APP_FEATURES_DICT[feature];
     }
+
+    QStringList hiddenMenuEntries;
+    for (const auto& entry : m_options.hiddenMenuEntries) {
+        hiddenMenuEntries << ApplicationOptions::APP_MENU_ENTRIES_DICT[entry];
+    }
+
     QQmlApplicationEngine::setInitialProperties({
         { "embedVideoQML", !callAutoAccept },
         { "callAutoAccept", callAutoAccept},
-        {"hideKeyBackup", m_options.hiddenFeatures.contains(ApplicationFeatures::KeyBackup)},
+        { "hiddenFeatures", hiddenFeatures },
+        { "hiddenMenuEntries", hiddenMenuEntries }
     });
     setAutoAcceptCall(callAutoAccept);
     QQmlApplicationEngine::load(mainAppQMLurl());

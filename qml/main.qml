@@ -13,16 +13,22 @@ CustomApplicationWindow {
     visible: true
     property bool embedVideoQML
     property bool callAutoAccept
-    property bool hideKeyBackup: false
+    property var hiddenFeatures: []
+    property var hiddenMenuEntries: []
 
     MainLib{
         id: mainLibqml
         embedVideoQML: qmlApplication.embedVideoQML
         callAutoAccept: qmlApplication.callAutoAccept
-        hideKeyBackup: qmlApplication.hideKeyBackup
+        hiddenFeatures: qmlApplication.hiddenFeatures
+        hiddenMenuEntries: qmlApplication.hiddenMenuEntries
     }
 
     Component.onCompleted: {
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        console.log('hidden features: ', hiddenFeatures)
+        console.log('hidden entries: ', hiddenMenuEntries)
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         MatrixClient.start()
     }
 
