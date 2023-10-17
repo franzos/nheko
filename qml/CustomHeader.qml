@@ -323,6 +323,11 @@ Column {
 
     Component.onCompleted: {
         navDrawer.hiddenEntries = hiddenMenuEntries
+        if (hiddenFeatures.indexOf("menu") >= 0) {
+            navDrawer.interactive = false
+            menuButton.visible = false
+        }
+
         menuClicked.connect(menuClickedCallback)
         listenToCallManager()
         CallManager.onDevicesChanged.connect(onDevicesChanged)

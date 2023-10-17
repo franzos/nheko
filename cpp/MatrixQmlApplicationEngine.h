@@ -8,7 +8,7 @@ namespace PX::GUI::MATRIX{
 
 struct ApplicationOptions {
     enum class AppFeatures : quint8 {
-        keybackup
+        keybackup, menu
     };
     static QMap<AppFeatures, QString> APP_FEATURES_DICT;
 
