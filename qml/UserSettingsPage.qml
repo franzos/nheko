@@ -235,6 +235,41 @@ Page {
                     }
                 }
             }
+
+            Rectangle {
+                anchors.topMargin: 4
+                Layout.fillWidth: true
+                color: GlobalObject.colors.buttonText
+                height: 1
+            }
+            GridLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                Layout.fillWidth: true
+
+                columns: collapsed? 1 : 2
+                rows: collapsed? 2: 1
+
+                Text {
+                    text: qsTr("Audio / Video Settings")
+                    Layout.fillWidth: true
+                }
+                Component {
+                    id: callSettingsDialogFactory
+                    CallSettingsDialog {
+                    }
+                }
+                Button {
+                    text: qsTr("Open")
+                    onClicked: {
+                        if(!GlobalObject.mobileMode()) {
+                            var callSettingsDialog = callSettingsDialogFactory.createObject(parent);
+                            callSettingsDialog.show();
+                            destroyOnClose(callSettingsDialog);
+                        }
+                    }
+                }
+            }
         }
     }
 }
