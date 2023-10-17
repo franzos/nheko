@@ -11,6 +11,7 @@ Drawer {
     signal aboutClicked()
     property alias currentItem: listViewMenu.currentIndex
     property var hiddenEntries: []
+    property var visibleFeatures: []
 
     ListModel {
         id: modelMenu
@@ -131,6 +132,7 @@ Drawer {
                             break;
                         case "Settings":
                             var settings = userSettingsPage.createObject(stack);
+                            settings.visibleFeatures = visibleFeatures
                             stack.push(settings)
                             menu.close()
                             break;

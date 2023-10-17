@@ -18,6 +18,7 @@ Page {
     property bool embedVideoQML: false
     property bool callAutoAccept: false
     property var hiddenFeatures: []
+    property var visibleFeatures: []
     property var hiddenMenuEntries: []
     property var videoItem
     
@@ -79,6 +80,7 @@ Page {
         id: mainHeader
         enableCallButtons: !callAutoAccept
         hiddenFeatures: hiddenFeatures
+        visibleFeatures: visibleFeatures
         hiddenMenuEntries: hiddenMenuEntries
         state: "none"
     } 
@@ -230,6 +232,7 @@ Page {
     
     Component.onCompleted: {
         mainHeader.hiddenFeatures = qmlLibRoot.hiddenFeatures
+        mainHeader.visibleFeatures = qmlLibRoot.visibleFeatures
         mainHeader.hiddenMenuEntries = qmlLibRoot.hiddenMenuEntries
         stack.push(busyIndicator)
         if(CallManager.callsSupported){            

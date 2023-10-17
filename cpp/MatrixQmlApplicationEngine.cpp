@@ -10,6 +10,7 @@ namespace PX::GUI::MATRIX{
 QMap<ApplicationOptions::AppFeatures, QString> ApplicationOptions::APP_FEATURES_DICT = {
     {ApplicationOptions::AppFeatures::keybackup, "keybackup"},
     {ApplicationOptions::AppFeatures::menu, "menu"},
+    {ApplicationOptions::AppFeatures::settings_interface, "settings_interface"},
     };
 
 QMap<ApplicationOptions::AppMenuEntries, QString> ApplicationOptions::APP_MENU_ENTRIES_DICT = {
@@ -49,10 +50,16 @@ void MatrixQmlApplicationEngine::load(bool callAutoAccept){
         hiddenMenuEntries << ApplicationOptions::APP_MENU_ENTRIES_DICT[entry];
     }
 
+    QStringList visibleFeatures;
+    for (const auto& feature : m_options.visibleFeatures) {
+        visibleFeatures << ApplicationOptions::APP_FEATURES_DICT[feature];
+    }
+
     QQmlApplicationEngine::setInitialProperties({
         { "embedVideoQML", !callAutoAccept },
         { "callAutoAccept", callAutoAccept},
         { "hiddenFeatures", hiddenFeatures },
+        { "visibleFeatures", visibleFeatures },
         { "hiddenMenuEntries", hiddenMenuEntries }
     });
     setAutoAcceptCall(callAutoAccept);

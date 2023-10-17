@@ -8,7 +8,7 @@ namespace PX::GUI::MATRIX{
 
 struct ApplicationOptions {
     enum class AppFeatures : quint8 {
-        keybackup, menu
+        keybackup, menu, settings_interface
     };
     static QMap<AppFeatures, QString> APP_FEATURES_DICT;
 
@@ -17,27 +17,39 @@ struct ApplicationOptions {
     };
     static QMap<AppMenuEntries, QString> APP_MENU_ENTRIES_DICT;
 
-    template<typename T>
-    bool appendFromStr(const QString& str) {
-        if (std::is_same<T, AppFeatures>::value) {
-            for (const AppFeatures& key : APP_FEATURES_DICT.keys()) {
-                if (ApplicationOptions::APP_FEATURES_DICT[key].toLower() == str.toLower()) {
-                    hiddenFeatures.append(key);
-                    return true;
-                }
-            }
-        } else if (std::is_same<T, AppMenuEntries>::value) {
-            for (const AppMenuEntries& key : APP_MENU_ENTRIES_DICT.keys()) {
-                if (APP_MENU_ENTRIES_DICT[key].toLower() == str.toLower()) {
-                    hiddenMenuEntries.append(key);
-                    return true;
-                }
+    bool appendHiddenFeature(const QString& str) {
+        for (const auto& key : APP_FEATURES_DICT.keys()) {
+            if (APP_FEATURES_DICT[key].toLower() == str.toLower()) {
+                this->hiddenFeatures.append(key);
+                return true;
             }
         }
         return false;
     }
+
+    bool appendVisibleFeature(const QString& str) {
+        for (const auto& key: APP_FEATURES_DICT.keys()) {
+            if (APP_FEATURES_DICT[key].toLower() == str.toLower()) {
+                this->visibleFeatures.append(key);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool appendHiddenMenuEntry(const QString& str) {
+        for (const auto& key: APP_MENU_ENTRIES_DICT.keys()) {
+            if (APP_MENU_ENTRIES_DICT[key].toLower() == str.toLower()) {
+                this->hiddenMenuEntries.append(key);
+                return true;
+            }
+        }
+        return false;
+    }
+
     QList<AppFeatures> hiddenFeatures;
     QList<AppMenuEntries> hiddenMenuEntries;
+    QList<AppFeatures> visibleFeatures;
 };
 
 class MatrixQmlApplicationEngine : public QmlInterface ,public QQmlApplicationEngine{

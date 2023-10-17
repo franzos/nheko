@@ -21,6 +21,7 @@ Page {
 
     property int collapsePoint: 600
     property bool collapsed: width < collapsePoint
+    property var visibleFeatures: []
 
     VerifyWithPassphraseMessage {
         id: downloadCrossSigningDialog
@@ -241,11 +242,13 @@ Page {
                 Layout.fillWidth: true
                 color: GlobalObject.colors.buttonText
                 height: 1
+                visible: visibleFeatures.indexOf('settings_interface') >= 0
             }
             GridLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Layout.fillWidth: true
+                visible: visibleFeatures.indexOf('settings_interface') >= 0
 
                 columns: collapsed? 1 : 2
                 rows: collapsed? 2: 1

@@ -23,6 +23,7 @@ Column {
     property bool enableCallButtons: false
     property bool inCalling: false
     property var hiddenFeatures: []
+    property var visibleFeatures: []
     property var hiddenMenuEntries: []
 
     Component {
@@ -323,6 +324,7 @@ Column {
 
     Component.onCompleted: {
         navDrawer.hiddenEntries = hiddenMenuEntries
+        navDrawer.visibleFeatures = visibleFeatures
         if (hiddenFeatures.indexOf("menu") >= 0) {
             navDrawer.interactive = false
             menuButton.visible = false
@@ -336,6 +338,7 @@ Column {
     MainMenu{
         id: navDrawer
         hiddenEntries: hiddenMenuEntreis
+        visibleFeatures: visibleFeatures
         y: mainHeader.height
         width: (parent.width < parent.height)?parent.width/2: parent.width/5
         height: parent.height - mainHeader.height
