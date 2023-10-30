@@ -46,7 +46,8 @@ signals:
     void loginTypeChanged(const PX::AUTH::LOGIN_TYPE type);
     void loginProgramatically(PX::AUTH::LOGIN_TYPE type, const QString &accessToken);
     void notificationClicked(const QString &roomid);
-    
+    void onCallStateChanged(bool isOnCall);
+
 public slots:
     virtual void setVideoCallItem() = 0;
     QString userId();

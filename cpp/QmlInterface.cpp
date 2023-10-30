@@ -108,6 +108,11 @@ QmlInterface::QmlInterface(QObject *parent):
     checkCacheDirectory();
     if(_callMgr->callsSupported()){
         qDebug() << "*** VOIP Supported";
+
+        connect(_callMgr, &CallManager::newCallState, [&]() {
+            bool isOnCall = _callMgr->isOnCall();
+            emit onCallStateChanged(isOnCall);
+        });
     }
     #if ALLOW_SERVER_CHANGE
         setServerAddress("");
