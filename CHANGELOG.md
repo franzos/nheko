@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.48]
+### Added
+
+* Initial support for waking up from power savings
+
 ## [0.1.47]
 ### Fixed
 
