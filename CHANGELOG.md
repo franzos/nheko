@@ -4,10 +4,41 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.1.48]
+## [0.1.54]
 ### Added
 
 * Initial support for waking up from power savings
+
+## [0.1.53]
+### Added
+
+* option to hide interface button from header
+
+## [0.1.52]
+### Fixed
+
+* improve echo cancellation issue
+
+## [0.1.51]
+### Fixed
+
+* push notification issue on Android 13
+
+## [0.1.50]
+### Added
+
+* push notification support to Android/iOS versions
+
+## [0.1.49]
+### Added
+
+* webrtc support added to iOS version
+* user interface improvements on mobile
+
+## [0.1.48]
+### Added
+
+* WebRTC support added to the Android version
 
 ## [0.1.47]
 ### Fixed
