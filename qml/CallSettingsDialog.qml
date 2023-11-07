@@ -12,11 +12,12 @@ CustomApplicationWindow {
     id: callSettings
     title: "Audio/Video Settings"
     minimumWidth: 340
-    minimumHeight: 450
+//    minimumHeight: 450
     width: 450
     height: 680
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    
+    visibility: window.Maximized
+
     ScrollView {
         id: scroll
         clip: true
