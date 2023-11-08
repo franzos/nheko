@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.1.55]
+### Fixed
+
+* Issue on audio and video settings on small screens
+
 ## [0.1.54]
 ### Added
 
