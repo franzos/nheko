@@ -1,10 +1,25 @@
 # Matrix Client
 
-Mobile client for [Matrix](https://matrix.org)
+Desktop and Mobile client for [Matrix](https://matrix.org), based on Nheko.
 
-## Build on Guix
+## Develop
 
-in order to build on Guix, following dependencies need to be installed. 
+### On Guix
+
+```bash
+# Channel: PantherX
+guix shell -m manifest.scm
+eval $(./vendor/set_qt_env_variables.sh)
+```
+
+Build and run:
+
+```bash
+./vendor/pop.sh
+./build/matrix-client
+```
+
+### Dependencies
 
 - `json-modern-cxx`         
 - `curl`                   
@@ -18,18 +33,10 @@ in order to build on Guix, following dependencies need to be installed.
 - `qtquickcontrols2`        `5.15.2`
 - `qtdeclarative`           `5.15.2`
 - `qtsvg`                   `5.15.2`
-- `spdlog-shared-lib`       
+- `spdlog-shared-lib`
 
-we also need to set following environment variables based on what set for `nheko` package:
+Not necessarily up to date.
 
-```bash
-cat ~/.guix-profile/bin/nheko
-```
-
-```bash
-export QML2_IMPORT_PATH="..."
-export QT_PLUGIN_PATH="..."
-```
 
 ## Build 3rd party libraries
 
@@ -57,7 +64,6 @@ in order to build third-party libraries for Android, following dependencies need
 ```shell
 ./vendor/build-android.sh all
 ```
-
 
 ### iOS
 
@@ -101,6 +107,7 @@ in order to setup Kit:
 mkdir build
 cd build
 qmake ../MatrixClientApp.pro
+make
 ```
 
 * Building the Library:
@@ -109,6 +116,7 @@ qmake ../MatrixClientApp.pro
 mkdir build
 cd build
 qmake ../MatrixClientLib.pro
+make
 ```
 
 ## Version release flow
@@ -210,4 +218,5 @@ following the above steps, we have the signed APK and bundle files. however sinc
   ```shell
   $ zip -d "${file_path}" META-INF/\*
   ```
+
 more info over here: https://source.android.com/security/apksigning
